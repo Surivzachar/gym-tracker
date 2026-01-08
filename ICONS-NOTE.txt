@@ -1,0 +1,22 @@
+NOTE ABOUT ICONS:
+
+The icon-192.png and icon-512.png files are currently SVG placeholders.
+
+To create proper PNG icons:
+
+Option 1 - Use an online tool:
+1. Go to https://www.favicon-generator.org/
+2. Upload any image (or create one with the muscle emoji 💪)
+3. Generate the icons
+4. Download and replace icon-192.png and icon-512.png
+
+Option 2 - Create manually:
+1. Open any image editor (Paint, Photoshop, GIMP, etc.)
+2. Create a 192x192px image with purple background (#4f46e5)
+3. Add the muscle emoji 💪 or any gym-related icon
+4. Save as icon-192.png
+5. Repeat for 512x512px and save as icon-512.png
+
+Option 3 - Use existing icons:
+The app will work fine without proper icons. The icons are only used when
+installing the PWA on your home screen. You can update them later.

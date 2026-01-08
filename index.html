@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1e3a8a">
+    <meta name="description" content="Track. Train. Transform. Your complete fitness companion">
+    <title>Suresh.aesthetics - Fitness Tracker</title>
+    <link rel="icon" type="image/png" href="favicon.ico">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="logo.png" alt="Suresh.aesthetics" class="logo-image">
+                <div class="logo-text">
+                    <span class="logo-name">Suresh.aesthetics</span>
+                    <span class="logo-tagline">Track. Train. Transform.</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="timerBtn" class="icon-btn" title="Rest Timer">
+                    <span>⏱️</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <button class="nav-btn active" data-view="workout">Workout</button>
+            <button class="nav-btn" data-view="food">Food</button>
+            <button class="nav-btn" data-view="history">History</button>
+            <button class="nav-btn" data-view="routines">Routines</button>
+        </nav>
+
+        <!-- Workout View -->
+        <div id="workoutView" class="view active">
+            <div class="container">
+                <!-- Daily Quote -->
+                <div class="daily-quote-card">
+                    <div class="quote-icon">💪</div>
+                    <div class="quote-content">
+                        <p id="dailyQuote" class="quote-text"></p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2>Current Workout</h2>
+                        <button id="loadRoutineBtn" class="btn-secondary">Load Routine</button>
+                    </div>
+
+                    <div id="currentExercises" class="exercises-list"></div>
+
+                    <button id="addExerciseBtn" class="btn-primary full-width">+ Add Exercise</button>
+
+                    <button id="finishWorkoutBtn" class="btn-success full-width" style="margin-top: 1rem;">
+                        Finish Workout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food View -->
+        <div id="foodView" class="view">
+            <div class="container">
+                <div class="section">
+                    <h2>Today's Food</h2>
+
+                    <!-- Daily Stats -->
+                    <div id="foodStats" class="food-stats">
+                        <div class="stat-card">
+                            <span class="stat-value">0</span>
+                            <span class="stat-label">Calories</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-value">0g</span>
+                            <span class="stat-label">Protein</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-value">0g</span>
+                            <span class="stat-label">Carbs</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-value">0g</span>
+                            <span class="stat-label">Fats</span>
+                        </div>
+                    </div>
+
+                    <!-- Meal Sections -->
+                    <div class="meals-container">
+                        <div class="meal-section">
+                            <div class="meal-header">
+                                <h3>🌅 Breakfast</h3>
+                                <button class="btn-secondary small" onclick="app.openAddFoodModal('breakfast')">+ Add</button>
+                            </div>
+                            <div id="breakfastList" class="food-list"></div>
+                        </div>
+
+                        <div class="meal-section">
+                            <div class="meal-header">
+                                <h3>☕ Mid Morning</h3>
+                                <button class="btn-secondary small" onclick="app.openAddFoodModal('midmorning')">+ Add</button>
+                            </div>
+                            <div id="midmorningList" class="food-list"></div>
+                        </div>
+
+                        <div class="meal-section">
+                            <div class="meal-header">
+                                <h3>🌞 Lunch</h3>
+                                <button class="btn-secondary small" onclick="app.openAddFoodModal('lunch')">+ Add</button>
+                            </div>
+                            <div id="lunchList" class="food-list"></div>
+                        </div>
+
+                        <div class="meal-section">
+                            <div class="meal-header">
+                                <h3>💪 Pre Workout</h3>
+                                <button class="btn-secondary small" onclick="app.openAddFoodModal('preworkout')">+ Add</button>
+                            </div>
+                            <div id="preworkoutList" class="food-list"></div>
+                        </div>
+
+                        <div class="meal-section">
+                            <div class="meal-header">
+                                <h3>🥤 Post Workout</h3>
+                                <button class="btn-secondary small" onclick="app.openAddFoodModal('postworkout')">+ Add</button>
+                            </div>
+                            <div id="postworkoutList" class="food-list"></div>
+                        </div>
+
+                        <div class="meal-section">
+                            <div class="meal-header">
+                                <h3>🌙 Dinner</h3>
+                                <button class="btn-secondary small" onclick="app.openAddFoodModal('dinner')">+ Add</button>
+                            </div>
+                            <div id="dinnerList" class="food-list"></div>
+                        </div>
+                    </div>
+
+                    <!-- Food History Link -->
+                    <button id="viewFoodHistoryBtn" class="btn-secondary full-width" style="margin-top: 1rem;">
+                        View Food History
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- History View -->
+        <div id="historyView" class="view">
+            <div class="container">
+                <h2>Workout History</h2>
+                <div id="historyList" class="history-list"></div>
+            </div>
+        </div>
+
+        <!-- Routines View -->
+        <div id="routinesView" class="view">
+            <div class="container">
+                <div class="section">
+                    <div class="section-header">
+                        <h2>My Routines</h2>
+                        <button id="createRoutineBtn" class="btn-primary">+ New Routine</button>
+                    </div>
+                    <div id="routinesList" class="routines-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Exercise Modal -->
+        <div id="addExerciseModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add Exercise</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-label">Exercise Type</label>
+                        <select id="exerciseTypeSelect" class="input">
+                            <option value="strength">Strength Training</option>
+                            <option value="cardio">Cardio</option>
+                            <option value="hiit">HIIT</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Exercise Name</label>
+                        <input type="text" id="exerciseNameInput" placeholder="e.g., Bench Press, Running, Burpees" class="input">
+                    </div>
+
+                    <!-- Strength Training Inputs -->
+                    <div id="strengthInputs" class="exercise-type-inputs">
+                        <div class="sets-container" id="setsContainer">
+                            <div class="set-input">
+                                <input type="number" placeholder="Weight (kg)" class="input small" data-field="weight">
+                                <input type="number" placeholder="Reps" class="input small" data-field="reps">
+                                <button class="btn-icon remove-set">🗑️</button>
+                            </div>
+                        </div>
+                        <button id="addSetBtn" class="btn-secondary full-width">+ Add Set</button>
+                    </div>
+
+                    <!-- Cardio Inputs -->
+                    <div id="cardioInputs" class="exercise-type-inputs" style="display: none;">
+                        <div class="input-group">
+                            <label class="input-label">Duration (minutes)</label>
+                            <input type="number" id="cardioDuration" placeholder="30" class="input">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Distance (km) - Optional</label>
+                            <input type="number" id="cardioDistance" placeholder="5.0" step="0.1" class="input">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Calories Burned - Optional</label>
+                            <input type="number" id="cardioCalories" placeholder="250" class="input">
+                        </div>
+                    </div>
+
+                    <!-- HIIT Inputs -->
+                    <div id="hiitInputs" class="exercise-type-inputs" style="display: none;">
+                        <div class="input-group">
+                            <label class="input-label">Duration (minutes)</label>
+                            <input type="number" id="hiitDuration" placeholder="20" class="input">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Rounds/Cycles</label>
+                            <input type="number" id="hiitRounds" placeholder="5" class="input">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Calories Burned - Optional</label>
+                            <input type="number" id="hiitCalories" placeholder="300" class="input">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelExerciseBtn" class="btn-secondary">Cancel</button>
+                    <button id="saveExerciseBtn" class="btn-primary">Save Exercise</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timer Modal -->
+        <div id="timerModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Rest Timer</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body timer-body">
+                    <div class="timer-display" id="timerDisplay">01:30</div>
+                    <div class="timer-presets">
+                        <button class="preset-btn" data-seconds="60">1:00</button>
+                        <button class="preset-btn" data-seconds="90">1:30</button>
+                        <button class="preset-btn" data-seconds="120">2:00</button>
+                        <button class="preset-btn" data-seconds="180">3:00</button>
+                    </div>
+                    <div class="timer-controls">
+                        <button id="startTimerBtn" class="btn-primary">Start</button>
+                        <button id="resetTimerBtn" class="btn-secondary">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Routine Modal -->
+        <div id="createRoutineModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Create Routine</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="routineNameInput" placeholder="Routine name (e.g., Push Day)" class="input">
+                    <p class="helper-text">Save your current workout as a routine to reuse later</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelRoutineBtn" class="btn-secondary">Cancel</button>
+                    <button id="saveRoutineBtn" class="btn-primary">Save Routine</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Load Routine Modal -->
+        <div id="loadRoutineModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Load Routine</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="loadRoutineList" class="load-routine-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Food Modal -->
+        <div id="addFoodModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="foodModalTitle">Add Food</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="food-search-container">
+                        <label class="input-label">Food Name</label>
+                        <input type="text" id="foodNameInput" placeholder="Search or type food name..." class="input" autocomplete="off">
+                        <div id="foodSuggestions" class="food-suggestions"></div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Calories</label>
+                        <input type="number" id="caloriesInput" placeholder="0" class="input">
+                    </div>
+                    <div class="macros-inputs">
+                        <div class="input-group">
+                            <label class="input-label">Protein (g)</label>
+                            <input type="number" id="proteinInput" placeholder="0" class="input small">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Carbs (g)</label>
+                            <input type="number" id="carbsInput" placeholder="0" class="input small">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Fats (g)</label>
+                            <input type="number" id="fatsInput" placeholder="0" class="input small">
+                        </div>
+                    </div>
+                    <p class="helper-text">💡 Start typing to search from 60+ common foods</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelFoodBtn" class="btn-secondary">Cancel</button>
+                    <button id="saveFoodBtn" class="btn-primary">Save Food</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food History Modal -->
+        <div id="foodHistoryModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Food History</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="foodHistoryList" class="food-history-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/food-database.js"></script>
+    <script src="js/quotes.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
