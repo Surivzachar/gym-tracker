@@ -112,6 +112,40 @@ body {
     transform: scale(1.05);
 }
 
+/* Date Banner */
+.date-banner {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
+    color: white;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);
+    position: relative;
+    z-index: 9;
+}
+
+.date-info {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.current-date {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.journey-day {
+    font-size: 0.95rem;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.375rem 1rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
 /* Navigation */
 .nav {
     display: flex;
@@ -582,6 +616,10 @@ body {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
+.modal-content.large {
+    max-width: 700px;
+}
+
 .modal-header {
     padding: 1.5rem;
     border-bottom: 1px solid #e5e7eb;
@@ -657,9 +695,117 @@ body {
 
 .set-input {
     display: grid;
-    grid-template-columns: 1fr 1fr auto;
+    grid-template-columns: auto 1fr 1fr auto;
     gap: 0.5rem;
     align-items: center;
+}
+
+/* Routine Creation Styles */
+.routine-source-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.routine-tab-btn {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: #6b7280;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.routine-tab-btn:hover {
+    color: #1e3a8a;
+    background: #f9fafb;
+}
+
+.routine-tab-btn.active {
+    color: #1e3a8a;
+    border-bottom-color: #1e3a8a;
+}
+
+.routine-exercise-selection {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.exercise-select-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.exercise-select-item:hover {
+    background: #f3f4f6;
+    border-color: #1e3a8a;
+}
+
+.exercise-select-item.selected {
+    background: #e0e7ff;
+    border-color: #1e3a8a;
+}
+
+.exercise-select-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.exercise-select-info {
+    flex: 1;
+}
+
+.exercise-select-name {
+    font-weight: 600;
+    color: #1f2937;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.exercise-select-details {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.workout-group-header {
+    font-weight: 600;
+    color: #1e3a8a;
+    padding: 0.75rem 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.select-all-btn {
+    font-size: 0.875rem;
+    color: #1e3a8a;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+}
+
+.select-all-btn:hover {
+    color: #1d4ed8;
 }
 
 /* Timer */
@@ -720,6 +866,7 @@ body {
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
+    position: relative;
 }
 
 .load-routine-item:hover {
@@ -734,6 +881,102 @@ body {
 
 .load-routine-item p {
     color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.routine-history-preview {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.routine-history-preview strong {
+    display: block;
+    color: #1e3a8a;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.history-preview-item {
+    font-size: 0.875rem;
+    color: #6b7280;
+    padding: 0.25rem 0;
+}
+
+/* Settings */
+.settings-info {
+    background: #f9fafb;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #1e3a8a;
+    margin-top: 1rem;
+}
+
+.settings-info p {
+    margin: 0;
+    color: #4b5563;
+    font-size: 0.95rem;
+}
+
+.settings-info strong {
+    color: #1e3a8a;
+    font-weight: 600;
+}
+
+/* Auto Backups List */
+.auto-backups-list {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.auto-backup-item {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.auto-backup-info {
+    flex: 1;
+}
+
+.auto-backup-date {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 0.95rem;
+}
+
+.auto-backup-age {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.auto-backup-download {
+    background: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.auto-backup-download:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.auto-backups-empty {
+    text-align: center;
+    color: #9ca3af;
+    padding: 1rem;
     font-size: 0.875rem;
 }
 
@@ -907,6 +1150,12 @@ body {
 
 .food-item-info {
     flex: 1;
+}
+
+.food-item-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
 }
 
 .food-item-info strong {

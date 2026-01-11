@@ -7,8 +7,12 @@ class GymTrackerApp {
         this.timerInterval = null;
         this.timerSeconds = 90; // Default 1:30
         this.timerRunning = false;
+        this.editingExerciseId = null; // Track which exercise is being edited
+        this.editingFoodId = null; // Track which food item is being edited
 
         this.initializeEventListeners();
+        this.checkAutoBackup();
+        this.updateDateBanner();
         this.renderCurrentWorkout();
         this.renderHistory();
         this.renderRoutines();
@@ -100,6 +104,49 @@ class GymTrackerApp {
             this.openFoodHistoryModal();
         });
 
+        // Food Routines
+        document.getElementById('createFoodRoutineBtn').addEventListener('click', () => {
+            this.openCreateFoodRoutineModal();
+        });
+
+        document.getElementById('saveFoodRoutineBtn').addEventListener('click', () => {
+            this.saveFoodRoutine();
+        });
+
+        document.getElementById('cancelFoodRoutineBtn').addEventListener('click', () => {
+            this.closeModal('createFoodRoutineModal');
+        });
+
+        document.getElementById('loadFoodRoutineBtn').addEventListener('click', () => {
+            this.openLoadFoodRoutineModal();
+        });
+
+        // Settings
+        document.getElementById('settingsBtn').addEventListener('click', () => {
+            this.openSettingsModal();
+        });
+
+        document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+            this.saveSettings();
+        });
+
+        document.getElementById('cancelSettingsBtn').addEventListener('click', () => {
+            this.closeModal('settingsModal');
+        });
+
+        // Data Export/Import
+        document.getElementById('exportDataBtn').addEventListener('click', () => {
+            this.exportData();
+        });
+
+        document.getElementById('importDataBtn').addEventListener('click', () => {
+            document.getElementById('importFileInput').click();
+        });
+
+        document.getElementById('importFileInput').addEventListener('change', (e) => {
+            this.importData(e);
+        });
+
         // Close modals
         document.querySelectorAll('.close-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -142,30 +189,87 @@ class GymTrackerApp {
         }
     }
 
-    openAddExerciseModal() {
-        // Reset form
-        document.getElementById('exerciseTypeSelect').value = 'strength';
-        document.getElementById('exerciseNameInput').value = '';
-        document.getElementById('setsContainer').innerHTML = `
-            <div class="set-input">
-                <input type="number" placeholder="Weight (kg)" class="input small" data-field="weight">
-                <input type="number" placeholder="Reps" class="input small" data-field="reps">
-                <button class="btn-icon remove-set">🗑️</button>
-            </div>
-        `;
+    openAddExerciseModal(exerciseId = null) {
+        this.editingExerciseId = exerciseId;
+        const isEditing = exerciseId !== null;
 
-        // Reset cardio inputs
-        document.getElementById('cardioDuration').value = '';
-        document.getElementById('cardioDistance').value = '';
-        document.getElementById('cardioCalories').value = '';
+        // Update modal title
+        const modalTitle = document.querySelector('#addExerciseModal h3');
+        if (modalTitle) {
+            modalTitle.textContent = isEditing ? 'Edit Exercise' : 'Add Exercise';
+        }
 
-        // Reset HIIT inputs
-        document.getElementById('hiitDuration').value = '';
-        document.getElementById('hiitRounds').value = '';
-        document.getElementById('hiitCalories').value = '';
+        // Update save button text
+        const saveBtn = document.getElementById('saveExerciseBtn');
+        if (saveBtn) {
+            saveBtn.textContent = isEditing ? 'Update Exercise' : 'Save Exercise';
+        }
 
-        // Show strength inputs by default
-        this.switchExerciseTypeInputs('strength');
+        if (isEditing) {
+            // Load exercise data for editing
+            const exercise = this.currentWorkout.exercises.find(e => e.id === exerciseId);
+            if (!exercise) return;
+
+            const typeSelect = document.getElementById('exerciseTypeSelect');
+            typeSelect.value = exercise.type || 'strength';
+            typeSelect.disabled = true; // Disable type change when editing
+            document.getElementById('exerciseNameInput').value = exercise.name;
+
+            if (exercise.type === 'strength' || !exercise.type) {
+                // Load strength exercise data
+                document.getElementById('setsContainer').innerHTML = exercise.sets.map(set => `
+                    <div class="set-input">
+                        <select class="input small" data-field="unit">
+                            <option value="kg" ${(!set.unit || set.unit === 'kg') ? 'selected' : ''}>kg</option>
+                            <option value="lbs" ${set.unit === 'lbs' ? 'selected' : ''}>lbs</option>
+                        </select>
+                        <input type="number" placeholder="Weight" class="input small" data-field="weight" value="${set.weight}">
+                        <input type="number" placeholder="Reps" class="input small" data-field="reps" value="${set.reps}">
+                        <button class="btn-icon remove-set">🗑️</button>
+                    </div>
+                `).join('');
+            } else if (exercise.type === 'cardio') {
+                document.getElementById('cardioDuration').value = exercise.duration || '';
+                document.getElementById('cardioDistance').value = exercise.distance || '';
+                document.getElementById('cardioCalories').value = exercise.calories || '';
+            } else if (exercise.type === 'hiit') {
+                document.getElementById('hiitDuration').value = exercise.duration || '';
+                document.getElementById('hiitRounds').value = exercise.rounds || '';
+                document.getElementById('hiitCalories').value = exercise.calories || '';
+            }
+
+            this.switchExerciseTypeInputs(exercise.type || 'strength');
+        } else {
+            // Reset form for new exercise
+            const typeSelect = document.getElementById('exerciseTypeSelect');
+            typeSelect.value = 'strength';
+            typeSelect.disabled = false; // Enable type selection for new exercises
+            document.getElementById('exerciseNameInput').value = '';
+            document.getElementById('setsContainer').innerHTML = `
+                <div class="set-input">
+                    <select class="input small" data-field="unit">
+                        <option value="kg" selected>kg</option>
+                        <option value="lbs">lbs</option>
+                    </select>
+                    <input type="number" placeholder="Weight" class="input small" data-field="weight">
+                    <input type="number" placeholder="Reps" class="input small" data-field="reps">
+                    <button class="btn-icon remove-set">🗑️</button>
+                </div>
+            `;
+
+            // Reset cardio inputs
+            document.getElementById('cardioDuration').value = '';
+            document.getElementById('cardioDistance').value = '';
+            document.getElementById('cardioCalories').value = '';
+
+            // Reset HIIT inputs
+            document.getElementById('hiitDuration').value = '';
+            document.getElementById('hiitRounds').value = '';
+            document.getElementById('hiitCalories').value = '';
+
+            // Show strength inputs by default
+            this.switchExerciseTypeInputs('strength');
+        }
 
         // Setup exercise type change listener
         document.getElementById('exerciseTypeSelect').onchange = (e) => {
@@ -188,6 +292,10 @@ class GymTrackerApp {
         const setInput = document.createElement('div');
         setInput.className = 'set-input';
         setInput.innerHTML = `
+            <select class="input small" data-field="unit">
+                <option value="kg" selected>kg</option>
+                <option value="lbs">lbs</option>
+            </select>
             <input type="number" placeholder="Weight" class="input small" data-field="weight">
             <input type="number" placeholder="Reps" class="input small" data-field="reps">
             <button class="btn-icon remove-set">🗑️</button>
@@ -216,20 +324,37 @@ class GymTrackerApp {
             return;
         }
 
-        let exercise = {
-            id: Date.now(),
-            name: name,
-            type: type
-        };
+        const isEditing = this.editingExerciseId !== null;
+        let exercise;
+
+        if (isEditing) {
+            // Find and update existing exercise
+            exercise = this.currentWorkout.exercises.find(e => e.id === this.editingExerciseId);
+            if (!exercise) {
+                alert('Exercise not found');
+                return;
+            }
+            exercise.name = name;
+            exercise.type = type;
+        } else {
+            // Create new exercise
+            exercise = {
+                id: Date.now(),
+                name: name,
+                type: type
+            };
+        }
 
         if (type === 'strength') {
             const sets = [];
             document.querySelectorAll('.set-input').forEach(setDiv => {
+                const unit = setDiv.querySelector('[data-field="unit"]').value;
                 const weight = setDiv.querySelector('[data-field="weight"]').value;
                 const reps = setDiv.querySelector('[data-field="reps"]').value;
 
                 if (weight || reps) {
                     sets.push({
+                        unit: unit || 'kg',
                         weight: weight || '0',
                         reps: reps || '0'
                     });
@@ -270,10 +395,14 @@ class GymTrackerApp {
             exercise.calories = calories || null;
         }
 
-        this.currentWorkout.exercises.push(exercise);
+        if (!isEditing) {
+            this.currentWorkout.exercises.push(exercise);
+        }
+
         Storage.saveCurrentWorkout(this.currentWorkout);
         this.renderCurrentWorkout();
         this.closeModal('addExerciseModal');
+        this.editingExerciseId = null;
     }
 
     renderCurrentWorkout() {
@@ -301,7 +430,7 @@ class GymTrackerApp {
                         ${exercise.sets.map((set, index) => `
                             <div class="set-row">
                                 <span class="set-number">Set ${index + 1}</span>
-                                <span class="set-detail">${set.weight} kg × ${set.reps} reps</span>
+                                <span class="set-detail">${set.weight} ${set.unit || 'kg'} × ${set.reps} reps</span>
                             </div>
                         `).join('')}
                     </div>
@@ -356,6 +485,7 @@ class GymTrackerApp {
                         <h3>${exerciseIcon} ${exercise.name}</h3>
                         <div class="exercise-actions">
                             ${hasHistory && type === 'strength' ? `<button class="btn-icon-small" onclick="app.toggleExerciseHistory(${exercise.id})" title="View Progress">📊</button>` : ''}
+                            <button class="btn-icon-small" onclick="app.openAddExerciseModal(${exercise.id})" title="Edit">✏️</button>
                             <button class="btn-icon" onclick="app.deleteExercise(${exercise.id})">🗑️</button>
                         </div>
                     </div>
@@ -369,10 +499,11 @@ class GymTrackerApp {
                                 const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                                 const maxWeight = Math.max(...h.sets.map(s => parseInt(s.weight) || 0));
                                 const totalReps = h.sets.reduce((sum, s) => sum + (parseInt(s.reps) || 0), 0);
+                                const maxUnit = h.sets.find(s => s.unit)?.unit || 'kg';
                                 return `
                                     <div class="history-item">
                                         <span class="history-date">${formattedDate}</span>
-                                        <span class="history-stats">${h.sets.length} sets • Max: ${maxWeight}kg • ${totalReps} reps</span>
+                                        <span class="history-stats">${h.sets.length} sets • Max: ${maxWeight}${maxUnit} • ${totalReps} reps</span>
                                     </div>
                                 `;
                             }).join('')}
@@ -447,7 +578,10 @@ class GymTrackerApp {
                             <h3>${formattedDate}</h3>
                             <p class="history-meta">${metaText}</p>
                         </div>
-                        <button class="btn-icon" onclick="app.deleteWorkout(${workout.id})">🗑️</button>
+                        <div class="exercise-actions">
+                            <button class="btn-icon-small" onclick="app.resumeWorkout(${workout.id})" title="Resume Workout">↩️</button>
+                            <button class="btn-icon" onclick="app.deleteWorkout(${workout.id})">🗑️</button>
+                        </div>
                     </div>
                     <div class="history-exercises">
                         ${workout.exercises.map(ex => {
@@ -485,6 +619,32 @@ class GymTrackerApp {
         }
     }
 
+    resumeWorkout(workoutId) {
+        if (this.currentWorkout.exercises.length > 0) {
+            if (!confirm('You have exercises in your current workout. Resuming this workout will replace them. Continue?')) {
+                return;
+            }
+        }
+
+        const workout = Storage.getWorkout(workoutId);
+        if (!workout) {
+            alert('Workout not found');
+            return;
+        }
+
+        // Set as current workout
+        this.currentWorkout = { exercises: workout.exercises };
+        Storage.saveCurrentWorkout(this.currentWorkout);
+
+        // Remove from history
+        Storage.deleteWorkout(workoutId);
+
+        // Switch to workout tab and refresh
+        this.switchView('workout');
+        this.renderCurrentWorkout();
+        this.renderHistory();
+    }
+
     renderRoutines() {
         const container = document.getElementById('routinesList');
         const routines = Storage.getAllRoutines();
@@ -495,13 +655,33 @@ class GymTrackerApp {
         }
 
         container.innerHTML = routines.map(routine => {
+            const routineHistory = Storage.getRoutineHistory(routine.id);
+            const lastUsed = routineHistory.length > 0 ? routineHistory[0] : null;
+            let lastUsedText = '';
+
+            if (lastUsed) {
+                const date = new Date(lastUsed.date);
+                const now = new Date();
+                const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+
+                if (diffDays === 0) {
+                    lastUsedText = ' • Last used: Today';
+                } else if (diffDays === 1) {
+                    lastUsedText = ' • Last used: Yesterday';
+                } else if (diffDays < 7) {
+                    lastUsedText = ` • Last used: ${diffDays} days ago`;
+                } else {
+                    lastUsedText = ` • Last used: ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+                }
+            }
+
             return `
                 <div class="routine-card">
                     <div class="routine-header">
                         <h3>${routine.name}</h3>
                         <button class="btn-icon" onclick="app.deleteRoutine(${routine.id})">🗑️</button>
                     </div>
-                    <p class="routine-meta">${routine.exercises.length} exercises</p>
+                    <p class="routine-meta">${routine.exercises.length} exercises${lastUsedText}</p>
                     <div class="routine-exercises">
                         ${routine.exercises.map(ex => `<span class="routine-exercise-tag">${ex.name}</span>`).join('')}
                     </div>
@@ -514,14 +694,146 @@ class GymTrackerApp {
     }
 
     openCreateRoutineModal() {
-        if (this.currentWorkout.exercises.length === 0) {
-            alert('Add some exercises to your workout before creating a routine');
-            return;
-        }
-
         document.getElementById('routineNameInput').value = '';
+
+        // Setup tab listeners
+        document.querySelectorAll('.routine-tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.routine-tab-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                this.renderRoutineExerciseSelection(e.target.dataset.source);
+            });
+        });
+
+        // Render current workout exercises by default
+        this.renderRoutineExerciseSelection('current');
+
         document.getElementById('createRoutineModal').classList.add('active');
         document.getElementById('routineNameInput').focus();
+    }
+
+    renderRoutineExerciseSelection(source) {
+        const container = document.getElementById('routineExerciseSelection');
+
+        if (source === 'current') {
+            if (this.currentWorkout.exercises.length === 0) {
+                container.innerHTML = '<p class="empty-state-small">No exercises in current workout. Add some exercises first!</p>';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="workout-group-header">
+                    <span>Current Workout</span>
+                    <button class="select-all-btn" onclick="app.toggleSelectAll('current')">Select All</button>
+                </div>
+                ${this.currentWorkout.exercises.map(exercise => {
+                    const type = exercise.type || 'strength';
+                    let details = '';
+                    if (type === 'strength') {
+                        details = `${exercise.sets.length} sets`;
+                    } else if (type === 'cardio') {
+                        details = `${exercise.duration} min cardio`;
+                    } else if (type === 'hiit') {
+                        details = `${exercise.duration} min HIIT`;
+                    }
+
+                    return `
+                        <div class="exercise-select-item" data-exercise-id="${exercise.id}" onclick="app.toggleExerciseSelection(${exercise.id})">
+                            <input type="checkbox" class="exercise-checkbox" data-exercise-id="${exercise.id}" checked>
+                            <div class="exercise-select-info">
+                                <span class="exercise-select-name">${exercise.name}</span>
+                                <span class="exercise-select-details">${details}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            `;
+        } else if (source === 'history') {
+            const workouts = Storage.getAllWorkouts();
+
+            if (workouts.length === 0) {
+                container.innerHTML = '<p class="empty-state-small">No workout history yet.</p>';
+                return;
+            }
+
+            container.innerHTML = workouts.map(workout => {
+                const date = new Date(workout.date);
+                const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+                return `
+                    <div class="workout-group-header">
+                        <span>${formattedDate}</span>
+                        <button class="select-all-btn" onclick="app.toggleSelectAll('workout-${workout.id}')">Select All</button>
+                    </div>
+                    ${workout.exercises.map(exercise => {
+                        const type = exercise.type || 'strength';
+                        let details = '';
+                        if (type === 'strength') {
+                            details = `${exercise.sets.length} sets`;
+                        } else if (type === 'cardio') {
+                            details = `${exercise.duration} min cardio`;
+                        } else if (type === 'hiit') {
+                            details = `${exercise.duration} min HIIT`;
+                        }
+
+                        const uniqueId = `${workout.id}-${exercise.id}`;
+                        return `
+                            <div class="exercise-select-item" data-exercise-id="${uniqueId}" data-workout-id="${workout.id}" onclick="app.toggleExerciseSelection('${uniqueId}')">
+                                <input type="checkbox" class="exercise-checkbox" data-exercise-id="${uniqueId}">
+                                <div class="exercise-select-info">
+                                    <span class="exercise-select-name">${exercise.name}</span>
+                                    <span class="exercise-select-details">${details}</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                `;
+            }).join('');
+        }
+    }
+
+    toggleExerciseSelection(exerciseId) {
+        const item = document.querySelector(`.exercise-select-item[data-exercise-id="${exerciseId}"]`);
+        const checkbox = item.querySelector('.exercise-checkbox');
+
+        checkbox.checked = !checkbox.checked;
+
+        if (checkbox.checked) {
+            item.classList.add('selected');
+        } else {
+            item.classList.remove('selected');
+        }
+    }
+
+    toggleSelectAll(groupId) {
+        if (groupId === 'current') {
+            const checkboxes = document.querySelectorAll('#routineExerciseSelection .exercise-checkbox');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+            checkboxes.forEach(cb => {
+                cb.checked = !allChecked;
+                const item = cb.closest('.exercise-select-item');
+                if (cb.checked) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+        } else if (groupId.startsWith('workout-')) {
+            const workoutId = parseInt(groupId.split('-')[1]);
+            const checkboxes = document.querySelectorAll(`.exercise-select-item[data-workout-id="${workoutId}"] .exercise-checkbox`);
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+            checkboxes.forEach(cb => {
+                cb.checked = !allChecked;
+                const item = cb.closest('.exercise-select-item');
+                if (cb.checked) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+        }
     }
 
     saveRoutine() {
@@ -532,7 +844,41 @@ class GymTrackerApp {
             return;
         }
 
-        Storage.saveRoutine(name, this.currentWorkout.exercises);
+        // Collect selected exercises
+        const selectedCheckboxes = document.querySelectorAll('#routineExerciseSelection .exercise-checkbox:checked');
+
+        if (selectedCheckboxes.length === 0) {
+            alert('Please select at least one exercise');
+            return;
+        }
+
+        const selectedExercises = [];
+        const activeTab = document.querySelector('.routine-tab-btn.active').dataset.source;
+
+        selectedCheckboxes.forEach(checkbox => {
+            const exerciseId = checkbox.dataset.exerciseId;
+
+            if (activeTab === 'current') {
+                // Get from current workout
+                const exercise = this.currentWorkout.exercises.find(e => e.id == exerciseId);
+                if (exercise) {
+                    selectedExercises.push({ ...exercise });
+                }
+            } else {
+                // Get from history
+                const [workoutId, exId] = exerciseId.split('-');
+                const workouts = Storage.getAllWorkouts();
+                const workout = workouts.find(w => w.id == workoutId);
+                if (workout) {
+                    const exercise = workout.exercises.find(e => e.id == exId);
+                    if (exercise) {
+                        selectedExercises.push({ ...exercise });
+                    }
+                }
+            }
+        });
+
+        Storage.saveRoutine(name, selectedExercises);
         this.closeModal('createRoutineModal');
         this.renderRoutines();
         alert('Routine saved!');
@@ -554,12 +900,41 @@ class GymTrackerApp {
         }
 
         const container = document.getElementById('loadRoutineList');
-        container.innerHTML = routines.map(routine => `
-            <div class="load-routine-item" onclick="app.loadRoutineToWorkout(${routine.id})">
-                <h4>${routine.name}</h4>
-                <p>${routine.exercises.length} exercises</p>
-            </div>
-        `).join('');
+        container.innerHTML = routines.map(routine => {
+            const routineHistory = Storage.getRoutineHistory(routine.id);
+            const lastUsed = routineHistory.length > 0 ? routineHistory[0] : null;
+
+            let historyPreview = '';
+            if (lastUsed) {
+                const date = new Date(lastUsed.date);
+                const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+                historyPreview = `
+                    <div class="routine-history-preview">
+                        <strong>Last used: ${formattedDate}</strong>
+                        ${lastUsed.exercises.slice(0, 3).map(ex => {
+                            if (ex.type === 'strength' || !ex.type) {
+                                const maxWeight = Math.max(...ex.sets.map(s => parseFloat(s.weight) || 0));
+                                const unit = ex.sets[0]?.unit || 'kg';
+                                return `<div class="history-preview-item">${ex.name}: ${maxWeight}${unit} max</div>`;
+                            } else if (ex.type === 'cardio') {
+                                return `<div class="history-preview-item">${ex.name}: ${ex.duration} min</div>`;
+                            } else if (ex.type === 'hiit') {
+                                return `<div class="history-preview-item">${ex.name}: ${ex.duration} min HIIT</div>`;
+                            }
+                        }).join('')}
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="load-routine-item" onclick="app.loadRoutineToWorkout(${routine.id})">
+                    <h4>${routine.name}</h4>
+                    <p>${routine.exercises.length} exercises</p>
+                    ${historyPreview}
+                </div>
+            `;
+        }).join('');
 
         document.getElementById('loadRoutineModal').classList.add('active');
     }
@@ -647,8 +1022,9 @@ class GymTrackerApp {
     }
 
     // Food tracking methods
-    openAddFoodModal(mealType) {
-        this.currentMealType = mealType;
+    openAddFoodModal(mealType, foodId = null) {
+        this.editingFoodId = foodId;
+        const isEditing = foodId !== null;
 
         // Format meal type name for display
         const mealNames = {
@@ -660,12 +1036,60 @@ class GymTrackerApp {
             'dinner': 'Dinner'
         };
 
-        document.getElementById('foodModalTitle').textContent = `Add ${mealNames[mealType] || mealType}`;
-        document.getElementById('foodNameInput').value = '';
-        document.getElementById('caloriesInput').value = '';
-        document.getElementById('proteinInput').value = '';
-        document.getElementById('carbsInput').value = '';
-        document.getElementById('fatsInput').value = '';
+        if (isEditing) {
+            // Get the food item from storage
+            const todayFood = Storage.getTodayFood();
+            const foodItem = todayFood.meals.find(m => m.id === foodId);
+
+            if (!foodItem) return;
+
+            this.currentMealType = foodItem.mealType;
+            document.getElementById('foodModalTitle').textContent = `Edit ${mealNames[foodItem.mealType] || foodItem.mealType}`;
+
+            // Parse quantity from name if it exists (e.g., "2x Egg Whole")
+            let name = foodItem.name;
+            let quantity = 1;
+            const quantityMatch = name.match(/^(\d+(?:\.\d+)?)x\s+(.+)$/);
+            if (quantityMatch) {
+                quantity = parseFloat(quantityMatch[1]);
+                name = quantityMatch[2];
+            }
+
+            // Calculate per-serving values
+            const perServingCalories = Math.round(parseFloat(foodItem.calories) / quantity);
+            const perServingProtein = Math.round((parseFloat(foodItem.protein) / quantity) * 10) / 10;
+            const perServingCarbs = Math.round((parseFloat(foodItem.carbs) / quantity) * 10) / 10;
+            const perServingFats = Math.round((parseFloat(foodItem.fats) / quantity) * 10) / 10;
+
+            document.getElementById('foodNameInput').value = name;
+            document.getElementById('quantityInput').value = quantity.toString();
+            document.getElementById('caloriesInput').value = perServingCalories.toString();
+            document.getElementById('proteinInput').value = perServingProtein.toString();
+            document.getElementById('carbsInput').value = perServingCarbs.toString();
+            document.getElementById('fatsInput').value = perServingFats.toString();
+
+            // Update save button text
+            const saveBtn = document.getElementById('saveFoodBtn');
+            if (saveBtn) {
+                saveBtn.textContent = 'Update Food';
+            }
+        } else {
+            this.currentMealType = mealType;
+            document.getElementById('foodModalTitle').textContent = `Add ${mealNames[mealType] || mealType}`;
+            document.getElementById('foodNameInput').value = '';
+            document.getElementById('quantityInput').value = '1';
+            document.getElementById('caloriesInput').value = '';
+            document.getElementById('proteinInput').value = '';
+            document.getElementById('carbsInput').value = '';
+            document.getElementById('fatsInput').value = '';
+
+            // Update save button text
+            const saveBtn = document.getElementById('saveFoodBtn');
+            if (saveBtn) {
+                saveBtn.textContent = 'Save Food';
+            }
+        }
+
         document.getElementById('foodSuggestions').innerHTML = '';
         document.getElementById('foodSuggestions').classList.remove('active');
         document.getElementById('addFoodModal').classList.add('active');
@@ -741,10 +1165,11 @@ class GymTrackerApp {
 
     saveFood() {
         const name = document.getElementById('foodNameInput').value.trim();
-        const calories = document.getElementById('caloriesInput').value;
-        const protein = document.getElementById('proteinInput').value;
-        const carbs = document.getElementById('carbsInput').value;
-        const fats = document.getElementById('fatsInput').value;
+        const quantity = parseFloat(document.getElementById('quantityInput').value) || 1;
+        const calories = parseFloat(document.getElementById('caloriesInput').value) || 0;
+        const protein = parseFloat(document.getElementById('proteinInput').value) || 0;
+        const carbs = parseFloat(document.getElementById('carbsInput').value) || 0;
+        const fats = parseFloat(document.getElementById('fatsInput').value) || 0;
 
         if (!name) {
             alert('Please enter a food name');
@@ -756,17 +1181,42 @@ class GymTrackerApp {
             return;
         }
 
+        // Calculate total values based on quantity
+        const totalCalories = Math.round(calories * quantity);
+        const totalProtein = Math.round(protein * quantity * 10) / 10;
+        const totalCarbs = Math.round(carbs * quantity * 10) / 10;
+        const totalFats = Math.round(fats * quantity * 10) / 10;
+
+        // Add quantity indicator to name if quantity > 1
+        const displayName = quantity > 1 ? `${quantity}x ${name}` : name;
+
         const foodItem = {
-            name: name,
-            calories: calories || '0',
-            protein: protein || '0',
-            carbs: carbs || '0',
-            fats: fats || '0'
+            name: displayName,
+            calories: totalCalories.toString(),
+            protein: totalProtein.toString(),
+            carbs: totalCarbs.toString(),
+            fats: totalFats.toString()
         };
 
-        Storage.addFoodItem(this.currentMealType, foodItem);
+        const isEditing = this.editingFoodId !== null;
+
+        if (isEditing) {
+            // Update existing food item
+            foodItem.id = this.editingFoodId;
+            foodItem.mealType = this.currentMealType;
+            Storage.updateFoodItem(this.editingFoodId, foodItem);
+            this.editingFoodId = null;
+        } else {
+            // Add new food item
+            Storage.addFoodItem(this.currentMealType, foodItem);
+        }
+
         this.renderFood();
         this.closeModal('addFoodModal');
+    }
+
+    editFood(foodId) {
+        this.openAddFoodModal(null, foodId);
     }
 
     renderFood() {
@@ -795,7 +1245,10 @@ class GymTrackerApp {
                         <strong>${meal.name}</strong>
                         <span class="food-macros">${meal.calories} cal • P: ${meal.protein}g • C: ${meal.carbs}g • F: ${meal.fats}g</span>
                     </div>
-                    <button class="btn-icon" onclick="app.deleteFood(${meal.id})">🗑️</button>
+                    <div class="food-item-actions">
+                        <button class="btn-icon-small" onclick="app.editFood(${meal.id})" title="Edit">✏️</button>
+                        <button class="btn-icon" onclick="app.deleteFood(${meal.id})">🗑️</button>
+                    </div>
                 </div>
             `).join('');
         });
@@ -842,6 +1295,329 @@ class GymTrackerApp {
         }
 
         document.getElementById('foodHistoryModal').classList.add('active');
+    }
+
+    openCreateFoodRoutineModal() {
+        const todayFood = Storage.getTodayFood();
+
+        if (todayFood.meals.length === 0) {
+            alert('Add some food items to your diary before creating a routine');
+            return;
+        }
+
+        document.getElementById('foodRoutineNameInput').value = '';
+        document.getElementById('createFoodRoutineModal').classList.add('active');
+        document.getElementById('foodRoutineNameInput').focus();
+    }
+
+    saveFoodRoutine() {
+        const name = document.getElementById('foodRoutineNameInput').value.trim();
+
+        if (!name) {
+            alert('Please enter a routine name');
+            return;
+        }
+
+        const todayFood = Storage.getTodayFood();
+
+        if (todayFood.meals.length === 0) {
+            alert('No food items to save');
+            return;
+        }
+
+        Storage.saveFoodRoutine(name, todayFood.meals);
+        this.closeModal('createFoodRoutineModal');
+        alert('Food routine saved!');
+    }
+
+    openLoadFoodRoutineModal() {
+        const routines = Storage.getAllFoodRoutines();
+
+        if (routines.length === 0) {
+            alert('No food routines available. Create a routine first!');
+            return;
+        }
+
+        const container = document.getElementById('loadFoodRoutineList');
+        container.innerHTML = routines.map(routine => {
+            const totalCalories = routine.meals.reduce((sum, m) => sum + (parseInt(m.calories) || 0), 0);
+            const totalProtein = routine.meals.reduce((sum, m) => sum + (parseInt(m.protein) || 0), 0);
+            const mealTypesCount = [...new Set(routine.meals.map(m => m.mealType))].length;
+
+            return `
+                <div class="load-routine-item" onclick="app.loadFoodRoutineToToday(${routine.id})">
+                    <h4>${routine.name}</h4>
+                    <p>${routine.meals.length} items • ${mealTypesCount} meals</p>
+                    <div class="routine-history-preview">
+                        <strong>${totalCalories} cal • P: ${totalProtein}g</strong>
+                    </div>
+                    <button class="btn-icon" onclick="event.stopPropagation(); app.deleteFoodRoutine(${routine.id})" style="position: absolute; top: 0.75rem; right: 0.75rem;">🗑️</button>
+                </div>
+            `;
+        }).join('');
+
+        document.getElementById('loadFoodRoutineModal').classList.add('active');
+    }
+
+    loadFoodRoutineToToday(routineId) {
+        const todayFood = Storage.getTodayFood();
+
+        if (todayFood.meals.length > 0) {
+            if (!confirm('This will replace all food items for today. Continue?')) {
+                return;
+            }
+        }
+
+        Storage.loadFoodRoutine(routineId);
+        this.renderFood();
+        this.closeModal('loadFoodRoutineModal');
+    }
+
+    deleteFoodRoutine(routineId) {
+        if (confirm('Delete this food routine?')) {
+            Storage.deleteFoodRoutine(routineId);
+            this.openLoadFoodRoutineModal(); // Refresh the list
+        }
+    }
+
+    // Settings and Date Banner
+    updateDateBanner() {
+        // Update current date
+        const today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = today.toLocaleDateString('en-US', options);
+        document.getElementById('currentDateDisplay').textContent = formattedDate;
+
+        // Update journey day
+        const daysSinceStart = Storage.getDaysSinceStart();
+        const journeyDisplay = document.getElementById('journeyDayDisplay');
+
+        if (daysSinceStart !== null) {
+            journeyDisplay.textContent = `Day ${daysSinceStart}`;
+        } else {
+            journeyDisplay.textContent = 'Set your start date';
+        }
+    }
+
+    openSettingsModal() {
+        // Load current start date if exists
+        const startDate = Storage.getStartDate();
+        const startDateInput = document.getElementById('startDateInput');
+
+        if (startDate) {
+            startDateInput.value = startDate;
+        }
+
+        // Update journey info
+        this.updateJourneyInfo();
+
+        // Render auto-backups list
+        this.renderAutoBackups();
+
+        document.getElementById('settingsModal').classList.add('active');
+        startDateInput.focus();
+    }
+
+    updateJourneyInfo() {
+        const startDate = Storage.getStartDate();
+        const journeyInfo = document.getElementById('journeyInfo');
+
+        if (startDate) {
+            const daysSinceStart = Storage.getDaysSinceStart();
+            const start = new Date(startDate);
+            const formattedStart = start.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            journeyInfo.innerHTML = `
+                <p><strong>Journey Started:</strong> ${formattedStart}</p>
+                <p><strong>Days Completed:</strong> ${daysSinceStart} days</p>
+                <p>Keep going! You're making progress every day! 💪</p>
+            `;
+        } else {
+            journeyInfo.innerHTML = '<p>Journey not started yet. Set your start date above.</p>';
+        }
+    }
+
+    saveSettings() {
+        const startDate = document.getElementById('startDateInput').value;
+
+        if (!startDate) {
+            alert('Please select a start date');
+            return;
+        }
+
+        Storage.setStartDate(startDate);
+        this.updateDateBanner();
+        this.closeModal('settingsModal');
+        alert('Settings saved!');
+    }
+
+    // Auto-Backup
+    checkAutoBackup() {
+        if (Storage.shouldCreateBackup()) {
+            Storage.createAutoBackup();
+
+            // Show notification
+            setTimeout(() => {
+                alert('📦 Weekly backup created!\n\nYour data has been automatically backed up. You can view and download backups in Settings.');
+            }, 1000);
+        }
+    }
+
+    renderAutoBackups() {
+        const backups = Storage.getAutoBackups();
+        const container = document.getElementById('autoBackupsList');
+
+        if (backups.length === 0) {
+            container.innerHTML = '<div class="auto-backups-empty">No automatic backups yet. First backup will be created on Sunday.</div>';
+            return;
+        }
+
+        container.innerHTML = backups.map((backup, index) => {
+            const backupDate = new Date(backup.date);
+            const formattedDate = backupDate.toLocaleDateString('en-US', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+
+            // Calculate age
+            const now = new Date();
+            const diffDays = Math.floor((now - backupDate) / (1000 * 60 * 60 * 24));
+            let ageText = '';
+            if (diffDays === 0) {
+                ageText = 'Today';
+            } else if (diffDays === 1) {
+                ageText = 'Yesterday';
+            } else if (diffDays < 7) {
+                ageText = `${diffDays} days ago`;
+            } else {
+                const weeks = Math.floor(diffDays / 7);
+                ageText = `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+            }
+
+            return `
+                <div class="auto-backup-item">
+                    <div class="auto-backup-info">
+                        <div class="auto-backup-date">${formattedDate}</div>
+                        <div class="auto-backup-age">${ageText}</div>
+                    </div>
+                    <button class="auto-backup-download" onclick="app.downloadAutoBackup(${index})">
+                        Download
+                    </button>
+                </div>
+            `;
+        }).join('');
+    }
+
+    downloadAutoBackup(index) {
+        const backups = Storage.getAutoBackups();
+        const backup = backups[index];
+
+        if (!backup) {
+            alert('Backup not found');
+            return;
+        }
+
+        const data = {
+            version: '1.0',
+            exportDate: backup.date,
+            workouts: backup.workouts,
+            routines: backup.routines,
+            currentWorkout: backup.currentWorkout,
+            foodDiary: backup.foodDiary,
+            foodRoutines: backup.foodRoutines,
+            startDate: backup.startDate
+        };
+
+        const jsonString = JSON.stringify(data, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const backupDate = new Date(backup.date);
+        const fileName = `gym-tracker-auto-backup-${backupDate.toISOString().split('T')[0]}.json`;
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    // Data Export/Import
+    exportData() {
+        const data = {
+            version: '1.0',
+            exportDate: new Date().toISOString(),
+            workouts: Storage.getAllWorkouts(),
+            routines: Storage.getAllRoutines(),
+            currentWorkout: Storage.getCurrentWorkout(),
+            foodDiary: Storage.getAllFoodDays(),
+            foodRoutines: Storage.getAllFoodRoutines(),
+            startDate: Storage.getStartDate()
+        };
+
+        const jsonString = JSON.stringify(data, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `gym-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        alert('Data exported successfully! Save this file in a safe place.');
+    }
+
+    importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+
+                // Validate data structure
+                if (!data.version || !data.exportDate) {
+                    alert('Invalid backup file format');
+                    return;
+                }
+
+                // Confirm before importing
+                if (!confirm('This will replace ALL your current data with the imported data. Are you sure?\n\n⚠️ Make sure you have exported your current data first!')) {
+                    return;
+                }
+
+                // Import all data
+                if (data.workouts) localStorage.setItem(Storage.KEYS.WORKOUTS, JSON.stringify(data.workouts));
+                if (data.routines) localStorage.setItem(Storage.KEYS.ROUTINES, JSON.stringify(data.routines));
+                if (data.currentWorkout) localStorage.setItem(Storage.KEYS.CURRENT_WORKOUT, JSON.stringify(data.currentWorkout));
+                if (data.foodDiary) localStorage.setItem(Storage.KEYS.FOOD_DIARY, JSON.stringify(data.foodDiary));
+                if (data.foodRoutines) localStorage.setItem(Storage.KEYS.FOOD_ROUTINES, JSON.stringify(data.foodRoutines));
+                if (data.startDate) localStorage.setItem(Storage.KEYS.START_DATE, JSON.stringify(data.startDate));
+
+                alert('Data imported successfully! Refreshing the app...');
+                window.location.reload();
+            } catch (error) {
+                console.error('Import error:', error);
+                alert('Error importing data. Please check the file and try again.');
+            }
+        };
+
+        reader.readAsText(file);
+
+        // Reset file input
+        event.target.value = '';
     }
 }
 

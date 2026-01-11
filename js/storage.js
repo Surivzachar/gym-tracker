@@ -6,7 +6,12 @@ const Storage = {
         WORKOUTS: 'gym_tracker_workouts',
         ROUTINES: 'gym_tracker_routines',
         CURRENT_WORKOUT: 'gym_tracker_current_workout',
-        FOOD_DIARY: 'gym_tracker_food_diary'
+        CURRENT_ROUTINE_ID: 'gym_tracker_current_routine_id',
+        FOOD_DIARY: 'gym_tracker_food_diary',
+        FOOD_ROUTINES: 'gym_tracker_food_routines',
+        START_DATE: 'gym_tracker_start_date',
+        AUTO_BACKUPS: 'gym_tracker_auto_backups',
+        LAST_BACKUP_DATE: 'gym_tracker_last_backup_date'
     },
 
     // Get data from localStorage
@@ -66,13 +71,15 @@ const Storage = {
             id: Date.now(),
             date: new Date().toISOString(),
             exercises: currentWorkout.exercises,
-            duration: null // Could be calculated if we track start time
+            duration: null, // Could be calculated if we track start time
+            routineId: this.getCurrentRoutineId() || null // Track which routine was used
         };
 
         const workouts = this.getAllWorkouts();
         workouts.unshift(workout);
         this.set(this.KEYS.WORKOUTS, workouts);
         this.clearCurrentWorkout();
+        this.clearCurrentRoutineId(); // Clear routine tracking after workout is saved
 
         return true;
     },
@@ -130,10 +137,29 @@ const Storage = {
 
             const workout = { exercises };
             this.saveCurrentWorkout(workout);
+            // Track which routine is being used
+            this.setCurrentRoutineId(id);
             return workout;
         }
 
         return null;
+    },
+
+    setCurrentRoutineId(routineId) {
+        return this.set(this.KEYS.CURRENT_ROUTINE_ID, routineId);
+    },
+
+    getCurrentRoutineId() {
+        return this.get(this.KEYS.CURRENT_ROUTINE_ID);
+    },
+
+    clearCurrentRoutineId() {
+        return this.remove(this.KEYS.CURRENT_ROUTINE_ID);
+    },
+
+    getRoutineHistory(routineId) {
+        const workouts = this.getAllWorkouts();
+        return workouts.filter(w => w.routineId === routineId).reverse(); // Most recent first
     },
 
     // Statistics methods
@@ -256,6 +282,29 @@ const Storage = {
         return this.set(this.KEYS.FOOD_DIARY, filtered);
     },
 
+    updateFoodItem(foodId, updatedFoodItem) {
+        const allDays = this.getAllFoodDays();
+
+        allDays.forEach(day => {
+            const mealIndex = day.meals.findIndex(meal => meal.id === foodId);
+            if (mealIndex !== -1) {
+                // Update the meal while preserving the original ID and time
+                day.meals[mealIndex] = {
+                    id: foodId,
+                    mealType: updatedFoodItem.mealType,
+                    name: updatedFoodItem.name,
+                    calories: parseInt(updatedFoodItem.calories) || 0,
+                    protein: parseFloat(updatedFoodItem.protein) || 0,
+                    carbs: parseFloat(updatedFoodItem.carbs) || 0,
+                    fats: parseFloat(updatedFoodItem.fats) || 0,
+                    time: day.meals[mealIndex].time // Preserve original time
+                };
+            }
+        });
+
+        return this.set(this.KEYS.FOOD_DIARY, allDays);
+    },
+
     getFoodStats(date = null) {
         let foodDay;
 
@@ -296,5 +345,139 @@ const Storage = {
             totalFats,
             mealCount: foodDay.meals.length
         };
+    },
+
+    // Food Routine methods
+    getAllFoodRoutines() {
+        return this.get(this.KEYS.FOOD_ROUTINES) || [];
+    },
+
+    saveFoodRoutine(name, meals) {
+        const routine = {
+            id: Date.now(),
+            name: name,
+            meals: meals.map(meal => ({
+                mealType: meal.mealType,
+                name: meal.name,
+                calories: meal.calories,
+                protein: meal.protein,
+                carbs: meal.carbs,
+                fats: meal.fats
+            })),
+            createdAt: new Date().toISOString()
+        };
+
+        const routines = this.getAllFoodRoutines();
+        routines.push(routine);
+        return this.set(this.KEYS.FOOD_ROUTINES, routines);
+    },
+
+    deleteFoodRoutine(id) {
+        const routines = this.getAllFoodRoutines();
+        const filtered = routines.filter(r => r.id !== id);
+        return this.set(this.KEYS.FOOD_ROUTINES, filtered);
+    },
+
+    loadFoodRoutine(id) {
+        const routines = this.getAllFoodRoutines();
+        const routine = routines.find(r => r.id === id);
+
+        if (routine) {
+            // Clear today's food first
+            const allDays = this.getAllFoodDays();
+            const today = new Date().toDateString();
+            const todayIndex = allDays.findIndex(day => new Date(day.date).toDateString() === today);
+
+            if (todayIndex !== -1) {
+                allDays.splice(todayIndex, 1);
+                // Save the cleared data before adding new items
+                this.set(this.KEYS.FOOD_DIARY, allDays);
+            }
+
+            // Add routine meals to today
+            routine.meals.forEach(meal => {
+                this.addFoodItem(meal.mealType, meal);
+            });
+
+            return true;
+        }
+
+        return false;
+    },
+
+    // Settings methods
+    getStartDate() {
+        return this.get(this.KEYS.START_DATE);
+    },
+
+    setStartDate(date) {
+        return this.set(this.KEYS.START_DATE, date);
+    },
+
+    getDaysSinceStart() {
+        const startDate = this.getStartDate();
+        if (!startDate) return null;
+
+        const start = new Date(startDate);
+        const today = new Date();
+        const diffTime = Math.abs(today - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+    },
+
+    // Auto-backup methods
+    createAutoBackup() {
+        const backupData = {
+            date: new Date().toISOString(),
+            workouts: this.getAllWorkouts(),
+            routines: this.getAllRoutines(),
+            currentWorkout: this.getCurrentWorkout(),
+            foodDiary: this.getAllFoodDays(),
+            foodRoutines: this.getAllFoodRoutines(),
+            startDate: this.getStartDate()
+        };
+
+        // Get existing backups
+        let backups = this.get(this.KEYS.AUTO_BACKUPS) || [];
+
+        // Add new backup
+        backups.unshift(backupData);
+
+        // Keep only last 4 backups (4 weeks)
+        if (backups.length > 4) {
+            backups = backups.slice(0, 4);
+        }
+
+        // Save backups
+        this.set(this.KEYS.AUTO_BACKUPS, backups);
+        this.set(this.KEYS.LAST_BACKUP_DATE, new Date().toDateString());
+
+        return true;
+    },
+
+    getAutoBackups() {
+        return this.get(this.KEYS.AUTO_BACKUPS) || [];
+    },
+
+    shouldCreateBackup() {
+        const today = new Date();
+        const dayOfWeek = today.getDay(); // 0 = Sunday
+
+        // Check if it's Sunday
+        if (dayOfWeek !== 0) {
+            return false;
+        }
+
+        // Check if already backed up today
+        const lastBackupDate = this.get(this.KEYS.LAST_BACKUP_DATE);
+        if (lastBackupDate === today.toDateString()) {
+            return false;
+        }
+
+        return true;
+    },
+
+    getLastBackupDate() {
+        return this.get(this.KEYS.LAST_BACKUP_DATE);
     }
 };

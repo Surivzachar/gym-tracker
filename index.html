@@ -25,8 +25,19 @@
                 <button id="timerBtn" class="icon-btn" title="Rest Timer">
                     <span>⏱️</span>
                 </button>
+                <button id="settingsBtn" class="icon-btn" title="Settings">
+                    <span>⚙️</span>
+                </button>
             </div>
         </header>
+
+        <!-- Date Banner -->
+        <div class="date-banner">
+            <div class="date-info">
+                <div class="current-date" id="currentDateDisplay">Loading...</div>
+                <div class="journey-day" id="journeyDayDisplay">Set your start date</div>
+            </div>
+        </div>
 
         <!-- Navigation -->
         <nav class="nav">
@@ -68,7 +79,13 @@
         <div id="foodView" class="view">
             <div class="container">
                 <div class="section">
-                    <h2>Today's Food</h2>
+                    <div class="section-header">
+                        <h2>Today's Food</h2>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button id="loadFoodRoutineBtn" class="btn-secondary">Load Routine</button>
+                            <button id="createFoodRoutineBtn" class="btn-primary">Create Routine</button>
+                        </div>
+                    </div>
 
                     <!-- Daily Stats -->
                     <div id="foodStats" class="food-stats">
@@ -267,14 +284,23 @@
 
         <!-- Create Routine Modal -->
         <div id="createRoutineModal" class="modal">
-            <div class="modal-content">
+            <div class="modal-content large">
                 <div class="modal-header">
                     <h3>Create Routine</h3>
                     <button class="close-btn">&times;</button>
                 </div>
                 <div class="modal-body">
                     <input type="text" id="routineNameInput" placeholder="Routine name (e.g., Push Day)" class="input">
-                    <p class="helper-text">Save your current workout as a routine to reuse later</p>
+                    <p class="helper-text">Select exercises to include in this routine</p>
+
+                    <div class="routine-source-tabs">
+                        <button class="routine-tab-btn active" data-source="current">Current Workout</button>
+                        <button class="routine-tab-btn" data-source="history">From History</button>
+                    </div>
+
+                    <div id="routineExerciseSelection" class="routine-exercise-selection">
+                        <!-- Exercise selection will be populated here -->
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button id="cancelRoutineBtn" class="btn-secondary">Cancel</button>
@@ -310,7 +336,12 @@
                         <div id="foodSuggestions" class="food-suggestions"></div>
                     </div>
                     <div class="input-group">
-                        <label class="input-label">Calories</label>
+                        <label class="input-label">Quantity / Servings</label>
+                        <input type="number" id="quantityInput" placeholder="1" value="1" min="0.5" step="0.5" class="input">
+                        <p class="helper-text">Enter quantity (e.g., 2 for 2 eggs, 1.5 for 1.5 cups)</p>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Calories (per serving)</label>
                         <input type="number" id="caloriesInput" placeholder="0" class="input">
                     </div>
                     <div class="macros-inputs">
@@ -345,6 +376,85 @@
                 </div>
                 <div class="modal-body">
                     <div id="foodHistoryList" class="food-history-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Food Routine Modal -->
+        <div id="createFoodRoutineModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Create Food Routine</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="foodRoutineNameInput" placeholder="Routine name (e.g., Bulking Diet)" class="input">
+                    <p class="helper-text">Save today's meal plan as a routine to reuse later</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelFoodRoutineBtn" class="btn-secondary">Cancel</button>
+                    <button id="saveFoodRoutineBtn" class="btn-primary">Save Routine</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Load Food Routine Modal -->
+        <div id="loadFoodRoutineModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Load Food Routine</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="loadFoodRoutineList" class="load-routine-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Settings</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-label">Journey Start Date</label>
+                        <input type="date" id="startDateInput" class="input">
+                        <p class="helper-text">Set the date when you started your fitness journey. This will show "Day X" progress.</p>
+                    </div>
+                    <div class="settings-info" id="journeyInfo">
+                        <p>Journey not started yet. Set your start date above.</p>
+                    </div>
+
+                    <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #e5e7eb;">
+
+                    <div class="input-group">
+                        <label class="input-label">Manual Backup & Transfer</label>
+                        <p class="helper-text">Export your data to backup or transfer between devices. Import to restore.</p>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+                            <button id="exportDataBtn" class="btn-secondary" style="flex: 1;">📥 Export Data</button>
+                            <button id="importDataBtn" class="btn-secondary" style="flex: 1;">📤 Import Data</button>
+                        </div>
+                        <input type="file" id="importFileInput" accept=".json" style="display: none;">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">🔄 Automatic Backups</label>
+                        <p class="helper-text">App creates automatic backups every Sunday. Last 4 backups are kept (1 month).</p>
+                        <div id="autoBackupsList" class="auto-backups-list">
+                            <!-- Auto backups will be listed here -->
+                        </div>
+                    </div>
+
+                    <div class="settings-info" style="background: #fef3c7; border-left-color: #f59e0b;">
+                        <p style="color: #92400e;"><strong>💡 Tip:</strong> Auto-backups are stored in browser. Download important backups manually and save them externally!</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelSettingsBtn" class="btn-secondary">Cancel</button>
+                    <button id="saveSettingsBtn" class="btn-primary">Save Settings</button>
                 </div>
             </div>
         </div>
