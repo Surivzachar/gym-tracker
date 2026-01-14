@@ -361,6 +361,7 @@ const GoogleDriveSync = {
                 currentWorkout: Storage.getCurrentWorkout(),
                 foodDiary: Storage.getAllFoodDays(),
                 foodRoutines: Storage.getAllFoodRoutines(),
+                progressPhotos: Storage.getAllProgressPhotos(),
                 startDate: Storage.getStartDate()
             };
 

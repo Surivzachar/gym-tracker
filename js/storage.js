@@ -11,7 +11,8 @@ const Storage = {
         FOOD_ROUTINES: 'gym_tracker_food_routines',
         START_DATE: 'gym_tracker_start_date',
         AUTO_BACKUPS: 'gym_tracker_auto_backups',
-        LAST_BACKUP_DATE: 'gym_tracker_last_backup_date'
+        LAST_BACKUP_DATE: 'gym_tracker_last_backup_date',
+        PROGRESS_PHOTOS: 'gym_tracker_progress_photos'
     },
 
     // Get data from localStorage
@@ -479,5 +480,45 @@ const Storage = {
 
     getLastBackupDate() {
         return this.get(this.KEYS.LAST_BACKUP_DATE);
+    },
+
+    // Progress Photos Methods
+    getAllProgressPhotos() {
+        return this.get(this.KEYS.PROGRESS_PHOTOS) || [];
+    },
+
+    addProgressPhoto(photoData) {
+        const photos = this.getAllProgressPhotos();
+        const newPhoto = {
+            id: Date.now() + Math.random(),
+            date: new Date().toISOString(),
+            image: photoData.image, // base64 encoded image
+            weight: photoData.weight || null,
+            notes: photoData.notes || '',
+            measurements: photoData.measurements || {} // chest, waist, arms, etc.
+        };
+        photos.push(newPhoto);
+        return this.set(this.KEYS.PROGRESS_PHOTOS, photos);
+    },
+
+    deleteProgressPhoto(photoId) {
+        const photos = this.getAllProgressPhotos();
+        const filtered = photos.filter(photo => photo.id !== photoId);
+        return this.set(this.KEYS.PROGRESS_PHOTOS, filtered);
+    },
+
+    getProgressPhoto(photoId) {
+        const photos = this.getAllProgressPhotos();
+        return photos.find(photo => photo.id === photoId);
+    },
+
+    updateProgressPhoto(photoId, updates) {
+        const photos = this.getAllProgressPhotos();
+        const index = photos.findIndex(photo => photo.id === photoId);
+        if (index !== -1) {
+            photos[index] = { ...photos[index], ...updates };
+            return this.set(this.KEYS.PROGRESS_PHOTOS, photos);
+        }
+        return false;
     }
 };

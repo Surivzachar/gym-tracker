@@ -156,6 +156,23 @@ class GymTrackerApp {
             this.loadDateHistory(e.target.value);
         });
 
+        // Progress Photos
+        document.getElementById('takePhotoBtn').addEventListener('click', () => {
+            document.getElementById('photoInput').click();
+        });
+
+        document.getElementById('photoInput').addEventListener('change', (e) => {
+            this.handlePhotoSelection(e);
+        });
+
+        document.getElementById('savePhotoBtn').addEventListener('click', () => {
+            this.savePhoto();
+        });
+
+        document.getElementById('deletePhotoBtn').addEventListener('click', () => {
+            this.deleteCurrentPhoto();
+        });
+
         // Google Drive Sync
         this.renderGoogleDriveStatus();
 
@@ -208,6 +225,8 @@ class GymTrackerApp {
             this.renderRoutines();
         } else if (viewName === 'food') {
             this.renderFood();
+        } else if (viewName === 'photos') {
+            this.renderProgressPhotos();
         }
     }
 
@@ -1619,6 +1638,7 @@ class GymTrackerApp {
             currentWorkout: Storage.getCurrentWorkout(),
             foodDiary: Storage.getAllFoodDays(),
             foodRoutines: Storage.getAllFoodRoutines(),
+            progressPhotos: Storage.getAllProgressPhotos(),
             startDate: Storage.getStartDate()
         };
 
@@ -1663,6 +1683,7 @@ class GymTrackerApp {
                 if (data.currentWorkout) localStorage.setItem(Storage.KEYS.CURRENT_WORKOUT, JSON.stringify(data.currentWorkout));
                 if (data.foodDiary) localStorage.setItem(Storage.KEYS.FOOD_DIARY, JSON.stringify(data.foodDiary));
                 if (data.foodRoutines) localStorage.setItem(Storage.KEYS.FOOD_ROUTINES, JSON.stringify(data.foodRoutines));
+                if (data.progressPhotos) localStorage.setItem(Storage.KEYS.PROGRESS_PHOTOS, JSON.stringify(data.progressPhotos));
                 if (data.startDate) localStorage.setItem(Storage.KEYS.START_DATE, JSON.stringify(data.startDate));
 
                 alert('Data imported successfully! Refreshing the app...');
@@ -2002,6 +2023,7 @@ class GymTrackerApp {
                 Storage.set(Storage.KEYS.CURRENT_WORKOUT, data.currentWorkout || { exercises: [] });
                 Storage.set(Storage.KEYS.FOOD_DIARY, data.foodDiary || []);
                 Storage.set(Storage.KEYS.FOOD_ROUTINES, data.foodRoutines || []);
+                Storage.set(Storage.KEYS.PROGRESS_PHOTOS, data.progressPhotos || []);
 
                 if (data.startDate) {
                     Storage.setStartDate(data.startDate);
@@ -2088,6 +2110,183 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
                 GoogleDriveSync.autoSync();
             }, 30000);
         }
+    }
+
+    // Progress Photos Methods
+    handlePhotoSelection(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            alert('Please select a valid image file');
+            return;
+        }
+
+        // Validate file size (max 5MB to avoid localStorage limits)
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            alert('Image is too large. Please select an image smaller than 5MB');
+            return;
+        }
+
+        // Read file and convert to base64
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.currentPhotoData = e.target.result;
+            this.openPhotoDetailsModal();
+        };
+        reader.readAsDataURL(file);
+
+        // Reset file input
+        event.target.value = '';
+    }
+
+    openPhotoDetailsModal() {
+        // Show preview
+        document.getElementById('photoPreview').src = this.currentPhotoData;
+
+        // Clear form
+        document.getElementById('photoWeight').value = '';
+        document.getElementById('photoNotes').value = '';
+        document.getElementById('photoChest').value = '';
+        document.getElementById('photoWaist').value = '';
+        document.getElementById('photoArms').value = '';
+        document.getElementById('photoThighs').value = '';
+
+        this.openModal('photoDetailsModal');
+    }
+
+    savePhoto() {
+        const weight = document.getElementById('photoWeight').value;
+        const notes = document.getElementById('photoNotes').value;
+        const chest = document.getElementById('photoChest').value;
+        const waist = document.getElementById('photoWaist').value;
+        const arms = document.getElementById('photoArms').value;
+        const thighs = document.getElementById('photoThighs').value;
+
+        const measurements = {};
+        if (chest) measurements.chest = parseFloat(chest);
+        if (waist) measurements.waist = parseFloat(waist);
+        if (arms) measurements.arms = parseFloat(arms);
+        if (thighs) measurements.thighs = parseFloat(thighs);
+
+        const photoData = {
+            image: this.currentPhotoData,
+            weight: weight ? parseFloat(weight) : null,
+            notes: notes,
+            measurements: measurements
+        };
+
+        Storage.addProgressPhoto(photoData);
+        this.closeModal('photoDetailsModal');
+        this.renderProgressPhotos();
+        this.syncAfterChange();
+
+        alert('Progress photo saved successfully!');
+    }
+
+    renderProgressPhotos() {
+        const photos = Storage.getAllProgressPhotos();
+        const gallery = document.getElementById('photosGallery');
+
+        if (photos.length === 0) {
+            gallery.innerHTML = '<p class="empty-state">No progress photos yet. Take your first photo to start tracking your transformation!</p>';
+            return;
+        }
+
+        // Sort by date (newest first)
+        photos.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        let html = '<div class="photos-grid">';
+        photos.forEach(photo => {
+            const date = new Date(photo.date);
+            const formattedDate = date.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
+
+            html += `
+                <div class="photo-card" onclick="app.viewPhoto(${photo.id})">
+                    <img src="${photo.image}" alt="Progress photo">
+                    <div class="photo-card-info">
+                        <div class="photo-date">${formattedDate}</div>
+                        ${photo.weight ? `<div class="photo-weight">${photo.weight} kg</div>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+        html += '</div>';
+
+        gallery.innerHTML = html;
+    }
+
+    viewPhoto(photoId) {
+        const photo = Storage.getProgressPhoto(photoId);
+        if (!photo) return;
+
+        this.currentViewPhotoId = photoId;
+
+        // Set image
+        document.getElementById('viewPhotoImage').src = photo.image;
+
+        // Set date
+        const date = new Date(photo.date);
+        const formattedDate = date.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        document.getElementById('viewPhotoDate').textContent = formattedDate;
+
+        // Set weight
+        const weightContainer = document.getElementById('viewPhotoWeightContainer');
+        if (photo.weight) {
+            document.getElementById('viewPhotoWeight').textContent = photo.weight;
+            weightContainer.style.display = 'block';
+        } else {
+            weightContainer.style.display = 'none';
+        }
+
+        // Set notes
+        const notesContainer = document.getElementById('viewPhotoNotesContainer');
+        if (photo.notes) {
+            document.getElementById('viewPhotoNotes').textContent = photo.notes;
+            notesContainer.style.display = 'block';
+        } else {
+            notesContainer.style.display = 'none';
+        }
+
+        // Set measurements
+        const measurementsContainer = document.getElementById('viewPhotoMeasurementsContainer');
+        if (photo.measurements && Object.keys(photo.measurements).length > 0) {
+            let measurementsHTML = '';
+            if (photo.measurements.chest) measurementsHTML += `<div>Chest: ${photo.measurements.chest} cm</div>`;
+            if (photo.measurements.waist) measurementsHTML += `<div>Waist: ${photo.measurements.waist} cm</div>`;
+            if (photo.measurements.arms) measurementsHTML += `<div>Arms: ${photo.measurements.arms} cm</div>`;
+            if (photo.measurements.thighs) measurementsHTML += `<div>Thighs: ${photo.measurements.thighs} cm</div>`;
+            document.getElementById('viewPhotoMeasurements').innerHTML = measurementsHTML;
+            measurementsContainer.style.display = 'block';
+        } else {
+            measurementsContainer.style.display = 'none';
+        }
+
+        this.openModal('viewPhotoModal');
+    }
+
+    deleteCurrentPhoto() {
+        if (!confirm('Are you sure you want to delete this progress photo? This cannot be undone.')) {
+            return;
+        }
+
+        Storage.deleteProgressPhoto(this.currentViewPhotoId);
+        this.closeModal('viewPhotoModal');
+        this.renderProgressPhotos();
+        this.syncAfterChange();
+
+        alert('Photo deleted successfully');
     }
 }
 
