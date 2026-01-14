@@ -12,7 +12,8 @@ const Storage = {
         START_DATE: 'gym_tracker_start_date',
         AUTO_BACKUPS: 'gym_tracker_auto_backups',
         LAST_BACKUP_DATE: 'gym_tracker_last_backup_date',
-        PROGRESS_PHOTOS: 'gym_tracker_progress_photos'
+        PROGRESS_PHOTOS: 'gym_tracker_progress_photos',
+        DAILY_METRICS: 'gym_tracker_daily_metrics'
     },
 
     // Get data from localStorage
@@ -520,5 +521,57 @@ const Storage = {
             return this.set(this.KEYS.PROGRESS_PHOTOS, photos);
         }
         return false;
+    },
+
+    // Daily Metrics Methods
+    getAllDailyMetrics() {
+        return this.get(this.KEYS.DAILY_METRICS) || [];
+    },
+
+    getTodayMetrics() {
+        const allMetrics = this.getAllDailyMetrics();
+        const today = new Date().toDateString();
+        let todayMetrics = allMetrics.find(m => new Date(m.date).toDateString() === today);
+
+        if (!todayMetrics) {
+            todayMetrics = {
+                date: new Date().toISOString(),
+                steps: 0,
+                waterGlasses: 0, // 1 glass = 250ml
+                sleepHours: 0,
+                workoutCalories: 0
+            };
+            allMetrics.push(todayMetrics);
+            this.set(this.KEYS.DAILY_METRICS, allMetrics);
+        }
+
+        return todayMetrics;
+    },
+
+    updateTodayMetrics(updates) {
+        const allMetrics = this.getAllDailyMetrics();
+        const today = new Date().toDateString();
+        const index = allMetrics.findIndex(m => new Date(m.date).toDateString() === today);
+
+        if (index !== -1) {
+            allMetrics[index] = { ...allMetrics[index], ...updates };
+        } else {
+            allMetrics.push({
+                date: new Date().toISOString(),
+                steps: 0,
+                waterGlasses: 0,
+                sleepHours: 0,
+                workoutCalories: 0,
+                ...updates
+            });
+        }
+
+        return this.set(this.KEYS.DAILY_METRICS, allMetrics);
+    },
+
+    getMetricsByDate(date) {
+        const allMetrics = this.getAllDailyMetrics();
+        const dateStr = new Date(date).toDateString();
+        return allMetrics.find(m => new Date(m.date).toDateString() === dateStr);
     }
 };

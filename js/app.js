@@ -173,6 +173,19 @@ class GymTrackerApp {
             this.deleteCurrentPhoto();
         });
 
+        // Dashboard Metrics
+        document.getElementById('saveStepsBtn').addEventListener('click', () => {
+            this.saveSteps();
+        });
+
+        document.getElementById('saveWaterBtn').addEventListener('click', () => {
+            this.saveWater();
+        });
+
+        document.getElementById('saveSleepBtn').addEventListener('click', () => {
+            this.saveSleep();
+        });
+
         // Google Drive Sync
         this.renderGoogleDriveStatus();
 
@@ -219,7 +232,9 @@ class GymTrackerApp {
         document.querySelector(`[data-view="${viewName}"]`).classList.add('active');
 
         // Refresh data when switching views
-        if (viewName === 'history') {
+        if (viewName === 'dashboard') {
+            this.renderDashboard();
+        } else if (viewName === 'history') {
             this.renderHistory();
         } else if (viewName === 'routines') {
             this.renderRoutines();
@@ -1639,6 +1654,7 @@ class GymTrackerApp {
             foodDiary: Storage.getAllFoodDays(),
             foodRoutines: Storage.getAllFoodRoutines(),
             progressPhotos: Storage.getAllProgressPhotos(),
+            dailyMetrics: Storage.getAllDailyMetrics(),
             startDate: Storage.getStartDate()
         };
 
@@ -1684,6 +1700,7 @@ class GymTrackerApp {
                 if (data.foodDiary) localStorage.setItem(Storage.KEYS.FOOD_DIARY, JSON.stringify(data.foodDiary));
                 if (data.foodRoutines) localStorage.setItem(Storage.KEYS.FOOD_ROUTINES, JSON.stringify(data.foodRoutines));
                 if (data.progressPhotos) localStorage.setItem(Storage.KEYS.PROGRESS_PHOTOS, JSON.stringify(data.progressPhotos));
+                if (data.dailyMetrics) localStorage.setItem(Storage.KEYS.DAILY_METRICS, JSON.stringify(data.dailyMetrics));
                 if (data.startDate) localStorage.setItem(Storage.KEYS.START_DATE, JSON.stringify(data.startDate));
 
                 alert('Data imported successfully! Refreshing the app...');
@@ -2024,6 +2041,7 @@ class GymTrackerApp {
                 Storage.set(Storage.KEYS.FOOD_DIARY, data.foodDiary || []);
                 Storage.set(Storage.KEYS.FOOD_ROUTINES, data.foodRoutines || []);
                 Storage.set(Storage.KEYS.PROGRESS_PHOTOS, data.progressPhotos || []);
+                Storage.set(Storage.KEYS.DAILY_METRICS, data.dailyMetrics || []);
 
                 if (data.startDate) {
                     Storage.setStartDate(data.startDate);
@@ -2199,20 +2217,51 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         photos.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         let html = '<div class="photos-grid">';
-        photos.forEach(photo => {
+        photos.forEach((photo, index) => {
             const date = new Date(photo.date);
+            const now = new Date();
+            const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+
             const formattedDate = date.toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
                 year: 'numeric'
             });
 
+            // Calculate days since last photo
+            let daysSinceLabel = '';
+            if (diffDays === 0) {
+                daysSinceLabel = 'Today';
+            } else if (diffDays === 1) {
+                daysSinceLabel = 'Yesterday';
+            } else if (diffDays < 7) {
+                daysSinceLabel = `${diffDays} days ago`;
+            } else if (diffDays < 30) {
+                const weeks = Math.floor(diffDays / 7);
+                daysSinceLabel = `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+            } else {
+                const months = Math.floor(diffDays / 30);
+                daysSinceLabel = `${months} month${months > 1 ? 's' : ''} ago`;
+            }
+
+            // Days between this photo and previous photo
+            let daysBetween = '';
+            if (index < photos.length - 1) {
+                const prevPhotoDate = new Date(photos[index + 1].date);
+                const daysDiff = Math.floor((date - prevPhotoDate) / (1000 * 60 * 60 * 24));
+                if (daysDiff > 0) {
+                    daysBetween = `<div class="photo-progress">+${daysDiff} days from previous</div>`;
+                }
+            }
+
             html += `
                 <div class="photo-card" onclick="app.viewPhoto(${photo.id})">
                     <img src="${photo.image}" alt="Progress photo">
                     <div class="photo-card-info">
                         <div class="photo-date">${formattedDate}</div>
-                        ${photo.weight ? `<div class="photo-weight">${photo.weight} kg</div>` : ''}
+                        <div class="photo-time-ago">${daysSinceLabel}</div>
+                        ${photo.weight ? `<div class="photo-weight">⚖️ ${photo.weight} kg</div>` : ''}
+                        ${daysBetween}
                     </div>
                 </div>
             `;
@@ -2287,6 +2336,96 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.syncAfterChange();
 
         alert('Photo deleted successfully');
+    }
+
+    // Dashboard Methods
+    renderDashboard() {
+        const metrics = Storage.getTodayMetrics();
+        const foodStats = Storage.getFoodStats();
+
+        // Update metrics
+        document.getElementById('dashSteps').textContent = metrics.steps || 0;
+        document.getElementById('dashWater').textContent = metrics.waterGlasses || 0;
+        document.getElementById('dashSleep').textContent = metrics.sleepHours || 0;
+        document.getElementById('dashCalories').textContent = metrics.workoutCalories || 0;
+
+        // Update food stats
+        document.getElementById('dashFoodCalories').textContent = foodStats.totalCalories;
+        document.getElementById('dashFoodProtein').textContent = foodStats.totalProtein + 'g';
+        document.getElementById('dashFoodCarbs').textContent = foodStats.totalCarbs + 'g';
+        document.getElementById('dashFoodFats').textContent = foodStats.totalFats + 'g';
+
+        // Update workout summary
+        const todayWorkout = this.getTodayWorkout();
+        const summaryEl = document.getElementById('dashWorkoutSummary');
+
+        if (todayWorkout && todayWorkout.exercises.length > 0) {
+            summaryEl.innerHTML = `
+                <div class="workout-summary-item">
+                    <strong>${todayWorkout.exercises.length} exercises</strong> completed
+                </div>
+                <button class="btn-secondary" onclick="app.switchView('workout')">View Workout</button>
+            `;
+        } else {
+            summaryEl.innerHTML = '<p class="empty-state-small">No workout logged today. Start tracking!</p>';
+        }
+    }
+
+    getTodayWorkout() {
+        const workouts = Storage.getAllWorkouts();
+        const today = new Date().toDateString();
+        return workouts.find(w => new Date(w.date).toDateString() === today);
+    }
+
+    openStepsModal() {
+        const metrics = Storage.getTodayMetrics();
+        document.getElementById('stepsInput').value = metrics.steps || '';
+        this.openModal('stepsModal');
+    }
+
+    saveSteps() {
+        const steps = parseInt(document.getElementById('stepsInput').value) || 0;
+        Storage.updateTodayMetrics({ steps: steps });
+        this.closeModal('stepsModal');
+        this.renderDashboard();
+        this.syncAfterChange();
+    }
+
+    openWaterModal() {
+        const metrics = Storage.getTodayMetrics();
+        document.getElementById('waterInput').value = metrics.waterGlasses || '';
+        this.openModal('waterModal');
+    }
+
+    addWaterGlass() {
+        const metrics = Storage.getTodayMetrics();
+        const current = metrics.waterGlasses || 0;
+        Storage.updateTodayMetrics({ waterGlasses: current + 1 });
+        this.closeModal('waterModal');
+        this.renderDashboard();
+        this.syncAfterChange();
+    }
+
+    saveWater() {
+        const glasses = parseInt(document.getElementById('waterInput').value) || 0;
+        Storage.updateTodayMetrics({ waterGlasses: glasses });
+        this.closeModal('waterModal');
+        this.renderDashboard();
+        this.syncAfterChange();
+    }
+
+    openSleepModal() {
+        const metrics = Storage.getTodayMetrics();
+        document.getElementById('sleepInput').value = metrics.sleepHours || '';
+        this.openModal('sleepModal');
+    }
+
+    saveSleep() {
+        const hours = parseFloat(document.getElementById('sleepInput').value) || 0;
+        Storage.updateTodayMetrics({ sleepHours: hours });
+        this.closeModal('sleepModal');
+        this.renderDashboard();
+        this.syncAfterChange();
     }
 }
 

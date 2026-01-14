@@ -362,6 +362,7 @@ const GoogleDriveSync = {
                 foodDiary: Storage.getAllFoodDays(),
                 foodRoutines: Storage.getAllFoodRoutines(),
                 progressPhotos: Storage.getAllProgressPhotos(),
+                dailyMetrics: Storage.getAllDailyMetrics(),
                 startDate: Storage.getStartDate()
             };
 
