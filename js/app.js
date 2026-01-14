@@ -147,6 +147,28 @@ class GymTrackerApp {
             this.importData(e);
         });
 
+        // Date History
+        document.getElementById('calendarBtn').addEventListener('click', () => {
+            this.openDateHistoryModal();
+        });
+
+        document.getElementById('historyDateInput').addEventListener('change', (e) => {
+            this.loadDateHistory(e.target.value);
+        });
+
+        // Google Drive Sync
+        this.renderGoogleDriveStatus();
+
+        // Handle OAuth callback from Google Drive
+        if (window.location.search.includes('code=')) {
+            this.handleGoogleDriveCallback();
+        }
+
+        // Auto-sync every 5 minutes if enabled
+        setInterval(() => {
+            GoogleDriveSync.autoSync();
+        }, 5 * 60 * 1000);
+
         // Close modals
         document.querySelectorAll('.close-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -339,7 +361,7 @@ class GymTrackerApp {
         } else {
             // Create new exercise
             exercise = {
-                id: Date.now(),
+                id: Date.now() + Math.random(), // Add random component for uniqueness
                 name: name,
                 type: type
             };
@@ -1127,9 +1149,10 @@ class GymTrackerApp {
             suggestionsContainer.innerHTML = results.map(food => `
                 <div class="food-suggestion-item" data-food='${JSON.stringify(food)}'>
                     <span class="food-suggestion-category">${food.category}</span>
-                    <span class="food-suggestion-name">${food.name}</span>
+                    <span class="food-suggestion-name">${food.name}${food.recipe ? ' 📖' : ''}</span>
                     <div class="food-suggestion-info">
                         ${food.calories} cal • P: ${food.protein}g • C: ${food.carbs}g • F: ${food.fats}g
+                        ${food.serving ? ` • ${food.serving}` : ''}
                     </div>
                 </div>
             `).join('');
@@ -1161,6 +1184,36 @@ class GymTrackerApp {
         document.getElementById('fatsInput').value = food.fats;
         document.getElementById('foodSuggestions').classList.remove('active');
         document.getElementById('foodSuggestions').innerHTML = '';
+
+        // Store recipe if available and show it
+        if (food.recipe) {
+            this.showFoodRecipe(food.name, food.recipe, food.serving);
+        }
+    }
+
+    showFoodRecipe(foodName, recipe, serving) {
+        // Check if recipe display already exists, if not create it
+        let recipeDisplay = document.getElementById('foodRecipeDisplay');
+        if (!recipeDisplay) {
+            recipeDisplay = document.createElement('div');
+            recipeDisplay.id = 'foodRecipeDisplay';
+            recipeDisplay.className = 'food-recipe-display';
+
+            // Insert after food name input
+            const foodNameInput = document.getElementById('foodNameInput').closest('.food-search-container');
+            foodNameInput.parentNode.insertBefore(recipeDisplay, foodNameInput.nextSibling);
+        }
+
+        recipeDisplay.innerHTML = `
+            <div class="recipe-header">
+                <strong>📖 ${foodName}</strong>
+                <span class="recipe-serving">${serving || 'Per serving'}</span>
+            </div>
+            <div class="recipe-content">
+                ${recipe.replace(/\n/g, '<br>')}
+            </div>
+        `;
+        recipeDisplay.style.display = 'block';
     }
 
     saveFood() {
@@ -1223,11 +1276,17 @@ class GymTrackerApp {
         const todayFood = Storage.getTodayFood();
         const stats = Storage.getFoodStats();
 
-        // Update stats
+        // Update stats at the top
         document.querySelector('#foodStats .stat-card:nth-child(1) .stat-value').textContent = stats.totalCalories;
         document.querySelector('#foodStats .stat-card:nth-child(2) .stat-value').textContent = stats.totalProtein + 'g';
         document.querySelector('#foodStats .stat-card:nth-child(3) .stat-value').textContent = stats.totalCarbs + 'g';
         document.querySelector('#foodStats .stat-card:nth-child(4) .stat-value').textContent = stats.totalFats + 'g';
+
+        // Update daily totals summary at the bottom
+        document.getElementById('totalCaloriesValue').textContent = stats.totalCalories;
+        document.getElementById('totalProteinValue').textContent = stats.totalProtein + 'g';
+        document.getElementById('totalCarbsValue').textContent = stats.totalCarbs + 'g';
+        document.getElementById('totalFatsValue').textContent = stats.totalFats + 'g';
 
         // Render each meal type
         ['breakfast', 'midmorning', 'lunch', 'preworkout', 'postworkout', 'dinner'].forEach(mealType => {
@@ -1618,6 +1677,417 @@ class GymTrackerApp {
 
         // Reset file input
         event.target.value = '';
+    }
+
+    // Date History Methods
+    openDateHistoryModal() {
+        // Set to today's date by default
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('historyDateInput').value = today;
+        document.getElementById('historyDateInput').max = today; // Can't select future dates
+
+        this.loadDateHistory(today);
+        document.getElementById('dateHistoryModal').classList.add('active');
+    }
+
+    loadDateHistory(dateString) {
+        const selectedDate = new Date(dateString);
+        const formattedDate = selectedDate.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Get workout data for this date
+        const allWorkouts = Storage.getAllWorkouts();
+        const workoutForDate = allWorkouts.find(w => {
+            const workoutDate = new Date(w.date).toDateString();
+            const targetDate = selectedDate.toDateString();
+            return workoutDate === targetDate;
+        });
+
+        // Get food data for this date
+        const allFoodDays = Storage.getAllFoodDays();
+        const foodForDate = allFoodDays.find(f => {
+            const foodDate = new Date(f.date).toDateString();
+            const targetDate = selectedDate.toDateString();
+            return foodDate === targetDate;
+        });
+
+        // Calculate journey day if start date is set
+        const startDate = Storage.getStartDate();
+        let journeyDay = null;
+        if (startDate) {
+            const start = new Date(startDate);
+            const diffTime = selectedDate - start;
+            journeyDay = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        }
+
+        // Render the content
+        const container = document.getElementById('dateHistoryContent');
+
+        let content = `
+            <div class="date-history-header">
+                <h3>${formattedDate}</h3>
+                ${journeyDay > 0 ? `<span class="date-history-journey-day">Day ${journeyDay}</span>` : ''}
+            </div>
+        `;
+
+        // Workout Section
+        content += '<div class="date-history-section">';
+        content += '<h4 class="section-title">💪 Workout</h4>';
+
+        if (workoutForDate && workoutForDate.exercises.length > 0) {
+            content += '<div class="date-history-workout">';
+            workoutForDate.exercises.forEach(ex => {
+                const type = ex.type || 'strength';
+                let icon = '💪';
+                if (type === 'cardio') icon = '🏃';
+                if (type === 'hiit') icon = '🔥';
+
+                content += `<div class="history-exercise-item">`;
+                content += `<div class="exercise-name">${icon} ${ex.name}</div>`;
+
+                if (type === 'strength') {
+                    content += '<div class="exercise-details">';
+                    ex.sets.forEach((set, index) => {
+                        content += `<div class="set-detail">Set ${index + 1}: ${set.weight}${set.unit || 'kg'} × ${set.reps} reps</div>`;
+                    });
+                    content += '</div>';
+                } else if (type === 'cardio') {
+                    content += `<div class="exercise-details">`;
+                    content += `<div class="set-detail">Duration: ${ex.duration} min</div>`;
+                    if (ex.distance) content += `<div class="set-detail">Distance: ${ex.distance} km</div>`;
+                    if (ex.calories) content += `<div class="set-detail">Calories: ${ex.calories} kcal</div>`;
+                    content += `</div>`;
+                } else if (type === 'hiit') {
+                    content += `<div class="exercise-details">`;
+                    content += `<div class="set-detail">Duration: ${ex.duration} min</div>`;
+                    if (ex.rounds) content += `<div class="set-detail">Rounds: ${ex.rounds}</div>`;
+                    if (ex.calories) content += `<div class="set-detail">Calories: ${ex.calories} kcal</div>`;
+                    content += `</div>`;
+                }
+
+                content += `</div>`;
+            });
+            content += '</div>';
+        } else {
+            content += '<p class="empty-state-small">No workout recorded for this date</p>';
+        }
+        content += '</div>';
+
+        // Food Section
+        content += '<div class="date-history-section">';
+        content += '<h4 class="section-title">🍽️ Food Tracking</h4>';
+
+        if (foodForDate && foodForDate.meals.length > 0) {
+            // Calculate totals
+            const stats = Storage.getFoodStats(dateString);
+
+            content += `
+                <div class="date-food-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">Calories</span>
+                        <span class="summary-value">${stats.totalCalories}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Protein</span>
+                        <span class="summary-value">${stats.totalProtein}g</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Carbs</span>
+                        <span class="summary-value">${stats.totalCarbs}g</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Fats</span>
+                        <span class="summary-value">${stats.totalFats}g</span>
+                    </div>
+                </div>
+            `;
+
+            // Group meals by type
+            const mealTypes = {
+                'breakfast': '🌅 Breakfast',
+                'midmorning': '☕ Mid Morning',
+                'lunch': '🌞 Lunch',
+                'preworkout': '💪 Pre Workout',
+                'postworkout': '🥤 Post Workout',
+                'dinner': '🌙 Dinner'
+            };
+
+            Object.entries(mealTypes).forEach(([type, label]) => {
+                const mealsOfType = foodForDate.meals.filter(m => m.mealType === type);
+                if (mealsOfType.length > 0) {
+                    content += `<div class="date-meal-group">`;
+                    content += `<div class="meal-group-title">${label}</div>`;
+                    mealsOfType.forEach(meal => {
+                        content += `
+                            <div class="date-food-item">
+                                <strong>${meal.name}</strong>
+                                <span>${meal.calories} cal • P: ${meal.protein}g • C: ${meal.carbs}g • F: ${meal.fats}g</span>
+                            </div>
+                        `;
+                    });
+                    content += `</div>`;
+                }
+            });
+        } else {
+            content += '<p class="empty-state-small">No food recorded for this date</p>';
+        }
+        content += '</div>';
+
+        container.innerHTML = content;
+    }
+
+    // Google Drive Sync Methods
+    renderGoogleDriveStatus() {
+        const statusContainer = document.getElementById('googleDriveStatus');
+        const actionsContainer = document.getElementById('googleDriveActions');
+
+        if (!GoogleDriveSync.isConfigured()) {
+            statusContainer.innerHTML = `
+                <div class="googledrive-status-header">
+                    <span><strong>⚠️ Setup Required</strong></span>
+                    <span class="googledrive-status-badge not-configured">Not Configured</span>
+                </div>
+                <div class="googledrive-sync-info">
+                    <p>Google Drive sync requires setup. Follow the instructions below to configure.</p>
+                </div>
+            `;
+            statusContainer.className = 'googledrive-status not-configured';
+
+            actionsContainer.innerHTML = `
+                <button class="btn-secondary full-width" onclick="app.showGoogleDriveSetupInstructions()">
+                    📖 View Setup Instructions
+                </button>
+            `;
+            return;
+        }
+
+        const isConnected = GoogleDriveSync.isConnected();
+        const isSyncEnabled = GoogleDriveSync.isSyncEnabled();
+        const lastSync = GoogleDriveSync.getLastSyncTimeFormatted();
+
+        if (isConnected) {
+            statusContainer.innerHTML = `
+                <div class="googledrive-status-header">
+                    <span><strong>☁️ Connected</strong></span>
+                    <span class="googledrive-status-badge connected">✓ Active</span>
+                </div>
+                <div class="googledrive-sync-info">
+                    <p><strong>Last sync:</strong> ${lastSync}</p>
+                </div>
+                <div class="sync-toggle">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="autoSyncToggle" ${isSyncEnabled ? 'checked' : ''} onchange="app.toggleAutoSync()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-label">Auto-sync enabled</span>
+                </div>
+            `;
+            statusContainer.className = 'googledrive-status connected';
+
+            actionsContainer.innerHTML = `
+                <div class="googledrive-actions-grid">
+                    <button class="btn-Google Drive" onclick="app.syncToGoogleDrive()">⬆️ Upload Now</button>
+                    <button class="btn-Google Drive" onclick="app.downloadFromGoogleDrive()">⬇️ Download</button>
+                </div>
+                <button class="btn-secondary full-width" style="margin-top: 0.5rem;" onclick="app.disconnectGoogleDrive()">
+                    Disconnect Google Drive
+                </button>
+            `;
+        } else {
+            statusContainer.innerHTML = `
+                <div class="googledrive-status-header">
+                    <span><strong>Not Connected</strong></span>
+                    <span class="googledrive-status-badge disconnected">Disconnected</span>
+                </div>
+                <div class="googledrive-sync-info">
+                    <p>Connect to Google Drive to sync your data across devices.</p>
+                </div>
+            `;
+            statusContainer.className = 'googledrive-status';
+
+            actionsContainer.innerHTML = `
+                <button class="btn-Google Drive full-width" onclick="app.connectGoogleDrive()">
+                    Connect to Google Drive
+                </button>
+            `;
+        }
+    }
+
+    async handleGoogleDriveCallback() {
+        try {
+            const result = await GoogleDriveSync.handleCallback();
+
+            if (result.success) {
+                alert('✅ Successfully connected to Google Drive!');
+                this.renderGoogleDriveStatus();
+
+                // Ask if user wants to upload current data
+                if (confirm('Would you like to upload your current data to Google Drive now?')) {
+                    await this.syncToGoogleDrive();
+                }
+            } else {
+                alert(`❌ Failed to connect to Google Drive: ${result.error}`);
+            }
+        } catch (error) {
+            alert(`❌ Error: ${error.message}`);
+        }
+    }
+
+    async connectGoogleDrive() {
+        try {
+            await GoogleDriveSync.connect();
+        } catch (error) {
+            alert(`❌ Error connecting to Google Drive: ${error.message}`);
+        }
+    }
+
+    disconnectGoogleDrive() {
+        if (confirm('Are you sure you want to disconnect from Google Drive? Your data will remain on Google Drive but will stop syncing.')) {
+            GoogleDriveSync.disconnect();
+            this.renderGoogleDriveStatus();
+            alert('✅ Disconnected from Google Drive');
+        }
+    }
+
+    async syncToGoogleDrive(event) {
+        try {
+            const btn = event?.target;
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '⏳ Uploading...';
+            }
+
+            const result = await GoogleDriveSync.uploadData();
+            if (btn) {
+                alert(result.message);
+            }
+
+            this.renderGoogleDriveStatus();
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = '⬆️ Upload Now';
+            }
+        } catch (error) {
+            alert(`❌ Sync failed: ${error.message}`);
+            if (event?.target) {
+                event.target.disabled = false;
+                event.target.textContent = '⬆️ Upload Now';
+            }
+        }
+    }
+
+    async downloadFromGoogleDrive(event) {
+        if (!confirm('⚠️ This will replace your local data with data from Google Drive. Continue?')) {
+            return;
+        }
+
+        try {
+            const btn = event?.target;
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '⏳ Downloading...';
+            }
+
+            const result = await GoogleDriveSync.downloadData();
+
+            if (result.success) {
+                // Restore all data
+                const data = result.data;
+                Storage.set(Storage.KEYS.WORKOUTS, data.workouts || []);
+                Storage.set(Storage.KEYS.ROUTINES, data.routines || []);
+                Storage.set(Storage.KEYS.CURRENT_WORKOUT, data.currentWorkout || { exercises: [] });
+                Storage.set(Storage.KEYS.FOOD_DIARY, data.foodDiary || []);
+                Storage.set(Storage.KEYS.FOOD_ROUTINES, data.foodRoutines || []);
+
+                if (data.startDate) {
+                    Storage.setStartDate(data.startDate);
+                }
+
+                alert('✅ Data downloaded from Google Drive successfully!');
+
+                // Refresh the UI
+                this.render();
+                this.renderFood();
+                this.updateDateDisplay();
+            } else {
+                alert(`❌ ${result.error}`);
+            }
+
+            this.renderGoogleDriveStatus();
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = '⬇️ Download';
+            }
+        } catch (error) {
+            alert(`❌ Download failed: ${error.message}`);
+            if (event?.target) {
+                event.target.disabled = false;
+                event.target.textContent = '⬇️ Download';
+            }
+        }
+    }
+
+    toggleAutoSync() {
+        const enabled = document.getElementById('autoSyncToggle').checked;
+        GoogleDriveSync.setSyncEnabled(enabled);
+
+        if (enabled) {
+            // Sync immediately when enabled
+            GoogleDriveSync.autoSync();
+        }
+    }
+
+    showGoogleDriveSetupInstructions() {
+        const instructions = `
+# Google Drive Setup Instructions
+
+## Quick Steps:
+
+1. Go to: https://console.cloud.google.com
+2. Sign in with your Google account
+3. Create new project (or select existing)
+4. Enable "Google Drive API":
+   - APIs & Services → Enable APIs
+   - Search "Google Drive API" → Enable
+5. Create OAuth Credentials:
+   - APIs & Services → Credentials
+   - + CREATE CREDENTIALS → OAuth client ID
+   - Configure consent screen if needed (External, add your email)
+6. OAuth client ID settings:
+   - Type: Web application
+   - Name: Gym Tracker PWA
+   - Authorized origins: ${window.location.origin}
+   - Authorized redirect URIs: ${window.location.origin}
+7. Copy the Client ID (ends with .apps.googleusercontent.com)
+8. Open: js/googledrive-sync.js
+9. Replace 'YOUR_CLIENT_ID_HERE.apps.googleusercontent.com' with your Client ID
+10. Save and refresh!
+
+## Notes:
+- FREE - no payment needed
+- 15GB free storage
+- Your data stays private in YOUR Google Drive
+- Works on all devices
+
+Detailed guide: GOOGLEDRIVE_SETUP.md
+        `;
+
+        alert(instructions);
+    }
+
+    // Trigger auto-sync after data changes
+    syncAfterChange() {
+        if (GoogleDriveSync.isSyncEnabled() && GoogleDriveSync.isConnected()) {
+            // Debounce sync by 30 seconds
+            clearTimeout(this.syncTimeout);
+            this.syncTimeout = setTimeout(() => {
+                GoogleDriveSync.autoSync();
+            }, 30000);
+        }
     }
 }
 

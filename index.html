@@ -32,11 +32,12 @@
         </header>
 
         <!-- Date Banner -->
-        <div class="date-banner">
+        <div class="date-banner" id="dateBanner" title="Click to view history by date">
             <div class="date-info">
                 <div class="current-date" id="currentDateDisplay">Loading...</div>
                 <div class="journey-day" id="journeyDayDisplay">Set your start date</div>
             </div>
+            <button class="calendar-btn" id="calendarBtn" title="View History">📅</button>
         </div>
 
         <!-- Navigation -->
@@ -155,6 +156,29 @@
                                 <button class="btn-secondary small" onclick="app.openAddFoodModal('dinner')">+ Add</button>
                             </div>
                             <div id="dinnerList" class="food-list"></div>
+                        </div>
+                    </div>
+
+                    <!-- Daily Totals Summary -->
+                    <div class="daily-totals-summary">
+                        <h3>Daily Totals</h3>
+                        <div class="totals-grid">
+                            <div class="total-item">
+                                <span class="total-label">Total Calories</span>
+                                <span class="total-value" id="totalCaloriesValue">0</span>
+                            </div>
+                            <div class="total-item">
+                                <span class="total-label">Total Protein</span>
+                                <span class="total-value" id="totalProteinValue">0g</span>
+                            </div>
+                            <div class="total-item">
+                                <span class="total-label">Total Carbs</span>
+                                <span class="total-value" id="totalCarbsValue">0g</span>
+                            </div>
+                            <div class="total-item">
+                                <span class="total-label">Total Fats</span>
+                                <span class="total-value" id="totalFatsValue">0g</span>
+                            </div>
                         </div>
                     </div>
 
@@ -431,6 +455,21 @@
                     <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #e5e7eb;">
 
                     <div class="input-group">
+                        <label class="input-label">☁️ Google Drive Cloud Sync</label>
+                        <p class="helper-text">Sync your data across all devices using Google Drive (15GB free).</p>
+
+                        <div id="googleDriveStatus" class="googledrive-status">
+                            <!-- Status will be populated by JavaScript -->
+                        </div>
+
+                        <div id="googleDriveActions" style="margin-top: 0.75rem;">
+                            <!-- Actions will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #e5e7eb;">
+
+                    <div class="input-group">
                         <label class="input-label">Manual Backup & Transfer</label>
                         <p class="helper-text">Export your data to backup or transfer between devices. Import to restore.</p>
                         <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
@@ -458,9 +497,30 @@
                 </div>
             </div>
         </div>
+
+        <!-- Date History Modal -->
+        <div id="dateHistoryModal" class="modal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h3>View History by Date</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-label">Select Date</label>
+                        <input type="date" id="historyDateInput" class="input">
+                    </div>
+
+                    <div id="dateHistoryContent">
+                        <!-- Content will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="js/storage.js"></script>
+    <script src="js/googledrive-sync.js"></script>
     <script src="js/food-database.js"></script>
     <script src="js/quotes.js"></script>
     <script src="js/app.js"></script>

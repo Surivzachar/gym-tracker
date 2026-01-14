@@ -120,15 +120,47 @@ body {
     box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);
     position: relative;
     z-index: 9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.date-banner:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
 }
 
 .date-info {
     max-width: 800px;
-    margin: 0 auto;
+    flex: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
+}
+
+.calendar-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+}
+
+.calendar-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
 }
 
 .current-date {
@@ -1342,4 +1374,413 @@ body {
     .logo-tagline {
         font-size: 1rem;
     }
+}
+
+/* Daily Totals Summary */
+.daily-totals-summary {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.daily-totals-summary h3 {
+    font-size: 1.25rem;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 700;
+    border-bottom: 2px solid #1e3a8a;
+    padding-bottom: 0.75rem;
+}
+
+.totals-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.total-item {
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+}
+
+.total-label {
+    display: block;
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.total-value {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e3a8a;
+}
+
+@media (min-width: 640px) {
+    .totals-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Date History Modal Styles */
+.date-history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
+    color: white;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.date-history-header h3 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.date-history-journey-day {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.375rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+}
+
+.date-history-section {
+    margin-bottom: 2rem;
+    background: #f9fafb;
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.section-title {
+    font-size: 1.125rem;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.date-history-workout {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.history-exercise-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #1e3a8a;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.exercise-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+}
+
+.exercise-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.set-detail {
+    background: #f9fafb;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: #4b5563;
+}
+
+.date-food-summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.summary-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+}
+
+.summary-label {
+    display: block;
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.summary-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e3a8a;
+}
+
+.date-meal-group {
+    margin-bottom: 1.25rem;
+}
+
+.meal-group-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e3a8a;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.date-food-item {
+    background: white;
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.date-food-item strong {
+    color: #1f2937;
+    font-size: 0.95rem;
+}
+
+.date-food-item span {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+@media (min-width: 640px) {
+    .date-food-summary {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Food Recipe Display */
+.food-recipe-display {
+    background: #f0f9ff;
+    border: 2px solid #3b82f6;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: none;
+}
+
+.recipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #3b82f6;
+}
+
+.recipe-header strong {
+    font-size: 1.125rem;
+    color: #1e40af;
+}
+
+.recipe-serving {
+    background: #3b82f6;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.recipe-content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #1f2937;
+    white-space: pre-line;
+}
+
+.recipe-content br {
+    display: block;
+    margin: 0.25rem 0;
+}
+
+/* Google Drive Sync Styles */
+.googledrive-status {
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 0.75rem;
+}
+
+.googledrive-status.connected {
+    background: #f0fdf4;
+    border-color: #10b981;
+}
+
+.googledrive-status.not-configured {
+    background: #fef3c7;
+    border-color: #f59e0b;
+}
+
+.googledrive-status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.googledrive-status-badge {
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+}
+
+.googledrive-status-badge.connected {
+    background: #10b981;
+    color: white;
+}
+
+.googledrive-status-badge.disconnected {
+    background: #6b7280;
+    color: white;
+}
+
+.googledrive-status-badge.not-configured {
+    background: #f59e0b;
+    color: white;
+}
+
+.googledrive-sync-info {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+}
+
+.googledrive-sync-info strong {
+    color: #1f2937;
+}
+
+.googledrive-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
+.btn-googledrive {
+    background: #4285f4;
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-googledrive:hover {
+    background: #357ae8;
+}
+
+.btn-googledrive:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.googledrive-setup-warning {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+
+.googledrive-setup-warning p {
+    margin: 0;
+    color: #92400e;
+    font-size: 0.95rem;
+}
+
+.googledrive-setup-link {
+    color: #4285f4;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.sync-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 48px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #d1d5db;
+    transition: 0.3s;
+    border-radius: 24px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: #10b981;
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+}
+
+.toggle-label {
+    font-size: 0.95rem;
+    color: #1f2937;
+    font-weight: 500;
 }

@@ -68,7 +68,7 @@ const Storage = {
         }
 
         const workout = {
-            id: Date.now(),
+            id: Date.now() + Math.random(), // Add random component for uniqueness
             date: new Date().toISOString(),
             exercises: currentWorkout.exercises,
             duration: null, // Could be calculated if we track start time
@@ -106,7 +106,7 @@ const Storage = {
 
     saveRoutine(name, exercises) {
         const routine = {
-            id: Date.now(),
+            id: Date.now() + Math.random(), // Add random component for uniqueness
             name: name,
             exercises: exercises,
             createdAt: new Date().toISOString()
@@ -246,7 +246,7 @@ const Storage = {
         let todayIndex = allDays.findIndex(day => new Date(day.date).toDateString() === today);
 
         const foodEntry = {
-            id: Date.now(),
+            id: Date.now() + Math.random(), // Add random component to ensure uniqueness
             mealType: mealType,
             name: foodItem.name,
             calories: parseInt(foodItem.calories) || 0,
@@ -354,7 +354,7 @@ const Storage = {
 
     saveFoodRoutine(name, meals) {
         const routine = {
-            id: Date.now(),
+            id: Date.now() + Math.random(), // Add random component for uniqueness
             name: name,
             meals: meals.map(meal => ({
                 mealType: meal.mealType,
