@@ -232,6 +232,13 @@ const FoodDatabase = [
     { name: "Pizza (1 slice)", calories: 285, protein: 12, carbs: 36, fats: 10, category: "Mixed", serving: "1 slice" },
     { name: "Burger (basic)", calories: 354, protein: 20, carbs: 30, fats: 16, category: "Mixed", serving: "1 burger" },
     { name: "French Fries", calories: 312, protein: 3.4, carbs: 41, fats: 15, category: "Carbs", serving: "100g" },
+
+    // Additional Items for Diet Plan
+    { name: "Honey (1 tbsp)", calories: 64, protein: 0.1, carbs: 17, fats: 0, category: "Carbs", serving: "1 tbsp (21g)" },
+    { name: "Rice Cake (1 cake)", calories: 35, protein: 0.7, carbs: 7.3, fats: 0.3, category: "Carbs", serving: "1 rice cake (9g)" },
+    { name: "Herbal Tea", calories: 2, protein: 0, carbs: 0.4, fats: 0, category: "Beverages", serving: "1 cup" },
+    { name: "Black Tea/Coffee", calories: 2, protein: 0.3, carbs: 0, fats: 0, category: "Beverages", serving: "1 cup" },
+    { name: "Mixed Vegetables (cooked)", calories: 65, protein: 2.5, carbs: 13, fats: 0.5, category: "Vegetables", serving: "1 cup (150g)" },
 ];
 
 // Search function for food database

@@ -156,6 +156,15 @@ class GymTrackerApp {
             this.importRoutines(e);
         });
 
+        // Import Diet Plan
+        document.getElementById('importDietPlanBtn').addEventListener('click', () => {
+            document.getElementById('importDietPlanInput').click();
+        });
+
+        document.getElementById('importDietPlanInput').addEventListener('change', (e) => {
+            this.importDietPlan(e);
+        });
+
         // Date History
         document.getElementById('calendarBtn').addEventListener('click', () => {
             this.openDateHistoryModal();
@@ -1776,6 +1785,59 @@ class GymTrackerApp {
             } catch (error) {
                 console.error('Import routines error:', error);
                 alert('Error importing routines. Please check the file format and try again.');
+            }
+        };
+
+        reader.readAsText(file);
+
+        // Reset file input
+        event.target.value = '';
+    }
+
+    importDietPlan(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+
+                // Validate data structure
+                if (!data.foodRoutines || !Array.isArray(data.foodRoutines)) {
+                    alert('Invalid diet plan file format. Expected a "foodRoutines" array.');
+                    return;
+                }
+
+                // Confirm before importing
+                if (!confirm(`This will import ${data.foodRoutines.length} meal plan(s) as Food Routines. Your existing food routines will be kept.\n\nContinue?`)) {
+                    return;
+                }
+
+                // Get existing food routines
+                const existingRoutines = Storage.getAllFoodRoutines();
+                const existingIds = new Set(existingRoutines.map(r => r.id));
+
+                // Merge new food routines, avoiding duplicates by ID
+                let importedCount = 0;
+                data.foodRoutines.forEach(routine => {
+                    if (!existingIds.has(routine.id)) {
+                        existingRoutines.push(routine);
+                        importedCount++;
+                    }
+                });
+
+                // Save merged food routines
+                localStorage.setItem(Storage.KEYS.FOOD_ROUTINES, JSON.stringify(existingRoutines));
+
+                alert(`Successfully imported ${importedCount} new meal plan(s)!\n\nGo to Food tab → Food Routines to load them.`);
+
+                // Refresh food routines view if we're on food tab
+                this.renderFoodRoutines();
+
+            } catch (error) {
+                console.error('Import diet plan error:', error);
+                alert('Error importing diet plan. Please check the file format and try again.');
             }
         };
 

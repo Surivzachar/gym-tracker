@@ -1,0 +1,320 @@
+{
+  "version": "1.0",
+  "exportDate": "2026-01-16T00:00:00.000Z",
+  "foodRoutines": [
+    {
+      "id": 1737100000001,
+      "name": "Breakfast - Solid Start (7-9 AM)",
+      "meals": [
+        {
+          "mealType": "breakfast",
+          "name": "Egg (1 large)",
+          "calories": 70,
+          "protein": 6,
+          "carbs": 0.5,
+          "fats": 5,
+          "quantity": 2,
+          "note": "2 whole eggs"
+        },
+        {
+          "mealType": "breakfast",
+          "name": "Egg White (1 large)",
+          "calories": 17,
+          "protein": 4,
+          "carbs": 0,
+          "fats": 0,
+          "quantity": 2,
+          "note": "2 egg whites"
+        },
+        {
+          "mealType": "breakfast",
+          "name": "Whole Wheat Bread (1 slice)",
+          "calories": 80,
+          "protein": 4,
+          "carbs": 14,
+          "fats": 1,
+          "quantity": 2,
+          "note": "2 slices"
+        },
+        {
+          "mealType": "breakfast",
+          "name": "Black Tea/Coffee",
+          "calories": 2,
+          "protein": 0.3,
+          "carbs": 0,
+          "fats": 0,
+          "quantity": 1,
+          "note": "Black or herbal tea"
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737100000002,
+      "name": "Mid-Morning - Protein (11-12 PM)",
+      "meals": [
+        {
+          "mealType": "snacks",
+          "name": "Chicken Breast",
+          "calories": 182,
+          "protein": 34,
+          "carbs": 0,
+          "fats": 4,
+          "quantity": 1.1,
+          "note": "110g chicken (Option 1)"
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737100000003,
+      "name": "Mid-Morning - Protein Shake",
+      "meals": [
+        {
+          "mealType": "snacks",
+          "name": "Whey Protein (1 scoop)",
+          "calories": 120,
+          "protein": 24,
+          "carbs": 3,
+          "fats": 1.5,
+          "quantity": 1,
+          "note": "1 scoop whey (Option 2)"
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737100000004,
+      "name": "Lunch - Main Meal (1-2 PM)",
+      "meals": [
+        {
+          "mealType": "lunch",
+          "name": "White Rice (cooked)",
+          "calories": 260,
+          "protein": 5.4,
+          "carbs": 56,
+          "fats": 0.6,
+          "quantity": 2,
+          "note": "200g white rice"
+        },
+        {
+          "mealType": "lunch",
+          "name": "Chicken Breast",
+          "calories": 272,
+          "protein": 51,
+          "carbs": 0,
+          "fats": 6,
+          "quantity": 1.65,
+          "note": "165g chicken/fish"
+        },
+        {
+          "mealType": "lunch",
+          "name": "Mixed Vegetables (cooked)",
+          "calories": 65,
+          "protein": 2.5,
+          "carbs": 13,
+          "fats": 0.5,
+          "quantity": 1,
+          "note": "1 cup vegetables"
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737100000005,
+      "name": "Pre-Workout - Fuel Option 1 (3-4 PM)",
+      "meals": [
+        {
+          "mealType": "snacks",
+          "name": "Whole Wheat Bread (1 slice)",
+          "calories": 80,
+          "protein": 4,
+          "carbs": 14,
+          "fats": 1,
+          "quantity": 2,
+          "note": "2 slices bread"
+        },
+        {
+          "mealType": "snacks",
+          "name": "Peanut Butter (1 tbsp)",
+          "calories": 94,
+          "protein": 4,
+          "carbs": 3.5,
+          "fats": 8,
+          "quantity": 1,
+          "note": "1 tbsp peanut butter"
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737100000006,
+      "name": "Pre-Workout - Fuel Option 2 (3-4 PM)",
+      "meals": [
+        {
+          "mealType": "snacks",
+          "name": "Rice Cake (1 cake)",
+          "calories": 35,
+          "protein": 0.7,
+          "carbs": 7.3,
+          "fats": 0.3,
+          "quantity": 2,
+          "note": "2 rice cakes"
+        },
+        {
+          "mealType": "snacks",
+          "name": "Honey (1 tbsp)",
+          "calories": 64,
+          "protein": 0.1,
+          "carbs": 17,
+          "fats": 0,
+          "quantity": 1,
+          "note": "1 tbsp honey"
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737100000007,
+      "name": "Post-Workout - Recovery (6-7 PM)",
+      "meals": [
+        {
+          "mealType": "dinner",
+          "name": "Whey Protein (1 scoop)",
+          "calories": 120,
+          "protein": 24,
+          "carbs": 3,
+          "fats": 1.5,
+          "quantity": 1,
+          "note": "1 scoop whey"
+        },
+        {
+          "mealType": "dinner",
+          "name": "Egg (1 large)",
+          "calories": 70,
+          "protein": 6,
+          "carbs": 0.5,
+          "fats": 5,
+          "quantity": 1,
+          "note": "1 whole egg"
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737100000008,
+      "name": "Post-Workout - Recovery LEG DAY (6-7 PM)",
+      "meals": [
+        {
+          "mealType": "dinner",
+          "name": "Whey Protein (1 scoop)",
+          "calories": 120,
+          "protein": 24,
+          "carbs": 3,
+          "fats": 1.5,
+          "quantity": 1,
+          "note": "1 scoop whey"
+        },
+        {
+          "mealType": "dinner",
+          "name": "Egg (1 large)",
+          "calories": 70,
+          "protein": 6,
+          "carbs": 0.5,
+          "fats": 5,
+          "quantity": 1,
+          "note": "1 whole egg"
+        },
+        {
+          "mealType": "dinner",
+          "name": "Banana",
+          "calories": 89,
+          "protein": 1.1,
+          "carbs": 23,
+          "fats": 0.3,
+          "quantity": 1,
+          "note": "Banana (leg day only)"
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737100000009,
+      "name": "Dinner - Fat Loss (8 PM)",
+      "meals": [
+        {
+          "mealType": "dinner",
+          "name": "Chicken Breast",
+          "calories": 314,
+          "protein": 59,
+          "carbs": 0,
+          "fats": 7,
+          "quantity": 1.9,
+          "note": "190g chicken/fish"
+        },
+        {
+          "mealType": "dinner",
+          "name": "Mixed Vegetables (cooked)",
+          "calories": 65,
+          "protein": 2.5,
+          "carbs": 13,
+          "fats": 0.5,
+          "quantity": 1,
+          "note": "Cooked vegetables, no carbs"
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737100000010,
+      "name": "Optional Late Snack - Greek Yogurt (9-10 PM)",
+      "meals": [
+        {
+          "mealType": "snacks",
+          "name": "Greek Yogurt",
+          "calories": 59,
+          "protein": 10,
+          "carbs": 3.6,
+          "fats": 0.4,
+          "quantity": 1,
+          "note": "100g Greek yogurt (Option 1)"
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737100000011,
+      "name": "Optional Late Snack - Egg Whites (9-10 PM)",
+      "meals": [
+        {
+          "mealType": "snacks",
+          "name": "Egg White (1 large)",
+          "calories": 17,
+          "protein": 4,
+          "carbs": 0,
+          "fats": 0,
+          "quantity": 2,
+          "note": "2 egg whites (Option 2)"
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737100000012,
+      "name": "Optional Late Snack - Herbal Tea (9-10 PM)",
+      "meals": [
+        {
+          "mealType": "snacks",
+          "name": "Herbal Tea",
+          "calories": 2,
+          "protein": 0,
+          "carbs": 0.4,
+          "fats": 0,
+          "quantity": 1,
+          "note": "Herbal tea (Option 3)"
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    }
+  ]
+}
