@@ -279,6 +279,7 @@ class GymTrackerApp {
             typeSelect.value = exercise.type || 'strength';
             typeSelect.disabled = true; // Disable type change when editing
             document.getElementById('exerciseNameInput').value = exercise.name;
+            document.getElementById('exerciseVideoUrl').value = exercise.videoUrl || '';
 
             if (exercise.type === 'strength' || !exercise.type) {
                 // Load strength exercise data
@@ -310,6 +311,7 @@ class GymTrackerApp {
             typeSelect.value = 'strength';
             typeSelect.disabled = false; // Enable type selection for new exercises
             document.getElementById('exerciseNameInput').value = '';
+            document.getElementById('exerciseVideoUrl').value = '';
             document.getElementById('setsContainer').innerHTML = `
                 <div class="set-input">
                     <select class="input small" data-field="unit">
@@ -383,6 +385,7 @@ class GymTrackerApp {
     saveExercise() {
         const name = document.getElementById('exerciseNameInput').value.trim();
         const type = document.getElementById('exerciseTypeSelect').value;
+        const videoUrl = document.getElementById('exerciseVideoUrl').value.trim();
 
         if (!name) {
             alert('Please enter an exercise name');
@@ -401,12 +404,14 @@ class GymTrackerApp {
             }
             exercise.name = name;
             exercise.type = type;
+            exercise.videoUrl = videoUrl || null;
         } else {
             // Create new exercise
             exercise = {
                 id: Date.now() + Math.random(), // Add random component for uniqueness
                 name: name,
-                type: type
+                type: type,
+                videoUrl: videoUrl || null
             };
         }
 
@@ -549,6 +554,7 @@ class GymTrackerApp {
                     <div class="exercise-header">
                         <h3>${exerciseIcon} ${exercise.name}</h3>
                         <div class="exercise-actions">
+                            ${exercise.videoUrl ? `<button class="btn-icon-small" onclick="window.open('${exercise.videoUrl}', '_blank')" title="Watch Tutorial">🎥</button>` : ''}
                             ${hasHistory && type === 'strength' ? `<button class="btn-icon-small" onclick="app.toggleExerciseHistory(${exercise.id})" title="View Progress">📊</button>` : ''}
                             <button class="btn-icon-small" onclick="app.openAddExerciseModal(${exercise.id})" title="Edit">✏️</button>
                             <button class="btn-icon" onclick="app.deleteExercise(${exercise.id})">🗑️</button>

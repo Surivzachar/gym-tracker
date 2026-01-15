@@ -10,6 +10,7 @@
           "id": 1737072000002,
           "name": "Flat DB Bench Press",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 15, "weight": 0 },
             { "reps": 12, "weight": 0 },
@@ -21,6 +22,7 @@
           "id": 1737072000003,
           "name": "Incline Press",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -31,6 +33,7 @@
           "id": 1737072000004,
           "name": "Pec Fly",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -41,6 +44,7 @@
           "id": 1737072000005,
           "name": "Overhead Triceps Extension",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -51,6 +55,7 @@
           "id": 1737072000006,
           "name": "Rope Pushdown",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -68,6 +73,7 @@
           "id": 1737072000008,
           "name": "Lat Pulldown / Pull-ups",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 15, "weight": 0 },
             { "reps": 12, "weight": 0 },
@@ -79,6 +85,7 @@
           "id": 1737072000009,
           "name": "Seated Cable Row",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -89,6 +96,7 @@
           "id": 1737072000010,
           "name": "Single-arm DB Row",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -99,6 +107,7 @@
           "id": 1737072000011,
           "name": "Incline DB Curl",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -109,6 +118,7 @@
           "id": 1737072000012,
           "name": "Hammer Curl",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -119,6 +129,7 @@
           "id": 1737072000013,
           "name": "Heavy DB Holds",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 40, "weight": 0, "note": "40 sec hold" },
             { "reps": 35, "weight": 0, "note": "35 sec hold" },
@@ -129,6 +140,7 @@
           "id": 1737072000014,
           "name": "Reverse EZ Curl",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 15, "weight": 0 },
             { "reps": 15, "weight": 0 },
@@ -139,6 +151,7 @@
           "id": 1737072000015,
           "name": "Wrist Curls",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 20, "weight": 0 },
             { "reps": 18, "weight": 0 },
@@ -156,6 +169,7 @@
           "id": 1737072000017,
           "name": "Hack Squat",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 15, "weight": 0 },
             { "reps": 12, "weight": 0 },
@@ -167,6 +181,7 @@
           "id": 1737072000018,
           "name": "Heel-elevated Split Squat",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -177,6 +192,7 @@
           "id": 1737072000019,
           "name": "Leg Extension",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0, "note": "DROP SET" }
@@ -186,6 +202,7 @@
           "id": 1737072000020,
           "name": "Seated Leg Curl",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 15, "weight": 0 },
             { "reps": 12, "weight": 0 },
@@ -197,6 +214,7 @@
           "id": 1737072000021,
           "name": "Romanian Deadlift",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -207,6 +225,7 @@
           "id": 1737072000022,
           "name": "Standing Calf Raise",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 15, "weight": 0 },
             { "reps": 15, "weight": 0 },
@@ -219,6 +238,7 @@
           "id": 1737072000023,
           "name": "Seated Calf Raise",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 15, "weight": 0 },
             { "reps": 15, "weight": 0 },
@@ -237,6 +257,7 @@
           "id": 1737072000025,
           "name": "Seated DB Shoulder Press",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -247,6 +268,7 @@
           "id": 1737072000026,
           "name": "Lateral Raise",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -257,6 +279,7 @@
           "id": 1737072000027,
           "name": "Rear Delt Fly",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -267,6 +290,7 @@
           "id": 1737072000028,
           "name": "Cable Curl",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0 },
@@ -277,6 +301,7 @@
           "id": 1737072000029,
           "name": "Concentration Curl",
           "type": "strength",
+          "videoUrl": null,
           "sets": [
             { "reps": 12, "weight": 0 },
             { "reps": 10, "weight": 0, "note": "DROP SET" }
@@ -286,6 +311,7 @@
           "id": 1737072000030,
           "name": "Farmer's Walk",
           "type": "cardio",
+          "videoUrl": null,
           "duration": 0,
           "distance": 0,
           "sets": [
@@ -304,6 +330,7 @@
           "id": 1737072000032,
           "name": "Cycling (Commute)",
           "type": "cardio",
+          "videoUrl": null,
           "duration": 30,
           "distance": 0,
           "calories": 0
@@ -312,6 +339,7 @@
           "id": 1737072000033,
           "name": "Ceremony Class",
           "type": "cardio",
+          "videoUrl": null,
           "duration": 60,
           "distance": 0,
           "calories": 0
@@ -320,6 +348,7 @@
           "id": 1737072000034,
           "name": "Badminton",
           "type": "cardio",
+          "videoUrl": null,
           "duration": 60,
           "distance": 0,
           "calories": 0
@@ -335,6 +364,7 @@
           "id": 1737072000036,
           "name": "Dragon Boating",
           "type": "cardio",
+          "videoUrl": null,
           "duration": 90,
           "distance": 0,
           "calories": 0
@@ -350,6 +380,7 @@
           "id": 1737072000038,
           "name": "Dragon Boating",
           "type": "cardio",
+          "videoUrl": null,
           "duration": 90,
           "distance": 0,
           "calories": 0
@@ -365,6 +396,7 @@
           "id": 1737072000040,
           "name": "Cycling to Work",
           "type": "cardio",
+          "videoUrl": null,
           "duration": 15,
           "distance": 0,
           "calories": 0
@@ -373,6 +405,7 @@
           "id": 1737072000041,
           "name": "Cycling from Work",
           "type": "cardio",
+          "videoUrl": null,
           "duration": 15,
           "distance": 0,
           "calories": 0
