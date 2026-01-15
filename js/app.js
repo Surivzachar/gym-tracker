@@ -147,6 +147,15 @@ class GymTrackerApp {
             this.importData(e);
         });
 
+        // Import Workout Routines
+        document.getElementById('importRoutinesBtn').addEventListener('click', () => {
+            document.getElementById('importRoutinesInput').click();
+        });
+
+        document.getElementById('importRoutinesInput').addEventListener('change', (e) => {
+            this.importRoutines(e);
+        });
+
         // Date History
         document.getElementById('calendarBtn').addEventListener('click', () => {
             this.openDateHistoryModal();
@@ -1708,6 +1717,59 @@ class GymTrackerApp {
             } catch (error) {
                 console.error('Import error:', error);
                 alert('Error importing data. Please check the file and try again.');
+            }
+        };
+
+        reader.readAsText(file);
+
+        // Reset file input
+        event.target.value = '';
+    }
+
+    importRoutines(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+
+                // Validate data structure
+                if (!data.routines || !Array.isArray(data.routines)) {
+                    alert('Invalid routines file format. Expected a "routines" array.');
+                    return;
+                }
+
+                // Confirm before importing
+                if (!confirm(`This will import ${data.routines.length} workout routine(s). Your existing routines will be kept.\n\nContinue?`)) {
+                    return;
+                }
+
+                // Get existing routines
+                const existingRoutines = Storage.getAllRoutines();
+                const existingIds = new Set(existingRoutines.map(r => r.id));
+
+                // Merge new routines, avoiding duplicates by ID
+                let importedCount = 0;
+                data.routines.forEach(routine => {
+                    if (!existingIds.has(routine.id)) {
+                        existingRoutines.push(routine);
+                        importedCount++;
+                    }
+                });
+
+                // Save merged routines
+                localStorage.setItem(Storage.KEYS.ROUTINES, JSON.stringify(existingRoutines));
+
+                alert(`Successfully imported ${importedCount} new routine(s)!`);
+
+                // Refresh routines view if we're on that tab
+                this.renderRoutines();
+
+            } catch (error) {
+                console.error('Import routines error:', error);
+                alert('Error importing routines. Please check the file format and try again.');
             }
         };
 

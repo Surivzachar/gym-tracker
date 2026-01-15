@@ -1,0 +1,384 @@
+{
+  "version": "1.0",
+  "exportDate": "2026-01-16T00:00:00.000Z",
+  "routines": [
+    {
+      "id": 1737072000001,
+      "name": "Wednesday AM - Chest + Triceps",
+      "exercises": [
+        {
+          "id": 1737072000002,
+          "name": "Flat DB Bench Press",
+          "type": "strength",
+          "sets": [
+            { "reps": 15, "weight": 0 },
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000003,
+          "name": "Incline Press",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000004,
+          "name": "Pec Fly",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000005,
+          "name": "Overhead Triceps Extension",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000006,
+          "name": "Rope Pushdown",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0, "note": "DROP SET" }
+          ]
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737072000007,
+      "name": "Thursday - Back + Biceps + Forearms",
+      "exercises": [
+        {
+          "id": 1737072000008,
+          "name": "Lat Pulldown / Pull-ups",
+          "type": "strength",
+          "sets": [
+            { "reps": 15, "weight": 0 },
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000009,
+          "name": "Seated Cable Row",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000010,
+          "name": "Single-arm DB Row",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000011,
+          "name": "Incline DB Curl",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000012,
+          "name": "Hammer Curl",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000013,
+          "name": "Heavy DB Holds",
+          "type": "strength",
+          "sets": [
+            { "reps": 40, "weight": 0, "note": "40 sec hold" },
+            { "reps": 35, "weight": 0, "note": "35 sec hold" },
+            { "reps": 30, "weight": 0, "note": "30 sec hold" }
+          ]
+        },
+        {
+          "id": 1737072000014,
+          "name": "Reverse EZ Curl",
+          "type": "strength",
+          "sets": [
+            { "reps": 15, "weight": 0 },
+            { "reps": 15, "weight": 0 },
+            { "reps": 12, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000015,
+          "name": "Wrist Curls",
+          "type": "strength",
+          "sets": [
+            { "reps": 20, "weight": 0 },
+            { "reps": 18, "weight": 0 },
+            { "reps": 15, "weight": 0 }
+          ]
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737072000016,
+      "name": "Friday - Leg Day",
+      "exercises": [
+        {
+          "id": 1737072000017,
+          "name": "Hack Squat",
+          "type": "strength",
+          "sets": [
+            { "reps": 15, "weight": 0 },
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000018,
+          "name": "Heel-elevated Split Squat",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000019,
+          "name": "Leg Extension",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0, "note": "DROP SET" }
+          ]
+        },
+        {
+          "id": 1737072000020,
+          "name": "Seated Leg Curl",
+          "type": "strength",
+          "sets": [
+            { "reps": 15, "weight": 0 },
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000021,
+          "name": "Romanian Deadlift",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000022,
+          "name": "Standing Calf Raise",
+          "type": "strength",
+          "sets": [
+            { "reps": 15, "weight": 0 },
+            { "reps": 15, "weight": 0 },
+            { "reps": 12, "weight": 0 },
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000023,
+          "name": "Seated Calf Raise",
+          "type": "strength",
+          "sets": [
+            { "reps": 15, "weight": 0 },
+            { "reps": 15, "weight": 0 },
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 }
+          ]
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737072000024,
+      "name": "Sunday - Shoulders + Arms + Forearms",
+      "exercises": [
+        {
+          "id": 1737072000025,
+          "name": "Seated DB Shoulder Press",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000026,
+          "name": "Lateral Raise",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0, "note": "DROP SET" }
+          ]
+        },
+        {
+          "id": 1737072000027,
+          "name": "Rear Delt Fly",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000028,
+          "name": "Cable Curl",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0 },
+            { "reps": 8, "weight": 0 }
+          ]
+        },
+        {
+          "id": 1737072000029,
+          "name": "Concentration Curl",
+          "type": "strength",
+          "sets": [
+            { "reps": 12, "weight": 0 },
+            { "reps": 10, "weight": 0, "note": "DROP SET" }
+          ]
+        },
+        {
+          "id": 1737072000030,
+          "name": "Farmer's Walk",
+          "type": "cardio",
+          "duration": 0,
+          "distance": 0,
+          "sets": [
+            { "reps": 1, "weight": 0, "note": "Round 1" },
+            { "reps": 1, "weight": 0, "note": "Round 2" }
+          ]
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737072000031,
+      "name": "Monday - Sport/Cardio Day",
+      "exercises": [
+        {
+          "id": 1737072000032,
+          "name": "Cycling (Commute)",
+          "type": "cardio",
+          "duration": 30,
+          "distance": 0,
+          "calories": 0
+        },
+        {
+          "id": 1737072000033,
+          "name": "Ceremony Class",
+          "type": "cardio",
+          "duration": 60,
+          "distance": 0,
+          "calories": 0
+        },
+        {
+          "id": 1737072000034,
+          "name": "Badminton",
+          "type": "cardio",
+          "duration": 60,
+          "distance": 0,
+          "calories": 0
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737072000035,
+      "name": "Tuesday - Dragon Boating",
+      "exercises": [
+        {
+          "id": 1737072000036,
+          "name": "Dragon Boating",
+          "type": "cardio",
+          "duration": 90,
+          "distance": 0,
+          "calories": 0
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737072000037,
+      "name": "Wednesday PM - Dragon Boating",
+      "exercises": [
+        {
+          "id": 1737072000038,
+          "name": "Dragon Boating",
+          "type": "cardio",
+          "duration": 90,
+          "distance": 0,
+          "calories": 0
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    },
+    {
+      "id": 1737072000039,
+      "name": "Daily - Cycling Commute",
+      "exercises": [
+        {
+          "id": 1737072000040,
+          "name": "Cycling to Work",
+          "type": "cardio",
+          "duration": 15,
+          "distance": 0,
+          "calories": 0
+        },
+        {
+          "id": 1737072000041,
+          "name": "Cycling from Work",
+          "type": "cardio",
+          "duration": 15,
+          "distance": 0,
+          "calories": 0
+        }
+      ],
+      "createdAt": "2026-01-16T00:00:00.000Z"
+    }
+  ]
+}
