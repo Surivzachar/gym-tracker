@@ -2556,6 +2556,10 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         } else {
             summaryEl.innerHTML = '<p class="empty-state-small">No workout logged today. Start tracking!</p>';
         }
+
+        // Render progress charts
+        this.renderWeightChart();
+        this.renderMetricTrendCharts();
     }
 
     getTodayWorkout() {
@@ -2631,6 +2635,182 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.closeModal('weightModal');
         this.renderDashboard();
         this.syncAfterChange();
+    }
+
+    renderWeightChart() {
+        const entries = Storage.getAllWeightEntries();
+        const weightGoal = Storage.getWeightGoal();
+        const chartContainer = document.getElementById('weightProgressChart');
+        const section = document.getElementById('weightProgressSection');
+
+        // Hide section if no data
+        if (entries.length === 0 || !weightGoal.startingWeight) {
+            section.style.display = 'none';
+            return;
+        }
+
+        section.style.display = 'block';
+
+        // Update stats
+        const latestWeight = entries[0];
+        const startWeight = weightGoal.startingWeight;
+        const goalWeight = weightGoal.goalWeight;
+        const weightChange = latestWeight.weight - startWeight;
+
+        document.getElementById('startingWeightDisplay').textContent = startWeight.toFixed(1) + ' kg';
+        document.getElementById('currentWeightDisplay').textContent = latestWeight.weight.toFixed(1) + ' kg';
+        document.getElementById('goalWeightDisplay').textContent = goalWeight ? goalWeight.toFixed(1) + ' kg' : '--';
+        document.getElementById('weightChangeDisplay').textContent = (weightChange >= 0 ? '+' : '') + weightChange.toFixed(1) + ' kg';
+
+        // Sort entries by date (oldest first for chart)
+        const sortedEntries = [...entries].reverse();
+
+        // Calculate min/max for Y-axis
+        const weights = sortedEntries.map(e => e.weight);
+        if (goalWeight) weights.push(goalWeight);
+        if (startWeight) weights.push(startWeight);
+        const minWeight = Math.min(...weights) - 2;
+        const maxWeight = Math.max(...weights) + 2;
+        const weightRange = maxWeight - minWeight;
+
+        // Generate chart HTML
+        let chartHTML = '<div class="chart-container">';
+
+        // Add goal line if exists
+        if (goalWeight) {
+            const goalY = ((maxWeight - goalWeight) / weightRange) * 100;
+            chartHTML += `
+                <div class="chart-goal-line" style="bottom: ${100 - goalY}%;">
+                    <span class="chart-goal-label">Goal: ${goalWeight.toFixed(1)} kg</span>
+                </div>
+            `;
+        }
+
+        // Add start line
+        const startY = ((maxWeight - startWeight) / weightRange) * 100;
+        chartHTML += `
+            <div class="chart-start-line" style="bottom: ${100 - startY}%;">
+                <span class="chart-start-label">Start: ${startWeight.toFixed(1)} kg</span>
+            </div>
+        `;
+
+        // Add data points and create SVG path
+        let pathPoints = [];
+        sortedEntries.forEach((entry, index) => {
+            const x = (index / (sortedEntries.length - 1 || 1)) * 100;
+            const y = ((maxWeight - entry.weight) / weightRange) * 100;
+            const date = new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+            pathPoints.push(`${x},${100 - y}`);
+
+            chartHTML += `
+                <div class="chart-point"
+                     style="left: ${x}%; bottom: ${100 - y}%;"
+                     title="${entry.weight.toFixed(1)} kg - ${date}">
+                </div>
+            `;
+        });
+
+        // Add SVG line connecting points
+        if (pathPoints.length > 1) {
+            chartHTML += `
+                <svg class="chart-line" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
+                    <polyline points="${pathPoints.join(' ')}"
+                              fill="none"
+                              stroke="#3b82f6"
+                              stroke-width="2"
+                              style="vector-effect: non-scaling-stroke;" />
+                </svg>
+            `;
+        }
+
+        // Add X-axis labels
+        chartHTML += '<div class="chart-x-axis">';
+        sortedEntries.forEach((entry, index) => {
+            if (index === 0 || index === sortedEntries.length - 1 || sortedEntries.length <= 5) {
+                const x = (index / (sortedEntries.length - 1 || 1)) * 100;
+                const date = new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                chartHTML += `<span class="chart-x-label" style="left: ${x}%;">${date}</span>`;
+            }
+        });
+        chartHTML += '</div>';
+
+        chartHTML += '</div>';
+
+        chartContainer.innerHTML = chartHTML;
+    }
+
+    renderMetricTrendCharts() {
+        // Get last 7 days of metrics
+        const allMetrics = Storage.getAllMetrics();
+        const last7Days = [];
+        const today = new Date();
+
+        for (let i = 6; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(date.getDate() - i);
+            const dateStr = date.toDateString();
+            const dayMetrics = allMetrics.find(m => new Date(m.date).toDateString() === dateStr);
+            last7Days.push({
+                date: date,
+                dateStr: date.toLocaleDateString('en-US', { weekday: 'short' }),
+                steps: dayMetrics?.steps || 0,
+                water: dayMetrics?.waterGlasses || 0,
+                sleep: dayMetrics?.sleepHours || 0
+            });
+        }
+
+        // Check if we have any data
+        const hasData = last7Days.some(d => d.steps > 0 || d.water > 0 || d.sleep > 0);
+        if (!hasData) {
+            return; // Don't render empty charts
+        }
+
+        // We'll render these charts inline in the dashboard sections
+        // For now, let's just log that we have the data ready
+        // The charts can be added to specific sections in the HTML later
+        this.renderMetricBarChart('steps', last7Days, 10000);
+        this.renderMetricBarChart('water', last7Days, 8);
+        this.renderMetricBarChart('sleep', last7Days, 8);
+    }
+
+    renderMetricBarChart(metricType, data, goalValue) {
+        const containerId = `${metricType}TrendChart`;
+        const container = document.getElementById(containerId);
+
+        if (!container) return;
+
+        const values = data.map(d => d[metricType]);
+        const maxValue = Math.max(...values, goalValue);
+
+        if (maxValue === 0) {
+            container.innerHTML = '<p class="empty-state-small">No data logged yet</p>';
+            return;
+        }
+
+        let chartHTML = '<div class="bar-chart">';
+
+        data.forEach(day => {
+            const value = day[metricType];
+            const height = (value / maxValue) * 100;
+            const isToday = day.date.toDateString() === new Date().toDateString();
+
+            chartHTML += `
+                <div class="bar-item">
+                    <div class="bar" style="height: ${height}%;" title="${day.dateStr}: ${value}"></div>
+                    <span class="bar-label ${isToday ? 'today' : ''}">${day.dateStr}</span>
+                </div>
+            `;
+        });
+
+        chartHTML += '</div>';
+
+        // Add average info
+        const avg = (values.reduce((a, b) => a + b, 0) / values.filter(v => v > 0).length) || 0;
+        const unit = metricType === 'sleep' ? ' hrs' : (metricType === 'water' ? ' glasses' : ' steps');
+        chartHTML += `<p class="chart-average">7-day average: ${avg.toFixed(1)}${unit}</p>`;
+
+        container.innerHTML = chartHTML;
     }
 }
 
