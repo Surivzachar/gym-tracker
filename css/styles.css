@@ -200,10 +200,13 @@ img {
     position: sticky;
     top: 0;
     z-index: 10;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .nav-btn {
     flex: 1;
+    min-width: 100px;
     padding: 1rem;
     border: none;
     background: none;
@@ -213,6 +216,7 @@ img {
     cursor: pointer;
     border-bottom: 3px solid transparent;
     transition: all 0.2s;
+    white-space: nowrap;
 }
 
 .nav-btn:hover {

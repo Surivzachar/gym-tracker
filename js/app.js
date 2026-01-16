@@ -32,6 +32,13 @@ class GymTrackerApp {
             btn.addEventListener('click', (e) => this.switchView(e.target.dataset.view));
         });
 
+        // Date Banner - click to return to today
+        document.getElementById('currentDateDisplay').addEventListener('click', () => {
+            if (this.workingDate) {
+                this.returnToToday();
+            }
+        });
+
         // Add Exercise
         document.getElementById('addExerciseBtn').addEventListener('click', () => {
             this.openAddExerciseModal();
@@ -630,11 +637,15 @@ class GymTrackerApp {
         }
 
         if (confirm('Finish and save this workout?')) {
-            Storage.finishWorkout();
+            // Pass the working date if editing a past date
+            Storage.finishWorkout(this.workingDate);
             this.currentWorkout = Storage.getCurrentWorkout();
             this.renderCurrentWorkout();
             this.renderHistory();
-            alert('Workout saved!');
+            this.renderDashboard();
+
+            const dateMsg = this.workingDate ? ' for ' + new Date(this.workingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+            alert(`Workout saved${dateMsg}!`);
         }
     }
 
@@ -1336,11 +1347,12 @@ class GymTrackerApp {
             Storage.updateFoodItem(this.editingFoodId, foodItem);
             this.editingFoodId = null;
         } else {
-            // Add new food item
-            Storage.addFoodItem(this.currentMealType, foodItem);
+            // Add new food item - pass working date if editing past date
+            Storage.addFoodItem(this.currentMealType, foodItem, this.workingDate);
         }
 
         this.renderFood();
+        this.renderDashboard();
         this.closeModal('addFoodModal');
     }
 
@@ -1517,21 +1529,43 @@ class GymTrackerApp {
 
     // Settings and Date Banner
     updateDateBanner() {
-        // Update current date
+        // Check if we're editing a past date
+        const displayDate = this.workingDate ? new Date(this.workingDate) : new Date();
         const today = new Date();
+        const isEditingPast = this.workingDate && displayDate.toDateString() !== today.toDateString();
+
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const formattedDate = today.toLocaleDateString('en-US', options);
-        document.getElementById('currentDateDisplay').textContent = formattedDate;
+        const formattedDate = displayDate.toLocaleDateString('en-US', options);
+
+        const dateDisplay = document.getElementById('currentDateDisplay');
+        if (isEditingPast) {
+            dateDisplay.innerHTML = `📝 Editing: ${formattedDate} <span style="font-size: 0.85rem; opacity: 0.8;">(tap to return to today)</span>`;
+            dateDisplay.style.cursor = 'pointer';
+            dateDisplay.style.background = 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)';
+        } else {
+            dateDisplay.textContent = formattedDate;
+            dateDisplay.style.cursor = 'default';
+            dateDisplay.style.background = '';
+        }
 
         // Update journey day
-        const daysSinceStart = Storage.getDaysSinceStart();
+        const startDate = Storage.getStartDate();
         const journeyDisplay = document.getElementById('journeyDayDisplay');
 
-        if (daysSinceStart !== null) {
+        if (startDate) {
+            const start = new Date(startDate);
+            const diffTime = displayDate - start;
+            const daysSinceStart = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
             journeyDisplay.textContent = `Day ${daysSinceStart}`;
         } else {
             journeyDisplay.textContent = 'Set your start date';
         }
+    }
+
+    returnToToday() {
+        this.workingDate = null;
+        this.updateDateBanner();
+        this.renderDashboard();
     }
 
     openSettingsModal() {
@@ -2157,7 +2191,45 @@ class GymTrackerApp {
         }
         content += '</div>';
 
+        // Add edit button for the selected date
+        const isToday = selectedDate.toDateString() === new Date().toDateString();
+        if (!isToday) {
+            content += `
+                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb;">
+                    <button class="btn-primary full-width" onclick="app.editDateData('${dateString}')">
+                        ✏️ Add/Edit Data for This Date
+                    </button>
+                    <p class="helper-text" style="text-align: center; margin-top: 0.5rem;">Switch to this date to log workout or food data</p>
+                </div>
+            `;
+        }
+
         container.innerHTML = content;
+    }
+
+    editDateData(dateString) {
+        // Store the selected date for editing
+        this.workingDate = dateString;
+
+        // Update the date banner to show we're editing a past date
+        const selectedDate = new Date(dateString);
+        const formattedDate = selectedDate.toLocaleDateString('en-US', {
+            weekday: 'long',
+            month: 'short',
+            day: 'numeric'
+        });
+
+        // Close the history modal
+        this.closeModal('dateHistoryModal');
+
+        // Show notification
+        alert(`📝 Now editing: ${formattedDate}\n\nYou can now log workout and food data for this date.\n\nTip: Click the date banner to return to today.`);
+
+        // Update date banner
+        this.updateDateBanner();
+
+        // Refresh dashboard to show data for this date
+        this.renderDashboard();
     }
 
     // Google Drive Sync Methods

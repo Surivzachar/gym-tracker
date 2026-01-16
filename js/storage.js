@@ -64,16 +64,19 @@ const Storage = {
         return this.remove(this.KEYS.CURRENT_WORKOUT);
     },
 
-    finishWorkout() {
+    finishWorkout(customDate = null) {
         const currentWorkout = this.getCurrentWorkout();
 
         if (currentWorkout.exercises.length === 0) {
             return false;
         }
 
+        // Use custom date if provided, otherwise use today
+        const workoutDate = customDate ? new Date(customDate) : new Date();
+
         const workout = {
             id: Date.now() + Math.random(), // Add random component for uniqueness
-            date: new Date().toISOString(),
+            date: workoutDate.toISOString(),
             exercises: currentWorkout.exercises,
             duration: null, // Could be calculated if we track start time
             routineId: this.getCurrentRoutineId() || null // Track which routine was used
@@ -244,10 +247,12 @@ const Storage = {
         };
     },
 
-    addFoodItem(mealType, foodItem) {
+    addFoodItem(mealType, foodItem, customDate = null) {
         const allDays = this.getAllFoodDays();
-        const today = new Date().toDateString();
-        let todayIndex = allDays.findIndex(day => new Date(day.date).toDateString() === today);
+        // Use custom date if provided, otherwise use today
+        const targetDate = customDate ? new Date(customDate) : new Date();
+        const targetDateStr = targetDate.toDateString();
+        let targetIndex = allDays.findIndex(day => new Date(day.date).toDateString() === targetDateStr);
 
         const foodEntry = {
             id: Date.now() + Math.random(), // Add random component to ensure uniqueness
@@ -257,18 +262,18 @@ const Storage = {
             protein: parseInt(foodItem.protein) || 0,
             carbs: parseInt(foodItem.carbs) || 0,
             fats: parseInt(foodItem.fats) || 0,
-            time: new Date().toISOString()
+            time: targetDate.toISOString()
         };
 
-        if (todayIndex === -1) {
+        if (targetIndex === -1) {
             // Create new day entry
             allDays.unshift({
-                date: new Date().toISOString(),
+                date: targetDate.toISOString(),
                 meals: [foodEntry]
             });
         } else {
             // Add to existing day
-            allDays[todayIndex].meals.push(foodEntry);
+            allDays[targetIndex].meals.push(foodEntry);
         }
 
         return this.set(this.KEYS.FOOD_DIARY, allDays);
