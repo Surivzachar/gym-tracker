@@ -204,6 +204,10 @@ class GymTrackerApp {
             this.saveSleep();
         });
 
+        document.getElementById('saveWeightBtn').addEventListener('click', () => {
+            this.saveWeight();
+        });
+
         // Google Drive Sync
         this.renderGoogleDriveStatus();
 
@@ -1525,8 +1529,20 @@ class GymTrackerApp {
             startDateInput.value = startDate;
         }
 
+        // Load weight goal if exists
+        const weightGoal = Storage.getWeightGoal();
+        if (weightGoal.startingWeight) {
+            document.getElementById('startingWeightInput').value = weightGoal.startingWeight;
+        }
+        if (weightGoal.goalWeight) {
+            document.getElementById('goalWeightInput').value = weightGoal.goalWeight;
+        }
+
         // Update journey info
         this.updateJourneyInfo();
+
+        // Update weight goal info
+        this.updateWeightGoalInfo();
 
         // Render auto-backups list
         this.renderAutoBackups();
@@ -1567,9 +1583,33 @@ class GymTrackerApp {
         }
 
         Storage.setStartDate(startDate);
+
+        // Save weight goal if provided
+        const startingWeight = document.getElementById('startingWeightInput').value;
+        const goalWeight = document.getElementById('goalWeightInput').value;
+
+        if (startingWeight && goalWeight) {
+            Storage.setWeightGoal(startingWeight, goalWeight);
+        }
+
         this.updateDateBanner();
+        this.renderDashboard();
         this.closeModal('settingsModal');
         alert('Settings saved!');
+        this.syncAfterChange();
+    }
+
+    updateWeightGoalInfo() {
+        const weightGoal = Storage.getWeightGoal();
+        const weightGoalInfo = document.getElementById('weightGoalInfo');
+
+        if (weightGoal.startingWeight && weightGoal.goalWeight) {
+            const diff = weightGoal.goalWeight - weightGoal.startingWeight;
+            const sign = diff > 0 ? '+' : '';
+            weightGoalInfo.innerHTML = `<p><strong>Goal:</strong> ${sign}${diff.toFixed(1)} kg (from ${weightGoal.startingWeight} kg to ${weightGoal.goalWeight} kg)</p>`;
+        } else {
+            weightGoalInfo.innerHTML = '<p>Set your starting and goal weight to track progress.</p>';
+        }
     }
 
     // Auto-Backup
@@ -2479,6 +2519,19 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         document.getElementById('dashSleep').textContent = metrics.sleepHours || 0;
         document.getElementById('dashCalories').textContent = metrics.workoutCalories || 0;
 
+        // Update weight
+        const weightGoal = Storage.getWeightGoal();
+        const latestWeight = Storage.getLatestWeight();
+        if (latestWeight) {
+            document.getElementById('dashWeight').textContent = latestWeight.weight.toFixed(1) + ' kg';
+            if (weightGoal.goalWeight) {
+                document.getElementById('dashWeightGoal').textContent = `Goal: ${weightGoal.goalWeight} kg`;
+            }
+        } else if (weightGoal.startingWeight) {
+            document.getElementById('dashWeight').textContent = weightGoal.startingWeight.toFixed(1) + ' kg';
+            document.getElementById('dashWeightGoal').textContent = `Goal: ${weightGoal.goalWeight} kg`;
+        }
+
         // Update food stats
         document.getElementById('dashFoodCalories').textContent = foodStats.totalCalories;
         document.getElementById('dashFoodProtein').textContent = foodStats.totalProtein + 'g';
@@ -2554,6 +2607,24 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         const hours = parseFloat(document.getElementById('sleepInput').value) || 0;
         Storage.updateTodayMetrics({ sleepHours: hours });
         this.closeModal('sleepModal');
+        this.renderDashboard();
+        this.syncAfterChange();
+    }
+
+    openWeightModal() {
+        const latestWeight = Storage.getLatestWeight();
+        document.getElementById('weightInput').value = latestWeight ? latestWeight.weight : '';
+        this.openModal('weightModal');
+    }
+
+    saveWeight() {
+        const weight = parseFloat(document.getElementById('weightInput').value);
+        if (!weight || weight < 30 || weight > 300) {
+            alert('Please enter a valid weight between 30 and 300 kg');
+            return;
+        }
+        Storage.logWeight(weight);
+        this.closeModal('weightModal');
         this.renderDashboard();
         this.syncAfterChange();
     }

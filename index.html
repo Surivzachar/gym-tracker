@@ -93,6 +93,39 @@
                                 <div class="stat-sublabel">hours</div>
                             </div>
                         </div>
+
+                        <div class="stat-card clickable" onclick="app.openWeightModal()">
+                            <div class="stat-icon">⚖️</div>
+                            <div class="stat-content">
+                                <div class="stat-label">Weight</div>
+                                <div class="stat-value" id="dashWeight">--</div>
+                                <div class="stat-sublabel" id="dashWeightGoal">Set goal</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weight Progress -->
+                    <div class="dashboard-section" id="weightProgressSection" style="display: none;">
+                        <h3>⚖️ Weight Progress</h3>
+                        <div id="weightProgressChart" class="weight-chart"></div>
+                        <div class="weight-stats-grid">
+                            <div class="summary-item">
+                                <span class="summary-label">Starting</span>
+                                <span class="summary-value" id="startingWeightDisplay">--</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Current</span>
+                                <span class="summary-value" id="currentWeightDisplay">--</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Goal</span>
+                                <span class="summary-value" id="goalWeightDisplay">--</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Change</span>
+                                <span class="summary-value" id="weightChangeDisplay">--</span>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Food Summary -->
@@ -560,6 +593,28 @@
                     <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #e5e7eb;">
 
                     <div class="input-group">
+                        <label class="input-label">⚖️ Weight Goal</label>
+                        <p class="helper-text">Track your weight transformation from starting weight to goal weight.</p>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.75rem;">
+                            <div>
+                                <label class="input-label" style="font-size: 0.85rem;">Starting Weight (kg)</label>
+                                <input type="number" id="startingWeightInput" placeholder="75.0" step="0.1" class="input">
+                            </div>
+                            <div>
+                                <label class="input-label" style="font-size: 0.85rem;">Goal Weight (kg)</label>
+                                <input type="number" id="goalWeightInput" placeholder="70.0" step="0.1" class="input">
+                            </div>
+                        </div>
+
+                        <div id="weightGoalInfo" class="settings-info" style="margin-top: 0.75rem;">
+                            <p>Set your starting and goal weight to track progress.</p>
+                        </div>
+                    </div>
+
+                    <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #e5e7eb;">
+
+                    <div class="input-group">
                         <label class="input-label">☁️ Google Drive Cloud Sync</label>
                         <p class="helper-text">Sync your data across all devices using Google Drive (15GB free).</p>
 
@@ -783,6 +838,29 @@
                     </div>
                     <div class="modal-actions">
                         <button id="saveSleepBtn" class="btn-primary">Save Sleep</button>
+                        <button class="btn-secondary close-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weight Modal -->
+        <div id="weightModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>⚖️ Log Weight</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-label">Current Weight (kg)</label>
+                        <input type="number" id="weightInput" class="input" placeholder="e.g., 72.5" min="30" max="300" step="0.1">
+                    </div>
+                    <p class="helper-text" style="margin-top: 0.5rem; font-size: 0.85rem;">
+                        Track your weight daily to see progress over time
+                    </p>
+                    <div class="modal-actions">
+                        <button id="saveWeightBtn" class="btn-primary">Save Weight</button>
                         <button class="btn-secondary close-btn">Cancel</button>
                     </div>
                 </div>

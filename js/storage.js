@@ -13,7 +13,9 @@ const Storage = {
         AUTO_BACKUPS: 'gym_tracker_auto_backups',
         LAST_BACKUP_DATE: 'gym_tracker_last_backup_date',
         PROGRESS_PHOTOS: 'gym_tracker_progress_photos',
-        DAILY_METRICS: 'gym_tracker_daily_metrics'
+        DAILY_METRICS: 'gym_tracker_daily_metrics',
+        WEIGHT_GOAL: 'gym_tracker_weight_goal',
+        WEIGHT_LOG: 'gym_tracker_weight_log'
     },
 
     // Get data from localStorage
@@ -573,5 +575,62 @@ const Storage = {
         const allMetrics = this.getAllDailyMetrics();
         const dateStr = new Date(date).toDateString();
         return allMetrics.find(m => new Date(m.date).toDateString() === dateStr);
+    },
+
+    // Weight Goal Methods
+    getWeightGoal() {
+        return this.get(this.KEYS.WEIGHT_GOAL) || { startingWeight: null, goalWeight: null };
+    },
+
+    setWeightGoal(startingWeight, goalWeight) {
+        return this.set(this.KEYS.WEIGHT_GOAL, {
+            startingWeight: parseFloat(startingWeight),
+            goalWeight: parseFloat(goalWeight),
+            setDate: new Date().toISOString()
+        });
+    },
+
+    // Weight Log Methods
+    getAllWeightEntries() {
+        return this.get(this.KEYS.WEIGHT_LOG) || [];
+    },
+
+    logWeight(weight) {
+        const entries = this.getAllWeightEntries();
+        const today = new Date().toDateString();
+
+        // Check if there's already an entry for today
+        const existingIndex = entries.findIndex(entry =>
+            new Date(entry.date).toDateString() === today
+        );
+
+        const newEntry = {
+            weight: parseFloat(weight),
+            date: new Date().toISOString()
+        };
+
+        if (existingIndex !== -1) {
+            // Update today's entry
+            entries[existingIndex] = newEntry;
+        } else {
+            // Add new entry
+            entries.push(newEntry);
+        }
+
+        // Sort by date (newest first)
+        entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        return this.set(this.KEYS.WEIGHT_LOG, entries);
+    },
+
+    getLatestWeight() {
+        const entries = this.getAllWeightEntries();
+        return entries.length > 0 ? entries[0] : null;
+    },
+
+    getWeightByDate(date) {
+        const entries = this.getAllWeightEntries();
+        const dateStr = new Date(date).toDateString();
+        return entries.find(entry => new Date(entry.date).toDateString() === dateStr);
     }
 };
