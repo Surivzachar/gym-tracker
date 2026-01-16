@@ -1101,6 +1101,10 @@ class GymTrackerApp {
         alert('Rest time complete!');
     }
 
+    openModal(modalId) {
+        document.getElementById(modalId).classList.add('active');
+    }
+
     closeModal(modalId) {
         document.getElementById(modalId).classList.remove('active');
     }
