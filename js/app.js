@@ -15,6 +15,11 @@ class GymTrackerApp {
         this.restTimerSeconds = 0;
         this.activeRestTimer = null; // Track which exercise has active rest timer
 
+        // Modal rest timer properties
+        this.modalRestTimerInterval = null;
+        this.modalRestTimerSeconds = 0;
+        this.modalRestTimerRunning = false;
+
         this.initializeEventListeners();
         this.checkAutoBackup();
         this.updateDateBanner();
@@ -747,6 +752,87 @@ class GymTrackerApp {
         }
     }
 
+    // Modal Rest Timer Methods
+    startModalRestTimer(seconds) {
+        // Stop any existing modal timer first
+        if (this.modalRestTimerInterval) {
+            this.stopModalRestTimer();
+        }
+
+        this.modalRestTimerSeconds = seconds;
+        this.modalRestTimerRunning = true;
+
+        // Show countdown, hide buttons
+        document.getElementById('modalTimerCountdown').style.display = 'block';
+        document.getElementById('modalTimerButtons').style.display = 'none';
+        document.getElementById('modalRestTimer').classList.add('active');
+
+        this.modalRestTimerInterval = setInterval(() => {
+            this.modalRestTimerSeconds--;
+
+            const minutes = Math.floor(this.modalRestTimerSeconds / 60);
+            const secs = this.modalRestTimerSeconds % 60;
+            const timeDisplay = `${minutes}:${secs.toString().padStart(2, '0')}`;
+
+            const timeElement = document.getElementById('modalTimerTime');
+            if (timeElement) {
+                timeElement.textContent = timeDisplay;
+
+                // Change color as timer gets close to zero
+                if (this.modalRestTimerSeconds <= 10) {
+                    timeElement.style.color = '#ef4444';
+                } else if (this.modalRestTimerSeconds <= 30) {
+                    timeElement.style.color = '#f59e0b';
+                } else {
+                    timeElement.style.color = 'white';
+                }
+            }
+
+            if (this.modalRestTimerSeconds <= 0) {
+                this.modalRestTimerComplete();
+            }
+        }, 1000);
+    }
+
+    stopModalRestTimer() {
+        if (this.modalRestTimerInterval) {
+            clearInterval(this.modalRestTimerInterval);
+            this.modalRestTimerInterval = null;
+        }
+        this.modalRestTimerRunning = false;
+        this.modalRestTimerSeconds = 0;
+
+        // Show buttons, hide countdown
+        const countdown = document.getElementById('modalTimerCountdown');
+        const buttons = document.getElementById('modalTimerButtons');
+        const timer = document.getElementById('modalRestTimer');
+
+        if (countdown) countdown.style.display = 'none';
+        if (buttons) buttons.style.display = 'flex';
+        if (timer) timer.classList.remove('active');
+    }
+
+    modalRestTimerComplete() {
+        this.stopModalRestTimer();
+
+        // Play notification sound and vibrate
+        if ('vibrate' in navigator) {
+            navigator.vibrate([200, 100, 200]);
+        }
+
+        // Show notification
+        if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification('Rest Complete!', {
+                body: 'Ready for your next set',
+                icon: '/icon-192.png',
+                badge: '/icon-192.png',
+                tag: 'rest-timer'
+            });
+        } else {
+            alert('⏰ Rest Complete! Ready for next set?');
+        }
+    }
+
     renderHistory() {
         const container = document.getElementById('historyList');
         const workouts = Storage.getAllWorkouts();
@@ -1226,6 +1312,11 @@ class GymTrackerApp {
 
     closeModal(modalId) {
         document.getElementById(modalId).classList.remove('active');
+
+        // Stop modal rest timer if closing exercise modal
+        if (modalId === 'addExerciseModal' && this.modalRestTimerRunning) {
+            this.stopModalRestTimer();
+        }
     }
 
     // Food tracking methods

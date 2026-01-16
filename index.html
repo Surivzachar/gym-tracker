@@ -400,6 +400,23 @@
                             </div>
                         </div>
                         <button id="addSetBtn" class="btn-secondary full-width">+ Add Set</button>
+
+                        <!-- Rest Timer in Modal -->
+                        <div class="rest-timer-section" style="margin-top: 1rem;">
+                            <div class="rest-timer-display" id="modalRestTimer">
+                                <div class="timer-countdown" id="modalTimerCountdown" style="display: none;">
+                                    <div class="timer-time" id="modalTimerTime">1:30</div>
+                                    <div class="timer-label">Rest Time Remaining</div>
+                                    <button class="btn-secondary btn-sm" onclick="app.stopModalRestTimer()">⏹ Stop</button>
+                                </div>
+                                <div class="rest-timer-buttons" id="modalTimerButtons">
+                                    <button class="btn-secondary btn-sm" onclick="app.startModalRestTimer(60)">60s</button>
+                                    <button class="btn-secondary btn-sm" onclick="app.startModalRestTimer(90)">90s</button>
+                                    <button class="btn-secondary btn-sm" onclick="app.startModalRestTimer(120)">2m</button>
+                                    <button class="btn-secondary btn-sm" onclick="app.startModalRestTimer(180)">3m</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Cardio Inputs -->
