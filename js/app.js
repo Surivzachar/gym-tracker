@@ -1796,8 +1796,22 @@ class GymTrackerApp {
 
                 // Validate data structure
                 if (!data.routines || !Array.isArray(data.routines)) {
-                    alert('Invalid routines file format. Expected a "routines" array.');
+                    alert('❌ Invalid file format!\n\nExpected structure:\n{\n  "routines": [...]\n}\n\nPlease check your JSON file.');
                     return;
+                }
+
+                if (data.routines.length === 0) {
+                    alert('❌ The file contains no routines to import.');
+                    return;
+                }
+
+                // Validate each routine has required fields
+                for (let i = 0; i < data.routines.length; i++) {
+                    const routine = data.routines[i];
+                    if (!routine.name || !routine.exercises || !Array.isArray(routine.exercises)) {
+                        alert(`❌ Invalid routine at index ${i}.\n\nEach routine must have:\n- name (string)\n- exercises (array)`);
+                        return;
+                    }
                 }
 
                 // Confirm before importing
@@ -1812,6 +1826,15 @@ class GymTrackerApp {
                 // Merge new routines, avoiding duplicates by ID
                 let importedCount = 0;
                 data.routines.forEach(routine => {
+                    // Ensure routine has an ID
+                    if (!routine.id) {
+                        routine.id = Date.now() + Math.random();
+                    }
+                    // Add createdAt if missing
+                    if (!routine.createdAt) {
+                        routine.createdAt = new Date().toISOString();
+                    }
+
                     if (!existingIds.has(routine.id)) {
                         existingRoutines.push(routine);
                         importedCount++;
@@ -1821,14 +1844,14 @@ class GymTrackerApp {
                 // Save merged routines
                 localStorage.setItem(Storage.KEYS.ROUTINES, JSON.stringify(existingRoutines));
 
-                alert(`Successfully imported ${importedCount} new routine(s)!`);
+                alert(`✅ Successfully imported ${importedCount} new routine(s)!`);
 
                 // Refresh routines view if we're on that tab
                 this.renderRoutines();
 
             } catch (error) {
                 console.error('Import routines error:', error);
-                alert('Error importing routines. Please check the file format and try again.');
+                alert(`❌ Error importing routines:\n\n${error.message}\n\nPlease check:\n1. File is valid JSON\n2. File encoding is UTF-8\n3. No special characters causing issues`);
             }
         };
 
@@ -1849,8 +1872,22 @@ class GymTrackerApp {
 
                 // Validate data structure
                 if (!data.foodRoutines || !Array.isArray(data.foodRoutines)) {
-                    alert('Invalid diet plan file format. Expected a "foodRoutines" array.');
+                    alert('❌ Invalid file format!\n\nExpected structure:\n{\n  "foodRoutines": [...]\n}\n\nPlease check your JSON file.');
                     return;
+                }
+
+                if (data.foodRoutines.length === 0) {
+                    alert('❌ The file contains no meal plans to import.');
+                    return;
+                }
+
+                // Validate each food routine has required fields
+                for (let i = 0; i < data.foodRoutines.length; i++) {
+                    const routine = data.foodRoutines[i];
+                    if (!routine.name || !routine.meals || !Array.isArray(routine.meals)) {
+                        alert(`❌ Invalid meal plan at index ${i}.\n\nEach meal plan must have:\n- name (string)\n- meals (array)`);
+                        return;
+                    }
                 }
 
                 // Confirm before importing
@@ -1865,6 +1902,15 @@ class GymTrackerApp {
                 // Merge new food routines, avoiding duplicates by ID
                 let importedCount = 0;
                 data.foodRoutines.forEach(routine => {
+                    // Ensure routine has an ID
+                    if (!routine.id) {
+                        routine.id = Date.now() + Math.random();
+                    }
+                    // Add createdAt if missing
+                    if (!routine.createdAt) {
+                        routine.createdAt = new Date().toISOString();
+                    }
+
                     if (!existingIds.has(routine.id)) {
                         existingRoutines.push(routine);
                         importedCount++;
@@ -1874,14 +1920,14 @@ class GymTrackerApp {
                 // Save merged food routines
                 localStorage.setItem(Storage.KEYS.FOOD_ROUTINES, JSON.stringify(existingRoutines));
 
-                alert(`Successfully imported ${importedCount} new meal plan(s)!\n\nGo to Food tab → Food Routines to load them.`);
+                alert(`✅ Successfully imported ${importedCount} new meal plan(s)!\n\nGo to Food tab → Food Routines to load them.`);
 
                 // Refresh food routines view if we're on food tab
                 this.renderFoodRoutines();
 
             } catch (error) {
                 console.error('Import diet plan error:', error);
-                alert('Error importing diet plan. Please check the file format and try again.');
+                alert(`❌ Error importing diet plan:\n\n${error.message}\n\nPlease check:\n1. File is valid JSON\n2. File encoding is UTF-8\n3. No special characters causing issues`);
             }
         };
 
