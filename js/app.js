@@ -147,6 +147,11 @@ class GymTrackerApp {
             this.importData(e);
         });
 
+        // Download Workout Routines
+        document.getElementById('downloadWorkoutBtn').addEventListener('click', () => {
+            this.downloadWorkoutRoutines();
+        });
+
         // Import Workout Routines
         document.getElementById('importRoutinesBtn').addEventListener('click', () => {
             document.getElementById('importRoutinesInput').click();
@@ -154,6 +159,11 @@ class GymTrackerApp {
 
         document.getElementById('importRoutinesInput').addEventListener('change', (e) => {
             this.importRoutines(e);
+        });
+
+        // Download Diet Plan
+        document.getElementById('downloadDietBtn').addEventListener('click', () => {
+            this.downloadDietPlan();
         });
 
         // Import Diet Plan
@@ -1935,6 +1945,58 @@ class GymTrackerApp {
 
         // Reset file input
         event.target.value = '';
+    }
+
+    downloadWorkoutRoutines() {
+        // Fetch the workout routines JSON file from the server
+        fetch('my-workout-routines.json')
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch file');
+                return response.blob();
+            })
+            .then(blob => {
+                // Create a download link
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'my-workout-routines.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+
+                alert('✅ Workout routines downloaded!\n\nNow tap "Import" and select the downloaded file.');
+            })
+            .catch(error => {
+                console.error('Download error:', error);
+                alert('❌ Failed to download workout routines.\n\nPlease check your internet connection and try again.');
+            });
+    }
+
+    downloadDietPlan() {
+        // Fetch the diet plan JSON file from the server
+        fetch('my-diet-plan.json')
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch file');
+                return response.blob();
+            })
+            .then(blob => {
+                // Create a download link
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'my-diet-plan.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+
+                alert('✅ Diet plan downloaded!\n\nNow tap "Import" and select the downloaded file.');
+            })
+            .catch(error => {
+                console.error('Download error:', error);
+                alert('❌ Failed to download diet plan.\n\nPlease check your internet connection and try again.');
+            });
     }
 
     // Date History Methods

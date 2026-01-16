@@ -659,14 +659,22 @@
                         <input type="file" id="importFileInput" accept=".json" style="display: none;">
 
                         <div style="margin-top: 0.75rem;">
-                            <button id="importRoutinesBtn" class="btn-primary full-width">💪 Import Workout Routines</button>
-                            <p class="helper-text" style="margin-top: 0.5rem; font-size: 0.85rem;">Import pre-built workout routines without affecting your data</p>
+                            <label class="input-label">💪 Workout Routines</label>
+                            <p class="helper-text" style="margin-bottom: 0.5rem;">Download the sample workout routine, then import it</p>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button id="downloadWorkoutBtn" class="btn-secondary" style="flex: 1;">📥 Download</button>
+                                <button id="importRoutinesBtn" class="btn-primary" style="flex: 1;">📤 Import</button>
+                            </div>
                         </div>
                         <input type="file" id="importRoutinesInput" accept=".json" style="display: none;">
 
                         <div style="margin-top: 0.75rem;">
-                            <button id="importDietPlanBtn" class="btn-primary full-width">🍽️ Import Diet Plan</button>
-                            <p class="helper-text" style="margin-top: 0.5rem; font-size: 0.85rem;">Import pre-built meal plans as food routines without affecting your data</p>
+                            <label class="input-label">🍽️ Diet Plan</label>
+                            <p class="helper-text" style="margin-bottom: 0.5rem;">Download the sample diet plan, then import it</p>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button id="downloadDietBtn" class="btn-secondary" style="flex: 1;">📥 Download</button>
+                                <button id="importDietPlanBtn" class="btn-primary" style="flex: 1;">📤 Import</button>
+                            </div>
                         </div>
                         <input type="file" id="importDietPlanInput" accept=".json" style="display: none;">
                     </div>
