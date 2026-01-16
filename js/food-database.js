@@ -12,6 +12,7 @@ const FoodDatabase = [
     { name: "Greek Yogurt", calories: 59, protein: 10, carbs: 3.6, fats: 0.4, category: "Protein", serving: "100g" },
     { name: "Cottage Cheese", calories: 98, protein: 11, carbs: 3.4, fats: 4.3, category: "Protein", serving: "100g" },
     { name: "Whey Protein (1 scoop)", calories: 120, protein: 24, carbs: 3, fats: 1.5, category: "Protein", serving: "1 scoop (30g)" },
+    { name: "ISO Whey Protein (1 scoop)", calories: 120, protein: 30, carbs: 2, fats: 1, category: "Protein", serving: "1 scoop (30g)" },
     { name: "Beef (lean)", calories: 250, protein: 26, carbs: 0, fats: 15, category: "Protein", serving: "100g" },
     { name: "Pork Chop", calories: 242, protein: 27, carbs: 0, fats: 14, category: "Protein", serving: "100g" },
     { name: "Turkey Breast", calories: 135, protein: 30, carbs: 0, fats: 1, category: "Protein", serving: "100g" },
@@ -49,6 +50,7 @@ const FoodDatabase = [
     { name: "Sweet Potato", calories: 86, protein: 1.6, carbs: 20, fats: 0.1, category: "Carbs", serving: "100g" },
     { name: "Potato", calories: 77, protein: 2, carbs: 17, fats: 0.1, category: "Carbs", serving: "100g" },
     { name: "Whole Wheat Bread (1 slice)", calories: 80, protein: 4, carbs: 14, fats: 1, category: "Carbs", serving: "1 slice" },
+    { name: "Multigrain Bread (1 thin slice)", calories: 90, protein: 4, carbs: 17, fats: 1.5, category: "Carbs", serving: "1 thin slice" },
     { name: "White Bread (1 slice)", calories: 75, protein: 2.5, carbs: 14, fats: 1, category: "Carbs", serving: "1 slice" },
     { name: "Pasta (cooked)", calories: 131, protein: 5, carbs: 25, fats: 1.1, category: "Carbs", serving: "100g" },
     {
@@ -93,6 +95,7 @@ const FoodDatabase = [
 
     // Oils & Fats
     { name: "Olive Oil (1 tbsp)", calories: 119, protein: 0, carbs: 0, fats: 14, category: "Fats", serving: "1 tbsp" },
+    { name: "Olive Oil (1 tsp)", calories: 40, protein: 0, carbs: 0, fats: 4.5, category: "Fats", serving: "1 tsp" },
     { name: "Coconut Oil (1 tbsp)", calories: 117, protein: 0, carbs: 0, fats: 14, category: "Fats", serving: "1 tbsp" },
     { name: "Ghee (1 tbsp)", calories: 112, protein: 0, carbs: 0, fats: 13, category: "Fats", serving: "1 tbsp" },
     { name: "Avocado", calories: 160, protein: 2, carbs: 9, fats: 15, category: "Fats", serving: "100g" },

@@ -20,27 +20,27 @@
           "mealType": "breakfast",
           "name": "Egg White (1 large)",
           "calories": 17,
-          "protein": 4,
-          "carbs": 0,
+          "protein": 3.5,
+          "carbs": 0.25,
           "fats": 0,
           "quantity": 2,
           "note": "2 egg whites"
         },
         {
           "mealType": "breakfast",
-          "name": "Whole Wheat Bread (1 slice)",
-          "calories": 80,
+          "name": "Multigrain Bread (1 thin slice)",
+          "calories": 90,
           "protein": 4,
-          "carbs": 14,
-          "fats": 1,
+          "carbs": 17,
+          "fats": 1.5,
           "quantity": 2,
-          "note": "2 slices"
+          "note": "2 thin slices multigrain bread"
         },
         {
           "mealType": "breakfast",
           "name": "Black Tea/Coffee",
           "calories": 2,
-          "protein": 0.3,
+          "protein": 0,
           "carbs": 0,
           "fats": 0,
           "quantity": 1,
@@ -51,34 +51,34 @@
     },
     {
       "id": 1737100000002,
-      "name": "Mid-Morning - Protein (11-12 PM)",
+      "name": "Mid-Morning - Protein Option A (11-12 PM)",
       "meals": [
         {
           "mealType": "snacks",
           "name": "Chicken Breast",
-          "calories": 182,
-          "protein": 34,
+          "calories": 200,
+          "protein": 36,
           "carbs": 0,
           "fats": 4,
-          "quantity": 1.1,
-          "note": "110g chicken (Option 1)"
+          "quantity": 1.2,
+          "note": "120g chicken breast (cooked)"
         }
       ],
       "createdAt": "2026-01-16T00:00:00.000Z"
     },
     {
       "id": 1737100000003,
-      "name": "Mid-Morning - Protein Shake",
+      "name": "Mid-Morning - Protein Option B (11-12 PM)",
       "meals": [
         {
           "mealType": "snacks",
-          "name": "Whey Protein (1 scoop)",
+          "name": "ISO Whey Protein (1 scoop)",
           "calories": 120,
-          "protein": 24,
-          "carbs": 3,
-          "fats": 1.5,
+          "protein": 30,
+          "carbs": 2,
+          "fats": 1,
           "quantity": 1,
-          "note": "1 scoop whey (Option 2)"
+          "note": "1 scoop ISO whey"
         }
       ],
       "createdAt": "2026-01-16T00:00:00.000Z"
@@ -91,65 +91,65 @@
           "mealType": "lunch",
           "name": "White Rice (cooked)",
           "calories": 260,
-          "protein": 5.4,
+          "protein": 5,
           "carbs": 56,
-          "fats": 0.6,
+          "fats": 0.5,
           "quantity": 2,
-          "note": "200g white rice"
+          "note": "200g white rice (cooked)"
         },
         {
           "mealType": "lunch",
           "name": "Chicken Breast",
-          "calories": 272,
-          "protein": 51,
+          "calories": 300,
+          "protein": 55,
           "carbs": 0,
           "fats": 6,
-          "quantity": 1.65,
-          "note": "165g chicken/fish"
+          "quantity": 1.8,
+          "note": "180g chicken/fish"
         },
         {
           "mealType": "lunch",
           "name": "Mixed Vegetables (cooked)",
-          "calories": 65,
-          "protein": 2.5,
-          "carbs": 13,
-          "fats": 0.5,
-          "quantity": 1,
-          "note": "1 cup vegetables"
+          "calories": 35,
+          "protein": 2,
+          "carbs": 7,
+          "fats": 0,
+          "quantity": 0.67,
+          "note": "100g cooked vegetables"
         }
       ],
       "createdAt": "2026-01-16T00:00:00.000Z"
     },
     {
       "id": 1737100000005,
-      "name": "Pre-Workout - Fuel Option 1 (3-4 PM)",
+      "name": "Pre-Workout - Fuel Option A (3-4 PM)",
       "meals": [
         {
           "mealType": "snacks",
-          "name": "Whole Wheat Bread (1 slice)",
-          "calories": 80,
+          "name": "Multigrain Bread (1 thin slice)",
+          "calories": 90,
           "protein": 4,
-          "carbs": 14,
-          "fats": 1,
+          "carbs": 17,
+          "fats": 1.5,
           "quantity": 2,
-          "note": "2 slices bread"
+          "note": "2 thin slices multigrain bread"
         },
         {
           "mealType": "snacks",
           "name": "Peanut Butter (1 tbsp)",
-          "calories": 94,
+          "calories": 95,
           "protein": 4,
-          "carbs": 3.5,
+          "carbs": 3,
           "fats": 8,
           "quantity": 1,
-          "note": "1 tbsp peanut butter"
+          "note": "1 tbsp peanut butter (16g)"
         }
       ],
       "createdAt": "2026-01-16T00:00:00.000Z"
     },
     {
       "id": 1737100000006,
-      "name": "Pre-Workout - Fuel Option 2 (3-4 PM)",
+      "name": "Pre-Workout - Fuel Option B (3-4 PM)",
       "meals": [
         {
           "mealType": "snacks",
@@ -164,12 +164,12 @@
         {
           "mealType": "snacks",
           "name": "Honey (1 tbsp)",
-          "calories": 64,
-          "protein": 0.1,
-          "carbs": 17,
+          "calories": 25,
+          "protein": 0.15,
+          "carbs": 6.75,
           "fats": 0,
-          "quantity": 1,
-          "note": "1 tbsp honey"
+          "quantity": 0.33,
+          "note": "1 tsp honey (approx 6g)"
         }
       ],
       "createdAt": "2026-01-16T00:00:00.000Z"
@@ -180,13 +180,13 @@
       "meals": [
         {
           "mealType": "dinner",
-          "name": "Whey Protein (1 scoop)",
+          "name": "ISO Whey Protein (1 scoop)",
           "calories": 120,
-          "protein": 24,
-          "carbs": 3,
-          "fats": 1.5,
+          "protein": 30,
+          "carbs": 2,
+          "fats": 1,
           "quantity": 1,
-          "note": "1 scoop whey"
+          "note": "1 scoop ISO whey"
         },
         {
           "mealType": "dinner",
@@ -207,13 +207,13 @@
       "meals": [
         {
           "mealType": "dinner",
-          "name": "Whey Protein (1 scoop)",
+          "name": "ISO Whey Protein (1 scoop)",
           "calories": 120,
-          "protein": 24,
-          "carbs": 3,
-          "fats": 1.5,
+          "protein": 30,
+          "carbs": 2,
+          "fats": 1,
           "quantity": 1,
-          "note": "1 scoop whey"
+          "note": "1 scoop ISO whey"
         },
         {
           "mealType": "dinner",
@@ -228,10 +228,10 @@
         {
           "mealType": "dinner",
           "name": "Banana",
-          "calories": 89,
-          "protein": 1.1,
+          "calories": 90,
+          "protein": 1,
           "carbs": 23,
-          "fats": 0.3,
+          "fats": 0,
           "quantity": 1,
           "note": "Banana (leg day only)"
         }
@@ -245,22 +245,32 @@
         {
           "mealType": "dinner",
           "name": "Chicken Breast",
-          "calories": 314,
-          "protein": 59,
+          "calories": 330,
+          "protein": 60,
           "carbs": 0,
           "fats": 7,
-          "quantity": 1.9,
-          "note": "190g chicken/fish"
+          "quantity": 2,
+          "note": "200g chicken/fish"
         },
         {
           "mealType": "dinner",
           "name": "Mixed Vegetables (cooked)",
-          "calories": 65,
-          "protein": 2.5,
-          "carbs": 13,
-          "fats": 0.5,
+          "calories": 50,
+          "protein": 3,
+          "carbs": 10,
+          "fats": 0,
           "quantity": 1,
-          "note": "Cooked vegetables, no carbs"
+          "note": "150g cooked vegetables"
+        },
+        {
+          "mealType": "dinner",
+          "name": "Olive Oil (1 tsp)",
+          "calories": 40,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 4.5,
+          "quantity": 1,
+          "note": "1 tsp olive oil"
         }
       ],
       "createdAt": "2026-01-16T00:00:00.000Z"
@@ -272,12 +282,12 @@
         {
           "mealType": "snacks",
           "name": "Greek Yogurt",
-          "calories": 59,
+          "calories": 60,
           "protein": 10,
-          "carbs": 3.6,
-          "fats": 0.4,
+          "carbs": 4,
+          "fats": 0,
           "quantity": 1,
-          "note": "100g Greek yogurt (Option 1)"
+          "note": "100g Greek yogurt (low-fat)"
         }
       ],
       "createdAt": "2026-01-16T00:00:00.000Z"
@@ -290,11 +300,11 @@
           "mealType": "snacks",
           "name": "Egg White (1 large)",
           "calories": 17,
-          "protein": 4,
-          "carbs": 0,
+          "protein": 3.5,
+          "carbs": 0.25,
           "fats": 0,
           "quantity": 2,
-          "note": "2 egg whites (Option 2)"
+          "note": "2 egg whites"
         }
       ],
       "createdAt": "2026-01-16T00:00:00.000Z"
@@ -311,7 +321,7 @@
           "carbs": 0.4,
           "fats": 0,
           "quantity": 1,
-          "note": "Herbal tea (Option 3)"
+          "note": "Herbal tea"
         }
       ],
       "createdAt": "2026-01-16T00:00:00.000Z"
