@@ -10,6 +10,11 @@ class GymTrackerApp {
         this.editingExerciseId = null; // Track which exercise is being edited
         this.editingFoodId = null; // Track which food item is being edited
 
+        // Rest timer properties
+        this.restTimerInterval = null;
+        this.restTimerSeconds = 0;
+        this.activeRestTimer = null; // Track which exercise has active rest timer
+
         this.initializeEventListeners();
         this.checkAutoBackup();
         this.updateDateBanner();
@@ -525,6 +530,7 @@ class GymTrackerApp {
             let exerciseDetails = '';
 
             if (type === 'strength') {
+                const activeRestTimer = this.activeRestTimer === exercise.id;
                 exerciseDetails = `
                     <div class="sets-list">
                         ${exercise.sets.map((set, index) => `
@@ -533,6 +539,24 @@ class GymTrackerApp {
                                 <span class="set-detail">${set.weight} ${set.unit || 'kg'} × ${set.reps} reps</span>
                             </div>
                         `).join('')}
+                    </div>
+                    <div class="rest-timer-section">
+                        <div class="rest-timer-display ${activeRestTimer ? 'active' : ''}" id="rest-timer-${exercise.id}">
+                            ${activeRestTimer ? `
+                                <div class="timer-countdown">
+                                    <div class="timer-time" id="timer-time-${exercise.id}">1:30</div>
+                                    <div class="timer-label">Rest Time Remaining</div>
+                                </div>
+                                <button class="btn-secondary btn-sm" onclick="app.stopRestTimer(${exercise.id})">⏹ Stop</button>
+                            ` : `
+                                <div class="rest-timer-buttons">
+                                    <button class="btn-secondary btn-sm" onclick="app.startRestTimer(${exercise.id}, 60)">60s</button>
+                                    <button class="btn-secondary btn-sm" onclick="app.startRestTimer(${exercise.id}, 90)">90s</button>
+                                    <button class="btn-secondary btn-sm" onclick="app.startRestTimer(${exercise.id}, 120)">2m</button>
+                                    <button class="btn-secondary btn-sm" onclick="app.startRestTimer(${exercise.id}, 180)">3m</button>
+                                </div>
+                            `}
+                        </div>
                     </div>
                 `;
             } else if (type === 'cardio') {
@@ -637,6 +661,11 @@ class GymTrackerApp {
         }
 
         if (confirm('Finish and save this workout?')) {
+            // Stop any active rest timer
+            if (this.restTimerInterval) {
+                this.stopRestTimer(this.activeRestTimer);
+            }
+
             // Pass the working date if editing a past date
             Storage.finishWorkout(this.workingDate);
             this.currentWorkout = Storage.getCurrentWorkout();
@@ -646,6 +675,75 @@ class GymTrackerApp {
 
             const dateMsg = this.workingDate ? ' for ' + new Date(this.workingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
             alert(`Workout saved${dateMsg}!`);
+        }
+    }
+
+    startRestTimer(exerciseId, seconds) {
+        // Stop any existing timer first
+        if (this.restTimerInterval) {
+            this.stopRestTimer(this.activeRestTimer);
+        }
+
+        this.activeRestTimer = exerciseId;
+        this.restTimerSeconds = seconds;
+
+        this.renderCurrentWorkout();
+
+        this.restTimerInterval = setInterval(() => {
+            this.restTimerSeconds--;
+
+            const minutes = Math.floor(this.restTimerSeconds / 60);
+            const secs = this.restTimerSeconds % 60;
+            const timeDisplay = `${minutes}:${secs.toString().padStart(2, '0')}`;
+
+            const timeElement = document.getElementById(`timer-time-${exerciseId}`);
+            if (timeElement) {
+                timeElement.textContent = timeDisplay;
+
+                // Change color as timer gets close to zero
+                if (this.restTimerSeconds <= 10) {
+                    timeElement.style.color = '#ef4444';
+                } else if (this.restTimerSeconds <= 30) {
+                    timeElement.style.color = '#f59e0b';
+                } else {
+                    timeElement.style.color = '#10b981';
+                }
+            }
+
+            if (this.restTimerSeconds <= 0) {
+                this.restTimerComplete(exerciseId);
+            }
+        }, 1000);
+    }
+
+    stopRestTimer(exerciseId) {
+        if (this.restTimerInterval) {
+            clearInterval(this.restTimerInterval);
+            this.restTimerInterval = null;
+        }
+        this.activeRestTimer = null;
+        this.restTimerSeconds = 0;
+        this.renderCurrentWorkout();
+    }
+
+    restTimerComplete(exerciseId) {
+        this.stopRestTimer(exerciseId);
+
+        // Play notification sound and vibrate
+        if ('vibrate' in navigator) {
+            navigator.vibrate([200, 100, 200]);
+        }
+
+        // Show notification
+        if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification('Rest Complete!', {
+                body: 'Time for your next set',
+                icon: '/icon-192.png',
+                badge: '/icon-192.png',
+                tag: 'rest-timer'
+            });
+        } else {
+            alert('⏰ Rest Complete! Ready for next set?');
         }
     }
 
