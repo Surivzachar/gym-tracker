@@ -269,6 +269,11 @@ const Storage = {
             time: targetDate.toISOString()
         };
 
+        // Include photo if it exists
+        if (foodItem.photo) {
+            foodEntry.photo = foodItem.photo;
+        }
+
         if (targetIndex === -1) {
             // Create new day entry
             allDays.unshift({
@@ -391,14 +396,14 @@ const Storage = {
         return this.set(this.KEYS.FOOD_ROUTINES, filtered);
     },
 
-    loadFoodRoutine(id) {
+    loadFoodRoutine(id, customDate = null) {
         const routines = this.getAllFoodRoutines();
         const routine = routines.find(r => r.id === id);
 
         if (routine) {
-            // Add routine meals to today (append, don't clear existing)
+            // Add routine meals to today (or customDate if provided) - append, don't clear existing
             routine.meals.forEach(meal => {
-                this.addFoodItem(meal.mealType, meal);
+                this.addFoodItem(meal.mealType, meal, customDate);
             });
 
             return true;

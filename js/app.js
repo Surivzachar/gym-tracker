@@ -1784,8 +1784,10 @@ class GymTrackerApp {
 
     loadFoodRoutineToToday(routineId) {
         // No confirmation needed - loadFoodRoutine now appends instead of replacing
-        Storage.loadFoodRoutine(routineId);
+        // Pass workingDate if editing a past date
+        Storage.loadFoodRoutine(routineId, this.workingDate);
         this.renderFood();
+        this.renderDashboard(); // Update dashboard as well
         this.closeModal('loadFoodRoutineModal');
 
         // Show success message
