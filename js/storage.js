@@ -136,17 +136,20 @@ const Storage = {
 
         if (routine) {
             // Create a deep copy of the exercises with fresh IDs
-            const exercises = routine.exercises.map(exercise => ({
+            const newExercises = routine.exercises.map(exercise => ({
                 ...exercise,
                 id: Date.now() + Math.random(),
                 sets: exercise.sets.map(set => ({...set}))
             }));
 
-            const workout = { exercises };
-            this.saveCurrentWorkout(workout);
-            // Track which routine is being used
+            // Get current workout and append to it instead of replacing
+            const currentWorkout = this.getCurrentWorkout();
+            currentWorkout.exercises = [...currentWorkout.exercises, ...newExercises];
+            this.saveCurrentWorkout(currentWorkout);
+
+            // Track which routine is being used (append to list if needed)
             this.setCurrentRoutineId(id);
-            return workout;
+            return currentWorkout;
         }
 
         return null;
@@ -236,13 +239,14 @@ const Storage = {
         return this.get(this.KEYS.FOOD_DIARY) || [];
     },
 
-    getTodayFood() {
-        const today = new Date().toDateString();
+    getTodayFood(date = null) {
+        const targetDate = date ? new Date(date) : new Date();
+        const targetDateStr = targetDate.toDateString();
         const allDays = this.getAllFoodDays();
-        const todayData = allDays.find(day => new Date(day.date).toDateString() === today);
+        const todayData = allDays.find(day => new Date(day.date).toDateString() === targetDateStr);
 
         return todayData || {
-            date: new Date().toISOString(),
+            date: targetDate.toISOString(),
             meals: []
         };
     },
@@ -392,18 +396,7 @@ const Storage = {
         const routine = routines.find(r => r.id === id);
 
         if (routine) {
-            // Clear today's food first
-            const allDays = this.getAllFoodDays();
-            const today = new Date().toDateString();
-            const todayIndex = allDays.findIndex(day => new Date(day.date).toDateString() === today);
-
-            if (todayIndex !== -1) {
-                allDays.splice(todayIndex, 1);
-                // Save the cleared data before adding new items
-                this.set(this.KEYS.FOOD_DIARY, allDays);
-            }
-
-            // Add routine meals to today
+            // Add routine meals to today (append, don't clear existing)
             routine.meals.forEach(meal => {
                 this.addFoodItem(meal.mealType, meal);
             });
@@ -535,21 +528,25 @@ const Storage = {
         return this.get(this.KEYS.DAILY_METRICS) || [];
     },
 
-    getTodayMetrics() {
+    getTodayMetrics(date = null) {
         const allMetrics = this.getAllDailyMetrics();
-        const today = new Date().toDateString();
-        let todayMetrics = allMetrics.find(m => new Date(m.date).toDateString() === today);
+        const targetDate = date ? new Date(date) : new Date();
+        const targetDateStr = targetDate.toDateString();
+        let todayMetrics = allMetrics.find(m => new Date(m.date).toDateString() === targetDateStr);
 
         if (!todayMetrics) {
             todayMetrics = {
-                date: new Date().toISOString(),
+                date: targetDate.toISOString(),
                 steps: 0,
                 waterGlasses: 0, // 1 glass = 250ml
                 sleepHours: 0,
                 workoutCalories: 0
             };
-            allMetrics.push(todayMetrics);
-            this.set(this.KEYS.DAILY_METRICS, allMetrics);
+            // Only add to storage if it's today (don't auto-create past dates)
+            if (!date) {
+                allMetrics.push(todayMetrics);
+                this.set(this.KEYS.DAILY_METRICS, allMetrics);
+            }
         }
 
         return todayMetrics;

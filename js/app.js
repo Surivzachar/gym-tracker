@@ -1,5 +1,27 @@
 // Main application logic
 
+// Timezone utility functions for New Zealand
+const NZ_TIMEZONE = 'Pacific/Auckland';
+const NZ_LOCALE = 'en-NZ';
+
+function formatDateNZ(date, options = {}) {
+    // Add NZ timezone to options
+    const nzOptions = { ...options, timeZone: NZ_TIMEZONE };
+    return new Date(date).toLocaleDateString(NZ_LOCALE, nzOptions);
+}
+
+function formatDateTimeNZ(date, options = {}) {
+    // Add NZ timezone to options
+    const nzOptions = { ...options, timeZone: NZ_TIMEZONE };
+    return new Date(date).toLocaleString(NZ_LOCALE, nzOptions);
+}
+
+function getCurrentDateNZ() {
+    // Get current date in NZ timezone
+    const now = new Date();
+    return new Date(now.toLocaleString('en-US', { timeZone: NZ_TIMEZONE }));
+}
+
 class GymTrackerApp {
     constructor() {
         this.currentWorkout = Storage.getCurrentWorkout();
@@ -9,6 +31,7 @@ class GymTrackerApp {
         this.timerRunning = false;
         this.editingExerciseId = null; // Track which exercise is being edited
         this.editingFoodId = null; // Track which food item is being edited
+        this.currentFoodPhoto = null; // Track food photo for current food item
 
         // Rest timer properties
         this.restTimerInterval = null;
@@ -117,6 +140,10 @@ class GymTrackerApp {
             this.closeModal('addFoodModal');
         });
 
+        document.getElementById('foodPhotoInput').addEventListener('change', (e) => {
+            this.handleFoodPhotoSelection(e);
+        });
+
         document.getElementById('viewFoodHistoryBtn').addEventListener('click', () => {
             this.openFoodHistoryModal();
         });
@@ -219,6 +246,10 @@ class GymTrackerApp {
         });
 
         // Dashboard Metrics
+        document.getElementById('saveCaloriesBtn').addEventListener('click', () => {
+            this.saveCalories();
+        });
+
         document.getElementById('saveStepsBtn').addEventListener('click', () => {
             this.saveSteps();
         });
@@ -626,7 +657,7 @@ class GymTrackerApp {
                             <h4>Previous Workouts</h4>
                             ${history.slice(0, 3).map(h => {
                                 const date = new Date(h.date);
-                                const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                                const formattedDate = formatDateNZ(date, { month: 'short', day: 'numeric' });
                                 const maxWeight = Math.max(...h.sets.map(s => parseInt(s.weight) || 0));
                                 const totalReps = h.sets.reduce((sum, s) => sum + (parseInt(s.reps) || 0), 0);
                                 const maxUnit = h.sets.find(s => s.unit)?.unit || 'kg';
@@ -678,7 +709,7 @@ class GymTrackerApp {
             this.renderHistory();
             this.renderDashboard();
 
-            const dateMsg = this.workingDate ? ' for ' + new Date(this.workingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+            const dateMsg = this.workingDate ? ' for ' + formatDateNZ(new Date(this.workingDate), { month: 'short', day: 'numeric' }) : '';
             alert(`Workout saved${dateMsg}!`);
         }
     }
@@ -844,7 +875,7 @@ class GymTrackerApp {
 
         container.innerHTML = workouts.map(workout => {
             const date = new Date(workout.date);
-            const formattedDate = date.toLocaleDateString('en-US', {
+            const formattedDate = formatDateNZ(date, {
                 weekday: 'short',
                 year: 'numeric',
                 month: 'short',
@@ -960,7 +991,7 @@ class GymTrackerApp {
                 } else if (diffDays < 7) {
                     lastUsedText = ` • Last used: ${diffDays} days ago`;
                 } else {
-                    lastUsedText = ` • Last used: ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+                    lastUsedText = ` • Last used: ${formatDateNZ(date, { month: 'short', day: 'numeric' })}`;
                 }
             }
 
@@ -1047,7 +1078,7 @@ class GymTrackerApp {
 
             container.innerHTML = workouts.map(workout => {
                 const date = new Date(workout.date);
-                const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                const formattedDate = formatDateNZ(date, { month: 'short', day: 'numeric', year: 'numeric' });
 
                 return `
                     <div class="workout-group-header">
@@ -1196,7 +1227,7 @@ class GymTrackerApp {
             let historyPreview = '';
             if (lastUsed) {
                 const date = new Date(lastUsed.date);
-                const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                const formattedDate = formatDateNZ(date, { month: 'short', day: 'numeric' });
 
                 historyPreview = `
                     <div class="routine-history-preview">
@@ -1527,6 +1558,11 @@ class GymTrackerApp {
             fats: totalFats.toString()
         };
 
+        // Add photo if one was selected
+        if (this.currentFoodPhoto) {
+            foodItem.photo = this.currentFoodPhoto;
+        }
+
         const isEditing = this.editingFoodId !== null;
 
         if (isEditing) {
@@ -1540,6 +1576,11 @@ class GymTrackerApp {
             Storage.addFoodItem(this.currentMealType, foodItem, this.workingDate);
         }
 
+        // Clear food photo
+        this.currentFoodPhoto = null;
+        document.getElementById('foodPhotoInput').value = '';
+        document.getElementById('foodPhotoPreview').style.display = 'none';
+
         this.renderFood();
         this.renderDashboard();
         this.closeModal('addFoodModal');
@@ -1549,9 +1590,38 @@ class GymTrackerApp {
         this.openAddFoodModal(null, foodId);
     }
 
+    handleFoodPhotoSelection(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Check file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            alert('Photo size must be less than 5MB');
+            event.target.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.currentFoodPhoto = e.target.result;
+            document.getElementById('foodPhotoPreviewImg').src = e.target.result;
+            document.getElementById('foodPhotoPreview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    removeFoodPhoto() {
+        this.currentFoodPhoto = null;
+        document.getElementById('foodPhotoInput').value = '';
+        document.getElementById('foodPhotoPreview').style.display = 'none';
+    }
+
     renderFood() {
-        const todayFood = Storage.getTodayFood();
-        const stats = Storage.getFoodStats();
+        // Use workingDate if set, otherwise use today
+        const displayDate = this.workingDate || null;
+
+        const todayFood = Storage.getTodayFood(displayDate);
+        const stats = Storage.getFoodStats(displayDate);
 
         // Update stats at the top
         document.querySelector('#foodStats .stat-card:nth-child(1) .stat-value').textContent = stats.totalCalories;
@@ -1577,6 +1647,7 @@ class GymTrackerApp {
 
             container.innerHTML = meals.map(meal => `
                 <div class="food-item">
+                    ${meal.photo ? `<img src="${meal.photo}" class="food-photo-thumb" onclick="app.viewFoodPhoto('${meal.photo}')" title="Click to view full size">` : ''}
                     <div class="food-item-info">
                         <strong>${meal.name}</strong>
                         <span class="food-macros">${meal.calories} cal • P: ${meal.protein}g • C: ${meal.carbs}g • F: ${meal.fats}g</span>
@@ -1597,6 +1668,21 @@ class GymTrackerApp {
         }
     }
 
+    viewFoodPhoto(photoData) {
+        // Create a simple modal to view the food photo
+        const overlay = document.createElement('div');
+        overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 1rem;';
+
+        const img = document.createElement('img');
+        img.src = photoData;
+        img.style.cssText = 'max-width: 100%; max-height: 100%; border-radius: 8px;';
+
+        overlay.appendChild(img);
+        overlay.onclick = () => document.body.removeChild(overlay);
+
+        document.body.appendChild(overlay);
+    }
+
     openFoodHistoryModal() {
         const allDays = Storage.getAllFoodDays();
         const container = document.getElementById('foodHistoryList');
@@ -1606,7 +1692,7 @@ class GymTrackerApp {
         } else {
             container.innerHTML = allDays.map(day => {
                 const date = new Date(day.date);
-                const formattedDate = date.toLocaleDateString('en-US', {
+                const formattedDate = formatDateNZ(date, {
                     weekday: 'short',
                     year: 'numeric',
                     month: 'short',
@@ -1719,12 +1805,12 @@ class GymTrackerApp {
     // Settings and Date Banner
     updateDateBanner() {
         // Check if we're editing a past date
-        const displayDate = this.workingDate ? new Date(this.workingDate) : new Date();
-        const today = new Date();
+        const displayDate = this.workingDate ? new Date(this.workingDate) : getCurrentDateNZ();
+        const today = getCurrentDateNZ();
         const isEditingPast = this.workingDate && displayDate.toDateString() !== today.toDateString();
 
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const formattedDate = displayDate.toLocaleDateString('en-US', options);
+        const formattedDate = formatDateNZ(displayDate, options);
 
         const dateDisplay = document.getElementById('currentDateDisplay');
         if (isEditingPast) {
@@ -1795,7 +1881,7 @@ class GymTrackerApp {
         if (startDate) {
             const daysSinceStart = Storage.getDaysSinceStart();
             const start = new Date(startDate);
-            const formattedStart = start.toLocaleDateString('en-US', {
+            const formattedStart = formatDateNZ(start, {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
@@ -1872,7 +1958,7 @@ class GymTrackerApp {
 
         container.innerHTML = backups.map((backup, index) => {
             const backupDate = new Date(backup.date);
-            const formattedDate = backupDate.toLocaleDateString('en-US', {
+            const formattedDate = formatDateNZ(backupDate, {
                 weekday: 'short',
                 year: 'numeric',
                 month: 'short',
@@ -2235,7 +2321,7 @@ class GymTrackerApp {
 
     loadDateHistory(dateString) {
         const selectedDate = new Date(dateString);
-        const formattedDate = selectedDate.toLocaleDateString('en-US', {
+        const formattedDate = formatDateNZ(selectedDate, {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
@@ -2402,7 +2488,7 @@ class GymTrackerApp {
 
         // Update the date banner to show we're editing a past date
         const selectedDate = new Date(dateString);
-        const formattedDate = selectedDate.toLocaleDateString('en-US', {
+        const formattedDate = formatDateNZ(selectedDate, {
             weekday: 'long',
             month: 'short',
             day: 'numeric'
@@ -2765,7 +2851,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             const now = new Date();
             const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
 
-            const formattedDate = date.toLocaleDateString('en-US', {
+            const formattedDate = formatDateNZ(date, {
                 month: 'short',
                 day: 'numeric',
                 year: 'numeric'
@@ -2825,7 +2911,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
         // Set date
         const date = new Date(photo.date);
-        const formattedDate = date.toLocaleDateString('en-US', {
+        const formattedDate = formatDateNZ(date, {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
@@ -2883,8 +2969,11 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
     // Dashboard Methods
     renderDashboard() {
-        const metrics = Storage.getTodayMetrics();
-        const foodStats = Storage.getFoodStats();
+        // Use workingDate if set, otherwise use today
+        const displayDate = this.workingDate || null;
+
+        const metrics = Storage.getTodayMetrics(displayDate);
+        const foodStats = Storage.getFoodStats(displayDate);
 
         // Update metrics
         document.getElementById('dashSteps').textContent = metrics.steps || 0;
@@ -2912,7 +3001,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         document.getElementById('dashFoodFats').textContent = foodStats.totalFats + 'g';
 
         // Update workout summary
-        const todayWorkout = this.getTodayWorkout();
+        const todayWorkout = this.getTodayWorkout(displayDate);
         const summaryEl = document.getElementById('dashWorkoutSummary');
 
         if (todayWorkout && todayWorkout.exercises.length > 0) {
@@ -2931,10 +3020,25 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.renderMetricTrendCharts();
     }
 
-    getTodayWorkout() {
+    getTodayWorkout(date = null) {
         const workouts = Storage.getAllWorkouts();
-        const today = new Date().toDateString();
-        return workouts.find(w => new Date(w.date).toDateString() === today);
+        const targetDate = date ? new Date(date) : new Date();
+        const targetDateStr = targetDate.toDateString();
+        return workouts.find(w => new Date(w.date).toDateString() === targetDateStr);
+    }
+
+    openCaloriesModal() {
+        const metrics = Storage.getTodayMetrics();
+        document.getElementById('caloriesInput').value = metrics.workoutCalories || '';
+        this.openModal('caloriesModal');
+    }
+
+    saveCalories() {
+        const calories = parseInt(document.getElementById('caloriesInput').value) || 0;
+        Storage.updateTodayMetrics({ workoutCalories: calories });
+        this.closeModal('caloriesModal');
+        this.renderDashboard();
+        this.syncAfterChange();
     }
 
     openStepsModal() {
@@ -3068,7 +3172,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         sortedEntries.forEach((entry, index) => {
             const x = (index / (sortedEntries.length - 1 || 1)) * 100;
             const y = ((maxWeight - entry.weight) / weightRange) * 100;
-            const date = new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const date = formatDateNZ(entry.date, { month: 'short', day: 'numeric' });
 
             pathPoints.push(`${x},${100 - y}`);
 
@@ -3098,7 +3202,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         sortedEntries.forEach((entry, index) => {
             if (index === 0 || index === sortedEntries.length - 1 || sortedEntries.length <= 5) {
                 const x = (index / (sortedEntries.length - 1 || 1)) * 100;
-                const date = new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                const date = formatDateNZ(entry.date, { month: 'short', day: 'numeric' });
                 chartHTML += `<span class="chart-x-label" style="left: ${x}%;">${date}</span>`;
             }
         });
@@ -3122,7 +3226,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             const dayMetrics = allMetrics.find(m => new Date(m.date).toDateString() === dateStr);
             last7Days.push({
                 date: date,
-                dateStr: date.toLocaleDateString('en-US', { weekday: 'short' }),
+                dateStr: formatDateNZ(date, { weekday: 'short' }),
                 steps: dayMetrics?.steps || 0,
                 water: dayMetrics?.waterGlasses || 0,
                 sleep: dayMetrics?.sleepHours || 0

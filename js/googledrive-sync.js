@@ -33,7 +33,10 @@ const GoogleDriveSync = {
     isConnected() {
         const token = localStorage.getItem(this.KEYS.ACCESS_TOKEN);
         const expiry = localStorage.getItem(this.KEYS.TOKEN_EXPIRY);
-        return token && expiry && new Date(expiry) > new Date();
+        const refreshToken = localStorage.getItem(this.KEYS.REFRESH_TOKEN);
+
+        // Connected if we have a valid access token OR a refresh token we can use
+        return (token && expiry && new Date(expiry) > new Date()) || !!refreshToken;
     },
 
     // Check if sync is enabled
@@ -52,7 +55,8 @@ const GoogleDriveSync = {
         const challenge = await this.sha256(verifier);
         const challengeBase64 = this.base64URLEncode(challenge);
 
-        sessionStorage.setItem('pkce_verifier', verifier);
+        // Use localStorage instead of sessionStorage to persist across browser sessions
+        localStorage.setItem('pkce_verifier', verifier);
         return challengeBase64;
     },
 
@@ -94,7 +98,8 @@ const GoogleDriveSync = {
         try {
             const codeChallenge = await this.generatePKCE();
             const state = this.generateRandomString(32);
-            sessionStorage.setItem('oauth_state', state);
+            // Use localStorage instead of sessionStorage to persist across browser sessions
+            localStorage.setItem('oauth_state', state);
 
             const params = new URLSearchParams({
                 client_id: this.CLIENT_ID,
@@ -131,12 +136,12 @@ const GoogleDriveSync = {
             return { success: false, error: 'No authorization code received' };
         }
 
-        const savedState = sessionStorage.getItem('oauth_state');
+        const savedState = localStorage.getItem('oauth_state');
         if (state !== savedState) {
             return { success: false, error: 'Invalid state parameter' };
         }
 
-        const verifier = sessionStorage.getItem('pkce_verifier');
+        const verifier = localStorage.getItem('pkce_verifier');
         if (!verifier) {
             return { success: false, error: 'PKCE verifier not found' };
         }
@@ -145,9 +150,9 @@ const GoogleDriveSync = {
             const tokenData = await this.exchangeCodeForToken(code, verifier);
             this.saveTokens(tokenData);
 
-            // Clean up session storage
-            sessionStorage.removeItem('oauth_state');
-            sessionStorage.removeItem('pkce_verifier');
+            // Clean up localStorage after successful auth
+            localStorage.removeItem('oauth_state');
+            localStorage.removeItem('pkce_verifier');
 
             // Remove query parameters from URL
             window.history.replaceState({}, document.title, window.location.pathname);

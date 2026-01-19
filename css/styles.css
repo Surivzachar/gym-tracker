@@ -1208,6 +1208,21 @@ img {
     align-items: center;
 }
 
+.food-photo-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 0.75rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+}
+
+.food-photo-thumb:hover {
+    transform: scale(1.05);
+}
+
 .food-item-info strong {
     display: block;
     color: #1f2937;
