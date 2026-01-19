@@ -1260,18 +1260,19 @@ class GymTrackerApp {
     }
 
     loadRoutineToWorkout(routineId) {
-        if (this.currentWorkout.exercises.length > 0) {
-            if (!confirm('This will replace your current workout. Continue?')) {
-                return;
-            }
-        }
-
+        // No confirmation needed - loadRoutine now appends instead of replacing
         const workout = Storage.loadRoutine(routineId);
         if (workout) {
             this.currentWorkout = workout;
             this.renderCurrentWorkout();
             this.closeModal('loadRoutineModal');
             this.switchView('workout');
+
+            // Show success message
+            const routine = Storage.getAllRoutines().find(r => r.id === routineId);
+            if (routine) {
+                alert(`✅ Added ${routine.exercises.length} exercises from "${routine.name}"!`);
+            }
         }
     }
 
@@ -1782,17 +1783,16 @@ class GymTrackerApp {
     }
 
     loadFoodRoutineToToday(routineId) {
-        const todayFood = Storage.getTodayFood();
-
-        if (todayFood.meals.length > 0) {
-            if (!confirm('This will replace all food items for today. Continue?')) {
-                return;
-            }
-        }
-
+        // No confirmation needed - loadFoodRoutine now appends instead of replacing
         Storage.loadFoodRoutine(routineId);
         this.renderFood();
         this.closeModal('loadFoodRoutineModal');
+
+        // Show success message
+        const routine = Storage.getAllFoodRoutines().find(r => r.id === routineId);
+        if (routine) {
+            alert(`✅ Added ${routine.meals.length} items from "${routine.name}"!`);
+        }
     }
 
     deleteFoodRoutine(routineId) {
