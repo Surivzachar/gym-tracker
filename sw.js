@@ -1,19 +1,19 @@
 // Service Worker for offline functionality
 
-const CACHE_NAME = 'suresh-aesthetics-v40';
+const CACHE_NAME = 'suresh-aesthetics-v41';
 const urlsToCache = [
-    '/',
-    '/index.html',
-    '/css/styles.css',
-    '/js/storage.js',
-    '/js/googledrive-sync.js',
-    '/js/food-database.js',
-    '/js/quotes.js',
-    '/js/app.js',
-    '/manifest.json',
-    '/logo.png',
-    '/icon-192.png',
-    '/icon-512.png'
+    './',
+    './index.html',
+    './css/styles.css',
+    './js/storage.js',
+    './js/googledrive-sync.js',
+    './js/food-database.js',
+    './js/quotes.js',
+    './js/app.js',
+    './manifest.json',
+    './logo.png',
+    './icon-192.png',
+    './icon-512.png'
 ];
 
 // Install event - cache files
