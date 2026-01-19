@@ -2241,9 +2241,6 @@ class GymTrackerApp {
 
                 alert(`✅ Successfully imported ${importedCount} new meal plan(s)!\n\nGo to Food tab → Food Routines to load them.`);
 
-                // Refresh food routines view if we're on food tab
-                this.renderFoodRoutines();
-
             } catch (error) {
                 console.error('Import diet plan error:', error);
                 alert(`❌ Error importing diet plan:\n\n${error.message}\n\nPlease check:\n1. File is valid JSON\n2. File encoding is UTF-8\n3. No special characters causing issues`);
