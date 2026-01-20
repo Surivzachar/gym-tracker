@@ -554,6 +554,12 @@ class GymTrackerApp {
         Storage.saveCurrentWorkout(this.currentWorkout);
         this.renderCurrentWorkout();
         this.closeModal('addExerciseModal');
+
+        // Auto-start rest timer for strength exercises
+        if (type === 'strength' && !isEditing) {
+            this.startAutoRestTimer(exercise.id);
+        }
+
         this.editingExerciseId = null;
     }
 
@@ -771,6 +777,16 @@ class GymTrackerApp {
         this.activeRestTimer = null;
         this.restTimerSeconds = 0;
         this.renderCurrentWorkout();
+    }
+
+    startAutoRestTimer(exerciseId) {
+        // Auto-start rest timer with default 90 seconds
+        const defaultRestTime = 90;
+        this.startRestTimer(exerciseId, defaultRestTime);
+
+        // Show brief notification that timer started
+        const exerciseName = this.currentWorkout.exercises.find(e => e.id === exerciseId)?.name || 'Exercise';
+        console.log(`⏱️ Rest timer started for ${exerciseName} (${defaultRestTime}s)`);
     }
 
     restTimerComplete(exerciseId) {
