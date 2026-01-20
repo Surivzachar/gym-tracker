@@ -3337,6 +3337,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     // Progress Charts
     renderProgress() {
         this.renderProgressCharts();
+        this.renderPersonalRecords();
         this.renderQuickStats();
         this.initializeChartFilters();
     }
@@ -3655,6 +3656,104 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
                 }
             }
         });
+    }
+
+    renderPersonalRecords() {
+        const workouts = Storage.getAllWorkouts();
+        const container = document.getElementById('prBoardContainer');
+        const emptyState = document.getElementById('prBoardEmpty');
+
+        if (workouts.length === 0) {
+            container.style.display = 'none';
+            emptyState.classList.add('show');
+            return;
+        }
+
+        // Calculate PRs for each exercise
+        const exercisePRs = {};
+
+        workouts.forEach(workout => {
+            workout.exercises.forEach(exercise => {
+                const exerciseName = exercise.name;
+
+                if (!exercisePRs[exerciseName]) {
+                    exercisePRs[exerciseName] = {
+                        name: exerciseName,
+                        maxWeight: 0,
+                        maxWeightDate: null,
+                        maxReps: 0,
+                        maxRepsDate: null,
+                        maxVolume: 0,
+                        maxVolumeDate: null
+                    };
+                }
+
+                exercise.sets.forEach(set => {
+                    const weight = parseFloat(set.weight) || 0;
+                    const reps = parseInt(set.reps) || 0;
+                    const volume = weight * reps;
+
+                    // Max weight
+                    if (weight > exercisePRs[exerciseName].maxWeight) {
+                        exercisePRs[exerciseName].maxWeight = weight;
+                        exercisePRs[exerciseName].maxWeightDate = workout.date;
+                    }
+
+                    // Max reps (for bodyweight or same weight)
+                    if (reps > exercisePRs[exerciseName].maxReps) {
+                        exercisePRs[exerciseName].maxReps = reps;
+                        exercisePRs[exerciseName].maxRepsDate = workout.date;
+                    }
+
+                    // Max volume (single set)
+                    if (volume > exercisePRs[exerciseName].maxVolume) {
+                        exercisePRs[exerciseName].maxVolume = volume;
+                        exercisePRs[exerciseName].maxVolumeDate = workout.date;
+                    }
+                });
+            });
+        });
+
+        // Convert to array and sort by max volume
+        const prArray = Object.values(exercisePRs).sort((a, b) => b.maxVolume - a.maxVolume);
+
+        if (prArray.length === 0) {
+            container.style.display = 'none';
+            emptyState.classList.add('show');
+            return;
+        }
+
+        container.style.display = 'block';
+        emptyState.classList.remove('show');
+
+        // Render PR cards
+        container.innerHTML = `
+            <div class="pr-grid">
+                ${prArray.map(pr => `
+                    <div class="pr-card">
+                        <div class="pr-card-header">
+                            <div class="pr-exercise-name">${pr.name}</div>
+                            <div class="pr-trophy">🏆</div>
+                        </div>
+                        <div class="pr-stats">
+                            <div class="pr-stat-row">
+                                <span class="pr-stat-label">💪 Max Weight</span>
+                                <span class="pr-stat-value">${pr.maxWeight.toFixed(1)} kg</span>
+                            </div>
+                            <div class="pr-stat-row">
+                                <span class="pr-stat-label">🔥 Max Reps</span>
+                                <span class="pr-stat-value">${pr.maxReps}</span>
+                            </div>
+                            <div class="pr-stat-row">
+                                <span class="pr-stat-label">📊 Max Volume</span>
+                                <span class="pr-stat-value">${pr.maxVolume.toFixed(1)} kg</span>
+                            </div>
+                        </div>
+                        <div class="pr-date">Last PR: ${formatDateNZ(new Date(pr.maxVolumeDate), { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
     }
 
     renderQuickStats() {
