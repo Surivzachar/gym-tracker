@@ -1830,9 +1830,16 @@ class GymTrackerApp {
         const journeyDisplay = document.getElementById('journeyDayDisplay');
 
         if (startDate) {
+            // Use NZ timezone for calculations
             const start = new Date(startDate);
-            const diffTime = displayDate - start;
-            const daysSinceStart = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            const current = this.workingDate ? new Date(this.workingDate) : new Date(new Date().toLocaleString('en-US', { timeZone: 'Pacific/Auckland' }));
+
+            // Calculate date difference at midnight NZ time
+            const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+            const currentMidnight = new Date(current.getFullYear(), current.getMonth(), current.getDate());
+
+            const diffTime = currentMidnight - startMidnight;
+            const daysSinceStart = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 because day 1 is the start date
             journeyDisplay.textContent = `Day ${daysSinceStart}`;
         } else {
             journeyDisplay.textContent = 'Set your start date';
