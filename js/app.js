@@ -44,6 +44,7 @@ class GymTrackerApp {
         this.modalRestTimerRunning = false;
 
         this.initializeEventListeners();
+        this.initializeDarkMode();
         this.checkAutoBackup();
         this.updateDateBanner();
         this.renderCurrentWorkout();
@@ -177,6 +178,14 @@ class GymTrackerApp {
         document.getElementById('cancelSettingsBtn').addEventListener('click', () => {
             this.closeModal('settingsModal');
         });
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('change', () => {
+                this.toggleDarkMode();
+            });
+        }
 
         // Data Export/Import
         document.getElementById('exportDataBtn').addEventListener('click', () => {
@@ -1870,6 +1879,12 @@ class GymTrackerApp {
             document.getElementById('goalWeightInput').value = weightGoal.goalWeight;
         }
 
+        // Load dark mode state
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        if (darkModeToggle) {
+            darkModeToggle.checked = this.isDarkMode();
+        }
+
         // Update journey info
         this.updateJourneyInfo();
 
@@ -1929,6 +1944,31 @@ class GymTrackerApp {
         this.closeModal('settingsModal');
         alert('Settings saved!');
         this.syncAfterChange();
+    }
+
+    // Dark Mode
+    initializeDarkMode() {
+        const darkMode = localStorage.getItem('darkMode') === 'true';
+        if (darkMode) {
+            document.body.setAttribute('data-theme', 'dark');
+        }
+    }
+
+    toggleDarkMode() {
+        const currentTheme = document.body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+        if (newTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            localStorage.setItem('darkMode', 'true');
+        } else {
+            document.body.removeAttribute('data-theme');
+            localStorage.setItem('darkMode', 'false');
+        }
+    }
+
+    isDarkMode() {
+        return document.body.getAttribute('data-theme') === 'dark';
     }
 
     updateWeightGoalInfo() {

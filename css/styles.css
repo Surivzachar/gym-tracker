@@ -1,3 +1,52 @@
+/* Theme Variables */
+:root {
+    /* Light Theme (Default) */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f3f4f6;
+    --bg-tertiary: #e5e7eb;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-tertiary: #9ca3af;
+    --border-color: #e5e7eb;
+    --border-color-light: #f3f4f6;
+    --shadow-sm: rgba(0, 0, 0, 0.08);
+    --shadow-md: rgba(0, 0, 0, 0.1);
+    --shadow-lg: rgba(0, 0, 0, 0.15);
+    --accent-primary: #1e3a8a;
+    --accent-secondary: #3b82f6;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --card-bg: #ffffff;
+    --input-bg: #ffffff;
+    --modal-overlay: rgba(0, 0, 0, 0.5);
+    --logo-opacity: 0.08;
+}
+
+[data-theme="dark"] {
+    /* Dark Theme */
+    --bg-primary: #1f2937;
+    --bg-secondary: #111827;
+    --bg-tertiary: #374151;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --text-tertiary: #9ca3af;
+    --border-color: #374151;
+    --border-color-light: #4b5563;
+    --shadow-sm: rgba(0, 0, 0, 0.3);
+    --shadow-md: rgba(0, 0, 0, 0.4);
+    --shadow-lg: rgba(0, 0, 0, 0.5);
+    --accent-primary: #60a5fa;
+    --accent-secondary: #3b82f6;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --card-bg: #374151;
+    --input-bg: #4b5563;
+    --modal-overlay: rgba(0, 0, 0, 0.7);
+    --logo-opacity: 0.03;
+}
+
 /* Reset and Base Styles */
 * {
     margin: 0;
@@ -12,12 +61,13 @@ html {
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-    background: #f3f4f6;
-    color: #1f2937;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
     width: 100%;
     position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 img {
@@ -29,9 +79,10 @@ img {
     max-width: 100%;
     width: 100%;
     min-height: 100vh;
-    background: #fff;
+    background: var(--bg-primary);
     position: relative;
     overflow-x: hidden;
+    transition: background-color 0.3s ease;
 }
 
 .app::before {
@@ -47,23 +98,25 @@ img {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    opacity: 0.08;
+    opacity: var(--logo-opacity);
     z-index: 0;
     pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 
 /* Header */
 .header {
-    background: #ffffff;
-    color: #1f2937;
+    background: var(--bg-primary);
+    color: var(--text-primary);
     padding: 1rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px var(--shadow-sm);
+    border-bottom: 1px solid var(--border-color);
     position: relative;
     z-index: 10;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .logo {
@@ -89,7 +142,7 @@ img {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.02em;
-    color: #1f2937;
+    color: var(--text-primary);
 }
 
 .logo-tagline {
@@ -97,7 +150,7 @@ img {
     font-weight: 500;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: #1e3a8a;
+    color: var(--accent-primary);
 }
 
 .header-actions {
@@ -2491,4 +2544,168 @@ input:checked + .toggle-slider:before {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
+}
+
+/* ===== DARK MODE COMPREHENSIVE OVERRIDES ===== */
+[data-theme="dark"] {
+    /* Cards and containers */
+    .card, .workout-card, .food-item, .exercise-card, .routine-card, .photo-card, .metric-card,
+    .food-routine-card, .stat-card, .backup-item, .achievement-card {
+        background: var(--card-bg);
+        border-color: var(--border-color);
+        color: var(--text-primary);
+    }
+
+    /* Inputs and form elements */
+    input, select, textarea {
+        background: var(--input-bg);
+        color: var(--text-primary);
+        border-color: var(--border-color);
+    }
+
+    input::placeholder, textarea::placeholder {
+        color: var(--text-tertiary);
+    }
+
+    /* Modals */
+    .modal {
+        background: var(--modal-overlay);
+    }
+
+    .modal-content {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+    }
+
+    .modal-header {
+        border-bottom-color: var(--border-color);
+    }
+
+    /* Buttons - keep primary colors vibrant */
+    .btn-primary {
+        background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    }
+
+    .btn-secondary {
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+        border-color: var(--border-color-light);
+    }
+
+    .btn-danger {
+        background: #dc2626;
+    }
+
+    /* Navigation */
+    .nav-btn {
+        color: var(--text-secondary);
+    }
+
+    .nav-btn.active {
+        color: var(--accent-secondary);
+    }
+
+    /* Tables */
+    table {
+        color: var(--text-primary);
+    }
+
+    thead {
+        background: var(--bg-tertiary);
+    }
+
+    tr {
+        border-bottom-color: var(--border-color);
+    }
+
+    tbody tr:hover {
+        background: var(--bg-tertiary);
+    }
+
+    /* Stats and metrics */
+    .stat-value {
+        color: var(--text-primary);
+    }
+
+    .stat-label {
+        color: var(--text-secondary);
+    }
+
+    /* Date banner */
+    .date-banner {
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+        border-color: var(--border-color);
+    }
+
+    /* Food stats */
+    .food-stats {
+        background: var(--bg-secondary);
+    }
+
+    /* Progress photos */
+    .progress-photo-grid {
+        background: var(--bg-secondary);
+    }
+
+    /* Empty states */
+    .empty-state {
+        color: var(--text-secondary);
+    }
+
+    /* Settings sections */
+    .settings-section {
+        border-color: var(--border-color);
+    }
+
+    /* Google Drive status */
+    .googledrive-status {
+        background: var(--bg-tertiary);
+        border-color: var(--border-color);
+    }
+
+    /* Chart containers (for future charts) */
+    .chart-container {
+        background: var(--card-bg);
+        border-color: var(--border-color);
+    }
+
+    /* Toggle switches */
+    .toggle-slider {
+        background-color: var(--bg-tertiary);
+    }
+
+    /* Quotes */
+    .daily-quote {
+        background: var(--bg-tertiary);
+        border-left-color: var(--accent-secondary);
+    }
+
+    /* Journey info */
+    #journeyDayDisplay {
+        color: var(--accent-secondary);
+    }
+}
+
+/* Dark mode toggle switch styling */
+.theme-toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.theme-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.theme-toggle-icon {
+    font-size: 1.25rem;
 }
