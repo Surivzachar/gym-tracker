@@ -401,9 +401,30 @@ const Storage = {
         const routine = routines.find(r => r.id === id);
 
         if (routine) {
+            // Map routine name to correct meal type if mealType is "snacks"
+            const mealTypeMapping = {
+                'mid-morning': 'midmorning',
+                'pre-workout': 'preworkout',
+                'post-workout': 'postworkout',
+                'late snack': 'snacks'
+            };
+
             // Add routine meals to today (or customDate if provided) - append, don't clear existing
             routine.meals.forEach(meal => {
-                this.addFoodItem(meal.mealType, meal, customDate);
+                let mealType = meal.mealType;
+
+                // If mealType is "snacks", try to determine correct type from routine name
+                if (mealType === 'snacks') {
+                    const routineLower = routine.name.toLowerCase();
+                    for (const [key, value] of Object.entries(mealTypeMapping)) {
+                        if (routineLower.includes(key)) {
+                            mealType = value;
+                            break;
+                        }
+                    }
+                }
+
+                this.addFoodItem(mealType, meal, customDate);
             });
 
             return true;
