@@ -4,7 +4,7 @@ const GoogleDriveSync = {
     // Configuration
     CLIENT_ID: '181401543852-0alv6dsg5ie3pke4d99g9ec8b2skgnrc.apps.googleusercontent.com',
     CLIENT_SECRET: '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', // Get this from Google Cloud Console - same page as Client ID
-    REDIRECT_URI: window.location.origin + window.location.pathname.replace(/\/$/, ''), // Remove trailing slash
+    REDIRECT_URI: window.location.origin, // Use just the origin to match Google Cloud Console
     SCOPES: ['https://www.googleapis.com/auth/drive.file'], // Only access files created by this app
     AUTH_ENDPOINT: 'https://accounts.google.com/o/oauth2/v2/auth',
     TOKEN_ENDPOINT: 'https://oauth2.googleapis.com/token',
