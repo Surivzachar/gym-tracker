@@ -323,6 +323,8 @@ class GymTrackerApp {
         // Refresh data when switching views
         if (viewName === 'dashboard') {
             this.renderDashboard();
+        } else if (viewName === 'progress') {
+            this.renderProgress();
         } else if (viewName === 'history') {
             this.renderHistory();
         } else if (viewName === 'routines') {
@@ -3330,6 +3332,368 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         chartHTML += `<p class="chart-average">7-day average: ${avg.toFixed(1)}${unit}</p>`;
 
         container.innerHTML = chartHTML;
+    }
+
+    // Progress Charts
+    renderProgress() {
+        this.renderProgressCharts();
+        this.renderQuickStats();
+        this.initializeChartFilters();
+    }
+
+    initializeChartFilters() {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const chartType = e.target.dataset.chart;
+                const days = parseInt(e.target.dataset.days);
+
+                // Update active state
+                document.querySelectorAll(`.filter-btn[data-chart="${chartType}"]`).forEach(b => {
+                    b.classList.remove('active');
+                });
+                e.target.classList.add('active');
+
+                // Re-render the specific chart
+                if (chartType === 'weight') {
+                    this.renderWeightProgressChart(days);
+                } else if (chartType === 'volume') {
+                    this.renderVolumeChart(days);
+                } else if (chartType === 'calories') {
+                    this.renderCaloriesChart(days);
+                }
+            });
+        });
+    }
+
+    renderProgressCharts() {
+        this.renderWeightProgressChart(30);
+        this.renderVolumeChart(30);
+        this.renderCaloriesChart(30);
+    }
+
+    renderWeightProgressChart(days = 30) {
+        const weights = Storage.getAllDailyMetrics()
+            .filter(m => m.weight)
+            .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        const canvas = document.getElementById('weightChart');
+        const emptyState = document.getElementById('weightChartEmpty');
+
+        if (weights.length === 0) {
+            canvas.style.display = 'none';
+            emptyState.classList.add('show');
+            return;
+        }
+
+        canvas.style.display = 'block';
+        emptyState.classList.remove('show');
+
+        // Filter by days
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+        const filteredWeights = weights.filter(w => new Date(w.date) >= cutoffDate);
+
+        const labels = filteredWeights.map(w => {
+            const date = new Date(w.date);
+            return date.toLocaleDateString('en-NZ', { month: 'short', day: 'numeric' });
+        });
+        const data = filteredWeights.map(w => w.weight);
+
+        const isDark = this.isDarkMode();
+        const ctx = canvas.getContext('2d');
+
+        // Destroy existing chart if it exists
+        if (canvas.chart) {
+            canvas.chart.destroy();
+        }
+
+        canvas.chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Weight (kg)',
+                    data: data,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: isDark ? '#374151' : '#ffffff',
+                        titleColor: isDark ? '#f9fafb' : '#1f2937',
+                        bodyColor: isDark ? '#d1d5db' : '#6b7280',
+                        borderColor: isDark ? '#4b5563' : '#e5e7eb',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            color: isDark ? '#d1d5db' : '#6b7280'
+                        },
+                        grid: {
+                            color: isDark ? '#374151' : '#e5e7eb'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: isDark ? '#d1d5db' : '#6b7280',
+                            maxRotation: 45,
+                            minRotation: 45
+                        },
+                        grid: {
+                            color: isDark ? '#374151' : '#e5e7eb'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    renderVolumeChart(days = 30) {
+        const workouts = Storage.getAllWorkouts()
+            .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        const canvas = document.getElementById('volumeChart');
+        const emptyState = document.getElementById('volumeChartEmpty');
+
+        if (workouts.length === 0) {
+            canvas.style.display = 'none';
+            emptyState.classList.add('show');
+            return;
+        }
+
+        canvas.style.display = 'block';
+        emptyState.classList.remove('show');
+
+        // Filter by days
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+        const filteredWorkouts = workouts.filter(w => new Date(w.date) >= cutoffDate);
+
+        const labels = filteredWorkouts.map(w => {
+            const date = new Date(w.date);
+            return date.toLocaleDateString('en-NZ', { month: 'short', day: 'numeric' });
+        });
+
+        const data = filteredWorkouts.map(w => {
+            let totalVolume = 0;
+            w.exercises.forEach(ex => {
+                ex.sets.forEach(set => {
+                    totalVolume += (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0);
+                });
+            });
+            return totalVolume;
+        });
+
+        const isDark = this.isDarkMode();
+        const ctx = canvas.getContext('2d');
+
+        // Destroy existing chart if it exists
+        if (canvas.chart) {
+            canvas.chart.destroy();
+        }
+
+        canvas.chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Volume (kg)',
+                    data: data,
+                    backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                    borderColor: '#10b981',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: isDark ? '#374151' : '#ffffff',
+                        titleColor: isDark ? '#f9fafb' : '#1f2937',
+                        bodyColor: isDark ? '#d1d5db' : '#6b7280',
+                        borderColor: isDark ? '#4b5563' : '#e5e7eb',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: isDark ? '#d1d5db' : '#6b7280'
+                        },
+                        grid: {
+                            color: isDark ? '#374151' : '#e5e7eb'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: isDark ? '#d1d5db' : '#6b7280',
+                            maxRotation: 45,
+                            minRotation: 45
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    renderCaloriesChart(days = 30) {
+        const foodDays = Storage.getAllFoodDays()
+            .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        const canvas = document.getElementById('caloriesChart');
+        const emptyState = document.getElementById('caloriesChartEmpty');
+
+        if (foodDays.length === 0) {
+            canvas.style.display = 'none';
+            emptyState.classList.add('show');
+            return;
+        }
+
+        canvas.style.display = 'block';
+        emptyState.classList.remove('show');
+
+        // Filter by days
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+        const filteredDays = foodDays.filter(d => new Date(d.date) >= cutoffDate);
+
+        const labels = filteredDays.map(d => {
+            const date = new Date(d.date);
+            return date.toLocaleDateString('en-NZ', { month: 'short', day: 'numeric' });
+        });
+
+        const data = filteredDays.map(d => {
+            let totalCalories = 0;
+            Object.values(d.meals).forEach(mealArray => {
+                mealArray.forEach(item => {
+                    totalCalories += parseFloat(item.calories) || 0;
+                });
+            });
+            return totalCalories;
+        });
+
+        const isDark = this.isDarkMode();
+        const ctx = canvas.getContext('2d');
+
+        // Destroy existing chart if it exists
+        if (canvas.chart) {
+            canvas.chart.destroy();
+        }
+
+        canvas.chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Calories',
+                    data: data,
+                    borderColor: '#f59e0b',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: isDark ? '#374151' : '#ffffff',
+                        titleColor: isDark ? '#f9fafb' : '#1f2937',
+                        bodyColor: isDark ? '#d1d5db' : '#6b7280',
+                        borderColor: isDark ? '#4b5563' : '#e5e7eb',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: isDark ? '#d1d5db' : '#6b7280'
+                        },
+                        grid: {
+                            color: isDark ? '#374151' : '#e5e7eb'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: isDark ? '#d1d5db' : '#6b7280',
+                            maxRotation: 45,
+                            minRotation: 45
+                        },
+                        grid: {
+                            color: isDark ? '#374151' : '#e5e7eb'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    renderQuickStats() {
+        const workouts = Storage.getAllWorkouts();
+        const foodDays = Storage.getAllFoodDays();
+        const daysSinceStart = Storage.getDaysSinceStart() || 0;
+
+        // Total workouts
+        document.getElementById('totalWorkouts').textContent = workouts.length;
+
+        // Total volume
+        let totalVolume = 0;
+        workouts.forEach(w => {
+            w.exercises.forEach(ex => {
+                ex.sets.forEach(set => {
+                    totalVolume += (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0);
+                });
+            });
+        });
+        document.getElementById('totalVolume').textContent = Math.round(totalVolume).toLocaleString() + ' kg';
+
+        // Average calories
+        if (foodDays.length > 0) {
+            let totalCalories = 0;
+            foodDays.forEach(d => {
+                Object.values(d.meals).forEach(mealArray => {
+                    mealArray.forEach(item => {
+                        totalCalories += parseFloat(item.calories) || 0;
+                    });
+                });
+            });
+            const avgCalories = Math.round(totalCalories / foodDays.length);
+            document.getElementById('avgCalories').textContent = avgCalories.toLocaleString();
+        } else {
+            document.getElementById('avgCalories').textContent = '0';
+        }
+
+        // Journey days
+        document.getElementById('journeyDays').textContent = daysSinceStart;
     }
 }
 

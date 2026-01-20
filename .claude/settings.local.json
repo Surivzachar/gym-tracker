@@ -15,7 +15,10 @@
       "Bash(timeout:*)",
       "Bash(gh --version:*)",
       "Bash(gh auth status:*)",
-      "Bash(node -e:*)"
+      "Bash(node -e:*)",
+      "Bash(gh run list:*)",
+      "WebFetch(domain:surivzachar.github.io)",
+      "Bash(git restore:*)"
     ],
     "deny": [],
     "ask": []
