@@ -451,10 +451,16 @@ const Storage = {
         const startDate = this.getStartDate();
         if (!startDate) return null;
 
+        // Use NZ timezone for calculations
         const start = new Date(startDate);
-        const today = new Date();
-        const diffTime = Math.abs(today - start);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'Pacific/Auckland' }));
+
+        // Calculate date difference at midnight NZ time
+        const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+        const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+        const diffTime = todayMidnight - startMidnight;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 because day 1 is the start date
         return diffDays;
     },
 
