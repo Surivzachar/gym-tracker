@@ -3354,6 +3354,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     renderProgress() {
         this.renderProgressCharts();
         this.renderPersonalRecords();
+        this.renderAchievements();
         this.renderQuickStats();
         this.initializeChartFilters();
     }
@@ -3770,6 +3771,173 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
                 `).join('')}
             </div>
         `;
+    }
+
+    renderAchievements() {
+        const achievements = this.calculateAchievements();
+        const container = document.getElementById('achievementsContainer');
+
+        container.innerHTML = `
+            <div class="achievements-grid">
+                ${achievements.map(achievement => {
+                    const isUnlocked = achievement.unlocked;
+                    const isNew = achievement.newlyUnlocked;
+
+                    return `
+                        <div class="achievement-badge ${isUnlocked ? 'unlocked' : 'locked'}">
+                            ${isNew ? '<div class="achievement-new-badge">NEW!</div>' : ''}
+                            <div class="achievement-icon">${achievement.icon}</div>
+                            <div class="achievement-name">${achievement.name}</div>
+                            <div class="achievement-description">${achievement.description}</div>
+                            <div class="achievement-progress">
+                                ${isUnlocked ? '✅ Unlocked' : `${achievement.current}/${achievement.target}`}
+                            </div>
+                            ${isUnlocked && achievement.date ? `<div class="achievement-date">${formatDateNZ(new Date(achievement.date), { month: 'short', day: 'numeric', year: 'numeric' })}</div>` : ''}
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }
+
+    calculateAchievements() {
+        const workouts = Storage.getAllWorkouts();
+        const foodDays = Storage.getAllFoodDays();
+        const daysSinceStart = Storage.getDaysSinceStart() || 0;
+        const photos = Storage.getAllProgressPhotos();
+
+        // Get stored achievements to check for new ones
+        const storedAchievements = JSON.parse(localStorage.getItem('unlockedAchievements') || '{}');
+        const newUnlocks = [];
+
+        // Define all achievements
+        const achievementsList = [
+            {
+                id: 'first_workout',
+                name: 'First Workout',
+                description: 'Complete your first workout',
+                icon: '💪',
+                target: 1,
+                current: workouts.length,
+                unlocked: workouts.length >= 1
+            },
+            {
+                id: 'workout_10',
+                name: 'Consistent',
+                description: 'Complete 10 workouts',
+                icon: '🔥',
+                target: 10,
+                current: workouts.length,
+                unlocked: workouts.length >= 10
+            },
+            {
+                id: 'workout_50',
+                name: 'Dedicated',
+                description: 'Complete 50 workouts',
+                icon: '⚡',
+                target: 50,
+                current: workouts.length,
+                unlocked: workouts.length >= 50
+            },
+            {
+                id: 'workout_100',
+                name: 'Champion',
+                description: 'Complete 100 workouts',
+                icon: '👑',
+                target: 100,
+                current: workouts.length,
+                unlocked: workouts.length >= 100
+            },
+            {
+                id: 'streak_7',
+                name: '7-Day Streak',
+                description: 'Track food for 7 days',
+                icon: '🍽️',
+                target: 7,
+                current: foodDays.length,
+                unlocked: foodDays.length >= 7
+            },
+            {
+                id: 'streak_30',
+                name: '30-Day Streak',
+                description: 'Track food for 30 days',
+                icon: '📊',
+                target: 30,
+                current: foodDays.length,
+                unlocked: foodDays.length >= 30
+            },
+            {
+                id: 'journey_7',
+                name: 'Week Warrior',
+                description: 'Complete 7 days',
+                icon: '📅',
+                target: 7,
+                current: daysSinceStart,
+                unlocked: daysSinceStart >= 7
+            },
+            {
+                id: 'journey_30',
+                name: 'Month Master',
+                description: 'Complete 30 days',
+                icon: '🗓️',
+                target: 30,
+                current: daysSinceStart,
+                unlocked: daysSinceStart >= 30
+            },
+            {
+                id: 'journey_90',
+                name: 'Quarter Crusher',
+                description: 'Complete 90 days',
+                icon: '🎯',
+                target: 90,
+                current: daysSinceStart,
+                unlocked: daysSinceStart >= 90
+            },
+            {
+                id: 'journey_365',
+                name: 'Year Legend',
+                description: 'Complete 365 days',
+                icon: '🏅',
+                target: 365,
+                current: daysSinceStart,
+                unlocked: daysSinceStart >= 365
+            },
+            {
+                id: 'progress_photo',
+                name: 'Documented',
+                description: 'Take first progress photo',
+                icon: '📸',
+                target: 1,
+                current: photos.length,
+                unlocked: photos.length >= 1
+            },
+            {
+                id: 'progress_photos_10',
+                name: 'Visual Journey',
+                description: 'Take 10 progress photos',
+                icon: '📷',
+                target: 10,
+                current: photos.length,
+                unlocked: photos.length >= 10
+            }
+        ];
+
+        // Check for newly unlocked achievements
+        achievementsList.forEach(achievement => {
+            if (achievement.unlocked && !storedAchievements[achievement.id]) {
+                achievement.newlyUnlocked = true;
+                newUnlocks.push(achievement.id);
+                storedAchievements[achievement.id] = new Date().toISOString();
+            }
+            achievement.date = storedAchievements[achievement.id];
+        });
+
+        // Store updated achievements
+        if (newUnlocks.length > 0) {
+            localStorage.setItem('unlockedAchievements', JSON.stringify(storedAchievements));
+        }
+
+        return achievementsList;
     }
 
     renderQuickStats() {
