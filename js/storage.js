@@ -401,29 +401,34 @@ const Storage = {
         const routine = routines.find(r => r.id === id);
 
         if (routine) {
-            // Map routine name to correct meal type if mealType is "snacks"
-            const mealTypeMapping = {
-                'mid-morning': 'midmorning',
-                'pre-workout': 'preworkout',
-                'post-workout': 'postworkout',
-                'late snack': 'snacks'
-            };
+            // Determine correct meal type from routine name
+            const routineLower = routine.name.toLowerCase();
+            let correctMealType = null;
+
+            // Check routine name to determine the correct meal type
+            if (routineLower.includes('breakfast')) {
+                correctMealType = 'breakfast';
+            } else if (routineLower.includes('mid-morning') || routineLower.includes('midmorning')) {
+                correctMealType = 'midmorning';
+            } else if (routineLower.includes('lunch')) {
+                correctMealType = 'lunch';
+            } else if (routineLower.includes('pre-workout') || routineLower.includes('preworkout')) {
+                correctMealType = 'preworkout';
+            } else if (routineLower.includes('post-workout') || routineLower.includes('postworkout')) {
+                correctMealType = 'postworkout';
+            } else if (routineLower.includes('dinner')) {
+                // Only use dinner if it's not a post-workout routine
+                if (!routineLower.includes('post')) {
+                    correctMealType = 'dinner';
+                }
+            } else if (routineLower.includes('snack')) {
+                correctMealType = 'snacks';
+            }
 
             // Add routine meals to today (or customDate if provided) - append, don't clear existing
             routine.meals.forEach(meal => {
-                let mealType = meal.mealType;
-
-                // If mealType is "snacks", try to determine correct type from routine name
-                if (mealType === 'snacks') {
-                    const routineLower = routine.name.toLowerCase();
-                    for (const [key, value] of Object.entries(mealTypeMapping)) {
-                        if (routineLower.includes(key)) {
-                            mealType = value;
-                            break;
-                        }
-                    }
-                }
-
+                // Use the determined meal type from routine name, or fall back to the meal's mealType
+                const mealType = correctMealType || meal.mealType;
                 this.addFoodItem(mealType, meal, customDate);
             });
 
