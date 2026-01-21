@@ -5993,6 +5993,276 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             this.syncAfterChange();
         }
     }
+
+    // ===== EXERCISE LIBRARY FUNCTIONS =====
+    openExerciseLibrary() {
+        this.renderExerciseLibrary();
+        this.openModal('exerciseLibraryModal');
+
+        // Setup search and filter listeners
+        document.getElementById('librarySearchInput').addEventListener('input', () => this.renderExerciseLibrary());
+        document.getElementById('libraryFilterCategory').addEventListener('change', () => this.renderExerciseLibrary());
+        document.getElementById('libraryFilterDifficulty').addEventListener('change', () => this.renderExerciseLibrary());
+    }
+
+    renderExerciseLibrary() {
+        const searchQuery = document.getElementById('librarySearchInput')?.value || '';
+        const categoryFilter = document.getElementById('libraryFilterCategory')?.value || '';
+        const difficultyFilter = document.getElementById('libraryFilterDifficulty')?.value || '';
+
+        let exercises = ExerciseLibrary.getAllExercises();
+
+        // Apply search
+        if (searchQuery) {
+            exercises = ExerciseLibrary.search(searchQuery);
+        }
+
+        // Apply category filter
+        if (categoryFilter) {
+            exercises = exercises.filter(ex => ex.category === categoryFilter);
+        }
+
+        // Apply difficulty filter
+        if (difficultyFilter) {
+            exercises = exercises.filter(ex => ex.difficulty === difficultyFilter);
+        }
+
+        const container = document.getElementById('libraryExerciseList');
+        container.innerHTML = exercises.map(ex => `
+            <div class="library-exercise-card" onclick="app.showExerciseDetails(${ex.id})">
+                <div class="library-exercise-name">${ex.name}</div>
+                <div class="library-exercise-meta">
+                    <span class="library-badge category">${ex.category}</span>
+                    <span class="library-badge difficulty ${ex.difficulty}">${ex.difficulty}</span>
+                </div>
+                <div class="library-exercise-muscles">
+                    ${ex.primaryMuscles.join(', ')}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    showExerciseDetails(exerciseId) {
+        const exercise = ExerciseLibrary.getById(exerciseId);
+        if (!exercise) return;
+
+        document.getElementById('exerciseDetailsTitle').textContent = exercise.name;
+
+        const content = `
+            <div class="exercise-details-section">
+                <h4>📊 Details</h4>
+                <p><strong>Category:</strong> ${exercise.category}</p>
+                <p><strong>Difficulty:</strong> ${exercise.difficulty}</p>
+                <p><strong>Equipment:</strong> ${exercise.equipment}</p>
+                <p><strong>Primary Muscles:</strong> ${exercise.primaryMuscles.join(', ')}</p>
+                ${exercise.secondaryMuscles.length > 0 ? `<p><strong>Secondary Muscles:</strong> ${exercise.secondaryMuscles.join(', ')}</p>` : ''}
+            </div>
+
+            <div class="exercise-details-section">
+                <h4>📝 Instructions</h4>
+                <ul>
+                    ${exercise.instructions.map(inst => `<li>${inst}</li>`).join('')}
+                </ul>
+            </div>
+
+            <div class="exercise-details-section">
+                <h4>💡 Form Tips</h4>
+                <ul>
+                    ${exercise.formTips.map(tip => `<li>${tip}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+
+        document.getElementById('exerciseDetailsContent').innerHTML = content;
+
+        // Store current exercise for adding to workout
+        this.currentLibraryExercise = exercise;
+
+        this.closeModal('exerciseLibraryModal');
+        this.openModal('exerciseDetailsModal');
+
+        // Setup button listeners
+        document.getElementById('addExerciseFromLibraryBtn').onclick = () => this.addExerciseFromLibrary();
+        document.getElementById('viewExerciseHistoryBtn').onclick = () => this.viewExerciseHistory(exercise.name);
+    }
+
+    addExerciseFromLibrary() {
+        if (!this.currentLibraryExercise) return;
+
+        const exercise = {
+            id: Date.now(),
+            name: this.currentLibraryExercise.name,
+            sets: [{ weight: 0, reps: 0 }]
+        };
+
+        this.currentWorkout.exercises.push(exercise);
+        Storage.saveCurrentWorkout(this.currentWorkout);
+        this.renderCurrentWorkout();
+
+        this.closeModal('exerciseDetailsModal');
+        this.switchView('workout');
+        alert(`✅ Added "${exercise.name}" to your workout!`);
+    }
+
+    // ===== WORKOUT TEMPLATES FUNCTIONS =====
+    openTemplatesModal() {
+        this.renderTemplates();
+        this.openModal('templatesModal');
+
+        // Setup filter listeners
+        document.querySelectorAll('.template-filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.template-filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                this.renderTemplates(e.target.dataset.type);
+            });
+        });
+    }
+
+    renderTemplates(typeFilter = 'all') {
+        let templates = WorkoutTemplates.getAllTemplates();
+
+        if (typeFilter && typeFilter !== 'all') {
+            templates = WorkoutTemplates.getByType(typeFilter);
+        }
+
+        const container = document.getElementById('templatesList');
+        container.innerHTML = templates.map(template => `
+            <div class="template-card" onclick="app.loadTemplate('${template.id}')">
+                <div class="template-header">
+                    <div class="template-name">${template.name}</div>
+                    <div class="template-description">${template.description}</div>
+                </div>
+                <div class="template-meta">
+                    <span class="template-meta-item">⏱️ ${template.estimatedDuration}</span>
+                    <span class="template-meta-item">📊 ${template.difficulty}</span>
+                    <span class="template-meta-item">🏋️ ${template.exercises.length} exercises</span>
+                </div>
+                <div class="template-exercises">
+                    <div class="template-exercises-list">
+                        ${template.exercises.map(ex => `
+                            <div class="template-exercise-item">${ex.name} (${ex.sets}x${ex.reps})</div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    loadTemplate(templateId) {
+        if (this.currentWorkout.exercises.length > 0) {
+            if (!confirm('This will add exercises to your current workout. Continue?')) {
+                return;
+            }
+        }
+
+        const workout = WorkoutTemplates.loadTemplate(templateId);
+        if (!workout) {
+            alert('Template not found');
+            return;
+        }
+
+        // Add exercises to current workout
+        workout.exercises.forEach(ex => {
+            this.currentWorkout.exercises.push(ex);
+        });
+
+        Storage.saveCurrentWorkout(this.currentWorkout);
+        this.renderCurrentWorkout();
+
+        this.closeModal('templatesModal');
+        this.switchView('workout');
+
+        const template = WorkoutTemplates.getById(templateId);
+        alert(`✅ Loaded "${template.name}" with ${template.exercises.length} exercises!`);
+    }
+
+    // ===== EXERCISE HISTORY & ANALYTICS FUNCTIONS =====
+    viewExerciseHistory(exerciseName) {
+        const workouts = Storage.getAllWorkouts();
+
+        // Find all instances of this exercise
+        const history = [];
+        workouts.forEach(workout => {
+            workout.exercises.forEach(ex => {
+                if (ex.name.toLowerCase() === exerciseName.toLowerCase()) {
+                    history.push({
+                        date: workout.date,
+                        sets: ex.sets
+                    });
+                }
+            });
+        });
+
+        if (history.length === 0) {
+            alert('No history found for this exercise');
+            return;
+        }
+
+        // Calculate stats
+        let totalSets = 0;
+        let totalVolume = 0;
+        let maxWeight = 0;
+        let maxReps = 0;
+
+        history.forEach(session => {
+            session.sets.forEach(set => {
+                totalSets++;
+                const volume = (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0);
+                totalVolume += volume;
+                maxWeight = Math.max(maxWeight, parseFloat(set.weight) || 0);
+                maxReps = Math.max(maxReps, parseInt(set.reps) || 0);
+            });
+        });
+
+        document.getElementById('exerciseHistoryTitle').textContent = `${exerciseName} History`;
+
+        const content = `
+            <div class="exercise-history-stats">
+                <div class="history-stat-card">
+                    <div class="history-stat-value">${history.length}</div>
+                    <div class="history-stat-label">Sessions</div>
+                </div>
+                <div class="history-stat-card">
+                    <div class="history-stat-value">${totalSets}</div>
+                    <div class="history-stat-label">Total Sets</div>
+                </div>
+                <div class="history-stat-card">
+                    <div class="history-stat-value">${Math.round(totalVolume)}kg</div>
+                    <div class="history-stat-label">Total Volume</div>
+                </div>
+                <div class="history-stat-card">
+                    <div class="history-stat-value">${maxWeight}kg</div>
+                    <div class="history-stat-label">Max Weight</div>
+                </div>
+                <div class="history-stat-card">
+                    <div class="history-stat-value">${maxReps}</div>
+                    <div class="history-stat-label">Max Reps</div>
+                </div>
+            </div>
+
+            <h4 style="margin-bottom: 1rem;">Recent Sessions</h4>
+            <div class="exercise-history-list">
+                ${history.slice(0, 10).map(session => `
+                    <div class="history-session-card">
+                        <div class="history-session-date">${formatDateNZ(new Date(session.date), { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                        <div class="history-session-sets">
+                            ${session.sets.map((set, idx) => `
+                                <div class="history-set-badge">
+                                    Set ${idx + 1}: ${set.weight}kg × ${set.reps} reps
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        document.getElementById('exerciseHistoryContent').innerHTML = content;
+
+        this.closeModal('exerciseDetailsModal');
+        this.openModal('exerciseHistoryModal');
+    }
 }
 
 // Initialize app when DOM is loaded
