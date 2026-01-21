@@ -297,6 +297,10 @@ class GymTrackerApp {
             this.removeRestDay();
         });
 
+        document.getElementById('saveGoalBtn').addEventListener('click', () => {
+            this.saveGoal();
+        });
+
         // Google Drive Sync
         this.renderGoogleDriveStatus();
 
@@ -3845,6 +3849,8 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.renderPersonalRecords();
         this.renderPRHistory();
         this.renderAchievements();
+        this.renderGoals();
+        this.renderReport('week');
         this.renderQuickStats();
         this.initializeChartFilters();
         this.initializeExerciseProgressChart();
@@ -5193,6 +5199,331 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.closeModal('restDayModal');
         this.renderCalendar();
         this.syncAfterChange();
+    }
+
+    // ===== GOALS FUNCTIONS =====
+    renderGoals() {
+        const goals = Storage.getAllGoals();
+        const container = document.getElementById('goalsContainer');
+        const emptyState = document.getElementById('goalsEmpty');
+
+        if (goals.length === 0) {
+            container.style.display = 'none';
+            emptyState.style.display = 'block';
+            return;
+        }
+
+        container.style.display = 'block';
+        emptyState.style.display = 'none';
+
+        container.innerHTML = `
+            <div class="goals-grid">
+                ${goals.map(goal => {
+                    const progress = goal.targetValue > 0 ? (goal.currentValue / goal.targetValue * 100) : 0;
+                    const progressClamped = Math.min(progress, 100);
+
+                    let deadlineHTML = '';
+                    if (goal.deadline) {
+                        const deadline = new Date(goal.deadline);
+                        const daysUntil = Math.ceil((deadline - new Date()) / (1000 * 60 * 60 * 24));
+                        let deadlineClass = '';
+
+                        if (daysUntil < 0) {
+                            deadlineHTML = `<div class="goal-deadline">📅 Overdue by ${Math.abs(daysUntil)} days</div>`;
+                            deadlineClass = 'urgent';
+                        } else if (daysUntil <= 7) {
+                            deadlineHTML = `<div class="goal-deadline urgent">📅 ${daysUntil} days left</div>`;
+                        } else if (daysUntil <= 30) {
+                            deadlineHTML = `<div class="goal-deadline approaching">📅 ${daysUntil} days left</div>`;
+                        } else {
+                            deadlineHTML = `<div class="goal-deadline">📅 Due ${formatDateNZ(deadline, { month: 'short', day: 'numeric', year: 'numeric' })}</div>`;
+                        }
+                    }
+
+                    return `
+                        <div class="goal-card ${goal.completed ? 'completed' : ''}">
+                            ${goal.completed ? '<div class="goal-completed-badge">✅ Completed</div>' : ''}
+                            <div class="goal-header">
+                                <span class="goal-category-badge ${goal.category}">${goal.category}</span>
+                                <div class="goal-actions">
+                                    ${!goal.completed ? `<button class="goal-action-btn" onclick="app.updateGoalProgress(${goal.id})" title="Update Progress">📊</button>` : ''}
+                                    <button class="goal-action-btn" onclick="app.deleteGoal(${goal.id})" title="Delete">🗑️</button>
+                                </div>
+                            </div>
+                            <div class="goal-title">${goal.title}</div>
+                            ${goal.description ? `<div class="goal-description">${goal.description}</div>` : ''}
+                            <div class="goal-progress-section">
+                                <div class="goal-progress-bar">
+                                    <div class="goal-progress-fill" style="width: ${progressClamped}%"></div>
+                                </div>
+                                <div class="goal-progress-text">
+                                    <span class="goal-current">${goal.currentValue.toFixed(1)} ${goal.unit}</span>
+                                    <span class="goal-target">/ ${goal.targetValue.toFixed(1)} ${goal.unit}</span>
+                                </div>
+                            </div>
+                            ${deadlineHTML}
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }
+
+    openAddGoalModal() {
+        document.getElementById('goalTitleInput').value = '';
+        document.getElementById('goalCategoryInput').value = 'strength';
+        document.getElementById('goalDescriptionInput').value = '';
+        document.getElementById('goalTargetInput').value = '';
+        document.getElementById('goalCurrentInput').value = '0';
+        document.getElementById('goalUnitInput').value = '';
+        document.getElementById('goalDeadlineInput').value = '';
+
+        this.openModal('addGoalModal');
+    }
+
+    saveGoal() {
+        const title = document.getElementById('goalTitleInput').value;
+        const category = document.getElementById('goalCategoryInput').value;
+        const description = document.getElementById('goalDescriptionInput').value;
+        const targetValue = document.getElementById('goalTargetInput').value;
+        const currentValue = document.getElementById('goalCurrentInput').value;
+        const unit = document.getElementById('goalUnitInput').value;
+        const deadline = document.getElementById('goalDeadlineInput').value;
+
+        if (!title || !targetValue || !unit) {
+            alert('Please fill in all required fields');
+            return;
+        }
+
+        const goal = {
+            title,
+            category,
+            description,
+            targetValue,
+            currentValue,
+            unit,
+            deadline
+        };
+
+        Storage.addGoal(goal);
+
+        this.closeModal('addGoalModal');
+        this.renderGoals();
+        this.syncAfterChange();
+    }
+
+    updateGoalProgress(goalId) {
+        const goal = Storage.getGoalById(goalId);
+        if (!goal) return;
+
+        const newValue = prompt(`Update progress for "${goal.title}"\nCurrent: ${goal.currentValue} ${goal.unit}\nEnter new value:`, goal.currentValue);
+
+        if (newValue !== null && newValue !== '') {
+            Storage.updateGoal(goalId, { currentValue: parseFloat(newValue) });
+            this.renderGoals();
+            this.syncAfterChange();
+        }
+    }
+
+    deleteGoal(goalId) {
+        if (confirm('Are you sure you want to delete this goal?')) {
+            Storage.deleteGoal(goalId);
+            this.renderGoals();
+            this.syncAfterChange();
+        }
+    }
+
+    // ===== REPORTS FUNCTIONS =====
+    switchReportTab(period) {
+        // Update active tab
+        document.querySelectorAll('.report-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.querySelector(`[data-period="${period}"]`).classList.add('active');
+
+        // Render report for this period
+        this.renderReport(period);
+    }
+
+    renderReport(period = 'week') {
+        const container = document.getElementById('reportsContainer');
+        const today = getCurrentDateNZ();
+
+        let startDate, endDate, periodLabel;
+
+        if (period === 'week') {
+            // This week (Sunday to Saturday)
+            const dayOfWeek = today.getDay();
+            startDate = new Date(today);
+            startDate.setDate(today.getDate() - dayOfWeek);
+            startDate.setHours(0, 0, 0, 0);
+
+            endDate = new Date(startDate);
+            endDate.setDate(startDate.getDate() + 6);
+            endDate.setHours(23, 59, 59, 999);
+
+            periodLabel = `${formatDateNZ(startDate, { month: 'short', day: 'numeric' })} - ${formatDateNZ(endDate, { month: 'short', day: 'numeric' })}`;
+        } else if (period === 'month') {
+            // This month
+            startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+            endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59, 999);
+            periodLabel = today.toLocaleDateString('en-NZ', { month: 'long', year: 'numeric' });
+        } else {
+            // This year
+            startDate = new Date(today.getFullYear(), 0, 1);
+            endDate = new Date(today.getFullYear(), 11, 31, 23, 59, 59, 999);
+            periodLabel = today.getFullYear().toString();
+        }
+
+        // Calculate stats
+        const workouts = Storage.getAllWorkouts();
+        const foodDays = Storage.getAllFoodDays();
+
+        const periodWorkouts = workouts.filter(w => {
+            const date = new Date(w.date);
+            return date >= startDate && date <= endDate;
+        });
+
+        const periodFoodDays = foodDays.filter(d => {
+            const date = new Date(d.date);
+            return date >= startDate && date <= endDate;
+        });
+
+        // Calculate total volume
+        let totalVolume = 0;
+        periodWorkouts.forEach(w => {
+            w.exercises.forEach(ex => {
+                ex.sets.forEach(set => {
+                    totalVolume += (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0);
+                });
+            });
+        });
+
+        // Calculate total calories
+        let totalCalories = 0;
+        periodFoodDays.forEach(d => {
+            Object.values(d.meals).forEach(mealArray => {
+                mealArray.forEach(item => {
+                    totalCalories += parseFloat(item.calories) || 0;
+                });
+            });
+        });
+
+        // Get highlights
+        const highlights = this.generateReportHighlights(periodWorkouts, periodFoodDays, startDate, endDate);
+
+        container.innerHTML = `
+            <div class="report-summary">
+                <div class="report-period">${periodLabel}</div>
+                <div class="report-stats-grid">
+                    <div class="report-stat">
+                        <div class="report-stat-value">${periodWorkouts.length}</div>
+                        <div class="report-stat-label">Workouts</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">${Math.round(totalVolume / 1000)}k</div>
+                        <div class="report-stat-label">Total Volume (kg)</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">${Math.round(totalCalories / 1000)}k</div>
+                        <div class="report-stat-label">Total Calories</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-stat-value">${periodFoodDays.length}</div>
+                        <div class="report-stat-label">Days Logged</div>
+                    </div>
+                </div>
+
+                <div class="report-highlights">
+                    <h4>📊 Highlights</h4>
+                    ${highlights.length > 0 ? highlights.map(h => `
+                        <div class="report-highlight-item">
+                            <span class="report-highlight-icon">${h.icon}</span>
+                            <span class="report-highlight-text">${h.text}</span>
+                        </div>
+                    `).join('') : '<div class="report-highlight-item"><span class="report-highlight-text">No highlights yet. Keep training!</span></div>'}
+                </div>
+            </div>
+        `;
+    }
+
+    generateReportHighlights(workouts, foodDays, startDate, endDate) {
+        const highlights = [];
+
+        // Most worked muscle groups
+        const muscleGroups = {};
+        workouts.forEach(w => {
+            w.exercises.forEach(ex => {
+                const muscle = ex.name.split(' ')[0]; // Simple heuristic
+                muscleGroups[muscle] = (muscleGroups[muscle] || 0) + 1;
+            });
+        });
+
+        const topMuscle = Object.entries(muscleGroups).sort((a, b) => b[1] - a[1])[0];
+        if (topMuscle) {
+            highlights.push({
+                icon: '💪',
+                text: `Most trained: ${topMuscle[0]} (${topMuscle[1]} exercises)`
+            });
+        }
+
+        // Workout frequency
+        if (workouts.length > 0) {
+            const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+            const frequency = (workouts.length / days * 7).toFixed(1);
+            highlights.push({
+                icon: '📅',
+                text: `${frequency} workouts per week on average`
+            });
+        }
+
+        // Weight PRs
+        const allWorkouts = Storage.getAllWorkouts();
+        const newPRs = this.findNewPRs(allWorkouts, startDate, endDate);
+        if (newPRs.length > 0) {
+            highlights.push({
+                icon: '🏆',
+                text: `${newPRs.length} new personal records!`
+            });
+        }
+
+        // Consistency
+        if (workouts.length >= 3) {
+            highlights.push({
+                icon: '🔥',
+                text: 'Great consistency! Keep it up!'
+            });
+        }
+
+        return highlights;
+    }
+
+    findNewPRs(allWorkouts, startDate, endDate) {
+        const prs = [];
+        // This is a simplified version - tracks volume PRs in period
+        const exerciseRecords = {};
+
+        allWorkouts.sort((a, b) => new Date(a.date) - new Date(b.date)).forEach(workout => {
+            const workoutDate = new Date(workout.date);
+            workout.exercises.forEach(ex => {
+                if (!exerciseRecords[ex.name]) {
+                    exerciseRecords[ex.name] = 0;
+                }
+
+                let totalVolume = 0;
+                ex.sets.forEach(set => {
+                    totalVolume += (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0);
+                });
+
+                if (totalVolume > exerciseRecords[ex.name] && workoutDate >= startDate && workoutDate <= endDate) {
+                    prs.push({ exercise: ex.name, volume: totalVolume, date: workout.date });
+                }
+
+                exerciseRecords[ex.name] = Math.max(exerciseRecords[ex.name], totalVolume);
+            });
+        });
+
+        return prs;
     }
 }
 

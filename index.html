@@ -397,6 +397,36 @@
                         <div id="achievementsContainer"></div>
                     </div>
 
+                    <!-- Goals -->
+                    <div class="goals-section">
+                        <div class="section-header-with-action">
+                            <div>
+                                <h3>🎯 Goals</h3>
+                                <p class="helper-text">Set and track your fitness goals</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="app.openAddGoalModal()">+ Add Goal</button>
+                        </div>
+                        <div id="goalsContainer"></div>
+                        <div id="goalsEmpty" class="chart-empty" style="display: none;">
+                            <span class="chart-empty-icon">🎯</span>
+                            Set your first goal to track your progress
+                        </div>
+                    </div>
+
+                    <!-- Reports -->
+                    <div class="reports-section">
+                        <h3>📈 Reports</h3>
+                        <p class="helper-text">View your progress over time</p>
+
+                        <div class="report-tabs">
+                            <button class="report-tab active" data-period="week" onclick="app.switchReportTab('week')">This Week</button>
+                            <button class="report-tab" data-period="month" onclick="app.switchReportTab('month')">This Month</button>
+                            <button class="report-tab" data-period="year" onclick="app.switchReportTab('year')">This Year</button>
+                        </div>
+
+                        <div id="reportsContainer"></div>
+                    </div>
+
                     <!-- Quick Stats Summary -->
                     <div class="progress-summary">
                         <h3>📊 Quick Stats</h3>
@@ -1357,6 +1387,57 @@
                     <div class="modal-actions">
                         <button id="saveRestDayBtn" class="btn-primary">Save Rest Day</button>
                         <button id="removeRestDayBtn" class="btn-secondary" style="display: none;">Remove Rest Day</button>
+                        <button class="btn-secondary close-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Goal Modal -->
+        <div id="addGoalModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>🎯 Add Goal</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-label">Goal Title</label>
+                        <input type="text" id="goalTitleInput" class="input" placeholder="e.g., Bench Press 100kg">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Category</label>
+                        <select id="goalCategoryInput" class="input">
+                            <option value="strength">💪 Strength</option>
+                            <option value="weight">⚖️ Weight</option>
+                            <option value="endurance">🏃 Endurance</option>
+                            <option value="general">🎯 General</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Description (optional)</label>
+                        <textarea id="goalDescriptionInput" class="input" rows="2" placeholder="Add details about your goal"></textarea>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+                        <div class="input-group">
+                            <label class="input-label">Target Value</label>
+                            <input type="number" id="goalTargetInput" class="input" placeholder="e.g., 100" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Unit</label>
+                            <input type="text" id="goalUnitInput" class="input" placeholder="kg, reps, km">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Current Progress</label>
+                        <input type="number" id="goalCurrentInput" class="input" placeholder="e.g., 80" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Deadline (optional)</label>
+                        <input type="date" id="goalDeadlineInput" class="input">
+                    </div>
+                    <div class="modal-actions">
+                        <button id="saveGoalBtn" class="btn-primary">Save Goal</button>
                         <button class="btn-secondary close-btn">Cancel</button>
                     </div>
                 </div>

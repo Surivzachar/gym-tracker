@@ -17,7 +17,8 @@ const Storage = {
         WEIGHT_GOAL: 'gym_tracker_weight_goal',
         WEIGHT_LOG: 'gym_tracker_weight_log',
         BODY_MEASUREMENTS: 'gym_tracker_body_measurements',
-        REST_DAYS: 'gym_tracker_rest_days'
+        REST_DAYS: 'gym_tracker_rest_days',
+        GOALS: 'gym_tracker_goals'
     },
 
     // Get data from localStorage
@@ -776,5 +777,70 @@ const Storage = {
         const restDays = this.getAllRestDays();
         const dateStr = new Date(date).toDateString();
         return restDays.find(rd => new Date(rd.date).toDateString() === dateStr);
+    },
+
+    // Goals Methods
+    getAllGoals() {
+        return this.get(this.KEYS.GOALS) || [];
+    },
+
+    addGoal(goal) {
+        const goals = this.getAllGoals();
+        const newGoal = {
+            id: Date.now(),
+            title: goal.title,
+            description: goal.description || '',
+            targetValue: parseFloat(goal.targetValue) || 0,
+            currentValue: parseFloat(goal.currentValue) || 0,
+            unit: goal.unit || '',
+            deadline: goal.deadline ? new Date(goal.deadline).toISOString() : null,
+            category: goal.category || 'general', // strength, weight, endurance, general
+            createdDate: new Date().toISOString(),
+            completed: false,
+            completedDate: null
+        };
+
+        goals.push(newGoal);
+        goals.sort((a, b) => {
+            // Incomplete goals first, then by deadline
+            if (a.completed !== b.completed) {
+                return a.completed ? 1 : -1;
+            }
+            if (a.deadline && b.deadline) {
+                return new Date(a.deadline) - new Date(b.deadline);
+            }
+            return 0;
+        });
+
+        return this.set(this.KEYS.GOALS, goals);
+    },
+
+    updateGoal(goalId, updates) {
+        const goals = this.getAllGoals();
+        const index = goals.findIndex(g => g.id === goalId);
+
+        if (index !== -1) {
+            goals[index] = { ...goals[index], ...updates };
+
+            // Check if goal is completed
+            if (goals[index].currentValue >= goals[index].targetValue && !goals[index].completed) {
+                goals[index].completed = true;
+                goals[index].completedDate = new Date().toISOString();
+            }
+
+            return this.set(this.KEYS.GOALS, goals);
+        }
+        return false;
+    },
+
+    deleteGoal(goalId) {
+        const goals = this.getAllGoals();
+        const filtered = goals.filter(g => g.id !== goalId);
+        return this.set(this.KEYS.GOALS, filtered);
+    },
+
+    getGoalById(goalId) {
+        const goals = this.getAllGoals();
+        return goals.find(g => g.id === goalId);
     }
 };
