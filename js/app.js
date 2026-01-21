@@ -323,8 +323,8 @@ class GymTrackerApp {
             this.saveWater();
         });
 
-        document.getElementById('saveSleepBtn').addEventListener('click', () => {
-            this.saveSleep();
+        document.getElementById('saveDashboardSleepBtn').addEventListener('click', () => {
+            this.saveDashboardSleep();
         });
 
         document.getElementById('saveWeightBtn').addEventListener('click', () => {
@@ -351,8 +351,8 @@ class GymTrackerApp {
             this.saveWaterGoal();
         });
 
-        document.getElementById('saveSleepBtn').addEventListener('click', () => {
-            this.saveSleep();
+        document.getElementById('saveSleepLogBtn').addEventListener('click', () => {
+            this.saveSleepLog();
         });
 
         document.getElementById('saveCardioBtn').addEventListener('click', () => {
@@ -3650,15 +3650,29 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     renderDashboard() {
         // Use workingDate if set, otherwise use today
         const displayDate = this.workingDate || null;
+        const actualDate = displayDate ? new Date(displayDate) : new Date();
 
         const metrics = Storage.getTodayMetrics(displayDate);
         const foodStats = Storage.getFoodStats(displayDate);
 
-        // Update metrics
+        // Pull data from new tracking features
+        const waterData = Storage.getWaterIntakeForDate(actualDate);
+        const sleepLog = Storage.getSleepLogForDate(actualDate);
+
+        // Get cardio calories for today
+        const allCardio = Storage.getAllCardioSessions();
+        const todayCardio = allCardio.filter(session => {
+            const sessionDate = new Date(session.date).toDateString();
+            const targetDate = actualDate.toDateString();
+            return sessionDate === targetDate;
+        });
+        const totalCardioCalories = todayCardio.reduce((sum, session) => sum + (session.calories || 0), 0);
+
+        // Update metrics - prioritize new storage over legacy DAILY_METRICS
         document.getElementById('dashSteps').textContent = metrics.steps || 0;
-        document.getElementById('dashWater').textContent = metrics.waterGlasses || 0;
-        document.getElementById('dashSleep').textContent = metrics.sleepHours || 0;
-        document.getElementById('dashCalories').textContent = metrics.workoutCalories || 0;
+        document.getElementById('dashWater').textContent = waterData.glasses || 0;
+        document.getElementById('dashSleep').textContent = sleepLog?.hours || 0;
+        document.getElementById('dashCalories').textContent = totalCardioCalories || metrics.workoutCalories || 0;
 
         // Update weight
         const weightGoal = Storage.getWeightGoal();
@@ -3691,11 +3705,14 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         const summaryEl = document.getElementById('dashWorkoutSummary');
 
         if (todayWorkout && todayWorkout.exercises.length > 0) {
+            const exerciseList = todayWorkout.exercises.map(ex => ex.name).slice(0, 3).join(', ');
+            const moreText = todayWorkout.exercises.length > 3 ? ` +${todayWorkout.exercises.length - 3} more` : '';
             summaryEl.innerHTML = `
                 <div class="workout-summary-item">
-                    <strong>${todayWorkout.exercises.length} exercises</strong> completed
+                    <strong>${todayWorkout.exercises.length} exercises:</strong><br>
+                    <span style="font-size: 0.9rem;">${exerciseList}${moreText}</span>
                 </div>
-                <button class="btn-secondary" onclick="app.switchView('workout')">View Workout</button>
+                <button class="btn-secondary" onclick="app.switchView('history')">View Details</button>
             `;
         } else {
             summaryEl.innerHTML = '<p class="empty-state-small">No workout logged today. Start tracking!</p>';
@@ -3770,7 +3787,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.openModal('sleepModal');
     }
 
-    saveSleep() {
+    saveDashboardSleep() {
         const hours = parseFloat(document.getElementById('sleepInput').value) || 0;
         Storage.updateTodayMetrics({ sleepHours: hours });
         this.closeModal('sleepModal');
@@ -3957,12 +3974,17 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             date.setDate(date.getDate() - i);
             const dateStr = date.toDateString();
             const dayMetrics = allMetrics.find(m => new Date(m.date).toDateString() === dateStr);
+
+            // Pull from new storage locations for water and sleep
+            const waterData = Storage.getWaterIntakeForDate(date);
+            const sleepLog = Storage.getSleepLogForDate(date);
+
             last7Days.push({
                 date: date,
                 dateStr: formatDateNZ(date, { weekday: 'short' }),
                 steps: dayMetrics?.steps || 0,
-                water: dayMetrics?.waterGlasses || 0,
-                sleep: dayMetrics?.sleepHours || 0
+                water: waterData.glasses || 0,
+                sleep: sleepLog?.hours || 0
             });
         }
 
@@ -5812,7 +5834,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.openModal('addSleepModal');
     }
 
-    saveSleep() {
+    saveSleepLog() {
         const date = document.getElementById('sleepDateInput').value;
         const hours = document.getElementById('sleepHoursInput').value;
         const quality = document.getElementById('sleepQualityInput').value;
