@@ -15,7 +15,8 @@ const Storage = {
         PROGRESS_PHOTOS: 'gym_tracker_progress_photos',
         DAILY_METRICS: 'gym_tracker_daily_metrics',
         WEIGHT_GOAL: 'gym_tracker_weight_goal',
-        WEIGHT_LOG: 'gym_tracker_weight_log'
+        WEIGHT_LOG: 'gym_tracker_weight_log',
+        BODY_MEASUREMENTS: 'gym_tracker_body_measurements'
     },
 
     // Get data from localStorage
@@ -671,5 +672,53 @@ const Storage = {
         const entries = this.getAllWeightEntries();
         const dateStr = new Date(date).toDateString();
         return entries.find(entry => new Date(entry.date).toDateString() === dateStr);
+    },
+
+    // Body Measurements Methods
+    getAllBodyMeasurements() {
+        return this.get(this.KEYS.BODY_MEASUREMENTS) || [];
+    },
+
+    logBodyMeasurements(measurements) {
+        const entries = this.getAllBodyMeasurements();
+        const today = new Date().toDateString();
+
+        // Check if there's already an entry for today
+        const existingIndex = entries.findIndex(entry =>
+            new Date(entry.date).toDateString() === today
+        );
+
+        const newEntry = {
+            date: new Date().toISOString(),
+            chest: parseFloat(measurements.chest) || null,
+            waist: parseFloat(measurements.waist) || null,
+            hips: parseFloat(measurements.hips) || null,
+            leftArm: parseFloat(measurements.leftArm) || null,
+            rightArm: parseFloat(measurements.rightArm) || null,
+            leftThigh: parseFloat(measurements.leftThigh) || null,
+            rightThigh: parseFloat(measurements.rightThigh) || null,
+            leftCalf: parseFloat(measurements.leftCalf) || null,
+            rightCalf: parseFloat(measurements.rightCalf) || null,
+            shoulders: parseFloat(measurements.shoulders) || null,
+            neck: parseFloat(measurements.neck) || null
+        };
+
+        if (existingIndex !== -1) {
+            // Update today's entry
+            entries[existingIndex] = newEntry;
+        } else {
+            // Add new entry
+            entries.push(newEntry);
+        }
+
+        // Sort by date (newest first)
+        entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        return this.set(this.KEYS.BODY_MEASUREMENTS, entries);
+    },
+
+    getLatestBodyMeasurements() {
+        const entries = this.getAllBodyMeasurements();
+        return entries.length > 0 ? entries[0] : null;
     }
 };

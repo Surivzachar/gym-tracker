@@ -104,6 +104,15 @@
                                 <div class="stat-sublabel" id="dashWeightGoal">Set goal</div>
                             </div>
                         </div>
+
+                        <div class="stat-card clickable" onclick="app.openMeasurementsModal()">
+                            <div class="stat-icon">📏</div>
+                            <div class="stat-content">
+                                <div class="stat-label">Measurements</div>
+                                <div class="stat-value" id="dashMeasurements">--</div>
+                                <div class="stat-sublabel">Track body</div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Weight Progress -->
@@ -240,6 +249,24 @@
                         </div>
                         <div id="caloriesChartEmpty" class="chart-empty">
                             🍽️ Log your meals to see calorie trends here
+                        </div>
+                    </div>
+
+                    <!-- Body Measurements Chart -->
+                    <div class="chart-section">
+                        <div class="chart-header">
+                            <h3>📏 Body Measurements</h3>
+                            <div class="chart-time-filter">
+                                <button class="filter-btn active" data-chart="measurements" data-days="30">30 Days</button>
+                                <button class="filter-btn" data-chart="measurements" data-days="90">90 Days</button>
+                                <button class="filter-btn" data-chart="measurements" data-days="365">1 Year</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="measurementsChart"></canvas>
+                        </div>
+                        <div id="measurementsChartEmpty" class="chart-empty">
+                            📏 Track your measurements to see progress here
                         </div>
                     </div>
 
@@ -1062,6 +1089,71 @@
                     </p>
                     <div class="modal-actions">
                         <button id="saveWeightBtn" class="btn-primary">Save Weight</button>
+                        <button class="btn-secondary close-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Body Measurements Modal -->
+        <div id="measurementsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>📏 Body Measurements</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p class="helper-text" style="margin-bottom: 1rem;">Track your body measurements to see changes over time. Fill in what you want to track.</p>
+
+                    <div class="measurements-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="input-group">
+                            <label class="input-label">Chest (cm)</label>
+                            <input type="number" id="chestInput" class="input" placeholder="e.g., 95" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Waist (cm)</label>
+                            <input type="number" id="waistInput" class="input" placeholder="e.g., 80" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Hips (cm)</label>
+                            <input type="number" id="hipsInput" class="input" placeholder="e.g., 95" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Shoulders (cm)</label>
+                            <input type="number" id="shouldersInput" class="input" placeholder="e.g., 110" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Left Arm (cm)</label>
+                            <input type="number" id="leftArmInput" class="input" placeholder="e.g., 35" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Right Arm (cm)</label>
+                            <input type="number" id="rightArmInput" class="input" placeholder="e.g., 35" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Left Thigh (cm)</label>
+                            <input type="number" id="leftThighInput" class="input" placeholder="e.g., 55" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Right Thigh (cm)</label>
+                            <input type="number" id="rightThighInput" class="input" placeholder="e.g., 55" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Left Calf (cm)</label>
+                            <input type="number" id="leftCalfInput" class="input" placeholder="e.g., 37" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Right Calf (cm)</label>
+                            <input type="number" id="rightCalfInput" class="input" placeholder="e.g., 37" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Neck (cm)</label>
+                            <input type="number" id="neckInput" class="input" placeholder="e.g., 38" step="0.1">
+                        </div>
+                    </div>
+
+                    <div class="modal-actions" style="margin-top: 1.5rem;">
+                        <button id="saveMeasurementsBtn" class="btn-primary">Save Measurements</button>
                         <button class="btn-secondary close-btn">Cancel</button>
                     </div>
                 </div>

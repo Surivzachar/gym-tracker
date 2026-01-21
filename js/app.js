@@ -275,6 +275,10 @@ class GymTrackerApp {
             this.saveWeight();
         });
 
+        document.getElementById('saveMeasurementsBtn').addEventListener('click', () => {
+            this.saveMeasurements();
+        });
+
         // Google Drive Sync
         this.renderGoogleDriveStatus();
 
@@ -3058,6 +3062,13 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             document.getElementById('dashWeightGoal').textContent = `Goal: ${weightGoal.goalWeight} kg`;
         }
 
+        // Update measurements
+        const latestMeasurements = Storage.getLatestBodyMeasurements();
+        if (latestMeasurements) {
+            const measuredCount = Object.values(latestMeasurements).filter(v => v !== null && v !== undefined && !isNaN(v)).length - 1; // -1 for date field
+            document.getElementById('dashMeasurements').textContent = measuredCount;
+        }
+
         // Update food stats
         document.getElementById('dashFoodCalories').textContent = foodStats.totalCalories;
         document.getElementById('dashFoodProtein').textContent = foodStats.totalProtein + 'g';
@@ -3172,6 +3183,53 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.closeModal('weightModal');
         this.renderDashboard();
         this.syncAfterChange();
+    }
+
+    openMeasurementsModal() {
+        const latest = Storage.getLatestBodyMeasurements();
+        if (latest) {
+            document.getElementById('chestInput').value = latest.chest || '';
+            document.getElementById('waistInput').value = latest.waist || '';
+            document.getElementById('hipsInput').value = latest.hips || '';
+            document.getElementById('shouldersInput').value = latest.shoulders || '';
+            document.getElementById('leftArmInput').value = latest.leftArm || '';
+            document.getElementById('rightArmInput').value = latest.rightArm || '';
+            document.getElementById('leftThighInput').value = latest.leftThigh || '';
+            document.getElementById('rightThighInput').value = latest.rightThigh || '';
+            document.getElementById('leftCalfInput').value = latest.leftCalf || '';
+            document.getElementById('rightCalfInput').value = latest.rightCalf || '';
+            document.getElementById('neckInput').value = latest.neck || '';
+        }
+        this.openModal('measurementsModal');
+    }
+
+    saveMeasurements() {
+        const measurements = {
+            chest: document.getElementById('chestInput').value,
+            waist: document.getElementById('waistInput').value,
+            hips: document.getElementById('hipsInput').value,
+            shoulders: document.getElementById('shouldersInput').value,
+            leftArm: document.getElementById('leftArmInput').value,
+            rightArm: document.getElementById('rightArmInput').value,
+            leftThigh: document.getElementById('leftThighInput').value,
+            rightThigh: document.getElementById('rightThighInput').value,
+            leftCalf: document.getElementById('leftCalfInput').value,
+            rightCalf: document.getElementById('rightCalfInput').value,
+            neck: document.getElementById('neckInput').value
+        };
+
+        // Check if at least one measurement is provided
+        const hasAnyMeasurement = Object.values(measurements).some(val => val && val.trim() !== '');
+        if (!hasAnyMeasurement) {
+            alert('Please enter at least one measurement');
+            return;
+        }
+
+        Storage.logBodyMeasurements(measurements);
+        this.closeModal('measurementsModal');
+        this.renderDashboard();
+        this.syncAfterChange();
+        alert('✅ Measurements saved successfully!');
     }
 
     renderWeightChart() {
@@ -3378,6 +3436,8 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
                     this.renderVolumeChart(days);
                 } else if (chartType === 'calories') {
                     this.renderCaloriesChart(days);
+                } else if (chartType === 'measurements') {
+                    this.renderMeasurementsChart(days);
                 }
             });
         });
@@ -3387,6 +3447,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.renderWeightProgressChart(30);
         this.renderVolumeChart(30);
         this.renderCaloriesChart(30);
+        this.renderMeasurementsChart(30);
     }
 
     renderWeightProgressChart(days = 30) {
@@ -3655,6 +3716,134 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
                         beginAtZero: true,
                         ticks: {
                             color: isDark ? '#d1d5db' : '#6b7280'
+                        },
+                        grid: {
+                            color: isDark ? '#374151' : '#e5e7eb'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: isDark ? '#d1d5db' : '#6b7280',
+                            maxRotation: 45,
+                            minRotation: 45
+                        },
+                        grid: {
+                            color: isDark ? '#374151' : '#e5e7eb'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    renderMeasurementsChart(days = 30) {
+        const measurements = Storage.getAllBodyMeasurements()
+            .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        const canvas = document.getElementById('measurementsChart');
+        const emptyState = document.getElementById('measurementsChartEmpty');
+
+        if (measurements.length === 0) {
+            canvas.style.display = 'none';
+            emptyState.classList.add('show');
+            return;
+        }
+
+        canvas.style.display = 'block';
+        emptyState.classList.remove('show');
+
+        // Filter by days
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+        const filteredMeasurements = measurements.filter(m => new Date(m.date) >= cutoffDate);
+
+        if (filteredMeasurements.length === 0) {
+            canvas.style.display = 'none';
+            emptyState.classList.add('show');
+            return;
+        }
+
+        const labels = filteredMeasurements.map(m => {
+            const date = new Date(m.date);
+            return date.toLocaleDateString('en-NZ', { month: 'short', day: 'numeric' });
+        });
+
+        // Create datasets for each measurement that has data
+        const datasets = [];
+        const colors = {
+            chest: { border: '#ef4444', bg: 'rgba(239, 68, 68, 0.1)' },
+            waist: { border: '#f59e0b', bg: 'rgba(245, 158, 11, 0.1)' },
+            hips: { border: '#10b981', bg: 'rgba(16, 185, 129, 0.1)' },
+            shoulders: { border: '#3b82f6', bg: 'rgba(59, 130, 246, 0.1)' },
+            leftArm: { border: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.1)' },
+            rightArm: { border: '#ec4899', bg: 'rgba(236, 72, 153, 0.1)' }
+        };
+
+        const measurementsKeys = ['chest', 'waist', 'hips', 'shoulders', 'leftArm', 'rightArm'];
+
+        measurementsKeys.forEach(key => {
+            const data = filteredMeasurements.map(m => m[key] || null);
+            const hasData = data.some(v => v !== null);
+
+            if (hasData) {
+                datasets.push({
+                    label: key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'),
+                    data: data,
+                    borderColor: colors[key].border,
+                    backgroundColor: colors[key].bg,
+                    tension: 0.4,
+                    fill: false,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                });
+            }
+        });
+
+        const isDark = this.isDarkMode();
+        const ctx = canvas.getContext('2d');
+
+        // Destroy existing chart if it exists
+        if (canvas.chart) {
+            canvas.chart.destroy();
+        }
+
+        canvas.chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: isDark ? '#d1d5db' : '#6b7280',
+                            padding: 10,
+                            font: {
+                                size: 11
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: isDark ? '#374151' : '#ffffff',
+                        titleColor: isDark ? '#f9fafb' : '#1f2937',
+                        bodyColor: isDark ? '#d1d5db' : '#6b7280',
+                        borderColor: isDark ? '#4b5563' : '#e5e7eb',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            color: isDark ? '#d1d5db' : '#6b7280',
+                            callback: function(value) {
+                                return value + ' cm';
+                            }
                         },
                         grid: {
                             color: isDark ? '#374151' : '#e5e7eb'
