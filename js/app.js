@@ -2330,7 +2330,7 @@ class GymTrackerApp {
             if (currentCache) {
                 const version = currentCache.split('-v')[1];
                 cacheDisplay.textContent = `v${version}`;
-                if (version !== '70') {
+                if (version !== '71') {
                     cacheDisplay.style.color = '#ef4444';
                     cacheDisplay.textContent += ' (outdated - please clear cache)';
                 } else {

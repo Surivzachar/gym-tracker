@@ -520,7 +520,7 @@ img {
 
 .exercise-header h3 {
     font-size: 1.125rem;
-    color: #111827;
+    color: var(--text-primary);
 }
 
 .exercise-actions {
@@ -741,7 +741,7 @@ img {
 
 .history-header h3 {
     font-size: 1.125rem;
-    color: #111827;
+    color: var(--text-primary);
 }
 
 .history-meta {
@@ -788,7 +788,7 @@ img {
 
 .routine-header h3 {
     font-size: 1.125rem;
-    color: #111827;
+    color: var(--text-primary);
 }
 
 .routine-meta {
@@ -856,7 +856,7 @@ img {
 
 .modal-header h3 {
     font-size: 1.25rem;
-    color: #111827;
+    color: var(--text-primary);
 }
 
 .close-btn {
@@ -1398,7 +1398,7 @@ img {
 
 .meal-header h3 {
     font-size: 1.125rem;
-    color: #1f2937;
+    color: var(--text-primary);
 }
 
 .btn-secondary.small {
@@ -1495,7 +1495,7 @@ img {
 }
 
 .food-history-card h3 {
-    color: #1f2937;
+    color: var(--text-primary);
     margin-bottom: 0.75rem;
 }
 
@@ -1651,7 +1651,7 @@ img {
 
 .daily-totals-summary h3 {
     font-size: 1.25rem;
-    color: #1f2937;
+    color: var(--text-primary);
     margin-bottom: 1rem;
     text-align: center;
     font-weight: 700;
