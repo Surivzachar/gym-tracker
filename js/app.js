@@ -228,6 +228,10 @@ class GymTrackerApp {
             this.closeModal('settingsModal');
         });
 
+        document.getElementById('clearCacheBtn').addEventListener('click', () => {
+            this.clearCacheAndReload();
+        });
+
         // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         if (darkModeToggle) {
@@ -2311,8 +2315,53 @@ class GymTrackerApp {
         // Render auto-backups list
         this.renderAutoBackups();
 
+        // Display cache version
+        this.displayCacheVersion();
+
         document.getElementById('settingsModal').classList.add('active');
         startDateInput.focus();
+    }
+
+    async displayCacheVersion() {
+        const cacheDisplay = document.getElementById('cacheVersionDisplay');
+        try {
+            const cacheNames = await caches.keys();
+            const currentCache = cacheNames.find(name => name.startsWith('suresh-aesthetics'));
+            if (currentCache) {
+                const version = currentCache.split('-v')[1];
+                cacheDisplay.textContent = `v${version}`;
+                if (version !== '66') {
+                    cacheDisplay.style.color = '#dc2626';
+                    cacheDisplay.textContent += ' (outdated - please clear cache)';
+                }
+            } else {
+                cacheDisplay.textContent = 'none';
+            }
+        } catch (error) {
+            cacheDisplay.textContent = 'unknown';
+        }
+    }
+
+    async clearCacheAndReload() {
+        try {
+            // Unregister all service workers
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            for (const registration of registrations) {
+                await registration.unregister();
+            }
+
+            // Clear all caches
+            const cacheNames = await caches.keys();
+            await Promise.all(cacheNames.map(name => caches.delete(name)));
+
+            alert('Cache cleared successfully! The app will now reload with the latest version.');
+
+            // Reload the page
+            window.location.reload(true);
+        } catch (error) {
+            console.error('Error clearing cache:', error);
+            alert('Error clearing cache. Try manually refreshing the page (Ctrl+Shift+R or Cmd+Shift+R).');
+        }
     }
 
     updateJourneyInfo() {
