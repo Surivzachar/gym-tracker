@@ -289,6 +289,14 @@ class GymTrackerApp {
             this.saveMeasurements();
         });
 
+        document.getElementById('saveRestDayBtn').addEventListener('click', () => {
+            this.saveRestDay();
+        });
+
+        document.getElementById('removeRestDayBtn').addEventListener('click', () => {
+            this.removeRestDay();
+        });
+
         // Google Drive Sync
         this.renderGoogleDriveStatus();
 
@@ -337,6 +345,8 @@ class GymTrackerApp {
         // Refresh data when switching views
         if (viewName === 'dashboard') {
             this.renderDashboard();
+        } else if (viewName === 'calendar') {
+            this.renderCalendar();
         } else if (viewName === 'progress') {
             this.renderProgress();
         } else if (viewName === 'history') {
@@ -4934,6 +4944,255 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
         // Journey days
         document.getElementById('journeyDays').textContent = daysSinceStart;
+    }
+
+    // ===== CALENDAR FUNCTIONS =====
+    renderCalendar() {
+        if (!this.currentCalendarDate) {
+            this.currentCalendarDate = getCurrentDateNZ();
+        }
+
+        const year = this.currentCalendarDate.getFullYear();
+        const month = this.currentCalendarDate.getMonth();
+
+        // Update month/year title
+        document.getElementById('calendarMonthYear').textContent =
+            this.currentCalendarDate.toLocaleDateString('en-NZ', { month: 'long', year: 'numeric' });
+
+        // Get first and last day of month
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startingDayOfWeek = firstDay.getDay();
+
+        // Get workouts and rest days
+        const workouts = Storage.getAllWorkouts();
+        const restDays = Storage.getAllRestDays();
+        const today = getCurrentDateNZ();
+
+        // Create calendar days array
+        const calendarDays = [];
+
+        // Add previous month's days
+        const prevMonthLastDay = new Date(year, month, 0).getDate();
+        for (let i = startingDayOfWeek - 1; i >= 0; i--) {
+            calendarDays.push({
+                day: prevMonthLastDay - i,
+                isCurrentMonth: false
+            });
+        }
+
+        // Add current month's days
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(year, month, day);
+            const dateStr = date.toDateString();
+            const todayStr = today.toDateString();
+
+            const hasWorkout = workouts.some(w => new Date(w.date).toDateString() === dateStr);
+            const isRest = restDays.some(r => new Date(r.date).toDateString() === dateStr);
+            const isToday = dateStr === todayStr;
+
+            calendarDays.push({
+                day,
+                date: new Date(year, month, day),
+                isCurrentMonth: true,
+                isToday,
+                hasWorkout,
+                isRest
+            });
+        }
+
+        // Add next month's days
+        const remainingDays = 42 - calendarDays.length;
+        for (let day = 1; day <= remainingDays; day++) {
+            calendarDays.push({
+                day,
+                isCurrentMonth: false
+            });
+        }
+
+        // Render calendar
+        const container = document.getElementById('calendarDays');
+        container.innerHTML = calendarDays.map(dayInfo => {
+            let classes = ['calendar-day'];
+            if (!dayInfo.isCurrentMonth) classes.push('other-month');
+            if (dayInfo.isToday) classes.push('today');
+            if (dayInfo.hasWorkout) classes.push('workout-day');
+            if (dayInfo.isRest) classes.push('rest-day');
+
+            const dateStr = dayInfo.date ? dayInfo.date.toISOString() : '';
+
+            return `
+                <div class="${classes.join(' ')}" onclick="${dayInfo.isCurrentMonth ? `app.handleCalendarDayClick('${dateStr}')` : ''}">
+                    <div class="calendar-day-number">${dayInfo.day}</div>
+                    ${(dayInfo.hasWorkout || dayInfo.isRest) ? '<div class="calendar-day-indicator"></div>' : ''}
+                </div>
+            `;
+        }).join('');
+
+        // Calculate and render streaks
+        this.renderStreaks();
+    }
+
+    previousMonth() {
+        const current = this.currentCalendarDate || getCurrentDateNZ();
+        this.currentCalendarDate = new Date(current.getFullYear(), current.getMonth() - 1, 1);
+        this.renderCalendar();
+    }
+
+    nextMonth() {
+        const current = this.currentCalendarDate || getCurrentDateNZ();
+        this.currentCalendarDate = new Date(current.getFullYear(), current.getMonth() + 1, 1);
+        this.renderCalendar();
+    }
+
+    handleCalendarDayClick(dateStr) {
+        const date = new Date(dateStr);
+
+        // Open date history modal or rest day modal depending on what exists
+        const workouts = Storage.getAllWorkouts();
+        const hasWorkout = workouts.some(w => new Date(w.date).toDateString() === date.toDateString());
+
+        if (hasWorkout) {
+            this.openDateHistoryModal(date);
+        } else {
+            // Open rest day modal with this date pre-selected
+            this.openRestDayModal(date);
+        }
+    }
+
+    renderStreaks() {
+        const workouts = Storage.getAllWorkouts();
+        const today = getCurrentDateNZ();
+
+        // Calculate current streak
+        let currentStreak = 0;
+        let checkDate = new Date(today);
+        checkDate.setHours(0, 0, 0, 0);
+
+        while (true) {
+            const dateStr = checkDate.toDateString();
+            const hasWorkout = workouts.some(w => new Date(w.date).toDateString() === dateStr);
+
+            if (hasWorkout) {
+                currentStreak++;
+                checkDate.setDate(checkDate.getDate() - 1);
+            } else {
+                // Check if it's today - if so, check yesterday
+                if (checkDate.toDateString() === today.toDateString()) {
+                    checkDate.setDate(checkDate.getDate() - 1);
+                    continue;
+                }
+                break;
+            }
+        }
+
+        // Calculate longest streak
+        let longestStreak = 0;
+        let tempStreak = 0;
+
+        // Sort workouts by date
+        const sortedWorkouts = workouts.map(w => new Date(w.date).toDateString())
+            .sort((a, b) => new Date(a) - new Date(b));
+
+        // Remove duplicates
+        const uniqueDates = [...new Set(sortedWorkouts)];
+
+        for (let i = 0; i < uniqueDates.length; i++) {
+            if (i === 0) {
+                tempStreak = 1;
+            } else {
+                const prevDate = new Date(uniqueDates[i - 1]);
+                const currDate = new Date(uniqueDates[i]);
+                const diffDays = Math.round((currDate - prevDate) / (1000 * 60 * 60 * 24));
+
+                if (diffDays === 1) {
+                    tempStreak++;
+                } else {
+                    if (tempStreak > longestStreak) {
+                        longestStreak = tempStreak;
+                    }
+                    tempStreak = 1;
+                }
+            }
+        }
+
+        if (tempStreak > longestStreak) {
+            longestStreak = tempStreak;
+        }
+
+        // Update UI
+        document.getElementById('currentStreakValue').textContent = currentStreak;
+        document.getElementById('currentStreakDays').textContent = currentStreak === 1 ? 'day' : 'days';
+        document.getElementById('longestStreakValue').textContent = longestStreak;
+        document.getElementById('longestStreakDays').textContent = longestStreak === 1 ? 'day' : 'days';
+    }
+
+    openRestDayModal(date = null) {
+        const dateInput = document.getElementById('restDayDateInput');
+        const noteInput = document.getElementById('restDayNoteInput');
+        const saveBtn = document.getElementById('saveRestDayBtn');
+        const removeBtn = document.getElementById('removeRestDayBtn');
+
+        if (date) {
+            // Format date for input (YYYY-MM-DD)
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            dateInput.value = `${year}-${month}-${day}`;
+
+            // Check if rest day exists
+            const restDay = Storage.getRestDayByDate(date);
+            if (restDay) {
+                noteInput.value = restDay.note || '';
+                removeBtn.style.display = 'inline-block';
+            } else {
+                noteInput.value = '';
+                removeBtn.style.display = 'none';
+            }
+        } else {
+            const today = getCurrentDateNZ();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            dateInput.value = `${year}-${month}-${day}`;
+            noteInput.value = '';
+            removeBtn.style.display = 'none';
+        }
+
+        this.openModal('restDayModal');
+    }
+
+    saveRestDay() {
+        const dateInput = document.getElementById('restDayDateInput').value;
+        const noteInput = document.getElementById('restDayNoteInput').value;
+
+        if (!dateInput) {
+            alert('Please select a date');
+            return;
+        }
+
+        const date = new Date(dateInput + 'T00:00:00');
+        Storage.addRestDay(date, noteInput);
+
+        this.closeModal('restDayModal');
+        this.renderCalendar();
+        this.syncAfterChange();
+    }
+
+    removeRestDay() {
+        const dateInput = document.getElementById('restDayDateInput').value;
+
+        if (!dateInput) {
+            return;
+        }
+
+        const date = new Date(dateInput + 'T00:00:00');
+        Storage.removeRestDay(date);
+
+        this.closeModal('restDayModal');
+        this.renderCalendar();
+        this.syncAfterChange();
     }
 }
 

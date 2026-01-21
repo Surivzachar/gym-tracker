@@ -44,6 +44,7 @@
         <!-- Navigation -->
         <nav class="nav">
             <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+            <button class="nav-btn" data-view="calendar">Calendar</button>
             <button class="nav-btn" data-view="progress">Progress</button>
             <button class="nav-btn" data-view="workout">Workout</button>
             <button class="nav-btn" data-view="food">Food</button>
@@ -186,6 +187,82 @@
                     <div class="dashboard-section">
                         <h3>💪 Workout Today</h3>
                         <div id="dashWorkoutSummary" class="workout-summary"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar View -->
+        <div id="calendarView" class="view">
+            <div class="container">
+                <div class="section">
+                    <h2>📅 Workout Calendar</h2>
+
+                    <!-- Streak Tracking Section -->
+                    <div class="streak-section">
+                        <div class="streak-card current-streak">
+                            <div class="streak-icon">🔥</div>
+                            <div class="streak-content">
+                                <div class="streak-value" id="currentStreakValue">0</div>
+                                <div class="streak-label">Current Streak</div>
+                                <div class="streak-sublabel" id="currentStreakDays">days</div>
+                            </div>
+                        </div>
+                        <div class="streak-card longest-streak">
+                            <div class="streak-icon">🏆</div>
+                            <div class="streak-content">
+                                <div class="streak-value" id="longestStreakValue">0</div>
+                                <div class="streak-label">Longest Streak</div>
+                                <div class="streak-sublabel" id="longestStreakDays">days</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendar Controls -->
+                    <div class="calendar-controls">
+                        <button class="btn-icon" onclick="app.previousMonth()">◀</button>
+                        <h3 id="calendarMonthYear" class="calendar-month-title">January 2026</h3>
+                        <button class="btn-icon" onclick="app.nextMonth()">▶</button>
+                    </div>
+
+                    <!-- Calendar Grid -->
+                    <div class="calendar-wrapper">
+                        <div class="calendar-weekdays">
+                            <div class="calendar-weekday">Sun</div>
+                            <div class="calendar-weekday">Mon</div>
+                            <div class="calendar-weekday">Tue</div>
+                            <div class="calendar-weekday">Wed</div>
+                            <div class="calendar-weekday">Thu</div>
+                            <div class="calendar-weekday">Fri</div>
+                            <div class="calendar-weekday">Sat</div>
+                        </div>
+                        <div id="calendarDays" class="calendar-days"></div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="calendar-legend">
+                        <h4>Legend</h4>
+                        <div class="legend-items">
+                            <div class="legend-item">
+                                <div class="legend-color workout-day"></div>
+                                <span>Workout Day</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color rest-day"></div>
+                                <span>Rest Day</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color today"></div>
+                                <span>Today</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="calendar-actions">
+                        <button class="btn btn-secondary full-width" onclick="app.openRestDayModal()">
+                            🛌 Mark Rest Day
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1252,6 +1329,34 @@
 
                     <div class="modal-actions" style="margin-top: 1.5rem;">
                         <button id="saveMeasurementsBtn" class="btn-primary">Save Measurements</button>
+                        <button class="btn-secondary close-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rest Day Modal -->
+        <div id="restDayModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>🛌 Mark Rest Day</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-label">Date</label>
+                        <input type="date" id="restDayDateInput" class="input">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Note (optional)</label>
+                        <textarea id="restDayNoteInput" class="input" rows="3" placeholder="e.g., Recovery day, feeling sore"></textarea>
+                    </div>
+                    <p class="helper-text" style="margin-top: 0.5rem; font-size: 0.85rem;">
+                        Mark days as rest days to track your recovery
+                    </p>
+                    <div class="modal-actions">
+                        <button id="saveRestDayBtn" class="btn-primary">Save Rest Day</button>
+                        <button id="removeRestDayBtn" class="btn-secondary" style="display: none;">Remove Rest Day</button>
                         <button class="btn-secondary close-btn">Cancel</button>
                     </div>
                 </div>

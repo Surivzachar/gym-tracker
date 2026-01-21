@@ -16,7 +16,8 @@ const Storage = {
         DAILY_METRICS: 'gym_tracker_daily_metrics',
         WEIGHT_GOAL: 'gym_tracker_weight_goal',
         WEIGHT_LOG: 'gym_tracker_weight_log',
-        BODY_MEASUREMENTS: 'gym_tracker_body_measurements'
+        BODY_MEASUREMENTS: 'gym_tracker_body_measurements',
+        REST_DAYS: 'gym_tracker_rest_days'
     },
 
     // Get data from localStorage
@@ -720,5 +721,60 @@ const Storage = {
     getLatestBodyMeasurements() {
         const entries = this.getAllBodyMeasurements();
         return entries.length > 0 ? entries[0] : null;
+    },
+
+    // Rest Days Methods
+    getAllRestDays() {
+        return this.get(this.KEYS.REST_DAYS) || [];
+    },
+
+    addRestDay(date, note = '') {
+        const restDays = this.getAllRestDays();
+        const dateStr = new Date(date).toDateString();
+
+        // Check if rest day already exists for this date
+        const existingIndex = restDays.findIndex(rd =>
+            new Date(rd.date).toDateString() === dateStr
+        );
+
+        const restDay = {
+            date: new Date(date).toISOString(),
+            note: note,
+            type: 'rest'
+        };
+
+        if (existingIndex !== -1) {
+            restDays[existingIndex] = restDay;
+        } else {
+            restDays.push(restDay);
+        }
+
+        // Sort by date (newest first)
+        restDays.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        return this.set(this.KEYS.REST_DAYS, restDays);
+    },
+
+    removeRestDay(date) {
+        const restDays = this.getAllRestDays();
+        const dateStr = new Date(date).toDateString();
+
+        const filtered = restDays.filter(rd =>
+            new Date(rd.date).toDateString() !== dateStr
+        );
+
+        return this.set(this.KEYS.REST_DAYS, filtered);
+    },
+
+    isRestDay(date) {
+        const restDays = this.getAllRestDays();
+        const dateStr = new Date(date).toDateString();
+        return restDays.some(rd => new Date(rd.date).toDateString() === dateStr);
+    },
+
+    getRestDayByDate(date) {
+        const restDays = this.getAllRestDays();
+        const dateStr = new Date(date).toDateString();
+        return restDays.find(rd => new Date(rd.date).toDateString() === dateStr);
     }
 };
