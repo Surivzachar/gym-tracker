@@ -2330,7 +2330,7 @@ class GymTrackerApp {
             if (currentCache) {
                 const version = currentCache.split('-v')[1];
                 cacheDisplay.textContent = `v${version}`;
-                if (version !== '67') {
+                if (version !== '68') {
                     cacheDisplay.style.color = '#dc2626';
                     cacheDisplay.textContent += ' (outdated - please clear cache)';
                 }
@@ -5945,8 +5945,16 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
         Storage.addSleepLog({ date, hours, quality, notes });
 
+        // Also update DAILY_METRICS so it shows in Dashboard
+        const logDate = new Date(date);
+        const today = getCurrentDateNZ();
+        if (logDate.toDateString() === today.toDateString()) {
+            Storage.updateTodayMetrics({ sleepHours: parseFloat(hours) });
+        }
+
         this.closeModal('addSleepModal');
         this.renderSleep();
+        this.renderDashboard(); // Refresh dashboard to show new data
         this.syncAfterChange();
     }
 
