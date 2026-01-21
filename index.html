@@ -449,6 +449,54 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Sleep Tracking -->
+                    <div class="sleep-section">
+                        <div class="section-header-with-action">
+                            <div>
+                                <h3>😴 Sleep Tracking</h3>
+                                <p class="helper-text">Track your sleep to optimize recovery</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="app.openAddSleepModal()">+ Log Sleep</button>
+                        </div>
+                        <div id="sleepContainer"></div>
+                        <div id="sleepEmpty" class="chart-empty" style="display: none;">
+                            <span class="chart-empty-icon">😴</span>
+                            Log your sleep to track recovery patterns
+                        </div>
+                    </div>
+
+                    <!-- Cardio Sessions -->
+                    <div class="cardio-section">
+                        <div class="section-header-with-action">
+                            <div>
+                                <h3>🏃 Cardio Sessions</h3>
+                                <p class="helper-text">Track running, cycling, and other cardio activities</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="app.openAddCardioModal()">+ Add Session</button>
+                        </div>
+                        <div id="cardioContainer"></div>
+                        <div id="cardioEmpty" class="chart-empty" style="display: none;">
+                            <span class="chart-empty-icon">🏃</span>
+                            Add your first cardio session
+                        </div>
+                    </div>
+
+                    <!-- Journal Entries -->
+                    <div class="journal-section">
+                        <div class="section-header-with-action">
+                            <div>
+                                <h3>📔 Journal</h3>
+                                <p class="helper-text">Track your thoughts, feelings, and progress</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="app.openAddJournalModal()">+ New Entry</button>
+                        </div>
+                        <div id="journalContainer"></div>
+                        <div id="journalEmpty" class="chart-empty" style="display: none;">
+                            <span class="chart-empty-icon">📔</span>
+                            Start journaling your fitness journey
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -510,6 +558,32 @@
                         <div class="stat-card">
                             <span class="stat-value">0g</span>
                             <span class="stat-label">Fats</span>
+                        </div>
+                    </div>
+
+                    <!-- Water Intake Tracker -->
+                    <div class="water-tracker-section">
+                        <div class="section-header-with-action">
+                            <div>
+                                <h3>💧 Water Intake</h3>
+                                <p class="helper-text">Stay hydrated throughout the day</p>
+                            </div>
+                            <button class="btn-icon" onclick="app.openWaterGoalModal()" title="Set Daily Goal">⚙️</button>
+                        </div>
+                        <div class="water-progress-container">
+                            <div class="water-glasses-display">
+                                <div id="waterGlassesIcons"></div>
+                            </div>
+                            <div class="water-progress-text">
+                                <span id="waterProgressText">0 / 8 glasses</span>
+                            </div>
+                            <div class="water-progress-bar">
+                                <div id="waterProgressFill" class="water-progress-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="water-controls">
+                                <button class="btn-secondary" onclick="app.addWaterGlass()">+ Add Glass</button>
+                                <button class="btn-secondary" onclick="app.removeWaterGlass()">- Remove</button>
+                            </div>
                         </div>
                     </div>
 
@@ -1438,6 +1512,165 @@
                     </div>
                     <div class="modal-actions">
                         <button id="saveGoalBtn" class="btn-primary">Save Goal</button>
+                        <button class="btn-secondary close-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Water Goal Modal -->
+        <div id="waterGoalModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>💧 Set Water Goal</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-label">Daily Goal (glasses)</label>
+                        <input type="number" id="waterGoalInput" class="input" placeholder="8" min="1" max="20">
+                    </div>
+                    <p class="helper-text">Recommended: 8 glasses per day (about 2 liters)</p>
+                    <div class="modal-actions">
+                        <button id="saveWaterGoalBtn" class="btn-primary">Save Goal</button>
+                        <button class="btn-secondary close-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Sleep Modal -->
+        <div id="addSleepModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>😴 Log Sleep</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-label">Date</label>
+                        <input type="date" id="sleepDateInput" class="input">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Hours Slept</label>
+                        <input type="number" id="sleepHoursInput" class="input" placeholder="8" step="0.5" min="0" max="24">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Sleep Quality</label>
+                        <select id="sleepQualityInput" class="input">
+                            <option value="excellent">😊 Excellent</option>
+                            <option value="good" selected>🙂 Good</option>
+                            <option value="fair">😐 Fair</option>
+                            <option value="poor">😞 Poor</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Notes (optional)</label>
+                        <textarea id="sleepNotesInput" class="input" rows="2" placeholder="How did you feel? Any disturbances?"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button id="saveSleepBtn" class="btn-primary">Save Sleep Log</button>
+                        <button class="btn-secondary close-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Cardio Modal -->
+        <div id="addCardioModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>🏃 Add Cardio Session</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-label">Date</label>
+                        <input type="date" id="cardioDateInput" class="input">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Activity Type</label>
+                        <select id="cardioTypeInput" class="input">
+                            <option value="running">🏃 Running</option>
+                            <option value="cycling">🚴 Cycling</option>
+                            <option value="swimming">🏊 Swimming</option>
+                            <option value="walking">🚶 Walking</option>
+                            <option value="rowing">🚣 Rowing</option>
+                            <option value="other">🏋️ Other</option>
+                        </select>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="input-group">
+                            <label class="input-label">Duration (minutes)</label>
+                            <input type="number" id="cardioDurationInput" class="input" placeholder="30" min="0">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Distance (km)</label>
+                            <input type="number" id="cardioDistanceInput" class="input" placeholder="5" step="0.1" min="0">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Calories Burned</label>
+                        <input type="number" id="cardioCaloriesInput" class="input" placeholder="300" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Notes (optional)</label>
+                        <textarea id="cardioNotesInput" class="input" rows="2" placeholder="How did it feel? Any achievements?"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button id="saveCardioBtn" class="btn-primary">Save Session</button>
+                        <button class="btn-secondary close-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Journal Modal -->
+        <div id="addJournalModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>📔 Journal Entry</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-label">Date</label>
+                        <input type="date" id="journalDateInput" class="input">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Title (optional)</label>
+                        <input type="text" id="journalTitleInput" class="input" placeholder="e.g., Great Workout Day">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="input-group">
+                            <label class="input-label">Mood</label>
+                            <select id="journalMoodInput" class="input">
+                                <option value="">-- Select --</option>
+                                <option value="motivated">💪 Motivated</option>
+                                <option value="happy">😊 Happy</option>
+                                <option value="neutral">😐 Neutral</option>
+                                <option value="tired">😴 Tired</option>
+                                <option value="sore">😣 Sore</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Energy Level (1-5)</label>
+                            <select id="journalEnergyInput" class="input">
+                                <option value="">-- Select --</option>
+                                <option value="5">⭐⭐⭐⭐⭐ Very High</option>
+                                <option value="4">⭐⭐⭐⭐ High</option>
+                                <option value="3">⭐⭐⭐ Medium</option>
+                                <option value="2">⭐⭐ Low</option>
+                                <option value="1">⭐ Very Low</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Journal Entry</label>
+                        <textarea id="journalContentInput" class="input" rows="6" placeholder="How was your workout? How are you feeling? Any insights or progress?"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button id="saveJournalBtn" class="btn-primary">Save Entry</button>
                         <button class="btn-secondary close-btn">Cancel</button>
                     </div>
                 </div>

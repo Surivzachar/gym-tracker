@@ -301,6 +301,22 @@ class GymTrackerApp {
             this.saveGoal();
         });
 
+        document.getElementById('saveWaterGoalBtn').addEventListener('click', () => {
+            this.saveWaterGoal();
+        });
+
+        document.getElementById('saveSleepBtn').addEventListener('click', () => {
+            this.saveSleep();
+        });
+
+        document.getElementById('saveCardioBtn').addEventListener('click', () => {
+            this.saveCardio();
+        });
+
+        document.getElementById('saveJournalBtn').addEventListener('click', () => {
+            this.saveJournal();
+        });
+
         // Google Drive Sync
         this.renderGoogleDriveStatus();
 
@@ -1902,6 +1918,9 @@ class GymTrackerApp {
                 </div>
             `).join('');
         });
+
+        // Render water tracker
+        this.renderWaterTracker();
     }
 
     deleteFood(foodId) {
@@ -3851,6 +3870,9 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.renderAchievements();
         this.renderGoals();
         this.renderReport('week');
+        this.renderSleep();
+        this.renderCardio();
+        this.renderJournal();
         this.renderQuickStats();
         this.initializeChartFilters();
         this.initializeExerciseProgressChart();
@@ -5524,6 +5546,322 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         });
 
         return prs;
+    }
+
+    // ===== WATER INTAKE FUNCTIONS =====
+    renderWaterTracker() {
+        const today = getCurrentDateNZ();
+        const waterData = Storage.getWaterIntakeForDate(today);
+
+        const progress = waterData.goal > 0 ? (waterData.glasses / waterData.goal * 100) : 0;
+        const progressClamped = Math.min(progress, 100);
+
+        // Render water glass icons
+        const glassesContainer = document.getElementById('waterGlassesIcons');
+        let glassesHTML = '';
+        for (let i = 0; i < waterData.goal; i++) {
+            glassesHTML += i < waterData.glasses ? '💧' : '🌫️';
+        }
+        glassesContainer.innerHTML = glassesHTML;
+
+        // Update progress text and bar
+        document.getElementById('waterProgressText').textContent = `${waterData.glasses} / ${waterData.goal} glasses`;
+        document.getElementById('waterProgressFill').style.width = `${progressClamped}%`;
+    }
+
+    addWaterGlass() {
+        const today = getCurrentDateNZ();
+        Storage.addWaterGlass(today);
+        this.renderWaterTracker();
+        this.syncAfterChange();
+    }
+
+    removeWaterGlass() {
+        const today = getCurrentDateNZ();
+        Storage.removeWaterGlass(today);
+        this.renderWaterTracker();
+        this.syncAfterChange();
+    }
+
+    openWaterGoalModal() {
+        const today = getCurrentDateNZ();
+        const waterData = Storage.getWaterIntakeForDate(today);
+        document.getElementById('waterGoalInput').value = waterData.goal;
+        this.openModal('waterGoalModal');
+    }
+
+    saveWaterGoal() {
+        const goal = parseInt(document.getElementById('waterGoalInput').value);
+        if (!goal || goal < 1) {
+            alert('Please enter a valid goal');
+            return;
+        }
+
+        const today = getCurrentDateNZ();
+        Storage.setWaterGoal(goal, today);
+        this.closeModal('waterGoalModal');
+        this.renderWaterTracker();
+        this.syncAfterChange();
+    }
+
+    // ===== SLEEP TRACKING FUNCTIONS =====
+    renderSleep() {
+        const logs = Storage.getAllSleepLogs();
+        const container = document.getElementById('sleepContainer');
+        const emptyState = document.getElementById('sleepEmpty');
+
+        if (logs.length === 0) {
+            container.style.display = 'none';
+            emptyState.style.display = 'block';
+            return;
+        }
+
+        container.style.display = 'grid';
+        emptyState.style.display = 'none';
+
+        // Show last 7 days
+        const recentLogs = logs.slice(0, 7);
+
+        container.innerHTML = recentLogs.map(log => {
+            const qualityEmoji = {
+                'excellent': '😊',
+                'good': '🙂',
+                'fair': '😐',
+                'poor': '😞'
+            };
+
+            return `
+                <div class="sleep-card">
+                    <div class="sleep-header">
+                        <span class="sleep-date">${formatDateNZ(new Date(log.date), { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                        <button class="sleep-delete-btn" onclick="app.deleteSleep(${log.id})" title="Delete">🗑️</button>
+                    </div>
+                    <div class="sleep-hours">${log.hours} hours</div>
+                    <span class="sleep-quality ${log.quality}">${qualityEmoji[log.quality] || '😐'} ${log.quality}</span>
+                    ${log.notes ? `<div class="sleep-notes">${log.notes}</div>` : ''}
+                </div>
+            `;
+        }).join('');
+    }
+
+    openAddSleepModal() {
+        const today = getCurrentDateNZ();
+        document.getElementById('sleepDateInput').value = today.toISOString().split('T')[0];
+        document.getElementById('sleepHoursInput').value = '';
+        document.getElementById('sleepQualityInput').value = 'good';
+        document.getElementById('sleepNotesInput').value = '';
+
+        this.openModal('addSleepModal');
+    }
+
+    saveSleep() {
+        const date = document.getElementById('sleepDateInput').value;
+        const hours = document.getElementById('sleepHoursInput').value;
+        const quality = document.getElementById('sleepQualityInput').value;
+        const notes = document.getElementById('sleepNotesInput').value;
+
+        if (!date || !hours) {
+            alert('Please fill in date and hours');
+            return;
+        }
+
+        Storage.addSleepLog({ date, hours, quality, notes });
+
+        this.closeModal('addSleepModal');
+        this.renderSleep();
+        this.syncAfterChange();
+    }
+
+    deleteSleep(logId) {
+        if (confirm('Delete this sleep log?')) {
+            Storage.deleteSleepLog(logId);
+            this.renderSleep();
+            this.syncAfterChange();
+        }
+    }
+
+    // ===== CARDIO TRACKING FUNCTIONS =====
+    renderCardio() {
+        const sessions = Storage.getAllCardioSessions();
+        const container = document.getElementById('cardioContainer');
+        const emptyState = document.getElementById('cardioEmpty');
+
+        if (sessions.length === 0) {
+            container.style.display = 'none';
+            emptyState.style.display = 'block';
+            return;
+        }
+
+        container.style.display = 'grid';
+        emptyState.style.display = 'none';
+
+        // Show last 10 sessions
+        const recentSessions = sessions.slice(0, 10);
+
+        const typeIcons = {
+            'running': '🏃',
+            'cycling': '🚴',
+            'swimming': '🏊',
+            'walking': '🚶',
+            'rowing': '🚣',
+            'other': '🏋️'
+        };
+
+        container.innerHTML = recentSessions.map(session => `
+            <div class="cardio-card">
+                <div class="cardio-header">
+                    <div>
+                        <div class="cardio-type-icon">${typeIcons[session.type] || '🏃'}</div>
+                        <div class="cardio-type-name">${session.type.charAt(0).toUpperCase() + session.type.slice(1)}</div>
+                        <div class="cardio-date">${formatDateNZ(new Date(session.date), { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                    </div>
+                    <div class="cardio-actions">
+                        <button class="cardio-action-btn" onclick="app.deleteCardio(${session.id})" title="Delete">🗑️</button>
+                    </div>
+                </div>
+                <div class="cardio-stats-grid">
+                    <div class="cardio-stat">
+                        <span class="cardio-stat-value">${session.duration}</span>
+                        <span class="cardio-stat-label">Minutes</span>
+                    </div>
+                    <div class="cardio-stat">
+                        <span class="cardio-stat-value">${session.distance.toFixed(1)}</span>
+                        <span class="cardio-stat-label">Km</span>
+                    </div>
+                    <div class="cardio-stat">
+                        <span class="cardio-stat-value">${session.calories}</span>
+                        <span class="cardio-stat-label">Calories</span>
+                    </div>
+                </div>
+                ${session.notes ? `<div class="cardio-notes">${session.notes}</div>` : ''}
+            </div>
+        `).join('');
+    }
+
+    openAddCardioModal() {
+        const today = getCurrentDateNZ();
+        document.getElementById('cardioDateInput').value = today.toISOString().split('T')[0];
+        document.getElementById('cardioTypeInput').value = 'running';
+        document.getElementById('cardioDurationInput').value = '';
+        document.getElementById('cardioDistanceInput').value = '';
+        document.getElementById('cardioCaloriesInput').value = '';
+        document.getElementById('cardioNotesInput').value = '';
+
+        this.openModal('addCardioModal');
+    }
+
+    saveCardio() {
+        const date = document.getElementById('cardioDateInput').value;
+        const type = document.getElementById('cardioTypeInput').value;
+        const duration = document.getElementById('cardioDurationInput').value;
+        const distance = document.getElementById('cardioDistanceInput').value;
+        const calories = document.getElementById('cardioCaloriesInput').value;
+        const notes = document.getElementById('cardioNotesInput').value;
+
+        if (!date || !duration) {
+            alert('Please fill in date and duration');
+            return;
+        }
+
+        Storage.addCardioSession({ date, type, duration, distance, calories, notes });
+
+        this.closeModal('addCardioModal');
+        this.renderCardio();
+        this.syncAfterChange();
+    }
+
+    deleteCardio(sessionId) {
+        if (confirm('Delete this cardio session?')) {
+            Storage.deleteCardioSession(sessionId);
+            this.renderCardio();
+            this.syncAfterChange();
+        }
+    }
+
+    // ===== JOURNAL FUNCTIONS =====
+    renderJournal() {
+        const entries = Storage.getAllJournalEntries();
+        const container = document.getElementById('journalContainer');
+        const emptyState = document.getElementById('journalEmpty');
+
+        if (entries.length === 0) {
+            container.style.display = 'none';
+            emptyState.style.display = 'block';
+            return;
+        }
+
+        container.style.display = 'flex';
+        emptyState.style.display = 'none';
+
+        // Show last 5 entries
+        const recentEntries = entries.slice(0, 5);
+
+        const moodEmojis = {
+            'motivated': '💪',
+            'happy': '😊',
+            'neutral': '😐',
+            'tired': '😴',
+            'sore': '😣'
+        };
+
+        container.innerHTML = recentEntries.map(entry => `
+            <div class="journal-entry">
+                <div class="journal-header">
+                    <div class="journal-title-area">
+                        ${entry.title ? `<div class="journal-title">${entry.title}</div>` : ''}
+                        <div class="journal-date">${formatDateNZ(new Date(entry.date), { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                    </div>
+                    <div class="journal-actions">
+                        <button class="journal-action-btn" onclick="app.deleteJournal(${entry.id})" title="Delete">🗑️</button>
+                    </div>
+                </div>
+                ${entry.mood || entry.energy ? `
+                    <div class="journal-meta">
+                        ${entry.mood ? `<div class="journal-mood">${moodEmojis[entry.mood] || '😐'} ${entry.mood}</div>` : ''}
+                        ${entry.energy ? `<div class="journal-energy">⚡ Energy: ${entry.energy}/5</div>` : ''}
+                    </div>
+                ` : ''}
+                <div class="journal-content">${entry.content}</div>
+            </div>
+        `).join('');
+    }
+
+    openAddJournalModal() {
+        const today = getCurrentDateNZ();
+        document.getElementById('journalDateInput').value = today.toISOString().split('T')[0];
+        document.getElementById('journalTitleInput').value = '';
+        document.getElementById('journalMoodInput').value = '';
+        document.getElementById('journalEnergyInput').value = '';
+        document.getElementById('journalContentInput').value = '';
+
+        this.openModal('addJournalModal');
+    }
+
+    saveJournal() {
+        const date = document.getElementById('journalDateInput').value;
+        const title = document.getElementById('journalTitleInput').value;
+        const mood = document.getElementById('journalMoodInput').value;
+        const energy = document.getElementById('journalEnergyInput').value;
+        const content = document.getElementById('journalContentInput').value;
+
+        if (!date || !content) {
+            alert('Please fill in date and content');
+            return;
+        }
+
+        Storage.addJournalEntry({ date, title, mood, energy, content });
+
+        this.closeModal('addJournalModal');
+        this.renderJournal();
+        this.syncAfterChange();
+    }
+
+    deleteJournal(entryId) {
+        if (confirm('Delete this journal entry?')) {
+            Storage.deleteJournalEntry(entryId);
+            this.renderJournal();
+            this.syncAfterChange();
+        }
     }
 }
 

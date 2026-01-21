@@ -18,7 +18,11 @@ const Storage = {
         WEIGHT_LOG: 'gym_tracker_weight_log',
         BODY_MEASUREMENTS: 'gym_tracker_body_measurements',
         REST_DAYS: 'gym_tracker_rest_days',
-        GOALS: 'gym_tracker_goals'
+        GOALS: 'gym_tracker_goals',
+        WATER_INTAKE: 'gym_tracker_water_intake',
+        SLEEP_LOG: 'gym_tracker_sleep_log',
+        JOURNAL_ENTRIES: 'gym_tracker_journal_entries',
+        CARDIO_SESSIONS: 'gym_tracker_cardio_sessions'
     },
 
     // Get data from localStorage
@@ -842,5 +846,173 @@ const Storage = {
     getGoalById(goalId) {
         const goals = this.getAllGoals();
         return goals.find(g => g.id === goalId);
+    },
+
+    // Water Intake Methods
+    getWaterIntakeForDate(date) {
+        const dateStr = new Date(date).toDateString();
+        const allWater = this.get(this.KEYS.WATER_INTAKE) || {};
+        return allWater[dateStr] || { glasses: 0, goal: 8 };
+    },
+
+    setWaterIntakeForDate(date, data) {
+        const dateStr = new Date(date).toDateString();
+        const allWater = this.get(this.KEYS.WATER_INTAKE) || {};
+        allWater[dateStr] = data;
+        return this.set(this.KEYS.WATER_INTAKE, allWater);
+    },
+
+    addWaterGlass(date = new Date()) {
+        const waterData = this.getWaterIntakeForDate(date);
+        waterData.glasses += 1;
+        return this.setWaterIntakeForDate(date, waterData);
+    },
+
+    removeWaterGlass(date = new Date()) {
+        const waterData = this.getWaterIntakeForDate(date);
+        if (waterData.glasses > 0) {
+            waterData.glasses -= 1;
+        }
+        return this.setWaterIntakeForDate(date, waterData);
+    },
+
+    setWaterGoal(goal, date = new Date()) {
+        const waterData = this.getWaterIntakeForDate(date);
+        waterData.goal = goal;
+        return this.setWaterIntakeForDate(date, waterData);
+    },
+
+    // Sleep Tracking Methods
+    getAllSleepLogs() {
+        return this.get(this.KEYS.SLEEP_LOG) || [];
+    },
+
+    getSleepLogForDate(date) {
+        const dateStr = new Date(date).toDateString();
+        const logs = this.getAllSleepLogs();
+        return logs.find(log => new Date(log.date).toDateString() === dateStr);
+    },
+
+    addSleepLog(sleepData) {
+        const logs = this.getAllSleepLogs();
+        const dateStr = new Date(sleepData.date).toDateString();
+
+        // Remove existing log for this date if any
+        const filtered = logs.filter(log => new Date(log.date).toDateString() !== dateStr);
+
+        const newLog = {
+            id: Date.now(),
+            date: new Date(sleepData.date).toISOString(),
+            hours: parseFloat(sleepData.hours),
+            quality: sleepData.quality || 'good', // good, fair, poor
+            notes: sleepData.notes || ''
+        };
+
+        filtered.push(newLog);
+        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        return this.set(this.KEYS.SLEEP_LOG, filtered);
+    },
+
+    deleteSleepLog(logId) {
+        const logs = this.getAllSleepLogs();
+        const filtered = logs.filter(log => log.id !== logId);
+        return this.set(this.KEYS.SLEEP_LOG, filtered);
+    },
+
+    // Journal Methods
+    getAllJournalEntries() {
+        return this.get(this.KEYS.JOURNAL_ENTRIES) || [];
+    },
+
+    addJournalEntry(entry) {
+        const entries = this.getAllJournalEntries();
+
+        const newEntry = {
+            id: Date.now(),
+            date: new Date(entry.date || new Date()).toISOString(),
+            type: entry.type || 'general', // general, workout
+            workoutId: entry.workoutId || null,
+            title: entry.title || '',
+            content: entry.content || '',
+            mood: entry.mood || null, // happy, neutral, tired, motivated
+            energy: entry.energy || null // 1-5 scale
+        };
+
+        entries.unshift(newEntry);
+        return this.set(this.KEYS.JOURNAL_ENTRIES, entries);
+    },
+
+    updateJournalEntry(entryId, updates) {
+        const entries = this.getAllJournalEntries();
+        const index = entries.findIndex(e => e.id === entryId);
+
+        if (index !== -1) {
+            entries[index] = { ...entries[index], ...updates };
+            return this.set(this.KEYS.JOURNAL_ENTRIES, entries);
+        }
+        return false;
+    },
+
+    deleteJournalEntry(entryId) {
+        const entries = this.getAllJournalEntries();
+        const filtered = entries.filter(e => e.id !== entryId);
+        return this.set(this.KEYS.JOURNAL_ENTRIES, filtered);
+    },
+
+    getJournalEntryById(entryId) {
+        const entries = this.getAllJournalEntries();
+        return entries.find(e => e.id === entryId);
+    },
+
+    getJournalEntriesForWorkout(workoutId) {
+        const entries = this.getAllJournalEntries();
+        return entries.filter(e => e.workoutId === workoutId);
+    },
+
+    // Cardio Methods
+    getAllCardioSessions() {
+        return this.get(this.KEYS.CARDIO_SESSIONS) || [];
+    },
+
+    addCardioSession(session) {
+        const sessions = this.getAllCardioSessions();
+
+        const newSession = {
+            id: Date.now(),
+            date: new Date(session.date || new Date()).toISOString(),
+            type: session.type || 'running', // running, cycling, swimming, other
+            duration: parseFloat(session.duration) || 0, // minutes
+            distance: parseFloat(session.distance) || 0, // km
+            calories: parseFloat(session.calories) || 0,
+            notes: session.notes || '',
+            avgHeartRate: parseInt(session.avgHeartRate) || null,
+            maxHeartRate: parseInt(session.maxHeartRate) || null
+        };
+
+        sessions.unshift(newSession);
+        return this.set(this.KEYS.CARDIO_SESSIONS, sessions);
+    },
+
+    updateCardioSession(sessionId, updates) {
+        const sessions = this.getAllCardioSessions();
+        const index = sessions.findIndex(s => s.id === sessionId);
+
+        if (index !== -1) {
+            sessions[index] = { ...sessions[index], ...updates };
+            return this.set(this.KEYS.CARDIO_SESSIONS, sessions);
+        }
+        return false;
+    },
+
+    deleteCardioSession(sessionId) {
+        const sessions = this.getAllCardioSessions();
+        const filtered = sessions.filter(s => s.id !== sessionId);
+        return this.set(this.KEYS.CARDIO_SESSIONS, filtered);
+    },
+
+    getCardioSessionById(sessionId) {
+        const sessions = this.getAllCardioSessions();
+        return sessions.find(s => s.id === sessionId);
     }
 };
