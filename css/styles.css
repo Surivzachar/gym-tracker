@@ -1789,7 +1789,7 @@ img {
 .summary-label {
     display: block;
     font-size: 0.875rem;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin-bottom: 0.5rem;
     font-weight: 500;
 }
@@ -1798,7 +1798,7 @@ img {
     display: block;
     font-size: 1.5rem;
     font-weight: 700;
-    color: #1e3a8a;
+    color: var(--accent-primary);
 }
 
 .date-meal-group {
@@ -2244,10 +2244,10 @@ input:checked + .toggle-slider:before {
 }
 
 .stat-card {
-    background: white;
+    background: var(--card-bg);
     border-radius: 12px;
     padding: 1.25rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px var(--shadow-sm);
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -2260,7 +2260,7 @@ input:checked + .toggle-slider:before {
 
 .stat-card.clickable:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px var(--shadow-md);
 }
 
 .stat-icon {
@@ -2275,7 +2275,7 @@ input:checked + .toggle-slider:before {
 
 .stat-label {
     font-size: 0.85rem;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin-bottom: 0.25rem;
     font-weight: 500;
 }
@@ -2283,13 +2283,13 @@ input:checked + .toggle-slider:before {
 .stat-value {
     font-size: 2rem;
     font-weight: 700;
-    color: #1e3a8a;
+    color: var(--accent-primary);
     line-height: 1;
 }
 
 .stat-sublabel {
     font-size: 0.75rem;
-    color: #9ca3af;
+    color: var(--text-tertiary);
     margin-top: 0.25rem;
 }
 
@@ -2520,10 +2520,17 @@ input:checked + .toggle-slider:before {
 }
 
 .metric-chart-card {
-    background: white;
+    background: var(--card-bg);
     border-radius: 12px;
     padding: 1.25rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px var(--shadow-sm);
+    margin-bottom: 1rem;
+}
+
+.metric-chart-card h4 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-size: 1rem;
 }
 
 .metric-chart-header {
@@ -2536,12 +2543,12 @@ input:checked + .toggle-slider:before {
 .metric-chart-title {
     font-size: 1rem;
     font-weight: 600;
-    color: #1f2937;
+    color: var(--text-primary);
 }
 
 .metric-chart-average {
     font-size: 0.85rem;
-    color: #6b7280;
+    color: var(--text-secondary);
 }
 
 .bar-chart {
@@ -2562,7 +2569,7 @@ input:checked + .toggle-slider:before {
 
 .bar {
     width: 100%;
-    background: linear-gradient(to top, #3b82f6, #60a5fa);
+    background: linear-gradient(to top, #10b981, #34d399);
     border-radius: 6px 6px 0 0;
     min-height: 4px;
     position: relative;
@@ -2570,7 +2577,7 @@ input:checked + .toggle-slider:before {
 }
 
 .bar:hover {
-    background: linear-gradient(to top, #2563eb, #3b82f6);
+    background: linear-gradient(to top, #059669, #10b981);
     transform: scaleY(1.05);
 }
 
@@ -2581,13 +2588,13 @@ input:checked + .toggle-slider:before {
     transform: translateX(-50%);
     font-size: 0.7rem;
     font-weight: 600;
-    color: #1f2937;
+    color: var(--text-primary);
     white-space: nowrap;
 }
 
 .bar-label {
     font-size: 0.7rem;
-    color: #6b7280;
+    color: var(--text-secondary);
     text-align: center;
 }
 
@@ -2601,7 +2608,7 @@ input:checked + .toggle-slider:before {
 
 .no-data-message {
     text-align: center;
-    color: #9ca3af;
+    color: var(--text-tertiary);
     padding: 2rem;
     font-size: 0.9rem;
 }
