@@ -3411,10 +3411,12 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     // Progress Charts
     renderProgress() {
         this.renderProgressCharts();
+        this.populateExerciseSelector();
         this.renderPersonalRecords();
         this.renderAchievements();
         this.renderQuickStats();
         this.initializeChartFilters();
+        this.initializeExerciseProgressChart();
     }
 
     initializeChartFilters() {
@@ -3847,6 +3849,222 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
                         },
                         grid: {
                             color: isDark ? '#374151' : '#e5e7eb'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: isDark ? '#d1d5db' : '#6b7280',
+                            maxRotation: 45,
+                            minRotation: 45
+                        },
+                        grid: {
+                            color: isDark ? '#374151' : '#e5e7eb'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    populateExerciseSelector() {
+        const workouts = Storage.getAllWorkouts();
+        const exerciseNames = new Set();
+
+        workouts.forEach(workout => {
+            workout.exercises.forEach(exercise => {
+                if (exercise.type === 'strength') {
+                    exerciseNames.add(exercise.name);
+                }
+            });
+        });
+
+        const selector = document.getElementById('exerciseSelectChart');
+        selector.innerHTML = '<option value="">Select an exercise...</option>';
+
+        Array.from(exerciseNames).sort().forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            selector.appendChild(option);
+        });
+    }
+
+    initializeExerciseProgressChart() {
+        const selector = document.getElementById('exerciseSelectChart');
+        selector.addEventListener('change', (e) => {
+            if (e.target.value) {
+                this.renderExerciseProgressChart(e.target.value);
+            } else {
+                document.getElementById('exerciseProgressChart').style.display = 'none';
+                document.getElementById('exerciseProgressChartEmpty').classList.add('show');
+            }
+        });
+    }
+
+    renderExerciseProgressChart(exerciseName) {
+        const workouts = Storage.getAllWorkouts().sort((a, b) => new Date(a.date) - new Date(b.date));
+        const canvas = document.getElementById('exerciseProgressChart');
+        const emptyState = document.getElementById('exerciseProgressChartEmpty');
+
+        // Find all instances of this exercise across workouts
+        const exerciseData = [];
+
+        workouts.forEach(workout => {
+            const exercise = workout.exercises.find(ex => ex.name === exerciseName);
+            if (exercise && exercise.sets && exercise.sets.length > 0) {
+                // Get max weight and max reps for this workout
+                let maxWeight = 0;
+                let maxReps = 0;
+
+                exercise.sets.forEach(set => {
+                    const weight = parseFloat(set.weight) || 0;
+                    const reps = parseInt(set.reps) || 0;
+
+                    if (weight > maxWeight) maxWeight = weight;
+                    if (reps > maxReps) maxReps = reps;
+                });
+
+                exerciseData.push({
+                    date: workout.date,
+                    maxWeight: maxWeight,
+                    maxReps: maxReps
+                });
+            }
+        });
+
+        if (exerciseData.length === 0) {
+            canvas.style.display = 'none';
+            emptyState.classList.add('show');
+            emptyState.textContent = `No data found for ${exerciseName}`;
+            return;
+        }
+
+        canvas.style.display = 'block';
+        emptyState.classList.remove('show');
+
+        const labels = exerciseData.map(d => {
+            const date = new Date(d.date);
+            return date.toLocaleDateString('en-NZ', { month: 'short', day: 'numeric' });
+        });
+
+        const isDark = this.isDarkMode();
+        const ctx = canvas.getContext('2d');
+
+        // Destroy existing chart if it exists
+        if (canvas.chart) {
+            canvas.chart.destroy();
+        }
+
+        canvas.chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Max Weight (kg)',
+                        data: exerciseData.map(d => d.maxWeight),
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        yAxisID: 'y',
+                        tension: 0.4,
+                        fill: false,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    },
+                    {
+                        label: 'Max Reps',
+                        data: exerciseData.map(d => d.maxReps),
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        yAxisID: 'y1',
+                        tension: 0.4,
+                        fill: false,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: isDark ? '#d1d5db' : '#6b7280',
+                            padding: 15,
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: `${exerciseName} - Strength Progress`,
+                        color: isDark ? '#f9fafb' : '#1f2937',
+                        font: {
+                            size: 14,
+                            weight: '700'
+                        },
+                        padding: {
+                            bottom: 20
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: isDark ? '#374151' : '#ffffff',
+                        titleColor: isDark ? '#f9fafb' : '#1f2937',
+                        bodyColor: isDark ? '#d1d5db' : '#6b7280',
+                        borderColor: isDark ? '#4b5563' : '#e5e7eb',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Weight (kg)',
+                            color: isDark ? '#3b82f6' : '#3b82f6',
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            }
+                        },
+                        ticks: {
+                            color: isDark ? '#d1d5db' : '#6b7280'
+                        },
+                        grid: {
+                            color: isDark ? '#374151' : '#e5e7eb'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Reps',
+                            color: isDark ? '#10b981' : '#10b981',
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            }
+                        },
+                        ticks: {
+                            color: isDark ? '#d1d5db' : '#6b7280'
+                        },
+                        grid: {
+                            drawOnChartArea: false,
                         }
                     },
                     x: {
