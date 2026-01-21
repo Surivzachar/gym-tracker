@@ -61,6 +61,52 @@ class GymTrackerApp {
                 console.log('Service worker registration failed:', err);
             });
         }
+
+        // Monitor online/offline status
+        this.initializeConnectionMonitor();
+    }
+
+    initializeConnectionMonitor() {
+        const statusEl = document.getElementById('connectionStatus');
+        const iconEl = document.getElementById('connectionIcon');
+        const textEl = document.getElementById('connectionText');
+
+        const updateConnectionStatus = () => {
+            if (navigator.onLine) {
+                statusEl.classList.remove('offline');
+                statusEl.classList.add('online');
+                iconEl.textContent = '✅';
+                textEl.textContent = 'Back Online';
+                statusEl.style.display = 'flex';
+
+                // Hide after 3 seconds
+                setTimeout(() => {
+                    statusEl.style.display = 'none';
+                }, 3000);
+
+                // Trigger sync if available
+                if ('sync' in navigator.serviceWorker.registration) {
+                    navigator.serviceWorker.ready.then(reg => {
+                        return reg.sync.register('sync-data');
+                    }).catch(err => console.log('Sync registration failed:', err));
+                }
+            } else {
+                statusEl.classList.remove('online', 'syncing');
+                statusEl.classList.add('offline');
+                iconEl.textContent = '📡';
+                textEl.textContent = 'Offline Mode';
+                statusEl.style.display = 'flex';
+            }
+        };
+
+        // Listen for online/offline events
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+
+        // Show initial status briefly if offline
+        if (!navigator.onLine) {
+            updateConnectionStatus();
+        }
     }
 
     initializeEventListeners() {
