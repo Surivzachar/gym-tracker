@@ -2330,7 +2330,7 @@ class GymTrackerApp {
             if (currentCache) {
                 const version = currentCache.split('-v')[1];
                 cacheDisplay.textContent = `v${version}`;
-                if (version !== '66') {
+                if (version !== '67') {
                     cacheDisplay.style.color = '#dc2626';
                     cacheDisplay.textContent += ' (outdated - please clear cache)';
                 }
@@ -3719,8 +3719,8 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
         // Update metrics - prioritize new storage over legacy DAILY_METRICS
         document.getElementById('dashSteps').textContent = metrics.steps || 0;
-        document.getElementById('dashWater').textContent = waterData.glasses || 0;
-        document.getElementById('dashSleep').textContent = sleepLog?.hours || 0;
+        document.getElementById('dashWater').textContent = waterData.glasses || metrics.waterGlasses || 0;
+        document.getElementById('dashSleep').textContent = sleepLog?.hours || metrics.sleepHours || 0;
         document.getElementById('dashCalories').textContent = totalCardioCalories || metrics.workoutCalories || 0;
 
         // Update weight
@@ -3816,7 +3816,13 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     addWaterGlass() {
         const metrics = Storage.getTodayMetrics();
         const current = metrics.waterGlasses || 0;
+
+        // Save to both storages for backward compatibility
         Storage.updateTodayMetrics({ waterGlasses: current + 1 });
+
+        // Also save to WATER_INTAKE for consistency with Progress tab
+        Storage.addWaterGlass();
+
         this.closeModal('waterModal');
         this.renderDashboard();
         this.syncAfterChange();
@@ -3824,7 +3830,14 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
     saveWater() {
         const glasses = parseInt(document.getElementById('waterInput').value) || 0;
+
+        // Save to both storages for backward compatibility
         Storage.updateTodayMetrics({ waterGlasses: glasses });
+
+        // Also save to WATER_INTAKE for consistency with Progress tab
+        const today = getCurrentDateNZ();
+        Storage.setWaterIntakeForDate(today, { glasses: glasses, goal: 8 });
+
         this.closeModal('waterModal');
         this.renderDashboard();
         this.syncAfterChange();
@@ -3838,7 +3851,21 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
     saveDashboardSleep() {
         const hours = parseFloat(document.getElementById('sleepInput').value) || 0;
+
+        // Save to both storages for backward compatibility
         Storage.updateTodayMetrics({ sleepHours: hours });
+
+        // Also save to SLEEP_LOG for consistency with Progress tab
+        if (hours > 0) {
+            const today = getCurrentDateNZ();
+            Storage.addSleepLog({
+                date: today.toISOString().split('T')[0],
+                hours: hours,
+                quality: 'good',
+                notes: ''
+            });
+        }
+
         this.closeModal('sleepModal');
         this.renderDashboard();
         this.syncAfterChange();
