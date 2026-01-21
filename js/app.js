@@ -5120,6 +5120,14 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         const foodDays = Storage.getAllFoodDays();
         const daysSinceStart = Storage.getDaysSinceStart() || 0;
 
+        console.log('QuickStats Debug:', {
+            workoutsCount: workouts.length,
+            foodDaysCount: foodDays.length,
+            daysSinceStart: daysSinceStart,
+            workouts: workouts,
+            foodDays: foodDays
+        });
+
         // Total workouts
         document.getElementById('totalWorkouts').textContent = workouts.length;
 
@@ -5551,6 +5559,8 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         const container = document.getElementById('reportsContainer');
         const today = getCurrentDateNZ();
 
+        console.log('RenderReport Debug - Period:', period, 'Today:', today);
+
         let startDate, endDate, periodLabel;
 
         if (period === 'week') {
@@ -5589,6 +5599,18 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         const periodFoodDays = foodDays.filter(d => {
             const date = new Date(d.date);
             return date >= startDate && date <= endDate;
+        });
+
+        console.log('Report Data Debug:', {
+            period: period,
+            startDate: startDate,
+            endDate: endDate,
+            totalWorkouts: workouts.length,
+            periodWorkouts: periodWorkouts.length,
+            totalFoodDays: foodDays.length,
+            periodFoodDays: periodFoodDays.length,
+            workoutDates: workouts.map(w => w.date),
+            foodDates: foodDays.map(d => d.date)
         });
 
         // Calculate total volume
