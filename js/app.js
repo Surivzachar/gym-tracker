@@ -559,12 +559,178 @@ class GymTrackerApp {
         this.renderCurrentWorkout();
         this.closeModal('addExerciseModal');
 
-        // Auto-start rest timer for strength exercises
+        // Check for new PRs (only for strength exercises and new entries)
         if (type === 'strength' && !isEditing) {
+            this.checkForNewPR(exercise);
+
+            // Auto-start rest timer
             this.startAutoRestTimer(exercise.id);
         }
 
         this.editingExerciseId = null;
+    }
+
+    checkForNewPR(exercise) {
+        // Get all historical workouts
+        const workouts = Storage.getAllWorkouts();
+        let previousBest = {
+            maxWeight: 0,
+            maxReps: 0,
+            maxVolume: 0
+        };
+
+        // Find previous records for this exercise
+        workouts.forEach(workout => {
+            workout.exercises.forEach(ex => {
+                if (ex.name === exercise.name && ex.type === 'strength') {
+                    ex.sets.forEach(set => {
+                        const weight = parseFloat(set.weight) || 0;
+                        const reps = parseInt(set.reps) || 0;
+                        const volume = weight * reps;
+
+                        if (weight > previousBest.maxWeight) previousBest.maxWeight = weight;
+                        if (reps > previousBest.maxReps) previousBest.maxReps = reps;
+                        if (volume > previousBest.maxVolume) previousBest.maxVolume = volume;
+                    });
+                }
+            });
+        });
+
+        // Check current exercise for new records
+        let currentBest = {
+            maxWeight: 0,
+            maxReps: 0,
+            maxVolume: 0
+        };
+
+        exercise.sets.forEach(set => {
+            const weight = parseFloat(set.weight) || 0;
+            const reps = parseInt(set.reps) || 0;
+            const volume = weight * reps;
+
+            if (weight > currentBest.maxWeight) currentBest.maxWeight = weight;
+            if (reps > currentBest.maxReps) currentBest.maxReps = reps;
+            if (volume > currentBest.maxVolume) currentBest.maxVolume = volume;
+        });
+
+        // Check if we have new PRs
+        const newPRs = [];
+        if (currentBest.maxWeight > previousBest.maxWeight) {
+            newPRs.push({
+                type: 'weight',
+                previous: previousBest.maxWeight,
+                new: currentBest.maxWeight
+            });
+        }
+        if (currentBest.maxReps > previousBest.maxReps) {
+            newPRs.push({
+                type: 'reps',
+                previous: previousBest.maxReps,
+                new: currentBest.maxReps
+            });
+        }
+        if (currentBest.maxVolume > previousBest.maxVolume) {
+            newPRs.push({
+                type: 'volume',
+                previous: previousBest.maxVolume,
+                new: currentBest.maxVolume
+            });
+        }
+
+        if (newPRs.length > 0) {
+            this.showPRCelebration(exercise.name, newPRs);
+        }
+    }
+
+    showPRCelebration(exerciseName, newPRs) {
+        // Create confetti
+        this.createConfetti();
+
+        // Create celebration overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'pr-celebration-overlay';
+
+        let prStatsHTML = '';
+        newPRs.forEach(pr => {
+            let label = '';
+            let emoji = '';
+            let value = '';
+
+            if (pr.type === 'weight') {
+                label = 'Max Weight';
+                emoji = '💪';
+                value = `${pr.new.toFixed(1)} kg`;
+            } else if (pr.type === 'reps') {
+                label = 'Max Reps';
+                emoji = '🔥';
+                value = pr.new;
+            } else if (pr.type === 'volume') {
+                label = 'Max Volume';
+                emoji = '📊';
+                value = `${pr.new.toFixed(1)} kg`;
+            }
+
+            prStatsHTML += `
+                <div class="pr-stat">
+                    ${emoji} ${label}
+                    <span class="pr-stat-value">${value}</span>
+                </div>
+            `;
+        });
+
+        overlay.innerHTML = `
+            <div class="pr-celebration-content">
+                <div class="pr-trophy">🏆</div>
+                <div class="pr-title">NEW PR!</div>
+                <div class="pr-exercise-name">${exerciseName}</div>
+                <div class="pr-stats">
+                    ${prStatsHTML}
+                </div>
+                <button class="pr-close-btn" onclick="app.closePRCelebration()">
+                    Awesome! 🎉
+                </button>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        // Vibrate if supported
+        if ('vibrate' in navigator) {
+            navigator.vibrate([200, 100, 200, 100, 200]);
+        }
+
+        // Play sound (optional - you could add a sound effect here)
+        // const audio = new Audio('celebration.mp3');
+        // audio.play();
+    }
+
+    createConfetti() {
+        const colors = ['#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'];
+        const confettiCount = 100;
+
+        for (let i = 0; i < confettiCount; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 3000);
+            }, i * 30);
+        }
+    }
+
+    closePRCelebration() {
+        const overlay = document.querySelector('.pr-celebration-overlay');
+        if (overlay) {
+            overlay.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => overlay.remove(), 300);
+        }
     }
 
     renderCurrentWorkout() {
@@ -3537,6 +3703,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.renderProgressCharts();
         this.populateExerciseSelector();
         this.renderPersonalRecords();
+        this.renderPRHistory();
         this.renderAchievements();
         this.renderQuickStats();
         this.initializeChartFilters();
@@ -4298,6 +4465,135 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
                             </div>
                         </div>
                         <div class="pr-date">Last PR: ${formatDateNZ(new Date(pr.maxVolumeDate), { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    renderPRHistory() {
+        const workouts = Storage.getAllWorkouts().sort((a, b) => new Date(a.date) - new Date(b.date));
+        const container = document.getElementById('prHistoryContainer');
+        const emptyState = document.getElementById('prHistoryEmpty');
+
+        // Build PR history by tracking records over time
+        const prHistory = [];
+        const exerciseRecords = {};
+
+        workouts.forEach(workout => {
+            workout.exercises.forEach(exercise => {
+                if (exercise.type === 'strength') {
+                    const exerciseName = exercise.name;
+
+                    if (!exerciseRecords[exerciseName]) {
+                        exerciseRecords[exerciseName] = {
+                            maxWeight: 0,
+                            maxReps: 0,
+                            maxVolume: 0
+                        };
+                    }
+
+                    let currentMaxWeight = 0;
+                    let currentMaxReps = 0;
+                    let currentMaxVolume = 0;
+
+                    exercise.sets.forEach(set => {
+                        const weight = parseFloat(set.weight) || 0;
+                        const reps = parseInt(set.reps) || 0;
+                        const volume = weight * reps;
+
+                        if (weight > currentMaxWeight) currentMaxWeight = weight;
+                        if (reps > currentMaxReps) currentMaxReps = reps;
+                        if (volume > currentMaxVolume) currentMaxVolume = volume;
+                    });
+
+                    const newRecords = [];
+
+                    // Check for new weight PR
+                    if (currentMaxWeight > exerciseRecords[exerciseName].maxWeight) {
+                        newRecords.push({
+                            type: 'weight',
+                            label: 'Max Weight',
+                            emoji: '💪',
+                            previous: exerciseRecords[exerciseName].maxWeight,
+                            new: currentMaxWeight,
+                            unit: 'kg'
+                        });
+                        exerciseRecords[exerciseName].maxWeight = currentMaxWeight;
+                    }
+
+                    // Check for new reps PR
+                    if (currentMaxReps > exerciseRecords[exerciseName].maxReps) {
+                        newRecords.push({
+                            type: 'reps',
+                            label: 'Max Reps',
+                            emoji: '🔥',
+                            previous: exerciseRecords[exerciseName].maxReps,
+                            new: currentMaxReps,
+                            unit: ''
+                        });
+                        exerciseRecords[exerciseName].maxReps = currentMaxReps;
+                    }
+
+                    // Check for new volume PR
+                    if (currentMaxVolume > exerciseRecords[exerciseName].maxVolume) {
+                        newRecords.push({
+                            type: 'volume',
+                            label: 'Max Volume',
+                            emoji: '📊',
+                            previous: exerciseRecords[exerciseName].maxVolume,
+                            new: currentMaxVolume,
+                            unit: 'kg'
+                        });
+                        exerciseRecords[exerciseName].maxVolume = currentMaxVolume;
+                    }
+
+                    if (newRecords.length > 0) {
+                        prHistory.push({
+                            date: workout.date,
+                            exercise: exerciseName,
+                            records: newRecords
+                        });
+                    }
+                }
+            });
+        });
+
+        if (prHistory.length === 0) {
+            container.style.display = 'none';
+            emptyState.classList.add('show');
+            return;
+        }
+
+        container.style.display = 'block';
+        emptyState.classList.remove('show');
+
+        // Reverse to show newest first
+        prHistory.reverse();
+
+        container.innerHTML = `
+            <div class="pr-timeline">
+                ${prHistory.map(pr => `
+                    <div class="pr-timeline-item">
+                        <div class="pr-timeline-date">
+                            ${formatDateNZ(new Date(pr.date), { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
+                        </div>
+                        <div class="pr-timeline-exercise">${pr.exercise}</div>
+                        <div class="pr-timeline-records">
+                            ${pr.records.map(record => {
+                                const improvement = record.previous > 0
+                                    ? `+${(record.new - record.previous).toFixed(1)}${record.unit}`
+                                    : 'First!';
+                                return `
+                                    <div class="pr-timeline-record">
+                                        <span>${record.emoji}</span>
+                                        <span class="pr-timeline-record-label">${record.label}:</span>
+                                        <span class="pr-timeline-record-value">${record.new.toFixed(record.type === 'reps' ? 0 : 1)}${record.unit}</span>
+                                        <span class="pr-timeline-record-improvement">(${improvement})</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
                     </div>
                 `).join('')}
             </div>

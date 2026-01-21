@@ -3336,3 +3336,302 @@ input:checked + .toggle-slider:before {
         grid-template-columns: 1fr;
     }
 }
+
+/* ===== PR CELEBRATION ANIMATIONS ===== */
+.pr-celebration-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.pr-celebration-content {
+    background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+    overflow: hidden;
+    max-width: 90%;
+    max-width: 500px;
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.pr-trophy {
+    font-size: 5rem;
+    animation: rotate 1s ease-in-out;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+@keyframes rotate {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-15deg) scale(1.1); }
+    75% { transform: rotate(15deg) scale(1.1); }
+}
+
+.pr-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+}
+
+.pr-exercise-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.pr-stats {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+    backdrop-filter: blur(10px);
+}
+
+.pr-stat {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
+
+.pr-stat-value {
+    font-size: 1.5rem;
+    font-weight: 900;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+.pr-close-btn {
+    margin-top: 1.5rem;
+    padding: 0.875rem 2rem;
+    background: white;
+    color: #ef4444;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.pr-close-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Confetti animation */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #f0f;
+    position: absolute;
+    animation: confetti-fall 3s linear forwards;
+    z-index: 10001;
+}
+
+@keyframes confetti-fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* PR Badge on PR Board */
+.pr-card.new-pr {
+    animation: pulse-highlight 2s ease-in-out 3;
+    border: 3px solid #f59e0b;
+}
+
+@keyframes pulse-highlight {
+    0%, 100% {
+        box-shadow: 0 4px 12px var(--shadow-md);
+    }
+    50% {
+        box-shadow: 0 8px 24px rgba(245, 158, 11, 0.6);
+    }
+}
+
+.new-pr-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.5);
+    animation: pulse-badge 1.5s infinite;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* ===== PR HISTORY TIMELINE ===== */
+.pr-history-section {
+    margin-bottom: 2rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px var(--shadow-sm);
+}
+
+.pr-history-section h3 {
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.pr-history-section .helper-text {
+    margin-bottom: 1.5rem;
+}
+
+.pr-timeline {
+    position: relative;
+    padding-left: 2.5rem;
+}
+
+.pr-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.75rem;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--accent-secondary), transparent);
+}
+
+.pr-timeline-item {
+    position: relative;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    border-left: 4px solid var(--accent-secondary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pr-timeline-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px var(--shadow-md);
+}
+
+.pr-timeline-item::before {
+    content: '🏆';
+    position: absolute;
+    left: -2.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    background: var(--bg-primary);
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 3px solid var(--accent-secondary);
+    box-shadow: 0 2px 8px var(--shadow-sm);
+}
+
+.pr-timeline-date {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.pr-timeline-exercise {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.pr-timeline-records {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.pr-timeline-record {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    font-size: 0.875rem;
+}
+
+.pr-timeline-record-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.pr-timeline-record-value {
+    color: var(--accent-secondary);
+    font-weight: 700;
+}
+
+.pr-timeline-record-improvement {
+    color: var(--success);
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: 0.25rem;
+}
+
+@media (max-width: 768px) {
+    .pr-timeline {
+        padding-left: 2rem;
+    }
+
+    .pr-timeline-item::before {
+        left: -2.25rem;
+        font-size: 1.25rem;
+        width: 1.75rem;
+        height: 1.75rem;
+    }
+}
