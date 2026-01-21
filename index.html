@@ -566,28 +566,56 @@
                     <div class="section-header">
                         <h2>Today's Food</h2>
                         <div style="display: flex; gap: 0.5rem;">
+                            <button id="setNutritionGoalsBtn" class="btn-secondary" onclick="app.openNutritionGoalsModal()">🎯 Goals</button>
                             <button id="loadFoodRoutineBtn" class="btn-secondary">Load Routine</button>
                             <button id="createFoodRoutineBtn" class="btn-primary">Create Routine</button>
                         </div>
                     </div>
 
-                    <!-- Daily Stats -->
-                    <div id="foodStats" class="food-stats">
-                        <div class="stat-card">
-                            <span class="stat-value">0</span>
-                            <span class="stat-label">Calories</span>
+                    <!-- Daily Stats with Goals -->
+                    <div id="foodStats" class="food-stats-with-goals">
+                        <div class="nutrition-stat">
+                            <div class="nutrition-header">
+                                <span class="nutrition-label">🔥 Calories</span>
+                                <span class="nutrition-values"><span id="caloriesConsumed">0</span> / <span id="caloriesGoal">2000</span></span>
+                            </div>
+                            <div class="nutrition-progress-bar">
+                                <div id="caloriesProgress" class="nutrition-progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="nutrition-remaining" id="caloriesRemaining">2000 remaining</span>
                         </div>
-                        <div class="stat-card">
-                            <span class="stat-value">0g</span>
-                            <span class="stat-label">Protein</span>
+
+                        <div class="nutrition-stat">
+                            <div class="nutrition-header">
+                                <span class="nutrition-label">💪 Protein</span>
+                                <span class="nutrition-values"><span id="proteinConsumed">0</span>g / <span id="proteinGoal">150</span>g</span>
+                            </div>
+                            <div class="nutrition-progress-bar">
+                                <div id="proteinProgress" class="nutrition-progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="nutrition-remaining" id="proteinRemaining">150g remaining</span>
                         </div>
-                        <div class="stat-card">
-                            <span class="stat-value">0g</span>
-                            <span class="stat-label">Carbs</span>
+
+                        <div class="nutrition-stat">
+                            <div class="nutrition-header">
+                                <span class="nutrition-label">🍚 Carbs</span>
+                                <span class="nutrition-values"><span id="carbsConsumed">0</span>g / <span id="carbsGoal">200</span>g</span>
+                            </div>
+                            <div class="nutrition-progress-bar">
+                                <div id="carbsProgress" class="nutrition-progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="nutrition-remaining" id="carbsRemaining">200g remaining</span>
                         </div>
-                        <div class="stat-card">
-                            <span class="stat-value">0g</span>
-                            <span class="stat-label">Fats</span>
+
+                        <div class="nutrition-stat">
+                            <div class="nutrition-header">
+                                <span class="nutrition-label">🥑 Fats</span>
+                                <span class="nutrition-values"><span id="fatsConsumed">0</span>g / <span id="fatsGoal">65</span>g</span>
+                            </div>
+                            <div class="nutrition-progress-bar">
+                                <div id="fatsProgress" class="nutrition-progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="nutrition-remaining" id="fatsRemaining">65g remaining</span>
                         </div>
                     </div>
 
@@ -1580,6 +1608,44 @@
                     <p class="helper-text">Recommended: 8 glasses per day (about 2 liters)</p>
                     <div class="modal-actions">
                         <button id="saveWaterGoalBtn" class="btn-primary">Save Goal</button>
+                        <button class="btn-secondary close-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nutrition Goals Modal -->
+        <div id="nutritionGoalsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>🎯 Set Daily Nutrition Goals</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p class="helper-text" style="margin-bottom: 1rem;">Set your daily targets for calories and macros</p>
+
+                    <div class="input-group">
+                        <label class="input-label">🔥 Calories Goal</label>
+                        <input type="number" id="caloriesGoalInput" class="input" placeholder="2000" min="1000" max="5000" step="50">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">💪 Protein Goal (g)</label>
+                        <input type="number" id="proteinGoalInput" class="input" placeholder="150" min="50" max="500" step="5">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">🍚 Carbs Goal (g)</label>
+                        <input type="number" id="carbsGoalInput" class="input" placeholder="200" min="50" max="600" step="5">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">🥑 Fats Goal (g)</label>
+                        <input type="number" id="fatsGoalInput" class="input" placeholder="65" min="20" max="200" step="5">
+                    </div>
+
+                    <div class="modal-actions">
+                        <button id="saveNutritionGoalsBtn" class="btn-primary">Save Goals</button>
                         <button class="btn-secondary close-btn">Cancel</button>
                     </div>
                 </div>

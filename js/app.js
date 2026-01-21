@@ -198,6 +198,14 @@ class GymTrackerApp {
             this.openFoodHistoryModal();
         });
 
+        document.getElementById('setNutritionGoalsBtn').addEventListener('click', () => {
+            this.openNutritionGoalsModal();
+        });
+
+        document.getElementById('saveNutritionGoalsBtn').addEventListener('click', () => {
+            this.saveNutritionGoals();
+        });
+
         // Food Routines
         document.getElementById('createFoodRoutineBtn').addEventListener('click', () => {
             this.openCreateFoodRoutineModal();
@@ -2043,12 +2051,13 @@ class GymTrackerApp {
 
         const todayFood = Storage.getTodayFood(displayDate);
         const stats = Storage.getFoodStats(displayDate);
+        const goals = Storage.getNutritionGoals();
 
-        // Update stats at the top
-        document.querySelector('#foodStats .stat-card:nth-child(1) .stat-value').textContent = stats.totalCalories;
-        document.querySelector('#foodStats .stat-card:nth-child(2) .stat-value').textContent = stats.totalProtein + 'g';
-        document.querySelector('#foodStats .stat-card:nth-child(3) .stat-value').textContent = stats.totalCarbs + 'g';
-        document.querySelector('#foodStats .stat-card:nth-child(4) .stat-value').textContent = stats.totalFats + 'g';
+        // Update nutrition stats with goals and progress
+        this.updateNutritionStat('calories', stats.totalCalories, goals.calories);
+        this.updateNutritionStat('protein', stats.totalProtein, goals.protein);
+        this.updateNutritionStat('carbs', stats.totalCarbs, goals.carbs);
+        this.updateNutritionStat('fats', stats.totalFats, goals.fats);
 
         // Update daily totals summary at the bottom
         document.getElementById('totalCaloriesValue').textContent = stats.totalCalories;
@@ -2105,6 +2114,78 @@ class GymTrackerApp {
         overlay.onclick = () => document.body.removeChild(overlay);
 
         document.body.appendChild(overlay);
+    }
+
+    updateNutritionStat(nutrientType, consumed, goal) {
+        const consumedEl = document.getElementById(`${nutrientType}Consumed`);
+        const goalEl = document.getElementById(`${nutrientType}Goal`);
+        const progressEl = document.getElementById(`${nutrientType}Progress`);
+        const remainingEl = document.getElementById(`${nutrientType}Remaining`);
+
+        if (!consumedEl || !goalEl || !progressEl || !remainingEl) return;
+
+        consumedEl.textContent = consumed;
+        goalEl.textContent = goal;
+
+        const percentage = Math.min((consumed / goal) * 100, 100);
+        progressEl.style.width = percentage + '%';
+
+        const remaining = goal - consumed;
+        if (remaining > 0) {
+            remainingEl.textContent = `${remaining.toFixed(0)} remaining`;
+            remainingEl.classList.remove('over-goal');
+        } else {
+            remainingEl.textContent = `${Math.abs(remaining).toFixed(0)} over goal`;
+            remainingEl.classList.add('over-goal');
+        }
+    }
+
+    openNutritionGoalsModal() {
+        const goals = Storage.getNutritionGoals();
+
+        document.getElementById('caloriesGoalInput').value = goals.calories;
+        document.getElementById('proteinGoalInput').value = goals.protein;
+        document.getElementById('carbsGoalInput').value = goals.carbs;
+        document.getElementById('fatsGoalInput').value = goals.fats;
+
+        this.openModal('nutritionGoalsModal');
+    }
+
+    saveNutritionGoals() {
+        const calories = parseFloat(document.getElementById('caloriesGoalInput').value);
+        const protein = parseFloat(document.getElementById('proteinGoalInput').value);
+        const carbs = parseFloat(document.getElementById('carbsGoalInput').value);
+        const fats = parseFloat(document.getElementById('fatsGoalInput').value);
+
+        if (!calories || !protein || !carbs || !fats) {
+            alert('Please fill in all nutrition goals');
+            return;
+        }
+
+        if (calories < 1000 || calories > 5000) {
+            alert('Calories should be between 1000 and 5000');
+            return;
+        }
+
+        if (protein < 50 || protein > 500) {
+            alert('Protein should be between 50g and 500g');
+            return;
+        }
+
+        if (carbs < 50 || carbs > 600) {
+            alert('Carbs should be between 50g and 600g');
+            return;
+        }
+
+        if (fats < 20 || fats > 200) {
+            alert('Fats should be between 20g and 200g');
+            return;
+        }
+
+        Storage.setNutritionGoals(calories, protein, carbs, fats);
+        this.closeModal('nutritionGoalsModal');
+        this.renderFood();
+        this.showNotification('Nutrition goals updated successfully!');
     }
 
     openFoodHistoryModal() {

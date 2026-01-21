@@ -22,7 +22,8 @@ const Storage = {
         WATER_INTAKE: 'gym_tracker_water_intake',
         SLEEP_LOG: 'gym_tracker_sleep_log',
         JOURNAL_ENTRIES: 'gym_tracker_journal_entries',
-        CARDIO_SESSIONS: 'gym_tracker_cardio_sessions'
+        CARDIO_SESSIONS: 'gym_tracker_cardio_sessions',
+        NUTRITION_GOALS: 'gym_tracker_nutrition_goals'
     },
 
     // Get data from localStorage
@@ -632,6 +633,26 @@ const Storage = {
         return this.set(this.KEYS.WEIGHT_GOAL, {
             startingWeight: parseFloat(startingWeight),
             goalWeight: parseFloat(goalWeight),
+            setDate: new Date().toISOString()
+        });
+    },
+
+    // Nutrition Goals Methods
+    getNutritionGoals() {
+        return this.get(this.KEYS.NUTRITION_GOALS) || {
+            calories: 2000,
+            protein: 150,
+            carbs: 200,
+            fats: 65
+        };
+    },
+
+    setNutritionGoals(calories, protein, carbs, fats) {
+        return this.set(this.KEYS.NUTRITION_GOALS, {
+            calories: parseFloat(calories) || 2000,
+            protein: parseFloat(protein) || 150,
+            carbs: parseFloat(carbs) || 200,
+            fats: parseFloat(fats) || 65,
             setDate: new Date().toISOString()
         });
     },
