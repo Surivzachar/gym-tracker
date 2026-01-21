@@ -43,6 +43,9 @@ class GymTrackerApp {
         this.modalRestTimerSeconds = 0;
         this.modalRestTimerRunning = false;
 
+        // Auto theme properties
+        this.autoThemeInterval = null;
+
         this.initializeEventListeners();
         this.initializeDarkMode();
         this.checkAutoBackup();
@@ -184,6 +187,13 @@ class GymTrackerApp {
         if (darkModeToggle) {
             darkModeToggle.addEventListener('change', () => {
                 this.toggleDarkMode();
+            });
+        }
+
+        const autoThemeToggle = document.getElementById('autoThemeToggle');
+        if (autoThemeToggle) {
+            autoThemeToggle.addEventListener('change', () => {
+                this.toggleAutoTheme();
             });
         }
 
@@ -737,7 +747,14 @@ class GymTrackerApp {
         const container = document.getElementById('currentExercises');
 
         if (this.currentWorkout.exercises.length === 0) {
-            container.innerHTML = '<p class="empty-state">No exercises yet. Add your first exercise!</p>';
+            container.innerHTML = `
+                <div class="empty-state">
+                    <span class="empty-state-icon">💪</span>
+                    <div class="empty-state-title">No Exercises Yet</div>
+                    <div class="empty-state-message">Start building your workout by adding your first exercise</div>
+                    <button class="empty-state-cta" onclick="app.openAddExerciseModal()">Add Exercise</button>
+                </div>
+            `;
             return;
         }
 
@@ -1066,7 +1083,14 @@ class GymTrackerApp {
         const workouts = Storage.getAllWorkouts();
 
         if (workouts.length === 0) {
-            container.innerHTML = '<p class="empty-state">No workout history yet. Complete your first workout!</p>';
+            container.innerHTML = `
+                <div class="empty-state">
+                    <span class="empty-state-icon">📅</span>
+                    <div class="empty-state-title">No Workout History</div>
+                    <div class="empty-state-message">Complete your first workout to start tracking your fitness journey</div>
+                    <button class="empty-state-cta" onclick="app.switchView('workout')">Start Workout</button>
+                </div>
+            `;
             return;
         }
 
@@ -1167,7 +1191,14 @@ class GymTrackerApp {
         const routines = Storage.getAllRoutines();
 
         if (routines.length === 0) {
-            container.innerHTML = '<p class="empty-state">No routines saved yet. Create a routine from your current workout!</p>';
+            container.innerHTML = `
+                <div class="empty-state">
+                    <span class="empty-state-icon">📋</span>
+                    <div class="empty-state-title">No Saved Routines</div>
+                    <div class="empty-state-message">Save your favorite workouts as routines for quick access</div>
+                    <button class="empty-state-cta" onclick="app.switchView('workout')">Create Workout</button>
+                </div>
+            `;
             return;
         }
 
@@ -1886,7 +1917,14 @@ class GymTrackerApp {
         const container = document.getElementById('foodHistoryList');
 
         if (allDays.length === 0) {
-            container.innerHTML = '<p class="empty-state">No food history yet.</p>';
+            container.innerHTML = `
+                <div class="empty-state">
+                    <span class="empty-state-icon">🍽️</span>
+                    <div class="empty-state-title">No Food Logged</div>
+                    <div class="empty-state-message">Start tracking your nutrition to reach your goals</div>
+                    <button class="empty-state-cta" onclick="app.switchView('food')">Log Food</button>
+                </div>
+            `;
         } else {
             container.innerHTML = allDays.map(day => {
                 const date = new Date(day.date);
@@ -2136,13 +2174,51 @@ class GymTrackerApp {
 
     // Dark Mode
     initializeDarkMode() {
-        const darkMode = localStorage.getItem('darkMode') === 'true';
-        if (darkMode) {
-            document.body.setAttribute('data-theme', 'dark');
+        const autoTheme = localStorage.getItem('autoTheme') === 'true';
+
+        if (autoTheme) {
+            // Check time and apply theme accordingly
+            this.applyAutoTheme();
+            // Check every minute for theme updates
+            setInterval(() => this.applyAutoTheme(), 60000);
+        } else {
+            // Manual mode
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+            }
         }
+
+        // Update toggle states in UI
+        this.updateThemeToggles();
+    }
+
+    applyAutoTheme() {
+        const shouldBeDark = this.isNightTime();
+
+        if (shouldBeDark) {
+            document.body.setAttribute('data-theme', 'dark');
+        } else {
+            document.body.removeAttribute('data-theme');
+        }
+
+        // Update the manual toggle to reflect current state
+        this.updateThemeToggles();
+    }
+
+    isNightTime() {
+        // Get current hour in NZ timezone
+        const now = getCurrentDateNZ();
+        const hour = now.getHours();
+
+        // Dark mode from 6pm (18:00) to 6am (06:00)
+        return hour >= 18 || hour < 6;
     }
 
     toggleDarkMode() {
+        // Disable auto theme when manually toggling
+        localStorage.setItem('autoTheme', 'false');
+
         const currentTheme = document.body.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
@@ -2152,6 +2228,53 @@ class GymTrackerApp {
         } else {
             document.body.removeAttribute('data-theme');
             localStorage.setItem('darkMode', 'false');
+        }
+
+        this.updateThemeToggles();
+    }
+
+    toggleAutoTheme() {
+        const autoThemeToggle = document.getElementById('autoThemeToggle');
+        const isEnabled = autoThemeToggle.checked;
+
+        localStorage.setItem('autoTheme', isEnabled.toString());
+
+        if (isEnabled) {
+            // Apply auto theme immediately
+            this.applyAutoTheme();
+            // Start checking every minute
+            if (!this.autoThemeInterval) {
+                this.autoThemeInterval = setInterval(() => this.applyAutoTheme(), 60000);
+            }
+        } else {
+            // Stop auto checking
+            if (this.autoThemeInterval) {
+                clearInterval(this.autoThemeInterval);
+                this.autoThemeInterval = null;
+            }
+        }
+
+        this.updateThemeToggles();
+    }
+
+    updateThemeToggles() {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const autoThemeToggle = document.getElementById('autoThemeToggle');
+
+        if (darkModeToggle) {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            darkModeToggle.checked = isDark;
+        }
+
+        if (autoThemeToggle) {
+            const autoEnabled = localStorage.getItem('autoTheme') === 'true';
+            autoThemeToggle.checked = autoEnabled;
+
+            // Disable manual toggle when auto is enabled
+            if (darkModeToggle) {
+                darkModeToggle.disabled = autoEnabled;
+                darkModeToggle.style.opacity = autoEnabled ? '0.5' : '1';
+            }
         }
     }
 
@@ -3072,7 +3195,14 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         const gallery = document.getElementById('photosGallery');
 
         if (photos.length === 0) {
-            gallery.innerHTML = '<p class="empty-state">No progress photos yet. Take your first photo to start tracking your transformation!</p>';
+            gallery.innerHTML = `
+                <div class="empty-state">
+                    <span class="empty-state-icon">📸</span>
+                    <div class="empty-state-title">No Progress Photos</div>
+                    <div class="empty-state-message">Document your transformation journey with progress photos</div>
+                    <button class="empty-state-cta" onclick="app.openProgressPhotoModal()">Take Photo</button>
+                </div>
+            `;
             return;
         }
 

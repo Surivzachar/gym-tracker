@@ -1,25 +1,88 @@
 {
-  "name": "Suresh.aesthetics",
+  "name": "Suresh.aesthetics - Fitness Tracker",
   "short_name": "Suresh.aesthetics",
-  "description": "Track. Train. Transform. Your complete fitness companion",
+  "description": "Track. Train. Transform. Your complete fitness companion for workouts, nutrition, and progress tracking",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#1e3a8a",
   "theme_color": "#1e3a8a",
   "orientation": "portrait",
+  "categories": ["health", "fitness", "lifestyle"],
+  "lang": "en-NZ",
+  "dir": "ltr",
   "icons": [
     {
       "src": "./icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Start Workout",
+      "short_name": "Workout",
+      "description": "Start a new workout session",
+      "url": "./?view=workout",
+      "icons": [
+        {
+          "src": "./icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Log Food",
+      "short_name": "Food",
+      "description": "Log your meals and nutrition",
+      "url": "./?view=food",
+      "icons": [
+        {
+          "src": "./icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "View Progress",
+      "short_name": "Progress",
+      "description": "Check your fitness progress",
+      "url": "./?view=progress",
+      "icons": [
+        {
+          "src": "./icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }

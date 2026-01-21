@@ -212,7 +212,8 @@
                             <canvas id="weightChart"></canvas>
                         </div>
                         <div id="weightChartEmpty" class="chart-empty">
-                            📊 Track your weight daily to see progress here
+                            <span class="chart-empty-icon">📊</span>
+                            Track your weight daily to see progress here
                         </div>
                     </div>
 
@@ -230,7 +231,8 @@
                             <canvas id="volumeChart"></canvas>
                         </div>
                         <div id="volumeChartEmpty" class="chart-empty">
-                            💪 Complete workouts to see volume trends here
+                            <span class="chart-empty-icon">💪</span>
+                            Complete workouts to see volume trends here
                         </div>
                     </div>
 
@@ -248,7 +250,8 @@
                             <canvas id="caloriesChart"></canvas>
                         </div>
                         <div id="caloriesChartEmpty" class="chart-empty">
-                            🍽️ Log your meals to see calorie trends here
+                            <span class="chart-empty-icon">🍽️</span>
+                            Log your meals to see calorie trends here
                         </div>
                     </div>
 
@@ -266,7 +269,8 @@
                             <canvas id="measurementsChart"></canvas>
                         </div>
                         <div id="measurementsChartEmpty" class="chart-empty">
-                            📏 Track your measurements to see progress here
+                            <span class="chart-empty-icon">📏</span>
+                            Track your measurements to see progress here
                         </div>
                     </div>
 
@@ -282,7 +286,8 @@
                             <canvas id="exerciseProgressChart"></canvas>
                         </div>
                         <div id="exerciseProgressChartEmpty" class="chart-empty show">
-                            💪 Select an exercise above to see your strength gains over time
+                            <span class="chart-empty-icon">💪</span>
+                            Select an exercise above to see your strength gains over time
                         </div>
                     </div>
 
@@ -292,7 +297,8 @@
                         <p class="helper-text">Your best lifts for each exercise</p>
                         <div id="prBoardContainer"></div>
                         <div id="prBoardEmpty" class="chart-empty">
-                            🏋️ Complete workouts to see your personal records here
+                            <span class="chart-empty-icon">🏋️</span>
+                            Complete workouts to see your personal records here
                         </div>
                     </div>
 
@@ -302,7 +308,8 @@
                         <p class="helper-text">Chronological record of all your personal bests</p>
                         <div id="prHistoryContainer"></div>
                         <div id="prHistoryEmpty" class="chart-empty">
-                            💪 Complete workouts to build your PR history
+                            <span class="chart-empty-icon">💪</span>
+                            Complete workouts to build your PR history
                         </div>
                     </div>
 
@@ -866,6 +873,18 @@
                                 <span class="toggle-slider"></span>
                             </label>
                         </div>
+
+                        <div class="theme-toggle-container" style="margin-top: 0.75rem;">
+                            <div class="theme-toggle-label">
+                                <span class="theme-toggle-icon">🕐</span>
+                                <span>Auto-switch (6pm - 6am)</span>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="autoThemeToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <p class="helper-text" style="margin-top: 0.5rem; font-size: 0.85rem;">Automatically switch to dark mode in the evening</p>
                     </div>
 
                     <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #e5e7eb;">

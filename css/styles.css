@@ -294,12 +294,34 @@ img {
 /* Views */
 .view {
     display: none;
+    opacity: 0;
 }
 
 .view.active {
     display: block;
     position: relative;
     z-index: 1;
+    animation: fadeInView 0.3s ease-out forwards;
+}
+
+@keyframes fadeInView {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* Daily Quote */
@@ -388,7 +410,8 @@ img {
 }
 
 .btn-primary:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 2px 4px rgba(30, 58, 138, 0.2);
 }
 
 .btn-secondary {
@@ -398,6 +421,11 @@ img {
 
 .btn-secondary:hover {
     background: #d1d5db;
+    transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+    transform: translateY(0) scale(0.98);
 }
 
 .btn-success {
@@ -407,6 +435,13 @@ img {
 
 .btn-success:hover {
     background: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-success:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
 }
 
 .full-width {
@@ -589,9 +624,64 @@ img {
 /* Empty State */
 .empty-state {
     text-align: center;
-    color: #9ca3af;
-    padding: 3rem 1rem;
+    color: var(--text-secondary);
+    padding: 3rem 1.5rem;
     font-size: 1rem;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    display: block;
+    animation: float 3s ease-in-out infinite;
+}
+
+.empty-state-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state-message {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.empty-state-cta {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--accent-secondary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.empty-state-cta:hover {
+    background: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-md);
+}
+
+.empty-state-cta:active {
+    transform: translateY(0);
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 /* History */
@@ -1165,7 +1255,55 @@ img {
 .exercise-card,
 .history-card,
 .routine-card {
-    animation: fadeIn 0.3s ease-out;
+    animation: slideInUp 0.4s ease-out;
+}
+
+/* Staggered animation for lists */
+.exercise-card:nth-child(1) { animation-delay: 0s; }
+.exercise-card:nth-child(2) { animation-delay: 0.05s; }
+.exercise-card:nth-child(3) { animation-delay: 0.1s; }
+.exercise-card:nth-child(4) { animation-delay: 0.15s; }
+.exercise-card:nth-child(5) { animation-delay: 0.2s; }
+
+.history-item:nth-child(1) { animation: slideInUp 0.3s ease-out; animation-delay: 0s; }
+.history-item:nth-child(2) { animation: slideInUp 0.3s ease-out; animation-delay: 0.05s; }
+.history-item:nth-child(3) { animation: slideInUp 0.3s ease-out; animation-delay: 0.1s; }
+.history-item:nth-child(4) { animation: slideInUp 0.3s ease-out; animation-delay: 0.15s; }
+.history-item:nth-child(5) { animation: slideInUp 0.3s ease-out; animation-delay: 0.2s; }
+
+.routine-card:nth-child(1) { animation-delay: 0s; }
+.routine-card:nth-child(2) { animation-delay: 0.05s; }
+.routine-card:nth-child(3) { animation-delay: 0.1s; }
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
 }
 
 /* Food Tracking Styles */
@@ -1290,9 +1428,15 @@ img {
 
 .empty-state-small {
     text-align: center;
-    color: #9ca3af;
-    font-size: 0.875rem;
-    padding: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    padding: 2rem 1rem;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.empty-state-small .empty-state-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .macros-inputs {
@@ -2154,12 +2298,6 @@ input:checked + .toggle-slider:before {
     border-radius: 8px;
 }
 
-.empty-state-small {
-    color: #9ca3af;
-    text-align: center;
-    padding: 2rem 1rem;
-    font-size: 0.95rem;
-}
 
 .water-quick-add {
     margin: 1rem 0;
@@ -2777,16 +2915,24 @@ input:checked + .toggle-slider:before {
 
 .chart-empty {
     text-align: center;
-    padding: 3rem 1rem;
-    color: var(--text-tertiary);
+    padding: 3rem 1.5rem;
+    color: var(--text-secondary);
     font-size: 1rem;
     background: var(--bg-secondary);
     border-radius: 8px;
     display: none;
+    animation: fadeIn 0.5s ease-out;
 }
 
 .chart-empty.show {
     display: block;
+}
+
+.chart-empty-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 0.75rem;
+    animation: float 3s ease-in-out infinite;
 }
 
 .progress-summary {
