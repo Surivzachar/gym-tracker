@@ -486,6 +486,59 @@
                         </button>
                     </div>
 
+                    <!-- Before/After Comparison -->
+                    <div id="beforeAfterSection" class="before-after-section" style="display: none;">
+                        <h3>📊 Before & After Comparison</h3>
+                        <div class="comparison-controls">
+                            <div class="photo-selector">
+                                <label>Before Photo:</label>
+                                <select id="beforePhotoSelect" class="photo-select">
+                                    <option value="">Select photo...</option>
+                                </select>
+                            </div>
+                            <div class="photo-selector">
+                                <label>After Photo:</label>
+                                <select id="afterPhotoSelect" class="photo-select">
+                                    <option value="">Select photo...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="comparisonDisplay" class="comparison-display" style="display: none;">
+                            <!-- Side by Side View -->
+                            <div class="comparison-mode-tabs">
+                                <button class="mode-tab active" data-mode="side-by-side">Side by Side</button>
+                                <button class="mode-tab" data-mode="slider">Slider</button>
+                            </div>
+
+                            <div id="sideBySideView" class="comparison-view active">
+                                <div class="comparison-photos">
+                                    <div class="comparison-photo-container">
+                                        <img id="beforePhotoImg" class="comparison-photo" alt="Before">
+                                        <div class="photo-label">BEFORE</div>
+                                        <div id="beforePhotoDate" class="photo-date"></div>
+                                    </div>
+                                    <div class="comparison-photo-container">
+                                        <img id="afterPhotoImg" class="comparison-photo" alt="After">
+                                        <div class="photo-label">AFTER</div>
+                                        <div id="afterPhotoDate" class="photo-date"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="sliderView" class="comparison-view">
+                                <div class="slider-container">
+                                    <div class="slider-wrapper">
+                                        <img id="beforePhotoSlider" class="slider-image slider-before" alt="Before">
+                                        <img id="afterPhotoSlider" class="slider-image slider-after" alt="After">
+                                        <input type="range" min="0" max="100" value="50" class="comparison-slider" id="comparisonSlider">
+                                        <div class="slider-handle" id="sliderHandle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Photos Gallery -->
                     <div id="photosGallery" class="photos-gallery"></div>
                 </div>

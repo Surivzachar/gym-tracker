@@ -2966,6 +2966,130 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         html += '</div>';
 
         gallery.innerHTML = html;
+
+        // Populate before/after comparison selectors
+        this.populatePhotoComparison(photos);
+    }
+
+    populatePhotoComparison(photos) {
+        const beforeSelect = document.getElementById('beforePhotoSelect');
+        const afterSelect = document.getElementById('afterPhotoSelect');
+        const comparisonSection = document.getElementById('beforeAfterSection');
+
+        // Show comparison section if we have at least 2 photos
+        if (photos.length >= 2) {
+            comparisonSection.style.display = 'block';
+
+            // Clear and populate selectors
+            beforeSelect.innerHTML = '<option value="">Select photo...</option>';
+            afterSelect.innerHTML = '<option value="">Select photo...</option>';
+
+            photos.forEach(photo => {
+                const date = new Date(photo.date);
+                const formatted = formatDateNZ(date, { month: 'short', day: 'numeric', year: 'numeric' });
+
+                const option1 = document.createElement('option');
+                option1.value = photo.id;
+                option1.textContent = formatted;
+                beforeSelect.appendChild(option1);
+
+                const option2 = document.createElement('option');
+                option2.value = photo.id;
+                option2.textContent = formatted;
+                afterSelect.appendChild(option2);
+            });
+
+            // Add change listeners
+            beforeSelect.onchange = () => this.updateComparison();
+            afterSelect.onchange = () => this.updateComparison();
+        } else {
+            comparisonSection.style.display = 'none';
+        }
+
+        // Initialize comparison mode tabs
+        this.initializeComparisonTabs();
+    }
+
+    initializeComparisonTabs() {
+        document.querySelectorAll('.mode-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                const mode = e.target.dataset.mode;
+
+                // Update active tab
+                document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+
+                // Show correct view
+                document.querySelectorAll('.comparison-view').forEach(view => view.classList.remove('active'));
+                if (mode === 'side-by-side') {
+                    document.getElementById('sideBySideView').classList.add('active');
+                } else {
+                    document.getElementById('sliderView').classList.add('active');
+                }
+            });
+        });
+
+        // Initialize slider
+        const slider = document.getElementById('comparisonSlider');
+        const handle = document.getElementById('sliderHandle');
+        const beforeImg = document.getElementById('beforePhotoSlider');
+
+        if (slider && handle && beforeImg) {
+            slider.addEventListener('input', (e) => {
+                const value = e.target.value;
+                handle.style.left = value + '%';
+                beforeImg.style.clipPath = `inset(0 ${100 - value}% 0 0)`;
+            });
+        }
+    }
+
+    updateComparison() {
+        const beforeId = parseInt(document.getElementById('beforePhotoSelect').value);
+        const afterId = parseInt(document.getElementById('afterPhotoSelect').value);
+        const display = document.getElementById('comparisonDisplay');
+
+        if (!beforeId || !afterId) {
+            display.style.display = 'none';
+            return;
+        }
+
+        if (beforeId === afterId) {
+            alert('Please select different photos for before and after');
+            return;
+        }
+
+        const beforePhoto = Storage.getProgressPhoto(beforeId);
+        const afterPhoto = Storage.getProgressPhoto(afterId);
+
+        if (!beforePhoto || !afterPhoto) return;
+
+        // Show display
+        display.style.display = 'block';
+
+        // Update side by side view
+        document.getElementById('beforePhotoImg').src = beforePhoto.image;
+        document.getElementById('afterPhotoImg').src = afterPhoto.image;
+
+        document.getElementById('beforePhotoDate').textContent = formatDateNZ(new Date(beforePhoto.date), {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+        document.getElementById('afterPhotoDate').textContent = formatDateNZ(new Date(afterPhoto.date), {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+
+        // Update slider view
+        document.getElementById('beforePhotoSlider').src = beforePhoto.image;
+        document.getElementById('afterPhotoSlider').src = afterPhoto.image;
+
+        // Reset slider to 50%
+        const slider = document.getElementById('comparisonSlider');
+        slider.value = 50;
+        document.getElementById('sliderHandle').style.left = '50%';
+        document.getElementById('beforePhotoSlider').style.clipPath = 'inset(0 50% 0 0)';
     }
 
     viewPhoto(photoId) {
