@@ -1534,6 +1534,90 @@ class GymTrackerApp {
         }
     }
 
+    // Quick Start Features
+    repeatLastWorkout() {
+        const workouts = Storage.getAllWorkouts();
+        if (workouts.length === 0) {
+            alert('No previous workouts found');
+            return;
+        }
+
+        const lastWorkout = workouts[0];
+
+        if (confirm(`Repeat your last workout from ${formatDateNZ(new Date(lastWorkout.date), { month: 'short', day: 'numeric' })} with ${lastWorkout.exercises.length} exercises?`)) {
+            // Copy exercises from last workout to current workout
+            lastWorkout.exercises.forEach(ex => {
+                const exercise = {
+                    id: Date.now() + Math.random(),
+                    name: ex.name,
+                    sets: ex.sets.map(set => ({...set})) // Deep copy sets
+                };
+                this.currentWorkout.exercises.push(exercise);
+            });
+
+            Storage.saveCurrentWorkout(this.currentWorkout);
+            this.renderCurrentWorkout();
+            alert(`✅ Added ${lastWorkout.exercises.length} exercises from your last workout!`);
+        }
+    }
+
+    showFavoriteExercises() {
+        // Analyze workout history to find most frequent exercises
+        const workouts = Storage.getAllWorkouts();
+        const exerciseCount = {};
+
+        workouts.forEach(workout => {
+            workout.exercises.forEach(ex => {
+                exerciseCount[ex.name] = (exerciseCount[ex.name] || 0) + 1;
+            });
+        });
+
+        // Sort by frequency and get top 10
+        const favorites = Object.entries(exerciseCount)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10);
+
+        if (favorites.length === 0) {
+            alert('No favorite exercises found. Complete some workouts first!');
+            return;
+        }
+
+        // Show modal with favorites
+        const message = `Your most frequent exercises:\n\n${favorites.map((([name, count], i) => `${i + 1}. ${name} (${count}x)`)).join('\n')}\n\nEnter the number to add to your workout:`;
+
+        const choice = prompt(message);
+        if (choice) {
+            const index = parseInt(choice) - 1;
+            if (index >= 0 && index < favorites.length) {
+                const exerciseName = favorites[index][0];
+
+                // Find a recent example of this exercise to copy sets
+                let exampleSets = null;
+                for (const workout of workouts) {
+                    const foundEx = workout.exercises.find(ex => ex.name === exerciseName);
+                    if (foundEx) {
+                        exampleSets = foundEx.sets;
+                        break;
+                    }
+                }
+
+                // Add exercise to current workout
+                const exercise = {
+                    id: Date.now(),
+                    name: exerciseName,
+                    sets: exampleSets ? exampleSets.map(set => ({...set})) : [{ weight: 0, reps: 0 }]
+                };
+
+                this.currentWorkout.exercises.push(exercise);
+                Storage.saveCurrentWorkout(this.currentWorkout);
+                this.renderCurrentWorkout();
+                alert(`✅ Added "${exerciseName}" to your workout!`);
+            } else {
+                alert('Invalid choice');
+            }
+        }
+    }
+
     openTimerModal() {
         this.resetTimer();
         document.getElementById('timerModal').classList.add('active');

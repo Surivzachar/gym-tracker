@@ -1,6 +1,6 @@
 // Service Worker for offline functionality
 
-const CACHE_NAME = 'suresh-aesthetics-v59';
+const CACHE_NAME = 'suresh-aesthetics-v60';
 const urlsToCache = [
     './',
     './index.html',

@@ -518,6 +518,20 @@
                         <button id="loadRoutineBtn" class="btn-secondary">Load Routine</button>
                     </div>
 
+                    <!-- Quick Start Section -->
+                    <div class="quick-start-section">
+                        <div class="quick-start-buttons">
+                            <button id="repeatLastWorkoutBtn" class="btn-quick-start" onclick="app.repeatLastWorkout()">
+                                <span class="btn-icon-large">🔁</span>
+                                <span>Repeat Last Workout</span>
+                            </button>
+                            <button id="favoriteExercisesBtn" class="btn-quick-start" onclick="app.showFavoriteExercises()">
+                                <span class="btn-icon-large">⭐</span>
+                                <span>Favorite Exercises</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <div id="currentExercises" class="exercises-list"></div>
 
                     <button id="addExerciseBtn" class="btn-primary full-width">+ Add Exercise</button>
