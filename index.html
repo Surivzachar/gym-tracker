@@ -893,16 +893,22 @@
                     <button class="close-btn">&times;</button>
                 </div>
                 <div class="modal-body timer-body">
+                    <div id="timerExerciseName" class="timer-exercise-name" style="text-align: center; margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600; color: var(--accent-secondary);"></div>
                     <div class="timer-display" id="timerDisplay">01:30</div>
                     <div class="timer-presets">
                         <button class="preset-btn" data-seconds="60">1:00</button>
                         <button class="preset-btn" data-seconds="90">1:30</button>
                         <button class="preset-btn" data-seconds="120">2:00</button>
                         <button class="preset-btn" data-seconds="180">3:00</button>
+                        <button class="preset-btn" data-seconds="240">4:00</button>
                     </div>
                     <div class="timer-controls">
                         <button id="startTimerBtn" class="btn-primary">Start</button>
                         <button id="resetTimerBtn" class="btn-secondary">Reset</button>
+                    </div>
+                    <div class="timer-quick-actions" style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                        <button id="extendTimerBtn" class="btn-secondary full-width" onclick="app.extendTimer(30)">+ 30s</button>
+                        <button id="skipTimerBtn" class="btn-secondary full-width" onclick="app.skipTimer()">Skip</button>
                     </div>
                 </div>
             </div>

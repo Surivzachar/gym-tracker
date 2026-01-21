@@ -1664,8 +1664,21 @@ class GymTrackerApp {
         }
     }
 
-    openTimerModal() {
-        this.resetTimer();
+    openTimerModal(exerciseName = null, restTime = 90) {
+        // Store current exercise context for timer
+        this.currentTimerExercise = exerciseName;
+        this.timerSeconds = restTime;
+
+        // Show exercise name if provided
+        if (exerciseName) {
+            document.getElementById('timerExerciseName').textContent = `Rest after ${exerciseName}`;
+            document.getElementById('timerExerciseName').style.display = 'block';
+        } else {
+            document.getElementById('timerExerciseName').style.display = 'none';
+        }
+
+        this.pauseTimer();
+        this.updateTimerDisplay();
         document.getElementById('timerModal').classList.add('active');
     }
 
@@ -1703,6 +1716,20 @@ class GymTrackerApp {
         this.updateTimerDisplay();
     }
 
+    extendTimer(seconds) {
+        this.timerSeconds += seconds;
+        this.updateTimerDisplay();
+        // Auto-start if not running
+        if (!this.timerRunning) {
+            this.startTimer();
+        }
+    }
+
+    skipTimer() {
+        this.pauseTimer();
+        this.closeModal('timerModal');
+    }
+
     updateTimerDisplay() {
         const minutes = Math.floor(this.timerSeconds / 60);
         const seconds = this.timerSeconds % 60;
@@ -1718,12 +1745,13 @@ class GymTrackerApp {
         // Try to play notification sound
         if ('Notification' in window && Notification.permission === 'granted') {
             new Notification('Rest Timer Complete!', {
-                body: 'Time to start your next set',
+                body: this.currentTimerExercise ? `Ready for next set of ${this.currentTimerExercise}` : 'Time to start your next set',
                 icon: '/icon-192.png'
             });
         }
 
         alert('Rest time complete!');
+        this.closeModal('timerModal');
     }
 
     openModal(modalId) {
