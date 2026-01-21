@@ -511,6 +511,69 @@ img {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+/* Completed Workouts Section */
+.completed-workouts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.completed-workout-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px var(--shadow-sm);
+}
+
+.completed-workout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color-light);
+}
+
+.completed-workout-time {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.completed-workout-count {
+    font-size: 0.875rem;
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+
+.completed-workout-exercises {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.completed-exercise-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-primary);
+}
+
+.completed-exercise-item strong {
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.completed-exercise-details {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
 .exercise-header {
     display: flex;
     justify-content: space-between;

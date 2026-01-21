@@ -832,6 +832,9 @@ class GymTrackerApp {
     }
 
     renderCurrentWorkout() {
+        // Render today's completed workouts first
+        this.renderTodayCompletedWorkouts();
+
         const container = document.getElementById('currentExercises');
 
         if (this.currentWorkout.exercises.length === 0) {
@@ -972,6 +975,66 @@ class GymTrackerApp {
         if (historyEl) {
             historyEl.style.display = historyEl.style.display === 'none' ? 'block' : 'none';
         }
+    }
+
+    renderTodayCompletedWorkouts() {
+        const displayDate = this.workingDate || null;
+        const workouts = Storage.getAllWorkouts();
+        const targetDate = displayDate ? new Date(displayDate) : new Date();
+        const targetDateStr = targetDate.toDateString();
+
+        // Get all workouts for today
+        const todayWorkouts = workouts.filter(w => new Date(w.date).toDateString() === targetDateStr);
+
+        const section = document.getElementById('todayCompletedSection');
+        const container = document.getElementById('todayCompletedWorkouts');
+
+        if (todayWorkouts.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+
+        section.style.display = 'block';
+
+        container.innerHTML = todayWorkouts.map(workout => {
+            const workoutTime = new Date(workout.date).toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+
+            return `
+                <div class="completed-workout-card">
+                    <div class="completed-workout-header">
+                        <span class="completed-workout-time">Completed at ${workoutTime}</span>
+                        <span class="completed-workout-count">${workout.exercises.length} exercises</span>
+                    </div>
+                    <div class="completed-workout-exercises">
+                        ${workout.exercises.map(ex => {
+                            const type = ex.type || 'strength';
+                            let details = '';
+
+                            if (type === 'strength') {
+                                const totalSets = ex.sets.length;
+                                const totalVolume = ex.sets.reduce((sum, set) => sum + (set.weight * set.reps), 0);
+                                details = `${totalSets} sets • ${totalVolume.toFixed(0)} kg total volume`;
+                            } else if (type === 'cardio') {
+                                details = `${ex.duration} min${ex.distance ? ` • ${ex.distance} km` : ''}`;
+                            } else if (type === 'hiit') {
+                                details = `${ex.rounds} rounds • ${ex.workSeconds}s work / ${ex.restSeconds}s rest`;
+                            }
+
+                            return `
+                                <div class="completed-exercise-item">
+                                    <strong>${ex.name}</strong>
+                                    <span class="completed-exercise-details">${details}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }).join('');
     }
 
     deleteExercise(exerciseId) {
