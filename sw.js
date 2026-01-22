@@ -1,6 +1,6 @@
 // Service Worker for offline functionality
 
-const CACHE_NAME = 'suresh-aesthetics-v75';
+const CACHE_NAME = 'suresh-aesthetics-v76';
 const urlsToCache = [
     './',
     './index.html',
@@ -20,10 +20,13 @@ const urlsToCache = [
 
 // Install event - cache files
 self.addEventListener('install', event => {
+    // Force the waiting service worker to become the active service worker
+    self.skipWaiting();
+
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('Opened cache');
+                console.log('Opened cache:', CACHE_NAME);
                 return cache.addAll(urlsToCache);
             })
             .catch(err => {
@@ -32,16 +35,21 @@ self.addEventListener('install', event => {
     );
 });
 
-// Fetch event - serve from cache when offline
+// Fetch event - serve from cache when offline, but update cache from network
 self.addEventListener('fetch', event => {
     event.respondWith(
-        caches.match(event.request)
+        fetch(event.request)
             .then(response => {
-                // Cache hit - return response
-                if (response) {
-                    return response;
-                }
-                return fetch(event.request);
+                // Network request successful, update cache
+                const responseClone = response.clone();
+                caches.open(CACHE_NAME).then(cache => {
+                    cache.put(event.request, responseClone);
+                });
+                return response;
+            })
+            .catch(() => {
+                // Network failed, try cache
+                return caches.match(event.request);
             })
     );
 });
@@ -50,15 +58,20 @@ self.addEventListener('fetch', event => {
 self.addEventListener('activate', event => {
     const cacheWhitelist = [CACHE_NAME];
 
+    // Take control of all pages immediately
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cacheName => {
                     if (cacheWhitelist.indexOf(cacheName) === -1) {
+                        console.log('Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
+        }).then(() => {
+            console.log('New service worker activated:', CACHE_NAME);
+            return self.clients.claim();
         })
     );
 });
