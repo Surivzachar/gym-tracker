@@ -573,6 +573,11 @@ const Storage = {
         return this.get(this.KEYS.DAILY_METRICS) || [];
     },
 
+    // Alias for getAllDailyMetrics (used by charts)
+    getAllMetrics() {
+        return this.getAllDailyMetrics();
+    },
+
     getTodayMetrics(date = null) {
         const allMetrics = this.getAllDailyMetrics();
         const targetDate = date ? new Date(date) : new Date();
