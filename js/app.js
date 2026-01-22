@@ -2468,17 +2468,20 @@ class GymTrackerApp {
 
     async displayCacheVersion() {
         const cacheDisplay = document.getElementById('cacheVersionDisplay');
+        const LATEST_VERSION = '76'; // Update this when incrementing version
+
         try {
             const cacheNames = await caches.keys();
             const currentCache = cacheNames.find(name => name.startsWith('suresh-aesthetics'));
             if (currentCache) {
                 const version = currentCache.split('-v')[1];
                 cacheDisplay.textContent = `v${version}`;
-                if (version !== '72') {
+                if (version !== LATEST_VERSION) {
                     cacheDisplay.style.color = '#ef4444';
                     cacheDisplay.textContent += ' (outdated - please clear cache)';
                 } else {
                     cacheDisplay.style.color = '#10b981';
+                    cacheDisplay.textContent += ' ✓';
                 }
             } else {
                 cacheDisplay.textContent = 'none';
