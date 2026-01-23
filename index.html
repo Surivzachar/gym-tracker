@@ -1224,7 +1224,7 @@
                     <div class="input-group">
                         <label class="input-label">🔧 App Version & Cache</label>
                         <div class="settings-info" style="background: #0f172a; border-left: 3px solid #10b981;">
-                            <p style="color: #cbd5e1;"><strong>Version:</strong> v76 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
+                            <p style="color: #cbd5e1;"><strong>Version:</strong> v77 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
                         </div>
                         <p class="helper-text">If app features aren't working, clear the cache to reload the latest version.</p>
                         <button id="clearCacheBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🔄 Clear Cache & Reload</button>
@@ -1542,6 +1542,29 @@
                     <div class="modal-actions">
                         <button id="saveRestDayBtn" class="btn-primary">Save Rest Day</button>
                         <button id="removeRestDayBtn" class="btn-secondary" style="display: none;">Remove Rest Day</button>
+                        <button class="btn-secondary close-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Finish Workout Modal -->
+        <div id="finishWorkoutModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>✅ Finish Workout</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-label">Total Calories Burned (optional)</label>
+                        <input type="number" id="workoutCaloriesInput" class="input" placeholder="e.g., 350" min="0">
+                        <p class="helper-text" style="margin-top: 0.5rem; font-size: 0.85rem;">
+                            Enter calories from your Apple Watch or fitness tracker
+                        </p>
+                    </div>
+                    <div class="modal-actions">
+                        <button id="saveFinishWorkoutBtn" class="btn-primary">Save Workout</button>
                         <button class="btn-secondary close-btn">Cancel</button>
                     </div>
                 </div>

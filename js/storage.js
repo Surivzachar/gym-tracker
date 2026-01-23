@@ -72,7 +72,7 @@ const Storage = {
         return this.remove(this.KEYS.CURRENT_WORKOUT);
     },
 
-    finishWorkout(customDate = null) {
+    finishWorkout(customDate = null, calories = null) {
         const currentWorkout = this.getCurrentWorkout();
 
         if (currentWorkout.exercises.length === 0) {
@@ -87,7 +87,8 @@ const Storage = {
             date: workoutDate.toISOString(),
             exercises: currentWorkout.exercises,
             duration: null, // Could be calculated if we track start time
-            routineId: this.getCurrentRoutineId() || null // Track which routine was used
+            routineId: this.getCurrentRoutineId() || null, // Track which routine was used
+            calories: calories // Total calories burned for the entire workout
         };
 
         const workouts = this.getAllWorkouts();

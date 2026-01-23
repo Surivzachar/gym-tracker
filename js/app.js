@@ -144,6 +144,11 @@ class GymTrackerApp {
             this.finishWorkout();
         });
 
+        // Save Finish Workout (from modal)
+        document.getElementById('saveFinishWorkoutBtn').addEventListener('click', () => {
+            this.saveFinishWorkout();
+        });
+
         // Timer
         document.getElementById('timerBtn').addEventListener('click', () => {
             this.openTimerModal();
@@ -1007,7 +1012,7 @@ class GymTrackerApp {
                 <div class="completed-workout-card">
                     <div class="completed-workout-header">
                         <span class="completed-workout-time">Completed at ${workoutTime}</span>
-                        <span class="completed-workout-count">${workout.exercises.length} exercises</span>
+                        <span class="completed-workout-count">${workout.exercises.length} exercises${workout.calories ? ` • ${workout.calories} cal` : ''}</span>
                     </div>
                     <div class="completed-workout-exercises">
                         ${workout.exercises.map(ex => {
@@ -1051,22 +1056,34 @@ class GymTrackerApp {
             return;
         }
 
-        if (confirm('Finish and save this workout?')) {
-            // Stop any active rest timer
-            if (this.restTimerInterval) {
-                this.stopRestTimer(this.activeRestTimer);
-            }
+        // Open the finish workout modal
+        this.openModal('finishWorkoutModal');
+        document.getElementById('workoutCaloriesInput').value = '';
+        document.getElementById('workoutCaloriesInput').focus();
+    }
 
-            // Pass the working date if editing a past date
-            Storage.finishWorkout(this.workingDate);
-            this.currentWorkout = Storage.getCurrentWorkout();
-            this.renderCurrentWorkout();
-            this.renderHistory();
-            this.renderDashboard();
-
-            const dateMsg = this.workingDate ? ' for ' + formatDateNZ(new Date(this.workingDate), { month: 'short', day: 'numeric' }) : '';
-            alert(`Workout saved${dateMsg}!`);
+    saveFinishWorkout() {
+        // Stop any active rest timer
+        if (this.restTimerInterval) {
+            this.stopRestTimer(this.activeRestTimer);
         }
+
+        // Get calories from input
+        const caloriesInput = document.getElementById('workoutCaloriesInput').value;
+        const calories = caloriesInput ? parseInt(caloriesInput) : null;
+
+        // Pass the working date if editing a past date, and calories
+        Storage.finishWorkout(this.workingDate, calories);
+        this.currentWorkout = Storage.getCurrentWorkout();
+        this.renderCurrentWorkout();
+        this.renderHistory();
+        this.renderDashboard();
+
+        const dateMsg = this.workingDate ? ' for ' + formatDateNZ(new Date(this.workingDate), { month: 'short', day: 'numeric' }) : '';
+        alert(`Workout saved${dateMsg}!`);
+
+        // Close the modal
+        this.closeModal('finishWorkoutModal');
     }
 
     startRestTimer(exerciseId, seconds) {
@@ -1262,6 +1279,7 @@ class GymTrackerApp {
             if (strengthCount > 0) metaText += ` • ${strengthCount} strength`;
             if (cardioCount > 0) metaText += ` • ${cardioCount} cardio`;
             if (hiitCount > 0) metaText += ` • ${hiitCount} HIIT`;
+            if (workout.calories) metaText += ` • ${workout.calories} cal`;
 
             return `
                 <div class="history-card">
@@ -2468,7 +2486,7 @@ class GymTrackerApp {
 
     async displayCacheVersion() {
         const cacheDisplay = document.getElementById('cacheVersionDisplay');
-        const LATEST_VERSION = '76'; // Update this when incrementing version
+        const LATEST_VERSION = '77'; // Update this when incrementing version
 
         try {
             const cacheNames = await caches.keys();
