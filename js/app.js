@@ -50,8 +50,12 @@ class GymTrackerApp {
         this.undoStack = null;
         this.undoTimeout = null;
 
+        // Water prompt functionality
+        this.waterPromptTimeout = null;
+
         this.initializeEventListeners();
         this.initializeUndoToast();
+        this.initializeWaterPrompt();
         this.initializeDarkMode();
         this.checkAutoBackup();
         this.updateDateBanner();
@@ -160,6 +164,46 @@ class GymTrackerApp {
 
         // Hide toast
         this.hideUndoToast();
+    }
+
+    initializeWaterPrompt() {
+        const addWaterBtn = document.getElementById('addWaterFromPromptBtn');
+        const dismissBtn = document.getElementById('dismissWaterPromptBtn');
+
+        addWaterBtn.addEventListener('click', () => {
+            this.addWaterGlass();
+            this.hideWaterPrompt();
+            this.renderDashboard();
+        });
+
+        dismissBtn.addEventListener('click', () => {
+            this.hideWaterPrompt();
+        });
+    }
+
+    promptWaterAfterMeal() {
+        // Clear any existing timeout
+        if (this.waterPromptTimeout) {
+            clearTimeout(this.waterPromptTimeout);
+        }
+
+        // Show the water prompt toast
+        const toast = document.getElementById('waterPromptToast');
+        toast.classList.add('show');
+
+        // Auto-hide after 8 seconds
+        this.waterPromptTimeout = setTimeout(() => {
+            this.hideWaterPrompt();
+        }, 8000);
+    }
+
+    hideWaterPrompt() {
+        const toast = document.getElementById('waterPromptToast');
+        toast.classList.remove('show');
+        if (this.waterPromptTimeout) {
+            clearTimeout(this.waterPromptTimeout);
+            this.waterPromptTimeout = null;
+        }
     }
 
     initializeEventListeners() {
@@ -588,8 +632,88 @@ class GymTrackerApp {
         };
 
         this.attachSetRemoveListeners();
+
+        // Setup auto-suggest for exercise name (only for new exercises)
+        if (!isEditing) {
+            this.setupExerciseAutoSuggest();
+        }
+
         document.getElementById('addExerciseModal').classList.add('active');
         document.getElementById('exerciseNameInput').focus();
+    }
+
+    setupExerciseAutoSuggest() {
+        const nameInput = document.getElementById('exerciseNameInput');
+        let autoSuggestTimeout;
+
+        nameInput.addEventListener('input', (e) => {
+            clearTimeout(autoSuggestTimeout);
+
+            autoSuggestTimeout = setTimeout(() => {
+                const exerciseName = e.target.value.trim();
+                if (exerciseName.length < 3) return;
+
+                // Check if this exercise has history
+                const lastSets = Storage.getLastWorkoutSets(exerciseName);
+                if (lastSets && lastSets.length > 0) {
+                    // Show suggestion to auto-fill
+                    this.showAutoFillSuggestion(exerciseName, lastSets);
+                }
+            }, 500); // Wait 500ms after typing stops
+        });
+    }
+
+    showAutoFillSuggestion(exerciseName, lastSets) {
+        const container = document.getElementById('setsContainer');
+
+        // Check if suggestion already shown
+        if (document.getElementById('autoFillSuggestion')) return;
+
+        // Create suggestion banner
+        const banner = document.createElement('div');
+        banner.id = 'autoFillSuggestion';
+        banner.style.cssText = 'background: #dbeafe; border: 2px solid #3b82f6; border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;';
+        banner.innerHTML = `
+            <div>
+                <strong style="color: #1e40af;">💡 Use last workout?</strong>
+                <div style="font-size: 0.875rem; color: #1e40af; margin-top: 0.25rem;">
+                    ${lastSets.length} sets: ${lastSets.map(s => `${s.weight}kg × ${s.reps}`).join(', ')}
+                </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="btn-primary btn-sm" id="acceptAutoFill">Use These</button>
+                <button class="btn-secondary btn-sm" id="dismissAutoFill">No Thanks</button>
+            </div>
+        `;
+
+        container.parentElement.insertBefore(banner, container);
+
+        // Add event listeners
+        document.getElementById('acceptAutoFill').onclick = () => {
+            this.autoFillSets(lastSets);
+            banner.remove();
+        };
+
+        document.getElementById('dismissAutoFill').onclick = () => {
+            banner.remove();
+        };
+    }
+
+    autoFillSets(sets) {
+        const container = document.getElementById('setsContainer');
+        container.innerHTML = sets.map(set => `
+            <div class="set-input">
+                <select class="input small" data-field="unit">
+                    <option value="kg" ${set.unit === 'kg' ? 'selected' : ''}>kg</option>
+                    <option value="lbs" ${set.unit === 'lbs' ? 'selected' : ''}>lbs</option>
+                </select>
+                <input type="number" placeholder="Weight" class="input small" data-field="weight" value="${set.weight}">
+                <input type="number" placeholder="Reps" class="input small" data-field="reps" value="${set.reps}">
+                <button class="btn-icon remove-set">🗑️</button>
+            </div>
+        `).join('');
+
+        this.attachSetRemoveListeners();
     }
 
     switchExerciseTypeInputs(type) {
@@ -1037,6 +1161,9 @@ class GymTrackerApp {
                 </div>
             `;
         }).join('');
+
+        // Show smart suggestions
+        this.showSmartSuggestion();
     }
 
     toggleExerciseHistory(exerciseId) {
@@ -1104,6 +1231,136 @@ class GymTrackerApp {
                 </div>
             `;
         }).join('');
+    }
+
+    generateSmartSuggestions() {
+        const workouts = Storage.getAllWorkouts();
+        const today = new Date().toDateString();
+
+        // Check if workout already started today
+        if (this.currentWorkout.exercises.length > 0) {
+            return null; // Don't show suggestions if already working out
+        }
+
+        // Check days since last workout
+        const lastWorkout = workouts.length > 0 ? workouts[workouts.length - 1] : null;
+        const daysSinceLastWorkout = lastWorkout ?
+            Math.floor((Date.now() - new Date(lastWorkout.date)) / 86400000) : 999;
+
+        // Suggestion 1: Rest day reminder
+        if (daysSinceLastWorkout === 0) {
+            return {
+                title: 'Rest Day Recommended',
+                content: 'You already completed a workout today! Rest is important for muscle recovery and growth.',
+                actions: []
+            };
+        }
+
+        // Suggestion 2: Come back reminder (3+ days)
+        if (daysSinceLastWorkout >= 3) {
+            return {
+                title: 'Time to Get Back!',
+                content: `It's been ${daysSinceLastWorkout} days since your last workout. Let's start with something you enjoy!`,
+                actions: [
+                    { label: 'Repeat Last Workout', action: 'repeatLastWorkout' },
+                    { label: 'Start Fresh', action: 'dismiss' }
+                ]
+            };
+        }
+
+        // Suggestion 3: Exercise variety (if did same exercise 3+ times in last 5 workouts)
+        const recentWorkouts = workouts.slice(-5);
+        const exerciseFrequency = {};
+        recentWorkouts.forEach(workout => {
+            workout.exercises.forEach(ex => {
+                exerciseFrequency[ex.name] = (exerciseFrequency[ex.name] || 0) + 1;
+            });
+        });
+
+        const frequentExercises = Object.entries(exerciseFrequency)
+            .filter(([, count]) => count >= 3)
+            .map(([name]) => name);
+
+        if (frequentExercises.length > 0) {
+            return {
+                title: 'Try Something New!',
+                content: `You've been doing ${frequentExercises[0]} a lot recently. Consider trying some variety to work different muscle groups!`,
+                actions: [
+                    { label: 'Browse Exercise Library', action: 'openExerciseLibrary' },
+                    { label: 'Keep Going', action: 'dismiss' }
+                ]
+            };
+        }
+
+        // Suggestion 4: Muscle group balance
+        const recentExerciseTypes = recentWorkouts.flatMap(w =>
+            w.exercises.map(ex => ex.type || 'strength')
+        );
+        const hasCardio = recentExerciseTypes.includes('cardio');
+        const strengthCount = recentExerciseTypes.filter(t => t === 'strength').length;
+
+        if (!hasCardio && strengthCount >= 3) {
+            return {
+                title: 'Balance Your Routine',
+                content: 'You\'ve been focusing on strength training. Adding some cardio can improve cardiovascular health and endurance!',
+                actions: [
+                    { label: 'Add Cardio', action: 'addCardio' },
+                    { label: 'Stick to Strength', action: 'dismiss' }
+                ]
+            };
+        }
+
+        return null; // No suggestions
+    }
+
+    showSmartSuggestion() {
+        const suggestion = this.generateSmartSuggestions();
+        const banner = document.getElementById('smartSuggestionsBanner');
+
+        if (!suggestion) {
+            banner.style.display = 'none';
+            return;
+        }
+
+        banner.style.display = 'block';
+        document.getElementById('suggestionTitle').textContent = suggestion.title;
+        document.getElementById('suggestionContent').textContent = suggestion.content;
+
+        const actionsContainer = document.getElementById('suggestionActions');
+        actionsContainer.innerHTML = suggestion.actions.map(action => {
+            return `<button class="btn-suggestion" onclick="app.handleSuggestionAction('${action.action}')">${action.label}</button>`;
+        }).join('');
+    }
+
+    handleSuggestionAction(action) {
+        switch (action) {
+            case 'repeatLastWorkout':
+                this.repeatLastWorkout();
+                this.dismissSuggestion();
+                break;
+            case 'openExerciseLibrary':
+                this.openExerciseLibrary();
+                this.dismissSuggestion();
+                break;
+            case 'addCardio':
+                this.openAddExerciseModal();
+                // Auto-select cardio type
+                setTimeout(() => {
+                    document.getElementById('exerciseTypeSelect').value = 'cardio';
+                    const event = new Event('change');
+                    document.getElementById('exerciseTypeSelect').dispatchEvent(event);
+                }, 100);
+                this.dismissSuggestion();
+                break;
+            case 'dismiss':
+                this.dismissSuggestion();
+                break;
+        }
+    }
+
+    dismissSuggestion() {
+        const banner = document.getElementById('smartSuggestionsBanner');
+        banner.style.display = 'none';
     }
 
     deleteExercise(exerciseId) {
@@ -2339,6 +2596,11 @@ class GymTrackerApp {
 
         this.renderFood();
         this.renderDashboard();
+
+        // Prompt to add water after logging food (only for new items)
+        if (!isEditing) {
+            this.promptWaterAfterMeal();
+        }
         this.closeModal('addFoodModal');
     }
 
@@ -4427,6 +4689,205 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         // Render progress charts
         this.renderWeightChart();
         this.renderMetricTrendCharts();
+
+        // Render consistency streaks
+        this.renderStreaks();
+
+        // Render weekly summary
+        this.renderWeeklySummary();
+    }
+
+    calculateWorkoutStreak() {
+        const workouts = Storage.getAllWorkouts();
+        if (!workouts || workouts.length === 0) return 0;
+
+        // Sort workouts by date descending (most recent first)
+        const sortedWorkouts = workouts
+            .map(w => new Date(w.date).toDateString())
+            .filter((date, index, self) => self.indexOf(date) === index) // Remove duplicates
+            .sort((a, b) => new Date(b) - new Date(a));
+
+        if (sortedWorkouts.length === 0) return 0;
+
+        // Check if today or yesterday has a workout
+        const today = new Date().toDateString();
+        const yesterday = new Date(Date.now() - 86400000).toDateString();
+
+        if (sortedWorkouts[0] !== today && sortedWorkouts[0] !== yesterday) {
+            return 0; // Streak broken if no workout today or yesterday
+        }
+
+        // Count consecutive days
+        let streak = 0;
+        let currentDate = new Date();
+
+        // If today doesn't have a workout but yesterday does, start from yesterday
+        if (sortedWorkouts[0] === yesterday && sortedWorkouts[0] !== today) {
+            currentDate = new Date(Date.now() - 86400000);
+        }
+
+        while (true) {
+            const dateStr = currentDate.toDateString();
+            if (sortedWorkouts.includes(dateStr)) {
+                streak++;
+                currentDate.setDate(currentDate.getDate() - 1);
+            } else {
+                break;
+            }
+        }
+
+        return streak;
+    }
+
+    calculateFoodStreak() {
+        const allFoodDays = Storage.getAllFoodDays();
+        if (!allFoodDays || allFoodDays.length === 0) return 0;
+
+        // Sort food days by date descending (most recent first)
+        const sortedDays = allFoodDays
+            .filter(day => day.meals && day.meals.length > 0) // Only days with meals
+            .map(day => new Date(day.date).toDateString())
+            .filter((date, index, self) => self.indexOf(date) === index) // Remove duplicates
+            .sort((a, b) => new Date(b) - new Date(a));
+
+        if (sortedDays.length === 0) return 0;
+
+        // Check if today or yesterday has food logged
+        const today = new Date().toDateString();
+        const yesterday = new Date(Date.now() - 86400000).toDateString();
+
+        if (sortedDays[0] !== today && sortedDays[0] !== yesterday) {
+            return 0; // Streak broken if no food logged today or yesterday
+        }
+
+        // Count consecutive days
+        let streak = 0;
+        let currentDate = new Date();
+
+        // If today doesn't have food but yesterday does, start from yesterday
+        if (sortedDays[0] === yesterday && sortedDays[0] !== today) {
+            currentDate = new Date(Date.now() - 86400000);
+        }
+
+        while (true) {
+            const dateStr = currentDate.toDateString();
+            if (sortedDays.includes(dateStr)) {
+                streak++;
+                currentDate.setDate(currentDate.getDate() - 1);
+            } else {
+                break;
+            }
+        }
+
+        return streak;
+    }
+
+    renderStreaks() {
+        const workoutStreak = this.calculateWorkoutStreak();
+        const foodStreak = this.calculateFoodStreak();
+
+        // Update workout streak
+        document.getElementById('workoutStreakValue').textContent = workoutStreak;
+        document.getElementById('workoutStreakLabel').textContent = workoutStreak === 1 ? 'day in a row' : 'days in a row';
+
+        // Update food streak
+        document.getElementById('foodStreakValue').textContent = foodStreak;
+        document.getElementById('foodStreakLabel').textContent = foodStreak === 1 ? 'day in a row' : 'days in a row';
+
+        // Update motivational message
+        const messageEl = document.getElementById('streakMessage');
+        let message = '';
+
+        if (workoutStreak === 0 && foodStreak === 0) {
+            message = '🌟 Start your streak today! Log a workout or track your food.';
+        } else if (workoutStreak >= 7 || foodStreak >= 7) {
+            message = '🔥 Amazing! You\'re building incredible habits!';
+        } else if (workoutStreak >= 3 || foodStreak >= 3) {
+            message = '💪 Keep it up! Consistency is key to success!';
+        } else if (workoutStreak > 0 || foodStreak > 0) {
+            message = '👍 Great start! Keep the momentum going!';
+        }
+
+        messageEl.textContent = message;
+    }
+
+    getWeekRange(date = new Date()) {
+        // Get Sunday to Saturday range for the given date
+        const d = new Date(date);
+        const day = d.getDay(); // 0 = Sunday, 6 = Saturday
+        const startOfWeek = new Date(d);
+        startOfWeek.setDate(d.getDate() - day); // Go back to Sunday
+        startOfWeek.setHours(0, 0, 0, 0);
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6); // Go to Saturday
+        endOfWeek.setHours(23, 59, 59, 999);
+
+        return { start: startOfWeek, end: endOfWeek };
+    }
+
+    calculateWeeklyStats() {
+        const { start, end } = this.getWeekRange();
+
+        // Get all workouts in this week
+        const allWorkouts = Storage.getAllWorkouts();
+        const weekWorkouts = allWorkouts.filter(workout => {
+            const workoutDate = new Date(workout.date);
+            return workoutDate >= start && workoutDate <= end;
+        });
+
+        // Count total exercises
+        const totalExercises = weekWorkouts.reduce((sum, workout) => {
+            return sum + (workout.exercises ? workout.exercises.length : 0);
+        }, 0);
+
+        // Get all food days in this week
+        const allFoodDays = Storage.getAllFoodDays();
+        const weekFoodDays = allFoodDays.filter(day => {
+            const dayDate = new Date(day.date);
+            return dayDate >= start && dayDate <= end && day.meals && day.meals.length > 0;
+        });
+
+        // Calculate average calories
+        const totalCalories = weekFoodDays.reduce((sum, day) => {
+            const dayCalories = day.meals.reduce((mealSum, meal) => {
+                return mealSum + (parseInt(meal.calories) || 0);
+            }, 0);
+            return sum + dayCalories;
+        }, 0);
+        const avgCalories = weekFoodDays.length > 0 ? Math.round(totalCalories / weekFoodDays.length) : 0;
+
+        return {
+            workouts: weekWorkouts.length,
+            exercises: totalExercises,
+            foodDays: weekFoodDays.length,
+            avgCalories: avgCalories
+        };
+    }
+
+    renderWeeklySummary() {
+        const stats = this.calculateWeeklyStats();
+
+        document.getElementById('weeklyWorkouts').textContent = stats.workouts;
+        document.getElementById('weeklyExercises').textContent = stats.exercises;
+        document.getElementById('weeklyFoodDays').textContent = stats.foodDays;
+        document.getElementById('weeklyAvgCalories').textContent = stats.avgCalories;
+
+        // Add comparison message
+        const comparisonEl = document.getElementById('weeklyComparison');
+        let message = '';
+
+        if (stats.workouts >= 5) {
+            message = '🏆 Outstanding! You\'re crushing your workout goals this week!';
+        } else if (stats.workouts >= 3) {
+            message = '💪 Great work! You\'re on track for a solid week!';
+        } else if (stats.workouts >= 1) {
+            message = '👍 Good start! Keep building momentum!';
+        } else {
+            message = '🎯 Ready to start? Log your first workout of the week!';
+        }
+
+        comparisonEl.textContent = message;
     }
 
     getTodayWorkout(date = null) {

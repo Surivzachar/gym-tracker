@@ -125,6 +125,30 @@
                         </div>
                     </div>
 
+                    <!-- Consistency Streaks -->
+                    <div class="dashboard-section streaks-section">
+                        <h3>🔥 Consistency Streaks</h3>
+                        <div class="streaks-grid">
+                            <div class="streak-card">
+                                <div class="streak-emoji">💪</div>
+                                <div class="streak-content">
+                                    <div class="streak-label">Workout Streak</div>
+                                    <div class="streak-value" id="workoutStreakValue">0</div>
+                                    <div class="streak-sublabel" id="workoutStreakLabel">days in a row</div>
+                                </div>
+                            </div>
+                            <div class="streak-card">
+                                <div class="streak-emoji">🍽️</div>
+                                <div class="streak-content">
+                                    <div class="streak-label">Food Logging Streak</div>
+                                    <div class="streak-value" id="foodStreakValue">0</div>
+                                    <div class="streak-sublabel" id="foodStreakLabel">days in a row</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="streak-message" id="streakMessage"></div>
+                    </div>
+
                     <!-- Weight Progress -->
                     <div class="dashboard-section" id="weightProgressSection" style="display: none;">
                         <h3>⚖️ Weight Progress</h3>
@@ -147,6 +171,42 @@
                                 <span class="summary-value" id="weightChangeDisplay">--</span>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Weekly Summary -->
+                    <div class="dashboard-section weekly-summary-section">
+                        <h3>📅 This Week's Summary</h3>
+                        <div class="weekly-stats-grid">
+                            <div class="weekly-stat">
+                                <div class="weekly-stat-icon">💪</div>
+                                <div class="weekly-stat-content">
+                                    <div class="weekly-stat-value" id="weeklyWorkouts">0</div>
+                                    <div class="weekly-stat-label">Workouts</div>
+                                </div>
+                            </div>
+                            <div class="weekly-stat">
+                                <div class="weekly-stat-icon">🏋️</div>
+                                <div class="weekly-stat-content">
+                                    <div class="weekly-stat-value" id="weeklyExercises">0</div>
+                                    <div class="weekly-stat-label">Exercises</div>
+                                </div>
+                            </div>
+                            <div class="weekly-stat">
+                                <div class="weekly-stat-icon">🍽️</div>
+                                <div class="weekly-stat-content">
+                                    <div class="weekly-stat-value" id="weeklyFoodDays">0</div>
+                                    <div class="weekly-stat-label">Days Logged</div>
+                                </div>
+                            </div>
+                            <div class="weekly-stat">
+                                <div class="weekly-stat-icon">🔥</div>
+                                <div class="weekly-stat-content">
+                                    <div class="weekly-stat-value" id="weeklyAvgCalories">0</div>
+                                    <div class="weekly-stat-label">Avg Calories</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="weekly-comparison" id="weeklyComparison"></div>
                     </div>
 
                     <!-- Metric Trends -->
@@ -534,6 +594,17 @@
                             <button id="loadTemplateBtn" class="btn-secondary" onclick="app.openTemplatesModal()">📋 Templates</button>
                             <button id="loadRoutineBtn" class="btn-secondary">Load Routine</button>
                         </div>
+                    </div>
+
+                    <!-- Smart Suggestions Banner -->
+                    <div id="smartSuggestionsBanner" class="smart-suggestions-banner" style="display: none;">
+                        <div class="suggestion-header">
+                            <span class="suggestion-icon">💡</span>
+                            <span class="suggestion-title" id="suggestionTitle">Smart Suggestion</span>
+                            <button class="btn-close-suggestion" onclick="app.dismissSuggestion()">×</button>
+                        </div>
+                        <div class="suggestion-content" id="suggestionContent"></div>
+                        <div class="suggestion-actions" id="suggestionActions"></div>
                     </div>
 
                     <!-- Quick Start Section -->
@@ -1977,6 +2048,15 @@
     <div id="undoToast" class="undo-toast">
         <span id="undoToastMessage">Item deleted</span>
         <button id="undoToastBtn" class="btn-undo">Undo</button>
+    </div>
+
+    <!-- Water Prompt Toast -->
+    <div id="waterPromptToast" class="water-prompt-toast">
+        <span>💧 Did you drink water with this meal?</span>
+        <div class="water-prompt-buttons">
+            <button id="addWaterFromPromptBtn" class="btn-primary btn-sm">Yes, Add 1 Glass</button>
+            <button id="dismissWaterPromptBtn" class="btn-secondary btn-sm">No Thanks</button>
+        </div>
     </div>
 
     <script src="js/storage.js"></script>

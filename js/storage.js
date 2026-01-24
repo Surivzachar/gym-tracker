@@ -257,6 +257,14 @@ const Storage = {
         return history.reverse(); // Most recent first
     },
 
+    getLastWorkoutSets(exerciseName) {
+        const history = this.getExerciseHistory(exerciseName);
+        if (history.length > 0) {
+            return history[0].sets; // Most recent workout
+        }
+        return null;
+    },
+
     // Food Diary methods
     getAllFoodDays() {
         return this.get(this.KEYS.FOOD_DIARY) || [];
