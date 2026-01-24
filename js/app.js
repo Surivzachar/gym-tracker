@@ -2524,7 +2524,7 @@ class GymTrackerApp {
 
     async displayCacheVersion() {
         const cacheDisplay = document.getElementById('cacheVersionDisplay');
-        const LATEST_VERSION = '88'; // Update this when incrementing version
+        const LATEST_VERSION = '89'; // Update this when incrementing version
 
         try {
             const cacheNames = await caches.keys();
@@ -4532,8 +4532,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     }
 
     renderWeightProgressChart(days = 30) {
-        const weights = Storage.getAllDailyMetrics()
-            .filter(m => m.weight)
+        const weights = Storage.getAllWeightEntries()
             .sort((a, b) => new Date(a.date) - new Date(b.date));
 
         const canvas = document.getElementById('weightChart');
@@ -5180,6 +5179,11 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
         workouts.forEach(workout => {
             workout.exercises.forEach(exercise => {
+                // Only process strength exercises with sets
+                if (!exercise.sets || !Array.isArray(exercise.sets)) {
+                    return;
+                }
+
                 const exerciseName = exercise.name;
 
                 if (!exercisePRs[exerciseName]) {
@@ -5578,9 +5582,12 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         let totalVolume = 0;
         workouts.forEach(w => {
             w.exercises.forEach(ex => {
-                ex.sets.forEach(set => {
-                    totalVolume += (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0);
-                });
+                // Only calculate volume for strength exercises with sets
+                if (ex.sets && Array.isArray(ex.sets)) {
+                    ex.sets.forEach(set => {
+                        totalVolume += (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0);
+                    });
+                }
             });
         });
         document.getElementById('totalVolume').textContent = Math.round(totalVolume).toLocaleString() + ' kg';
@@ -5589,11 +5596,11 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         if (foodDays.length > 0) {
             let totalCalories = 0;
             foodDays.forEach(d => {
-                Object.values(d.meals).forEach(mealArray => {
-                    mealArray.forEach(item => {
-                        totalCalories += parseFloat(item.calories) || 0;
+                if (d.meals && Array.isArray(d.meals)) {
+                    d.meals.forEach(meal => {
+                        totalCalories += parseFloat(meal.calories) || 0;
                     });
-                });
+                }
             });
             const avgCalories = Math.round(totalCalories / foodDays.length);
             document.getElementById('avgCalories').textContent = avgCalories.toLocaleString();
@@ -6060,20 +6067,23 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         let totalVolume = 0;
         periodWorkouts.forEach(w => {
             w.exercises.forEach(ex => {
-                ex.sets.forEach(set => {
-                    totalVolume += (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0);
-                });
+                // Only calculate volume for strength exercises with sets
+                if (ex.sets && Array.isArray(ex.sets)) {
+                    ex.sets.forEach(set => {
+                        totalVolume += (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0);
+                    });
+                }
             });
         });
 
         // Calculate total calories
         let totalCalories = 0;
         periodFoodDays.forEach(d => {
-            Object.values(d.meals).forEach(mealArray => {
-                mealArray.forEach(item => {
-                    totalCalories += parseFloat(item.calories) || 0;
+            if (d.meals && Array.isArray(d.meals)) {
+                d.meals.forEach(meal => {
+                    totalCalories += parseFloat(meal.calories) || 0;
                 });
-            });
+            }
         });
 
         // Get highlights
@@ -6173,6 +6183,11 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         allWorkouts.sort((a, b) => new Date(a.date) - new Date(b.date)).forEach(workout => {
             const workoutDate = new Date(workout.date);
             workout.exercises.forEach(ex => {
+                // Only process strength exercises with sets
+                if (!ex.sets || !Array.isArray(ex.sets)) {
+                    return;
+                }
+
                 if (!exerciseRecords[ex.name]) {
                     exerciseRecords[ex.name] = 0;
                 }
