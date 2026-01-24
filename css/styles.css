@@ -423,10 +423,22 @@ img {
 }
 
 #workoutView .section-header h2,
-#foodView .section-header h2 {
+#foodView .section-header h2,
+#workoutView .section h2,
+#foodView .section h2 {
     color: var(--text-primary) !important;
     font-size: 1.75rem !important;
     font-weight: 700 !important;
+}
+
+/* Ensure workout headings are always visible */
+#todayCompletedSection h2 {
+    color: var(--text-primary) !important;
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
 }
 
 /* Buttons */
