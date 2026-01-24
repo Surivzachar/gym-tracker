@@ -2486,7 +2486,7 @@ class GymTrackerApp {
 
     async displayCacheVersion() {
         const cacheDisplay = document.getElementById('cacheVersionDisplay');
-        const LATEST_VERSION = '80'; // Update this when incrementing version
+        const LATEST_VERSION = '81'; // Update this when incrementing version
 
         try {
             const cacheNames = await caches.keys();
@@ -3589,17 +3589,30 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             measurements: measurements
         };
 
-        Storage.addProgressPhoto(photoData);
-        this.closeModal('photoDetailsModal');
-        this.renderProgressPhotos();
-        this.syncAfterChange();
+        console.log('Saving photo, image data length:', this.currentPhotoData.length);
 
-        alert('Progress photo saved successfully!');
+        const success = Storage.addProgressPhoto(photoData);
+
+        if (success) {
+            this.closeModal('photoDetailsModal');
+            this.renderProgressPhotos();
+            this.syncAfterChange();
+            alert('Progress photo saved successfully!');
+        } else {
+            // Error was already shown by Storage.set function
+            console.error('Failed to save photo');
+        }
     }
 
     renderProgressPhotos() {
         const photos = Storage.getAllProgressPhotos();
+        console.log('Rendering progress photos, count:', photos.length);
         const gallery = document.getElementById('photosGallery');
+
+        if (!gallery) {
+            console.error('Photos gallery element not found!');
+            return;
+        }
 
         if (photos.length === 0) {
             gallery.innerHTML = `

@@ -40,10 +40,17 @@ const Storage = {
     // Save data to localStorage
     set(key, value) {
         try {
-            localStorage.setItem(key, JSON.stringify(value));
+            const jsonString = JSON.stringify(value);
+            localStorage.setItem(key, jsonString);
+            console.log(`Saved to ${key}, size: ${jsonString.length} characters`);
             return true;
         } catch (error) {
             console.error('Error writing to localStorage:', error);
+            if (error.name === 'QuotaExceededError') {
+                alert('Storage quota exceeded! Your photo library is too large. Please delete some old photos to free up space.');
+            } else {
+                alert('Failed to save data: ' + error.message);
+            }
             return false;
         }
     },
@@ -545,7 +552,15 @@ const Storage = {
             measurements: photoData.measurements || {} // chest, waist, arms, etc.
         };
         photos.push(newPhoto);
-        return this.set(this.KEYS.PROGRESS_PHOTOS, photos);
+
+        console.log('Attempting to save photo. Total photos:', photos.length);
+        console.log('Estimated storage size:', JSON.stringify(photos).length, 'characters');
+
+        const result = this.set(this.KEYS.PROGRESS_PHOTOS, photos);
+        if (!result) {
+            console.error('Failed to save photo to localStorage');
+        }
+        return result;
     },
 
     deleteProgressPhoto(photoId) {
