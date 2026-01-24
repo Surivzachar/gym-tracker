@@ -373,17 +373,17 @@ const Storage = {
         let totalFats = 0;
 
         foodDay.meals.forEach(meal => {
-            totalCalories += meal.calories;
-            totalProtein += meal.protein;
-            totalCarbs += meal.carbs;
-            totalFats += meal.fats;
+            totalCalories += parseFloat(meal.calories) || 0;
+            totalProtein += parseFloat(meal.protein) || 0;
+            totalCarbs += parseFloat(meal.carbs) || 0;
+            totalFats += parseFloat(meal.fats) || 0;
         });
 
         return {
-            totalCalories,
-            totalProtein,
-            totalCarbs,
-            totalFats,
+            totalCalories: Math.round(totalCalories),
+            totalProtein: Math.round(totalProtein * 10) / 10,
+            totalCarbs: Math.round(totalCarbs * 10) / 10,
+            totalFats: Math.round(totalFats * 10) / 10,
             mealCount: foodDay.meals.length
         };
     },

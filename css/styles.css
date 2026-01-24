@@ -617,6 +617,27 @@ img {
     display: block !important;
 }
 
+/* Comprehensive h3 heading visibility fix for all cards */
+.routine-card h3,
+.history-card h3,
+.workout-card h3,
+.exercise-card h3,
+.card h3,
+.routine-card h4,
+.history-card h4 {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+.routine-card h3,
+.history-card h3 {
+    font-size: 1.125rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
 .exercise-actions {
     display: flex;
     gap: 0.5rem;
@@ -820,11 +841,11 @@ img {
 }
 
 .history-card {
-    background: white;
-    border: 2px solid #e5e7eb;
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
     border-radius: 12px;
     padding: 1rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px var(--shadow-sm);
 }
 
 .history-header {
@@ -867,11 +888,11 @@ img {
 }
 
 .routine-card {
-    background: white;
-    border: 2px solid #e5e7eb;
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
     border-radius: 12px;
     padding: 1rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px var(--shadow-sm);
 }
 
 .routine-header {

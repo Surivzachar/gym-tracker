@@ -4931,11 +4931,12 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
         const data = filteredDays.map(d => {
             let totalCalories = 0;
-            Object.values(d.meals).forEach(mealArray => {
-                mealArray.forEach(item => {
+            // meals is already an array
+            if (d.meals && Array.isArray(d.meals)) {
+                d.meals.forEach(item => {
                     totalCalories += parseFloat(item.calories) || 0;
                 });
-            });
+            }
             return totalCalories;
         });
 
