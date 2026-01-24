@@ -531,11 +531,11 @@ img {
 }
 
 .exercise-card {
-    background: white;
-    border: 2px solid #e5e7eb;
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
     border-radius: 12px;
     padding: 1rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px var(--shadow-sm);
 }
 
 /* Completed Workouts Section */
@@ -609,8 +609,12 @@ img {
 }
 
 .exercise-header h3 {
-    font-size: 1.125rem;
-    color: var(--text-primary);
+    font-size: 1.25rem !important;
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
 }
 
 .exercise-actions {
@@ -731,17 +735,18 @@ img {
     display: flex;
     justify-content: space-between;
     padding: 0.5rem;
-    background: #f9fafb;
+    background: var(--bg-tertiary);
     border-radius: 6px;
 }
 
 .set-number {
     font-weight: 600;
-    color: #6b7280;
+    color: var(--text-secondary) !important;
 }
 
 .set-detail {
-    color: #111827;
+    color: var(--text-primary) !important;
+    font-weight: 500;
 }
 
 /* Empty State */
