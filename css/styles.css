@@ -407,11 +407,16 @@ img {
     margin-bottom: 1rem;
 }
 
-.section h2 {
+.section h2,
+.section-header h2 {
     font-size: 1.75rem;
     color: var(--text-primary);
     margin-bottom: 1.25rem;
     font-weight: 700;
+}
+
+.section-header h2 {
+    margin-bottom: 0;
 }
 
 /* Buttons */

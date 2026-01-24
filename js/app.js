@@ -2147,9 +2147,31 @@ class GymTrackerApp {
         document.getElementById('totalFatsValue').textContent = stats.totalFats + 'g';
 
         // Render each meal type
+        const mealLabels = {
+            'breakfast': '🌅 Breakfast',
+            'midmorning': '☕ Mid Morning',
+            'lunch': '🌞 Lunch',
+            'preworkout': '💪 Pre Workout',
+            'postworkout': '🥤 Post Workout',
+            'dinner': '🌙 Dinner'
+        };
+
         ['breakfast', 'midmorning', 'lunch', 'preworkout', 'postworkout', 'dinner'].forEach(mealType => {
             const meals = todayFood.meals.filter(m => m.mealType === mealType);
             const container = document.getElementById(`${mealType}List`);
+            const header = document.getElementById(`${mealType}Header`);
+
+            // Calculate total calories for this meal
+            const mealCalories = meals.reduce((total, meal) => total + (parseFloat(meal.calories) || 0), 0);
+
+            // Update header with meal name and total calories
+            if (header) {
+                if (meals.length > 0) {
+                    header.textContent = `${mealLabels[mealType]} (${mealCalories} cal)`;
+                } else {
+                    header.textContent = mealLabels[mealType];
+                }
+            }
 
             if (meals.length === 0) {
                 container.innerHTML = '<p class="empty-state-small">No items yet</p>';
@@ -2486,7 +2508,7 @@ class GymTrackerApp {
 
     async displayCacheVersion() {
         const cacheDisplay = document.getElementById('cacheVersionDisplay');
-        const LATEST_VERSION = '82'; // Update this when incrementing version
+        const LATEST_VERSION = '83'; // Update this when incrementing version
 
         try {
             const cacheNames = await caches.keys();
