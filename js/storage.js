@@ -148,14 +148,17 @@ const Storage = {
 
     loadRoutine(id) {
         const routines = this.getAllRoutines();
+        console.log('All routines:', routines);
+        console.log('Looking for routine with ID:', id);
         const routine = routines.find(r => r.id === id);
+        console.log('Found routine:', routine);
 
         if (routine) {
             // Create a deep copy of the exercises with fresh IDs
             const newExercises = routine.exercises.map(exercise => ({
                 ...exercise,
                 id: Date.now() + Math.random(),
-                sets: exercise.sets.map(set => ({...set}))
+                sets: exercise.sets ? exercise.sets.map(set => ({...set})) : []
             }));
 
             // Get current workout and append to it instead of replacing
@@ -168,6 +171,7 @@ const Storage = {
             return currentWorkout;
         }
 
+        console.error('Routine not found with ID:', id);
         return null;
     },
 

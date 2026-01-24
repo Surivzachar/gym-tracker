@@ -1645,7 +1645,7 @@ class GymTrackerApp {
             }
 
             return `
-                <div class="load-routine-item" onclick="app.loadRoutineToWorkout(${routine.id})">
+                <div class="load-routine-item" data-routine-id="${routine.id}">
                     <h4>${routine.name}</h4>
                     <p>${routine.exercises.length} exercises</p>
                     ${historyPreview}
@@ -1653,12 +1653,25 @@ class GymTrackerApp {
             `;
         }).join('');
 
+        // Add event listener for routine items
+        const routineItems = container.querySelectorAll('.load-routine-item');
+        routineItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const routineId = parseFloat(item.dataset.routineId);
+                this.loadRoutineToWorkout(routineId);
+            });
+        });
+
         document.getElementById('loadRoutineModal').classList.add('active');
     }
 
     loadRoutineToWorkout(routineId) {
+        console.log('Loading routine with ID:', routineId);
+
         // No confirmation needed - loadRoutine now appends instead of replacing
         const workout = Storage.loadRoutine(routineId);
+        console.log('Loaded workout:', workout);
+
         if (workout) {
             this.currentWorkout = workout;
             this.renderCurrentWorkout();
@@ -1670,6 +1683,9 @@ class GymTrackerApp {
             if (routine) {
                 alert(`✅ Added ${routine.exercises.length} exercises from "${routine.name}"!`);
             }
+        } else {
+            console.error('Failed to load routine');
+            alert('Failed to load routine. Please try again.');
         }
     }
 
@@ -2508,7 +2524,7 @@ class GymTrackerApp {
 
     async displayCacheVersion() {
         const cacheDisplay = document.getElementById('cacheVersionDisplay');
-        const LATEST_VERSION = '86'; // Update this when incrementing version
+        const LATEST_VERSION = '87'; // Update this when incrementing version
 
         try {
             const cacheNames = await caches.keys();
