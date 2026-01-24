@@ -410,13 +410,23 @@ img {
 .section h2,
 .section-header h2 {
     font-size: 1.75rem;
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
     margin-bottom: 1.25rem;
     font-weight: 700;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
 }
 
 .section-header h2 {
     margin-bottom: 0;
+}
+
+#workoutView .section-header h2,
+#foodView .section-header h2 {
+    color: var(--text-primary) !important;
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
 }
 
 /* Buttons */
