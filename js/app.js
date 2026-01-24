@@ -46,7 +46,12 @@ class GymTrackerApp {
         // Auto theme properties
         this.autoThemeInterval = null;
 
+        // Undo functionality
+        this.undoStack = null;
+        this.undoTimeout = null;
+
         this.initializeEventListeners();
+        this.initializeUndoToast();
         this.initializeDarkMode();
         this.checkAutoBackup();
         this.updateDateBanner();
@@ -107,6 +112,54 @@ class GymTrackerApp {
         if (!navigator.onLine) {
             updateConnectionStatus();
         }
+    }
+
+    initializeUndoToast() {
+        const undoBtn = document.getElementById('undoToastBtn');
+        undoBtn.addEventListener('click', () => {
+            this.performUndo();
+        });
+    }
+
+    showUndoToast(message, undoAction) {
+        // Clear any existing undo
+        if (this.undoTimeout) {
+            clearTimeout(this.undoTimeout);
+        }
+
+        // Store the undo action
+        this.undoStack = undoAction;
+
+        // Show toast
+        const toast = document.getElementById('undoToast');
+        const messageEl = document.getElementById('undoToastMessage');
+        messageEl.textContent = message;
+        toast.classList.add('show');
+
+        // Auto-hide after 5 seconds
+        this.undoTimeout = setTimeout(() => {
+            this.hideUndoToast();
+        }, 5000);
+    }
+
+    hideUndoToast() {
+        const toast = document.getElementById('undoToast');
+        toast.classList.remove('show');
+        this.undoStack = null;
+        if (this.undoTimeout) {
+            clearTimeout(this.undoTimeout);
+            this.undoTimeout = null;
+        }
+    }
+
+    performUndo() {
+        if (!this.undoStack) return;
+
+        // Execute the undo action
+        this.undoStack();
+
+        // Hide toast
+        this.hideUndoToast();
     }
 
     initializeEventListeners() {
@@ -1054,11 +1107,26 @@ class GymTrackerApp {
     }
 
     deleteExercise(exerciseId) {
-        if (confirm('Delete this exercise?')) {
-            this.currentWorkout.exercises = this.currentWorkout.exercises.filter(e => e.id !== exerciseId);
+        // Get the exercise before deleting (for undo)
+        const exercise = this.currentWorkout.exercises.find(e => e.id === exerciseId);
+        if (!exercise) return;
+
+        // Get the index for restoration
+        const exerciseIndex = this.currentWorkout.exercises.findIndex(e => e.id === exerciseId);
+
+        // Delete the exercise
+        this.currentWorkout.exercises = this.currentWorkout.exercises.filter(e => e.id !== exerciseId);
+        Storage.saveCurrentWorkout(this.currentWorkout);
+        this.renderCurrentWorkout();
+
+        // Show undo toast
+        this.showUndoToast(`Deleted ${exercise.name}`, () => {
+            // Undo action: restore the exercise at the same position
+            this.currentWorkout.exercises.splice(exerciseIndex, 0, exercise);
             Storage.saveCurrentWorkout(this.currentWorkout);
             this.renderCurrentWorkout();
-        }
+            alert('Exercise restored!');
+        });
     }
 
     finishWorkout() {
@@ -1888,6 +1956,20 @@ class GymTrackerApp {
     }
 
     // Food tracking methods
+    getSuggestedMealType() {
+        const hour = new Date().getHours();
+
+        // Smart meal time suggestions based on time of day
+        if (hour >= 6 && hour < 10) return 'breakfast';       // 6am-10am
+        if (hour >= 10 && hour < 12) return 'midmorning';     // 10am-12pm
+        if (hour >= 12 && hour < 15) return 'lunch';          // 12pm-3pm
+        if (hour >= 15 && hour < 17) return 'preworkout';     // 3pm-5pm
+        if (hour >= 17 && hour < 19) return 'postworkout';    // 5pm-7pm
+        if (hour >= 19 || hour < 6) return 'dinner';          // 7pm-6am
+
+        return 'breakfast'; // Default fallback
+    }
+
     openAddFoodModal(mealType, foodId = null) {
         this.editingFoodId = foodId;
         const isEditing = foodId !== null;
@@ -1940,8 +2022,12 @@ class GymTrackerApp {
                 saveBtn.textContent = 'Update Food';
             }
         } else {
-            this.currentMealType = mealType;
-            document.getElementById('foodModalTitle').textContent = `Add ${mealNames[mealType] || mealType}`;
+            // Use smart meal time suggestion if mealType not provided
+            this.currentMealType = mealType || this.getSuggestedMealType();
+            const displayMealType = mealNames[this.currentMealType] || this.currentMealType;
+            const isSuggested = !mealType; // Was it auto-suggested?
+
+            document.getElementById('foodModalTitle').textContent = `Add ${displayMealType}${isSuggested ? ' (Suggested)' : ''}`;
             document.getElementById('foodNameInput').value = '';
             document.getElementById('quantityInput').value = '1';
             document.getElementById('caloriesInput').value = '';
@@ -2475,18 +2561,31 @@ class GymTrackerApp {
     }
 
     quickAddFood(food) {
-        // Open add food modal with the selected meal type (default to breakfast)
-        // Let user choose which meal to add it to
-        this.currentMealType = 'breakfast'; // Default
-        this.openModal('addFoodModal');
+        // Use smart meal time suggestion
+        this.openAddFoodModal(null);  // null triggers smart suggestion
         this.selectFood(food);
     }
 
     deleteFood(foodId) {
-        if (confirm('Delete this food item?')) {
-            Storage.deleteFoodItem(foodId);
+        // Get the food item before deleting (for undo)
+        const todayFood = Storage.getTodayFood();
+        const foodItem = todayFood.meals.find(m => m.id === foodId);
+
+        if (!foodItem) return;
+
+        // Delete the food
+        Storage.deleteFoodItem(foodId);
+        this.renderFood();
+        this.renderDashboard();
+
+        // Show undo toast
+        this.showUndoToast(`Deleted ${foodItem.name}`, () => {
+            // Undo action: restore the food item
+            Storage.undoDeleteFoodItem(foodItem);
             this.renderFood();
-        }
+            this.renderDashboard();
+            alert('Food item restored!');
+        });
     }
 
     viewFoodPhoto(photoData) {

@@ -323,6 +323,29 @@ const Storage = {
         return this.set(this.KEYS.FOOD_DIARY, filtered);
     },
 
+    undoDeleteFoodItem(foodItem) {
+        // Re-add the deleted food item
+        // Find or create the day for this food
+        const allDays = this.getAllFoodDays();
+        const targetDate = new Date().toDateString();  // Assume same day
+        let targetDay = allDays.find(day => new Date(day.date).toDateString() === targetDate);
+
+        if (!targetDay) {
+            // Create new day if it doesn't exist
+            targetDay = {
+                date: new Date().toISOString(),
+                meals: []
+            };
+            allDays.push(targetDay);
+        }
+
+        // Add the food item back
+        targetDay.meals.push(foodItem);
+
+        // Save
+        return this.set(this.KEYS.FOOD_DIARY, allDays);
+    },
+
     updateFoodItem(foodId, updatedFoodItem) {
         const allDays = this.getAllFoodDays();
 

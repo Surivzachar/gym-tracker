@@ -1987,6 +1987,44 @@ img {
     line-height: 1.5;
 }
 
+/* Undo Toast Notification */
+.undo-toast {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 10001;
+    transition: bottom 0.3s ease;
+    border: 2px solid var(--border-color);
+}
+
+.undo-toast.show {
+    bottom: 20px;
+}
+
+.btn-undo {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-undo:hover {
+    background: #163172;
+}
+
 .helper-text {
     font-size: 0.875rem;
     color: #6b7280;
