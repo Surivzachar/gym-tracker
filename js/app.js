@@ -2486,7 +2486,7 @@ class GymTrackerApp {
 
     async displayCacheVersion() {
         const cacheDisplay = document.getElementById('cacheVersionDisplay');
-        const LATEST_VERSION = '78'; // Update this when incrementing version
+        const LATEST_VERSION = '79'; // Update this when incrementing version
 
         try {
             const cacheNames = await caches.keys();
@@ -4293,19 +4293,83 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
     // Progress Charts
     renderProgress() {
-        this.renderProgressCharts();
-        this.populateExerciseSelector();
-        this.renderPersonalRecords();
-        this.renderPRHistory();
-        this.renderAchievements();
-        this.renderGoals();
-        this.renderReport('week');
-        this.renderSleep();
-        this.renderCardio();
-        this.renderJournal();
-        this.renderQuickStats();
-        this.initializeChartFilters();
-        this.initializeExerciseProgressChart();
+        try {
+            this.renderProgressCharts();
+        } catch (e) {
+            console.error('Error rendering progress charts:', e);
+        }
+
+        try {
+            this.populateExerciseSelector();
+        } catch (e) {
+            console.error('Error populating exercise selector:', e);
+        }
+
+        try {
+            this.renderPersonalRecords();
+        } catch (e) {
+            console.error('Error rendering personal records:', e);
+        }
+
+        try {
+            this.renderPRHistory();
+        } catch (e) {
+            console.error('Error rendering PR history:', e);
+        }
+
+        try {
+            this.renderAchievements();
+        } catch (e) {
+            console.error('Error rendering achievements:', e);
+        }
+
+        try {
+            this.renderGoals();
+        } catch (e) {
+            console.error('Error rendering goals:', e);
+        }
+
+        try {
+            this.renderReport('week');
+        } catch (e) {
+            console.error('Error rendering report:', e);
+        }
+
+        try {
+            this.renderSleep();
+        } catch (e) {
+            console.error('Error rendering sleep:', e);
+        }
+
+        try {
+            this.renderCardio();
+        } catch (e) {
+            console.error('Error rendering cardio:', e);
+        }
+
+        try {
+            this.renderJournal();
+        } catch (e) {
+            console.error('Error rendering journal:', e);
+        }
+
+        try {
+            this.renderQuickStats();
+        } catch (e) {
+            console.error('Error rendering quick stats:', e);
+        }
+
+        try {
+            this.initializeChartFilters();
+        } catch (e) {
+            console.error('Error initializing chart filters:', e);
+        }
+
+        try {
+            this.initializeExerciseProgressChart();
+        } catch (e) {
+            console.error('Error initializing exercise progress chart:', e);
+        }
     }
 
     initializeChartFilters() {
@@ -4335,10 +4399,29 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     }
 
     renderProgressCharts() {
-        this.renderWeightProgressChart(30);
-        this.renderVolumeChart(30);
-        this.renderCaloriesChart(30);
-        this.renderMeasurementsChart(30);
+        try {
+            this.renderWeightProgressChart(30);
+        } catch (e) {
+            console.error('Error rendering weight chart:', e);
+        }
+
+        try {
+            this.renderVolumeChart(30);
+        } catch (e) {
+            console.error('Error rendering volume chart:', e);
+        }
+
+        try {
+            this.renderCaloriesChart(30);
+        } catch (e) {
+            console.error('Error rendering calories chart:', e);
+        }
+
+        try {
+            this.renderMeasurementsChart(30);
+        } catch (e) {
+            console.error('Error rendering measurements chart:', e);
+        }
     }
 
     renderWeightProgressChart(days = 30) {
@@ -4461,9 +4544,12 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         const data = filteredWorkouts.map(w => {
             let totalVolume = 0;
             w.exercises.forEach(ex => {
-                ex.sets.forEach(set => {
-                    totalVolume += (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0);
-                });
+                // Only calculate volume for strength exercises that have sets
+                if (ex.sets && Array.isArray(ex.sets)) {
+                    ex.sets.forEach(set => {
+                        totalVolume += (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0);
+                    });
+                }
             });
             return totalVolume;
         });
