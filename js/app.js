@@ -469,6 +469,7 @@ class GymTrackerApp {
             typeSelect.disabled = true; // Disable type change when editing
             document.getElementById('exerciseNameInput').value = exercise.name;
             document.getElementById('exerciseVideoUrl').value = exercise.videoUrl || '';
+            document.getElementById('exerciseNotes').value = exercise.notes || '';
 
             if (exercise.type === 'strength' || !exercise.type) {
                 // Load strength exercise data
@@ -501,6 +502,7 @@ class GymTrackerApp {
             typeSelect.disabled = false; // Enable type selection for new exercises
             document.getElementById('exerciseNameInput').value = '';
             document.getElementById('exerciseVideoUrl').value = '';
+            document.getElementById('exerciseNotes').value = '';
             document.getElementById('setsContainer').innerHTML = `
                 <div class="set-input">
                     <select class="input small" data-field="unit">
@@ -575,6 +577,7 @@ class GymTrackerApp {
         const name = document.getElementById('exerciseNameInput').value.trim();
         const type = document.getElementById('exerciseTypeSelect').value;
         const videoUrl = document.getElementById('exerciseVideoUrl').value.trim();
+        const notes = document.getElementById('exerciseNotes').value.trim();
 
         if (!name) {
             alert('Please enter an exercise name');
@@ -594,13 +597,15 @@ class GymTrackerApp {
             exercise.name = name;
             exercise.type = type;
             exercise.videoUrl = videoUrl || null;
+            exercise.notes = notes || null;
         } else {
             // Create new exercise
             exercise = {
                 id: Date.now() + Math.random(), // Add random component for uniqueness
                 name: name,
                 type: type,
-                videoUrl: videoUrl || null
+                videoUrl: videoUrl || null,
+                notes: notes || null
             };
         }
 
@@ -951,6 +956,12 @@ class GymTrackerApp {
                         </div>
                     </div>
                     ${exerciseDetails}
+                    ${exercise.notes ? `
+                        <div class="exercise-notes">
+                            <span class="notes-icon">📝</span>
+                            <span class="notes-text">${exercise.notes}</span>
+                        </div>
+                    ` : ''}
                     ${hasHistory && type === 'strength' ? `
                         <div class="exercise-history" id="history-${exercise.id}" style="display: none;">
                             <div class="history-divider"></div>
@@ -2348,6 +2359,81 @@ class GymTrackerApp {
         // Render recent foods and favorites
         this.renderRecentFoods();
         this.renderFavoriteFoods();
+
+        // Render macro balance pie chart
+        this.renderMacroBalanceChart(stats);
+    }
+
+    renderMacroBalanceChart(stats) {
+        const canvas = document.getElementById('macroBalanceChart');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+
+        // Calculate calories from each macro
+        const proteinCals = stats.totalProtein * 4;  // 4 cal per gram
+        const carbsCals = stats.totalCarbs * 4;      // 4 cal per gram
+        const fatsCals = stats.totalFats * 9;        // 9 cal per gram
+        const totalCals = proteinCals + carbsCals + fatsCals;
+
+        // Calculate percentages
+        const proteinPercent = totalCals > 0 ? Math.round((proteinCals / totalCals) * 100) : 0;
+        const carbsPercent = totalCals > 0 ? Math.round((carbsCals / totalCals) * 100) : 0;
+        const fatsPercent = totalCals > 0 ? Math.round((fatsCals / totalCals) * 100) : 0;
+
+        // Update legend
+        document.getElementById('proteinPercentage').textContent = proteinPercent + '%';
+        document.getElementById('carbsPercentage').textContent = carbsPercent + '%';
+        document.getElementById('fatsPercentage').textContent = fatsPercent + '%';
+
+        // Destroy existing chart if it exists
+        if (canvas.chart) {
+            canvas.chart.destroy();
+        }
+
+        // No data state
+        if (totalCals === 0) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = this.isDarkMode() ? '#64748b' : '#94a3b8';
+            ctx.font = '14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('No food logged', canvas.width / 2, canvas.height / 2);
+            return;
+        }
+
+        // Create pie chart
+        canvas.chart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Protein', 'Carbs', 'Fats'],
+                datasets: [{
+                    data: [proteinCals, carbsCals, fatsCals],
+                    backgroundColor: ['#3b82f6', '#f59e0b', '#10b981'],
+                    borderWidth: 2,
+                    borderColor: this.isDarkMode() ? '#1e293b' : '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: ${percentage}% (${Math.round(value)} cal)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     renderRecentFoods() {
@@ -2488,6 +2574,45 @@ class GymTrackerApp {
         this.closeModal('nutritionGoalsModal');
         this.renderFood();
         this.showNotification('Nutrition goals updated successfully!');
+    }
+
+    copyYesterdayFood() {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        const yesterdayFood = Storage.getTodayFood(yesterday);
+
+        if (!yesterdayFood || yesterdayFood.meals.length === 0) {
+            alert('No food logged yesterday to copy');
+            return;
+        }
+
+        const confirmed = confirm(`Copy ${yesterdayFood.meals.length} food items from yesterday to today?`);
+        if (!confirmed) return;
+
+        // Copy each meal from yesterday to today
+        let copiedCount = 0;
+        yesterdayFood.meals.forEach(meal => {
+            const foodItem = {
+                name: meal.name,
+                calories: meal.calories,
+                protein: meal.protein,
+                carbs: meal.carbs,
+                fats: meal.fats
+            };
+
+            // Copy photo if it exists
+            if (meal.photo) {
+                foodItem.photo = meal.photo;
+            }
+
+            Storage.addFoodItem(meal.mealType, foodItem, null);
+            copiedCount++;
+        });
+
+        this.renderFood();
+        this.renderDashboard();
+        alert(`✅ Copied ${copiedCount} food items from yesterday!`);
     }
 
     openFoodHistoryModal() {

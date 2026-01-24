@@ -571,7 +571,8 @@
                 <div class="section">
                     <div class="section-header">
                         <h2>Today's Food</h2>
-                        <div style="display: flex; gap: 0.5rem;">
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button id="copyYesterdayFoodBtn" class="btn-secondary" onclick="app.copyYesterdayFood()">📋 Copy Yesterday</button>
                             <button id="setNutritionGoalsBtn" class="btn-secondary" onclick="app.openNutritionGoalsModal()">🎯 Goals</button>
                             <button id="loadFoodRoutineBtn" class="btn-secondary">Load Routine</button>
                             <button id="createFoodRoutineBtn" class="btn-primary">Create Routine</button>
@@ -623,6 +624,29 @@
                             </div>
                             <span class="nutrition-remaining" id="fatsRemaining">65g remaining</span>
                         </div>
+                    </div>
+
+                    <!-- Macro Balance Visualization -->
+                    <div class="macro-balance-section">
+                        <h3>🥧 Macro Balance</h3>
+                        <div class="macro-balance-container">
+                            <canvas id="macroBalanceChart" width="200" height="200"></canvas>
+                            <div class="macro-balance-legend">
+                                <div class="macro-legend-item">
+                                    <span class="macro-legend-color" style="background: #3b82f6;"></span>
+                                    <span class="macro-legend-label">Protein: <strong id="proteinPercentage">0%</strong></span>
+                                </div>
+                                <div class="macro-legend-item">
+                                    <span class="macro-legend-color" style="background: #f59e0b;"></span>
+                                    <span class="macro-legend-label">Carbs: <strong id="carbsPercentage">0%</strong></span>
+                                </div>
+                                <div class="macro-legend-item">
+                                    <span class="macro-legend-color" style="background: #10b981;"></span>
+                                    <span class="macro-legend-label">Fats: <strong id="fatsPercentage">0%</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="helper-text">Balanced macros: ~30% Protein, ~40% Carbs, ~30% Fats</p>
                     </div>
 
                     <!-- Water Intake Tracker -->
@@ -925,6 +949,13 @@
                             <label class="input-label">Calories Burned - Optional</label>
                             <input type="number" id="hiitCalories" placeholder="300" class="input">
                         </div>
+                    </div>
+
+                    <!-- Exercise Notes (for all exercise types) -->
+                    <div class="input-group" style="margin-top: 1rem;">
+                        <label class="input-label">📝 Quick Notes (Optional)</label>
+                        <textarea id="exerciseNotes" placeholder="e.g., Felt strong today, Lower back tight, New PR!" class="input" rows="2" style="resize: vertical;"></textarea>
+                        <p class="helper-text" style="font-size: 0.75rem; margin-top: 0.25rem; color: #64748b;">Track how you felt, any issues, or achievements</p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1255,7 +1286,7 @@
                     <div class="input-group">
                         <label class="input-label">🔧 App Version & Cache</label>
                         <div class="settings-info" style="background: #0f172a; border-left: 3px solid #10b981;">
-                            <p style="color: #cbd5e1;"><strong>Version:</strong> v92 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
+                            <p style="color: #cbd5e1;"><strong>Version:</strong> v93 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
                         </div>
                         <p class="helper-text">If app features aren't working, clear the cache to reload the latest version.</p>
                         <button id="clearCacheBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🔄 Clear Cache & Reload</button>
