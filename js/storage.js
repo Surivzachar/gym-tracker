@@ -668,22 +668,23 @@ const Storage = {
         return this.get(this.KEYS.WEIGHT_LOG) || [];
     },
 
-    logWeight(weight) {
+    logWeight(weight, customDate = null) {
         const entries = this.getAllWeightEntries();
-        const today = new Date().toDateString();
+        const targetDate = customDate ? new Date(customDate) : new Date();
+        const targetDateStr = targetDate.toDateString();
 
-        // Check if there's already an entry for today
+        // Check if there's already an entry for this date
         const existingIndex = entries.findIndex(entry =>
-            new Date(entry.date).toDateString() === today
+            new Date(entry.date).toDateString() === targetDateStr
         );
 
         const newEntry = {
             weight: parseFloat(weight),
-            date: new Date().toISOString()
+            date: targetDate.toISOString()
         };
 
         if (existingIndex !== -1) {
-            // Update today's entry
+            // Update existing entry for this date
             entries[existingIndex] = newEntry;
         } else {
             // Add new entry
@@ -712,17 +713,18 @@ const Storage = {
         return this.get(this.KEYS.BODY_MEASUREMENTS) || [];
     },
 
-    logBodyMeasurements(measurements) {
+    logBodyMeasurements(measurements, customDate = null) {
         const entries = this.getAllBodyMeasurements();
-        const today = new Date().toDateString();
+        const targetDate = customDate ? new Date(customDate) : new Date();
+        const targetDateStr = targetDate.toDateString();
 
-        // Check if there's already an entry for today
+        // Check if there's already an entry for this date
         const existingIndex = entries.findIndex(entry =>
-            new Date(entry.date).toDateString() === today
+            new Date(entry.date).toDateString() === targetDateStr
         );
 
         const newEntry = {
-            date: new Date().toISOString(),
+            date: targetDate.toISOString(),
             chest: parseFloat(measurements.chest) || null,
             waist: parseFloat(measurements.waist) || null,
             hips: parseFloat(measurements.hips) || null,
@@ -737,7 +739,7 @@ const Storage = {
         };
 
         if (existingIndex !== -1) {
-            // Update today's entry
+            // Update existing entry for this date
             entries[existingIndex] = newEntry;
         } else {
             // Add new entry

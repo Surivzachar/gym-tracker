@@ -1224,7 +1224,7 @@
                     <div class="input-group">
                         <label class="input-label">🔧 App Version & Cache</label>
                         <div class="settings-info" style="background: #0f172a; border-left: 3px solid #10b981;">
-                            <p style="color: #cbd5e1;"><strong>Version:</strong> v79 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
+                            <p style="color: #cbd5e1;"><strong>Version:</strong> v80 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
                         </div>
                         <p class="helper-text">If app features aren't working, clear the cache to reload the latest version.</p>
                         <button id="clearCacheBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🔄 Clear Cache & Reload</button>
@@ -1441,11 +1441,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="input-group">
+                        <label class="input-label">Date</label>
+                        <input type="date" id="weightDateInput" class="input">
+                    </div>
+                    <div class="input-group">
                         <label class="input-label">Current Weight (kg)</label>
                         <input type="number" id="weightInput" class="input" placeholder="e.g., 72.5" min="30" max="300" step="0.1">
                     </div>
                     <p class="helper-text" style="margin-top: 0.5rem; font-size: 0.85rem;">
-                        Track your weight daily to see progress over time
+                        Track your weight weekly to see progress over time
                     </p>
                     <div class="modal-actions">
                         <button id="saveWeightBtn" class="btn-primary">Save Weight</button>
@@ -1463,7 +1467,11 @@
                     <button class="close-btn">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <p class="helper-text" style="margin-bottom: 1rem;">Track your body measurements to see changes over time. Fill in what you want to track.</p>
+                    <div class="input-group">
+                        <label class="input-label">Date</label>
+                        <input type="date" id="measurementsDateInput" class="input">
+                    </div>
+                    <p class="helper-text" style="margin-bottom: 1rem;">Track your body measurements weekly to see changes over time. Fill in what you want to track.</p>
 
                     <div class="measurements-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div class="input-group">

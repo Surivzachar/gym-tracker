@@ -2486,7 +2486,7 @@ class GymTrackerApp {
 
     async displayCacheVersion() {
         const cacheDisplay = document.getElementById('cacheVersionDisplay');
-        const LATEST_VERSION = '79'; // Update this when incrementing version
+        const LATEST_VERSION = '80'; // Update this when incrementing version
 
         try {
             const cacheNames = await caches.keys();
@@ -4041,6 +4041,11 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     openWeightModal() {
         const latestWeight = Storage.getLatestWeight();
         document.getElementById('weightInput').value = latestWeight ? latestWeight.weight : '';
+
+        // Set date to today by default
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('weightDateInput').value = today;
+
         this.openModal('weightModal');
     }
 
@@ -4050,9 +4055,20 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             alert('Please enter a valid weight between 30 and 300 kg');
             return;
         }
-        Storage.logWeight(weight);
+
+        const dateInput = document.getElementById('weightDateInput').value;
+        const date = dateInput ? new Date(dateInput) : new Date();
+
+        Storage.logWeight(weight, date);
         this.closeModal('weightModal');
         this.renderDashboard();
+
+        // Also refresh progress tab charts if user switches to that view
+        const progressView = document.getElementById('progressView');
+        if (progressView && progressView.classList.contains('active')) {
+            this.renderProgressCharts();
+        }
+
         this.syncAfterChange();
     }
 
@@ -4071,6 +4087,11 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             document.getElementById('rightCalfInput').value = latest.rightCalf || '';
             document.getElementById('neckInput').value = latest.neck || '';
         }
+
+        // Set date to today by default
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('measurementsDateInput').value = today;
+
         this.openModal('measurementsModal');
     }
 
@@ -4096,7 +4117,10 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             return;
         }
 
-        Storage.logBodyMeasurements(measurements);
+        const dateInput = document.getElementById('measurementsDateInput').value;
+        const date = dateInput ? new Date(dateInput) : new Date();
+
+        Storage.logBodyMeasurements(measurements, date);
         this.closeModal('measurementsModal');
         this.renderDashboard();
 
