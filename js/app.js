@@ -2486,7 +2486,7 @@ class GymTrackerApp {
 
     async displayCacheVersion() {
         const cacheDisplay = document.getElementById('cacheVersionDisplay');
-        const LATEST_VERSION = '81'; // Update this when incrementing version
+        const LATEST_VERSION = '82'; // Update this when incrementing version
 
         try {
             const cacheNames = await caches.keys();
@@ -3534,23 +3534,55 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             return;
         }
 
-        // Validate file size (max 5MB to avoid localStorage limits)
-        const maxSize = 5 * 1024 * 1024; // 5MB
-        if (file.size > maxSize) {
-            alert('Image is too large. Please select an image smaller than 5MB');
-            return;
-        }
-
-        // Read file and convert to base64
+        // Read file and compress before storing
         const reader = new FileReader();
         reader.onload = (e) => {
-            this.currentPhotoData = e.target.result;
-            this.openPhotoDetailsModal();
+            this.compressImage(e.target.result, (compressedImage) => {
+                console.log('Original size:', e.target.result.length, 'Compressed size:', compressedImage.length);
+                this.currentPhotoData = compressedImage;
+                this.openPhotoDetailsModal();
+            });
         };
         reader.readAsDataURL(file);
 
         // Reset file input
         event.target.value = '';
+    }
+
+    compressImage(base64Image, callback) {
+        const img = new Image();
+        img.onload = () => {
+            // Set max dimensions
+            const MAX_WIDTH = 1200;
+            const MAX_HEIGHT = 1200;
+            let width = img.width;
+            let height = img.height;
+
+            // Calculate new dimensions while maintaining aspect ratio
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                    height = Math.round((height * MAX_WIDTH) / width);
+                    width = MAX_WIDTH;
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                    width = Math.round((width * MAX_HEIGHT) / height);
+                    height = MAX_HEIGHT;
+                }
+            }
+
+            // Create canvas and compress
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Convert to compressed JPEG (quality 0.7 = good balance of quality vs size)
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+            callback(compressedBase64);
+        };
+        img.src = base64Image;
     }
 
     openPhotoDetailsModal() {
