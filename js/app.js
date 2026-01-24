@@ -2486,7 +2486,7 @@ class GymTrackerApp {
 
     async displayCacheVersion() {
         const cacheDisplay = document.getElementById('cacheVersionDisplay');
-        const LATEST_VERSION = '77'; // Update this when incrementing version
+        const LATEST_VERSION = '78'; // Update this when incrementing version
 
         try {
             const cacheNames = await caches.keys();
@@ -4099,6 +4099,13 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         Storage.logBodyMeasurements(measurements);
         this.closeModal('measurementsModal');
         this.renderDashboard();
+
+        // Also refresh progress tab charts if user switches to that view
+        const progressView = document.getElementById('progressView');
+        if (progressView && progressView.classList.contains('active')) {
+            this.renderProgressCharts();
+        }
+
         this.syncAfterChange();
         alert('✅ Measurements saved successfully!');
     }
