@@ -651,6 +651,18 @@
                         </div>
                     </div>
 
+                    <!-- Recent Foods Quick Add -->
+                    <div id="recentFoodsSection" class="quick-add-section" style="display: none;">
+                        <h4>⏱️ Recent Foods</h4>
+                        <div id="recentFoodsList" class="quick-add-grid"></div>
+                    </div>
+
+                    <!-- Favorite Foods Quick Add -->
+                    <div id="favoriteFoodsSection" class="quick-add-section" style="display: none;">
+                        <h4>⭐ Favorites</h4>
+                        <div id="favoriteFoodsList" class="quick-add-grid"></div>
+                    </div>
+
                     <!-- Meal Sections -->
                     <div class="meals-container">
                         <div class="meal-section">
@@ -1004,6 +1016,25 @@
                         <input type="text" id="foodNameInput" placeholder="Search or type food name..." class="input" autocomplete="off">
                         <div id="foodSuggestions" class="food-suggestions"></div>
                     </div>
+
+                    <!-- Portion Size Quick Buttons -->
+                    <div id="portionSizeButtons" class="portion-size-buttons" style="display: none; margin-top: 1rem; margin-bottom: 1rem;">
+                        <label class="input-label">Quick Portion Size</label>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button type="button" class="portion-btn" data-multiplier="0.5">0.5x</button>
+                            <button type="button" class="portion-btn active" data-multiplier="1">1x</button>
+                            <button type="button" class="portion-btn" data-multiplier="1.5">1.5x</button>
+                            <button type="button" class="portion-btn" data-multiplier="2">2x</button>
+                            <button type="button" class="portion-btn" data-multiplier="custom">Custom</button>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+                            <span id="currentServingSize" style="font-size: 0.875rem; color: var(--text-secondary);"></span>
+                            <button type="button" id="favoriteBtn" class="btn-icon" title="Add to favorites" style="margin-left: auto;">
+                                ⭐
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="input-group">
                         <label class="input-label">Quantity / Servings</label>
                         <input type="number" id="quantityInput" placeholder="1" value="1" min="0.5" step="0.5" class="input">
@@ -1038,7 +1069,7 @@
                             <button type="button" class="btn-secondary btn-sm" onclick="app.removeFoodPhoto()" style="margin-top: 0.5rem;">Remove Photo</button>
                         </div>
                     </div>
-                    <p class="helper-text">💡 Start typing to search from 60+ common foods</p>
+                    <p class="helper-text">💡 Search 340+ Indian & Western foods. Online? Access millions more via Nutritionix API! 🌐</p>
                 </div>
                 <div class="modal-footer">
                     <button id="cancelFoodBtn" class="btn-secondary">Cancel</button>
@@ -1224,7 +1255,7 @@
                     <div class="input-group">
                         <label class="input-label">🔧 App Version & Cache</label>
                         <div class="settings-info" style="background: #0f172a; border-left: 3px solid #10b981;">
-                            <p style="color: #cbd5e1;"><strong>Version:</strong> v90 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
+                            <p style="color: #cbd5e1;"><strong>Version:</strong> v91 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
                         </div>
                         <p class="helper-text">If app features aren't working, clear the cache to reload the latest version.</p>
                         <button id="clearCacheBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🔄 Clear Cache & Reload</button>
@@ -1914,6 +1945,7 @@
     <script src="js/storage.js"></script>
     <script src="js/googledrive-sync.js"></script>
     <script src="js/food-database.js"></script>
+    <script src="js/nutritionix-api.js"></script>
     <script src="js/exercise-library.js"></script>
     <script src="js/workout-templates.js"></script>
     <script src="js/quotes.js"></script>

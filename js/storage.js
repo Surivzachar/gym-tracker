@@ -23,7 +23,10 @@ const Storage = {
         SLEEP_LOG: 'gym_tracker_sleep_log',
         JOURNAL_ENTRIES: 'gym_tracker_journal_entries',
         CARDIO_SESSIONS: 'gym_tracker_cardio_sessions',
-        NUTRITION_GOALS: 'gym_tracker_nutrition_goals'
+        NUTRITION_GOALS: 'gym_tracker_nutrition_goals',
+        RECENT_FOODS: 'gym_tracker_recent_foods',
+        FAVORITE_FOODS: 'gym_tracker_favorite_foods',
+        CACHED_API_FOODS: 'gym_tracker_cached_api_foods'
     },
 
     // Get data from localStorage
@@ -1062,5 +1065,131 @@ const Storage = {
     getCardioSessionById(sessionId) {
         const sessions = this.getAllCardioSessions();
         return sessions.find(s => s.id === sessionId);
+    },
+
+    // Recent Foods Methods
+    getRecentFoods() {
+        return this.get(this.KEYS.RECENT_FOODS) || [];
+    },
+
+    addToRecentFoods(foodItem) {
+        let recentFoods = this.getRecentFoods();
+
+        // Remove if already exists (to avoid duplicates)
+        recentFoods = recentFoods.filter(f => f.name !== foodItem.name);
+
+        // Add to beginning
+        recentFoods.unshift({
+            name: foodItem.name,
+            calories: foodItem.calories,
+            protein: foodItem.protein,
+            carbs: foodItem.carbs,
+            fats: foodItem.fats,
+            category: foodItem.category,
+            serving: foodItem.serving,
+            recipe: foodItem.recipe || null,
+            source: foodItem.source || 'database', // 'database' or 'api'
+            lastUsed: new Date().toISOString()
+        });
+
+        // Keep only last 20 foods
+        if (recentFoods.length > 20) {
+            recentFoods = recentFoods.slice(0, 20);
+        }
+
+        return this.set(this.KEYS.RECENT_FOODS, recentFoods);
+    },
+
+    clearRecentFoods() {
+        return this.set(this.KEYS.RECENT_FOODS, []);
+    },
+
+    // Favorite Foods Methods
+    getFavoriteFoods() {
+        return this.get(this.KEYS.FAVORITE_FOODS) || [];
+    },
+
+    addToFavorites(foodItem) {
+        const favorites = this.getFavoriteFoods();
+
+        // Check if already in favorites
+        const exists = favorites.find(f => f.name === foodItem.name);
+        if (exists) {
+            return false; // Already in favorites
+        }
+
+        favorites.push({
+            name: foodItem.name,
+            calories: foodItem.calories,
+            protein: foodItem.protein,
+            carbs: foodItem.carbs,
+            fats: foodItem.fats,
+            category: foodItem.category,
+            serving: foodItem.serving,
+            recipe: foodItem.recipe || null,
+            source: foodItem.source || 'database',
+            addedAt: new Date().toISOString()
+        });
+
+        return this.set(this.KEYS.FAVORITE_FOODS, favorites);
+    },
+
+    removeFromFavorites(foodName) {
+        const favorites = this.getFavoriteFoods();
+        const filtered = favorites.filter(f => f.name !== foodName);
+        return this.set(this.KEYS.FAVORITE_FOODS, filtered);
+    },
+
+    isFavorite(foodName) {
+        const favorites = this.getFavoriteFoods();
+        return favorites.some(f => f.name === foodName);
+    },
+
+    clearFavorites() {
+        return this.set(this.KEYS.FAVORITE_FOODS, []);
+    },
+
+    // Cached API Foods Methods (for offline access to previously searched foods)
+    getCachedAPIFoods() {
+        return this.get(this.KEYS.CACHED_API_FOODS) || [];
+    },
+
+    addToCachedAPIFoods(foodItem) {
+        let cachedFoods = this.getCachedAPIFoods();
+
+        // Remove if already exists (to update it)
+        cachedFoods = cachedFoods.filter(f => f.name !== foodItem.name);
+
+        // Add to cache
+        cachedFoods.push({
+            name: foodItem.name,
+            calories: foodItem.calories,
+            protein: foodItem.protein,
+            carbs: foodItem.carbs,
+            fats: foodItem.fats,
+            category: foodItem.category || 'Mixed',
+            serving: foodItem.serving,
+            source: 'api',
+            cachedAt: new Date().toISOString()
+        });
+
+        // Keep only last 100 cached foods to avoid storage bloat
+        if (cachedFoods.length > 100) {
+            cachedFoods = cachedFoods.slice(-100);
+        }
+
+        return this.set(this.KEYS.CACHED_API_FOODS, cachedFoods);
+    },
+
+    searchCachedAPIFoods(query) {
+        const cachedFoods = this.getCachedAPIFoods();
+        const lowercaseQuery = query.toLowerCase();
+        return cachedFoods.filter(food =>
+            food.name.toLowerCase().includes(lowercaseQuery)
+        );
+    },
+
+    clearCachedAPIFoods() {
+        return this.set(this.KEYS.CACHED_API_FOODS, []);
     }
 };

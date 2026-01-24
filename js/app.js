@@ -1961,8 +1961,8 @@ class GymTrackerApp {
         // Remove existing listeners if any
         input.removeEventListener('input', this.handleFoodSearch);
 
-        // Add input listener
-        input.addEventListener('input', (e) => {
+        // Add input listener with async search
+        input.addEventListener('input', async (e) => {
             const query = e.target.value.trim();
 
             if (query.length < 2) {
@@ -1971,34 +1971,43 @@ class GymTrackerApp {
                 return;
             }
 
-            const results = searchFoods(query);
-
-            if (results.length === 0) {
-                suggestionsContainer.classList.remove('active');
-                suggestionsContainer.innerHTML = '';
-                return;
-            }
-
-            suggestionsContainer.innerHTML = results.map(food => `
-                <div class="food-suggestion-item" data-food='${JSON.stringify(food)}'>
-                    <span class="food-suggestion-category">${food.category}</span>
-                    <span class="food-suggestion-name">${food.name}${food.recipe ? ' 📖' : ''}</span>
-                    <div class="food-suggestion-info">
-                        ${food.calories} cal • P: ${food.protein}g • C: ${food.carbs}g • F: ${food.fats}g
-                        ${food.serving ? ` • ${food.serving}` : ''}
-                    </div>
-                </div>
-            `).join('');
-
+            // Show loading indicator
+            suggestionsContainer.innerHTML = '<div class="food-suggestion-item">🔍 Searching...</div>';
             suggestionsContainer.classList.add('active');
 
-            // Add click listeners to suggestions
-            suggestionsContainer.querySelectorAll('.food-suggestion-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const food = JSON.parse(item.dataset.food);
-                    this.selectFood(food);
+            try {
+                // Use smart food search (local DB -> cached API -> Nutritionix API)
+                const results = await smartFoodSearch(query);
+
+                if (results.length === 0) {
+                    suggestionsContainer.innerHTML = '<div class="food-suggestion-item">No results found</div>';
+                    return;
+                }
+
+                suggestionsContainer.innerHTML = results.map(food => `
+                    <div class="food-suggestion-item" data-food='${JSON.stringify(food)}'>
+                        <span class="food-suggestion-category">${food.category}${food.source === 'api' ? ' 🌐' : ''}</span>
+                        <span class="food-suggestion-name">${food.name}${food.recipe ? ' 📖' : ''}</span>
+                        <div class="food-suggestion-info">
+                            ${food.calories} cal • P: ${food.protein}g • C: ${food.carbs}g • F: ${food.fats}g
+                            ${food.serving ? ` • ${food.serving}` : ''}
+                        </div>
+                    </div>
+                `).join('');
+
+                suggestionsContainer.classList.add('active');
+
+                // Add click listeners to suggestions
+                suggestionsContainer.querySelectorAll('.food-suggestion-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const food = JSON.parse(item.dataset.food);
+                        this.selectFood(food);
+                    });
                 });
-            });
+            } catch (error) {
+                console.error('Food search error:', error);
+                suggestionsContainer.innerHTML = '<div class="food-suggestion-item">Search error. Please try again.</div>';
+            }
         });
 
         // Close suggestions when clicking outside
@@ -2010,18 +2019,131 @@ class GymTrackerApp {
     }
 
     selectFood(food) {
+        // Store original food data for portion calculations and recent foods
+        this.selectedFood = {
+            name: food.name,
+            calories: parseFloat(food.calories),
+            protein: parseFloat(food.protein),
+            carbs: parseFloat(food.carbs),
+            fats: parseFloat(food.fats),
+            category: food.category,
+            serving: food.serving,
+            recipe: food.recipe || null,
+            source: food.source || 'database'
+        };
+
+        // Fill form with original values
         document.getElementById('foodNameInput').value = food.name;
         document.getElementById('caloriesInput').value = food.calories;
         document.getElementById('proteinInput').value = food.protein;
         document.getElementById('carbsInput').value = food.carbs;
         document.getElementById('fatsInput').value = food.fats;
+        document.getElementById('quantityInput').value = 1;
         document.getElementById('foodSuggestions').classList.remove('active');
         document.getElementById('foodSuggestions').innerHTML = '';
+
+        // Show portion size buttons
+        const portionButtons = document.getElementById('portionSizeButtons');
+        portionButtons.style.display = 'block';
+
+        // Update serving size display
+        const servingSizeDisplay = document.getElementById('currentServingSize');
+        servingSizeDisplay.textContent = food.serving ? `Serving: ${food.serving}` : '';
+
+        // Reset portion buttons
+        document.querySelectorAll('.portion-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.multiplier === '1') {
+                btn.classList.add('active');
+            }
+        });
+
+        // Setup portion button listeners
+        this.setupPortionButtons();
+
+        // Setup favorite button
+        this.setupFavoriteButton();
 
         // Store recipe if available and show it
         if (food.recipe) {
             this.showFoodRecipe(food.name, food.recipe, food.serving);
         }
+    }
+
+    setupPortionButtons() {
+        const portionButtons = document.querySelectorAll('.portion-btn');
+        const quantityInput = document.getElementById('quantityInput');
+
+        portionButtons.forEach(btn => {
+            btn.onclick = () => {
+                const multiplier = btn.dataset.multiplier;
+
+                if (multiplier === 'custom') {
+                    quantityInput.focus();
+                    return;
+                }
+
+                // Update quantity input
+                quantityInput.value = parseFloat(multiplier);
+
+                // Update active state
+                portionButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Update macro inputs
+                this.updateMacrosForPortion(parseFloat(multiplier));
+            };
+        });
+
+        // Listen for manual quantity changes
+        quantityInput.addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value) || 1;
+            this.updateMacrosForPortion(value);
+
+            // Update active button state
+            const matchingBtn = Array.from(portionButtons).find(btn =>
+                btn.dataset.multiplier === value.toString()
+            );
+            portionButtons.forEach(b => b.classList.remove('active'));
+            if (matchingBtn) {
+                matchingBtn.classList.add('active');
+            }
+        });
+    }
+
+    updateMacrosForPortion(multiplier) {
+        if (!this.selectedFood) return;
+
+        document.getElementById('caloriesInput').value = Math.round(this.selectedFood.calories * multiplier);
+        document.getElementById('proteinInput').value = Math.round(this.selectedFood.protein * multiplier * 10) / 10;
+        document.getElementById('carbsInput').value = Math.round(this.selectedFood.carbs * multiplier * 10) / 10;
+        document.getElementById('fatsInput').value = Math.round(this.selectedFood.fats * multiplier * 10) / 10;
+    }
+
+    setupFavoriteButton() {
+        const favoriteBtn = document.getElementById('favoriteBtn');
+        if (!this.selectedFood) return;
+
+        // Check if already favorited
+        const isFav = Storage.isFavorite(this.selectedFood.name);
+        favoriteBtn.classList.toggle('favorited', isFav);
+        favoriteBtn.title = isFav ? 'Remove from favorites' : 'Add to favorites';
+
+        favoriteBtn.onclick = () => {
+            if (Storage.isFavorite(this.selectedFood.name)) {
+                Storage.removeFromFavorites(this.selectedFood.name);
+                favoriteBtn.classList.remove('favorited');
+                favoriteBtn.title = 'Add to favorites';
+                alert(`${this.selectedFood.name} removed from favorites`);
+            } else {
+                Storage.addToFavorites(this.selectedFood);
+                favoriteBtn.classList.add('favorited');
+                favoriteBtn.title = 'Remove from favorites';
+                alert(`${this.selectedFood.name} added to favorites`);
+            }
+            // Refresh food view to update favorites section
+            this.renderFood();
+        };
     }
 
     showFoodRecipe(foodName, recipe, serving) {
@@ -2100,12 +2222,23 @@ class GymTrackerApp {
         } else {
             // Add new food item - pass working date if editing past date
             Storage.addFoodItem(this.currentMealType, foodItem, this.workingDate);
+
+            // Add to recent foods (use original food data, not multiplied)
+            if (this.selectedFood) {
+                Storage.addToRecentFoods(this.selectedFood);
+            }
         }
 
         // Clear food photo
         this.currentFoodPhoto = null;
         document.getElementById('foodPhotoInput').value = '';
         document.getElementById('foodPhotoPreview').style.display = 'none';
+
+        // Clear selected food data
+        this.selectedFood = null;
+
+        // Hide portion buttons
+        document.getElementById('portionSizeButtons').style.display = 'none';
 
         this.renderFood();
         this.renderDashboard();
@@ -2211,6 +2344,56 @@ class GymTrackerApp {
 
         // Render water tracker
         this.renderWaterTracker();
+
+        // Render recent foods and favorites
+        this.renderRecentFoods();
+        this.renderFavoriteFoods();
+    }
+
+    renderRecentFoods() {
+        const recentFoods = Storage.getRecentFoods();
+        const section = document.getElementById('recentFoodsSection');
+        const list = document.getElementById('recentFoodsList');
+
+        if (recentFoods.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+
+        section.style.display = 'block';
+        list.innerHTML = recentFoods.slice(0, 6).map(food => `
+            <div class="quick-add-item" onclick="app.quickAddFood(${JSON.stringify(food).replace(/"/g, '&quot;')})">
+                <span class="quick-add-item-name">${food.name}</span>
+                <span class="quick-add-item-info">${food.calories} cal</span>
+            </div>
+        `).join('');
+    }
+
+    renderFavoriteFoods() {
+        const favoriteFoods = Storage.getFavoriteFoods();
+        const section = document.getElementById('favoriteFoodsSection');
+        const list = document.getElementById('favoriteFoodsList');
+
+        if (favoriteFoods.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+
+        section.style.display = 'block';
+        list.innerHTML = favoriteFoods.map(food => `
+            <div class="quick-add-item" onclick="app.quickAddFood(${JSON.stringify(food).replace(/"/g, '&quot;')})">
+                <span class="quick-add-item-name">${food.name}</span>
+                <span class="quick-add-item-info">${food.calories} cal</span>
+            </div>
+        `).join('');
+    }
+
+    quickAddFood(food) {
+        // Open add food modal with the selected meal type (default to breakfast)
+        // Let user choose which meal to add it to
+        this.currentMealType = 'breakfast'; // Default
+        this.openModal('addFoodModal');
+        this.selectFood(food);
     }
 
     deleteFood(foodId) {
