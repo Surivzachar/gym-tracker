@@ -499,6 +499,8 @@ const FoodDatabase = [
     { name: "Egg Bhurji", calories: 155, protein: 11, carbs: 4, fats: 11, category: "Protein", serving: "100g (2 eggs)" },
     { name: "Boiled Eggs (2)", calories: 140, protein: 12, carbs: 1, fats: 10, category: "Protein", serving: "2 eggs (100g)" },
     { name: "Omelette (2 eggs)", calories: 185, protein: 12, carbs: 2, fats: 14, category: "Protein", serving: "120g" },
+    { name: "Egg White Omelette (4 whites)", calories: 68, protein: 16, carbs: 0, fats: 0, category: "Protein", serving: "136g (4 egg whites)" },
+    { name: "Egg White Omelette (3 whites)", calories: 51, protein: 12, carbs: 0, fats: 0, category: "Protein", serving: "102g (3 egg whites)" },
     { name: "Fish Curry", calories: 195, protein: 20, carbs: 6, fats: 10, category: "Protein", serving: "200g" },
     { name: "Fish Fry", calories: 210, protein: 22, carbs: 8, fats: 10, category: "Protein", serving: "150g" },
     { name: "Prawns Curry", calories: 165, protein: 24, carbs: 5, fats: 5, category: "Protein", serving: "150g" },

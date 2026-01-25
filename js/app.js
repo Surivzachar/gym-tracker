@@ -2625,11 +2625,12 @@ class GymTrackerApp {
             return;
         }
 
-        // Calculate total values based on quantity
-        const totalCalories = Math.round(calories * quantity);
-        const totalProtein = Math.round(protein * quantity * 10) / 10;
-        const totalCarbs = Math.round(carbs * quantity * 10) / 10;
-        const totalFats = Math.round(fats * quantity * 10) / 10;
+        // NOTE: The calories/macros in the inputs are ALREADY adjusted for quantity
+        // by updateMacrosForPortion(), so we don't multiply again here
+        const totalCalories = Math.round(calories);
+        const totalProtein = Math.round(protein * 10) / 10;
+        const totalCarbs = Math.round(carbs * 10) / 10;
+        const totalFats = Math.round(fats * 10) / 10;
 
         // Add quantity indicator to name if quantity > 1
         const displayName = quantity > 1 ? `${quantity}x ${name}` : name;
