@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Cache - Gym Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #0f172a;
+            color: #f8fafc;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: #1e293b;
+            border-radius: 16px;
+            max-width: 500px;
+        }
+        h1 { color: #10b981; margin-bottom: 1rem; }
+        p { margin-bottom: 1.5rem; line-height: 1.6; }
+        button {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 0.5rem;
+        }
+        button:hover { background: #059669; }
+        #status {
+            margin-top: 1rem;
+            font-weight: bold;
+            color: #10b981;
+        }
+        .info {
+            background: #0f172a;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 Clear App Cache</h1>
+        <div class="info">
+            <p><strong>Current Status:</strong></p>
+            <p id="currentVersion">Checking...</p>
+        </div>
+        <p>Click the button below to completely clear all cached data and service workers, then reload the app with the latest version (v99).</p>
+        <button onclick="clearEverything()">🔄 Clear All Cache & Reload</button>
+        <p id="status"></p>
+    </div>
+
+    <script>
+        // Check current cache version
+        async function checkVersion() {
+            try {
+                const cacheNames = await caches.keys();
+                document.getElementById('currentVersion').textContent = cacheNames.length > 0
+                    ? 'Cached versions: ' + cacheNames.join(', ')
+                    : 'No cache found';
+            } catch (error) {
+                document.getElementById('currentVersion').textContent = 'Unable to check';
+            }
+        }
+
+        async function clearEverything() {
+            const statusEl = document.getElementById('status');
+
+            try {
+                statusEl.textContent = 'Step 1/3: Unregistering service workers...';
+
+                // Unregister all service workers
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (const registration of registrations) {
+                        await registration.unregister();
+                    }
+                }
+
+                statusEl.textContent = 'Step 2/3: Clearing all caches...';
+
+                // Clear all caches
+                const cacheNames = await caches.keys();
+                await Promise.all(cacheNames.map(name => caches.delete(name)));
+
+                statusEl.textContent = 'Step 3/3: Complete! Your workout data is safe.';
+
+                // Don't clear localStorage - it contains workout data!
+                // Only clear sessionStorage
+                sessionStorage.clear();
+
+                statusEl.textContent = '✅ Success! Redirecting to app...';
+
+                // Wait a moment then redirect
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+
+            } catch (error) {
+                statusEl.textContent = '❌ Error: ' + error.message;
+                statusEl.style.color = '#ef4444';
+            }
+        }
+
+        // Check version on load
+        checkVersion();
+    </script>
+</body>
+</html>

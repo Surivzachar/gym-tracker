@@ -66,7 +66,21 @@ class GymTrackerApp {
 
         // Register service worker for PWA
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(err => {
+            navigator.serviceWorker.register('sw.js').then(registration => {
+                // Force check for updates
+                registration.update();
+
+                // Listen for updates
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'activated') {
+                            // New service worker activated, reload the page
+                            window.location.reload();
+                        }
+                    });
+                });
+            }).catch(err => {
                 console.log('Service worker registration failed:', err);
             });
         }
