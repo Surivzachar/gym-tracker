@@ -1167,6 +1167,14 @@ class GymTrackerApp {
                                     <div class="history-item">
                                         <span class="history-date">${formattedDate}</span>
                                         <span class="history-stats">${h.sets.length} sets • Max: ${maxWeight}${maxUnit} • ${totalReps} reps</span>
+                                        <div class="sets-list" style="margin-top: 0.5rem;">
+                                            ${h.sets.map((set, idx) => `
+                                                <div class="set-row">
+                                                    <span class="set-number">Set ${idx + 1}</span>
+                                                    <span class="set-detail">${set.weight || 0}${set.unit || 'kg'} × ${set.reps || 0} reps</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
                                     </div>
                                 `;
                             }).join('')}
