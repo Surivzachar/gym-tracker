@@ -159,6 +159,48 @@ const FoodDatabase = [
         serving: "1 uttapam (100g)",
         recipe: "Ingredients (for 1 uttapam):\n• Dosa batter - 80g\n• Onion - 15g\n• Tomato - 10g\n• Green chili - 1\n• Oil - 1 tsp\n\nPreparation:\n1. Spread thick batter on tawa\n2. Top with chopped veggies\n3. Cook both sides with oil\n4. Time: 5-6 minutes"
     },
+    {
+        name: "Ven Pongal",
+        calories: 185, protein: 6, carbs: 32, fats: 4,
+        category: "Carbs",
+        serving: "200g (1 plate)",
+        recipe: "Ingredients (for 200g serving):\n• Rice - 40g\n• Moong dal - 15g\n• Black pepper - 1 tsp\n• Cumin - 1 tsp\n• Ginger - 1 tsp\n• Ghee - 1 tsp\n• Cashews - 5-6\n\nPreparation:\n1. Pressure cook rice + moong dal (soft)\n2. Temper with pepper, cumin\n3. Add ghee, cashews\n4. Mix well, season\nServe: Hot with chutney & sambar"
+    },
+    {
+        name: "Khichdi",
+        calories: 165, protein: 6, carbs: 30, fats: 2.5,
+        category: "Carbs",
+        serving: "200g (1 bowl)",
+        recipe: "Ingredients (for 200g serving):\n• Rice - 35g\n• Moong dal - 15g\n• Turmeric - 1/4 tsp\n• Ghee - 1 tsp\n• Cumin - 1/2 tsp\n\nPreparation:\n1. Wash rice and dal together\n2. Pressure cook with turmeric (3 whistles)\n3. Temper with cumin\n4. Add ghee on top\nServe: With yogurt or pickle"
+    },
+    {
+        name: "Vegetable Pulao",
+        calories: 210, protein: 5, carbs: 40, fats: 4,
+        category: "Carbs",
+        serving: "200g (1 plate)",
+        recipe: "Ingredients (for 200g serving):\n• Basmati rice - 70g (raw)\n• Mixed vegetables - 40g\n• Whole spices - 1 tsp\n• Ghee - 1 tsp\n• Onion - 15g\n\nPreparation:\n1. Sauté whole spices in ghee\n2. Add onion, vegetables\n3. Add rice, water (1:2)\n4. Cook till fluffy (15-20 min)"
+    },
+    {
+        name: "Coconut Chutney",
+        calories: 65, protein: 1, carbs: 4, fats: 5,
+        category: "Mixed",
+        serving: "50g (2 tbsp)",
+        recipe: "Ingredients (for 50g):\n• Fresh coconut - 30g\n• Green chili - 2\n• Ginger - small piece\n• Urad dal - 1 tsp\n• Curry leaves - 5-6\n• Oil - 1/2 tsp\n\nPreparation:\n1. Grind coconut + chili + ginger\n2. Add water for consistency\n3. Temper with urad dal\n4. Add curry leaves"
+    },
+    {
+        name: "Tomato Chutney",
+        calories: 45, protein: 1, carbs: 6, fats: 2,
+        category: "Mixed",
+        serving: "50g (2 tbsp)",
+        recipe: "Ingredients:\n• Tomato - 40g\n• Onion - 10g\n• Red chili - 2\n• Garlic - 2 cloves\n• Oil - 1/2 tsp\n\nPreparation:\n1. Sauté tomatoes till soft\n2. Add onion, garlic, chili\n3. Grind to paste\n4. Temper with mustard"
+    },
+    {
+        name: "Peanut Chutney",
+        calories: 85, protein: 3, carbs: 5, fats: 6,
+        category: "Mixed",
+        serving: "50g (2 tbsp)",
+        recipe: "Ingredients:\n• Peanuts (roasted) - 25g\n• Red chili - 2\n• Garlic - 2 cloves\n• Tamarind - small piece\n• Oil - 1/2 tsp\n\nPreparation:\n1. Dry roast peanuts\n2. Grind with chili, garlic\n3. Add tamarind for tang\n4. Temper with mustard"
+    },
 
     // North Indian Curries
     {
@@ -229,6 +271,55 @@ const FoodDatabase = [
         category: "Carbs",
         serving: "200g",
         recipe: "Ingredients (for 200g serving):\n• Basmati rice - 80g (raw)\n• Cumin seeds - 1 tsp\n• Ghee - 1 tsp\n• Bay leaf - 1\n• Salt - to taste\n\nPreparation:\n1. Wash and soak rice 15 min\n2. Temper cumin in ghee\n3. Add rice and water (1:2)\n4. Cook till fluffy (15 min)"
+    },
+    {
+        name: "Vangi Bath",
+        calories: 245, protein: 5, carbs: 42, fats: 6,
+        category: "Carbs",
+        serving: "250g (1 plate)",
+        recipe: "Ingredients (for 250g serving):\n• Rice (cooked) - 150g\n• Brinjal/Eggplant - 60g\n• Vangi bath powder - 2 tsp\n• Onion - 20g\n• Peanuts - 10g\n• Oil - 1 tbsp\n• Tamarind - small piece\n\nPreparation:\n1. Cut brinjal, soak in water\n2. Temper with mustard, curry leaves\n3. Fry brinjal till soft\n4. Add vangi bath powder, tamarind\n5. Mix with cooked rice\n6. Garnish with roasted peanuts"
+    },
+    {
+        name: "Puliyogare",
+        calories: 235, protein: 4, carbs: 44, fats: 5,
+        category: "Carbs",
+        serving: "250g (1 plate)",
+        recipe: "Ingredients (for 250g serving):\n• Rice (cooked) - 150g\n• Tamarind paste - 2 tbsp\n• Puliyogare powder - 2 tsp\n• Peanuts - 10g\n• Sesame oil - 1 tbsp\n• Jaggery - 1 tsp\n• Curry leaves - 8-10\n\nPreparation:\n1. Extract tamarind juice\n2. Temper with mustard, peanuts\n3. Add puliyogare powder, jaggery\n4. Mix with warm rice\n5. Add curry leaves\nServe: Hot or at room temperature"
+    },
+    {
+        name: "Lemon Rice",
+        calories: 210, protein: 4, carbs: 40, fats: 4,
+        category: "Carbs",
+        serving: "200g (1 plate)",
+        recipe: "Ingredients (for 200g serving):\n• Rice (cooked) - 150g\n• Lemon juice - 2 tbsp\n• Peanuts - 10g\n• Turmeric - 1/4 tsp\n• Green chili - 2\n• Curry leaves - 8-10\n• Oil - 1 tbsp\n\nPreparation:\n1. Temper with mustard, peanuts\n2. Add turmeric, curry leaves\n3. Mix with rice\n4. Add lemon juice\n5. Mix well, garnish with coriander"
+    },
+    {
+        name: "Curd Rice",
+        calories: 180, protein: 6, carbs: 32, fats: 3,
+        category: "Carbs",
+        serving: "250g (1 bowl)",
+        recipe: "Ingredients (for 250g serving):\n• Rice (cooked) - 120g\n• Curd/Yogurt - 120g\n• Milk - 30ml\n• Cucumber - 20g\n• Coriander - 1 tbsp\n• Green chili - 1\n• Ginger - 1 tsp\n\nPreparation:\n1. Mash warm rice with curd\n2. Add milk for smooth consistency\n3. Temper with mustard, curry leaves\n4. Add chopped cucumber, coriander\n5. Season with salt\nServe: Chilled"
+    },
+    {
+        name: "Tomato Rice",
+        calories: 220, protein: 4, carbs: 42, fats: 4,
+        category: "Carbs",
+        serving: "200g (1 plate)",
+        recipe: "Ingredients (for 200g serving):\n• Rice (cooked) - 140g\n• Tomato - 80g\n• Onion - 20g\n• Tomato rice powder - 1 tsp\n• Oil - 1 tbsp\n• Curry leaves - 8-10\n\nPreparation:\n1. Chop tomatoes finely\n2. Temper with spices\n3. Cook tomatoes till mushy\n4. Add cooked rice\n5. Mix well with tomato rice powder"
+    },
+    {
+        name: "Coconut Rice",
+        calories: 260, protein: 4, carbs: 42, fats: 8,
+        category: "Carbs",
+        serving: "200g (1 plate)",
+        recipe: "Ingredients (for 200g serving):\n• Rice (cooked) - 140g\n• Fresh coconut (grated) - 30g\n• Peanuts - 10g\n• Chana dal - 1 tsp\n• Coconut oil - 1 tbsp\n• Curry leaves - 8-10\n\nPreparation:\n1. Temper with mustard, chana dal\n2. Add peanuts, curry leaves\n3. Add grated coconut, fry briefly\n4. Mix with warm rice\n5. Season with salt"
+    },
+    {
+        name: "Bisi Bele Bath",
+        calories: 240, protein: 7, carbs: 43, fats: 4,
+        category: "Mixed",
+        serving: "250g (1 plate)",
+        recipe: "Ingredients (for 250g serving):\n• Rice - 50g (raw)\n• Toor dal - 15g (raw)\n• Mixed vegetables - 40g\n• Bisi bele bath powder - 2 tsp\n• Tamarind - small piece\n• Jaggery - 1 tsp\n• Ghee - 1 tsp\n\nPreparation:\n1. Pressure cook rice + dal + vegetables\n2. Add bisi bele bath powder\n3. Add tamarind juice, jaggery\n4. Simmer 10 minutes\n5. Temper with ghee, cashews"
     },
 
     // Common Meals
