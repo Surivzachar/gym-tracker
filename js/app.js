@@ -4658,11 +4658,23 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         });
         const totalCardioCalories = todayCardio.reduce((sum, session) => sum + (session.calories || 0), 0);
 
+        // Get workout calories for today (from completed workouts)
+        const allWorkouts = Storage.getAllWorkouts();
+        const todayWorkouts = allWorkouts.filter(workout => {
+            const workoutDate = new Date(workout.date).toDateString();
+            const targetDate = actualDate.toDateString();
+            return workoutDate === targetDate;
+        });
+        const totalWorkoutCalories = todayWorkouts.reduce((sum, workout) => sum + (workout.calories || 0), 0);
+
+        // Calculate total calories burnt (cardio + workouts + legacy metrics)
+        const totalCaloriesBurnt = totalCardioCalories + totalWorkoutCalories + (metrics.workoutCalories || 0);
+
         // Update metrics - prioritize new storage over legacy DAILY_METRICS
         document.getElementById('dashSteps').textContent = metrics.steps || 0;
         document.getElementById('dashWater').textContent = waterData.glasses || metrics.waterGlasses || 0;
         document.getElementById('dashSleep').textContent = sleepLog?.hours || metrics.sleepHours || 0;
-        document.getElementById('dashCalories').textContent = totalCardioCalories || metrics.workoutCalories || 0;
+        document.getElementById('dashCalories').textContent = totalCaloriesBurnt;
 
         // Update weight
         const weightGoal = Storage.getWeightGoal();
