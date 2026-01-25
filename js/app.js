@@ -658,22 +658,82 @@ class GymTrackerApp {
 
     setupExerciseAutoSuggest() {
         const nameInput = document.getElementById('exerciseNameInput');
+        const suggestionsDiv = document.getElementById('exerciseSuggestions');
         let autoSuggestTimeout;
 
+        // Show exercise library suggestions as user types
         nameInput.addEventListener('input', (e) => {
             clearTimeout(autoSuggestTimeout);
+            const query = e.target.value.trim();
 
+            // Hide suggestions if query is too short
+            if (query.length < 2) {
+                suggestionsDiv.style.display = 'none';
+                return;
+            }
+
+            // Search exercise library
+            const matches = ExerciseLibrary.search(query);
+
+            if (matches.length > 0) {
+                // Show suggestions from library
+                suggestionsDiv.innerHTML = matches.slice(0, 8).map(ex => `
+                    <div class="suggestion-item" data-exercise-name="${ex.name}">
+                        <div class="suggestion-name">${ex.name}</div>
+                        <div class="suggestion-details">
+                            <span class="suggestion-tag">${ex.category}</span>
+                            <span class="suggestion-tag">${ex.equipment}</span>
+                            <span class="suggestion-tag">${ex.difficulty}</span>
+                            <span style="color: var(--text-secondary);">${ex.primaryMuscles.join(', ')}</span>
+                        </div>
+                    </div>
+                `).join('');
+                suggestionsDiv.style.display = 'block';
+
+                // Add click handlers to suggestions
+                suggestionsDiv.querySelectorAll('.suggestion-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const exerciseName = item.getAttribute('data-exercise-name');
+                        nameInput.value = exerciseName;
+                        suggestionsDiv.style.display = 'none';
+
+                        // Check if this exercise has history and show auto-fill suggestion
+                        setTimeout(() => {
+                            const lastSets = Storage.getLastWorkoutSets(exerciseName);
+                            if (lastSets && lastSets.length > 0) {
+                                this.showAutoFillSuggestion(exerciseName, lastSets);
+                            }
+                        }, 100);
+                    });
+                });
+            } else {
+                suggestionsDiv.style.display = 'none';
+            }
+
+            // Also check for workout history after typing stops
             autoSuggestTimeout = setTimeout(() => {
-                const exerciseName = e.target.value.trim();
-                if (exerciseName.length < 3) return;
-
-                // Check if this exercise has history
-                const lastSets = Storage.getLastWorkoutSets(exerciseName);
-                if (lastSets && lastSets.length > 0) {
-                    // Show suggestion to auto-fill
-                    this.showAutoFillSuggestion(exerciseName, lastSets);
+                const exerciseName = nameInput.value.trim();
+                if (exerciseName.length >= 3) {
+                    const lastSets = Storage.getLastWorkoutSets(exerciseName);
+                    if (lastSets && lastSets.length > 0) {
+                        this.showAutoFillSuggestion(exerciseName, lastSets);
+                    }
                 }
-            }, 500); // Wait 500ms after typing stops
+            }, 500);
+        });
+
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!nameInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+                suggestionsDiv.style.display = 'none';
+            }
+        });
+
+        // Hide suggestions when ESC is pressed
+        nameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                suggestionsDiv.style.display = 'none';
+            }
         });
     }
 

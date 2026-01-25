@@ -953,7 +953,11 @@
                     </div>
                     <div class="input-group">
                         <label class="input-label">Exercise Name</label>
-                        <input type="text" id="exerciseNameInput" placeholder="e.g., Bench Press, Running, Burpees" class="input">
+                        <div style="position: relative;">
+                            <input type="text" id="exerciseNameInput" placeholder="e.g., Bench Press, Running, Burpees" class="input" autocomplete="off">
+                            <div id="exerciseSuggestions" class="exercise-suggestions" style="display: none;"></div>
+                        </div>
+                        <p class="helper-text" style="font-size: 0.75rem; margin-top: 0.25rem; color: #64748b;">💡 Start typing to search from 50+ exercises</p>
                     </div>
                     <div class="input-group">
                         <label class="input-label">Video Tutorial URL (Optional)</label>
