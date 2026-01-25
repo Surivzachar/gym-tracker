@@ -334,6 +334,227 @@ const ExerciseLibrary = {
                 "Squeeze glutes tight",
                 "Full body tension"
             ]
+        },
+        // CARDIO
+        {
+            id: 16,
+            name: "Outdoor Running",
+            category: "cardio",
+            difficulty: "beginner",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Core", "Glutes"],
+            equipment: "None",
+            instructions: [
+                "Warm up with 5 minutes of walking or light jogging",
+                "Maintain good posture with slight forward lean",
+                "Land on midfoot, not heel",
+                "Keep arms at 90 degrees, swinging naturally",
+                "Control breathing - breathe rhythmically"
+            ],
+            formTips: [
+                "Start with shorter distances and build up",
+                "Invest in proper running shoes",
+                "Stay hydrated",
+                "Track distance and pace"
+            ]
+        },
+        {
+            id: 17,
+            name: "Indoor Running",
+            category: "cardio",
+            difficulty: "beginner",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Core", "Glutes"],
+            equipment: "Treadmill",
+            instructions: [
+                "Set treadmill to comfortable pace",
+                "Warm up at slow speed for 5 minutes",
+                "Gradually increase speed or incline",
+                "Maintain good posture, look straight ahead",
+                "Cool down with 5 minutes of walking"
+            ],
+            formTips: [
+                "Don't hold onto handrails",
+                "Use incline to simulate outdoor running",
+                "Stay centered on the belt",
+                "Vary speed and incline for better workout"
+            ]
+        },
+        {
+            id: 18,
+            name: "Outdoor Cycling",
+            category: "cardio",
+            difficulty: "beginner",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Glutes", "Core"],
+            equipment: "Bicycle",
+            instructions: [
+                "Adjust seat height so leg is almost straight at bottom",
+                "Start with easy gear and warm up",
+                "Maintain cadence of 70-90 RPM",
+                "Keep core engaged and back straight",
+                "Shift gears based on terrain"
+            ],
+            formTips: [
+                "Wear helmet for safety",
+                "Check tire pressure before riding",
+                "Use hand signals when turning",
+                "Stay visible with lights/reflectors"
+            ]
+        },
+        {
+            id: 19,
+            name: "Indoor Cycling",
+            category: "cardio",
+            difficulty: "beginner",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Glutes", "Core"],
+            equipment: "Stationary Bike",
+            instructions: [
+                "Adjust seat and handlebar height",
+                "Start with low resistance for warmup",
+                "Maintain steady cadence (80-100 RPM)",
+                "Gradually increase resistance for intervals",
+                "Keep shoulders relaxed"
+            ],
+            formTips: [
+                "Don't grip handlebars too tight",
+                "Engage core throughout",
+                "Vary resistance and speed",
+                "Track distance and calories"
+            ]
+        },
+        {
+            id: 20,
+            name: "Treadmill Walking",
+            category: "cardio",
+            difficulty: "beginner",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Glutes"],
+            equipment: "Treadmill",
+            instructions: [
+                "Start at comfortable walking pace (3-4 mph)",
+                "Keep upright posture, shoulders back",
+                "Swing arms naturally",
+                "Add incline for more intensity",
+                "Maintain steady pace throughout"
+            ],
+            formTips: [
+                "Great for beginners or recovery days",
+                "Increase incline before speed",
+                "Don't look down at feet",
+                "Stay hydrated"
+            ]
+        },
+        {
+            id: 21,
+            name: "Rowing Machine",
+            category: "cardio",
+            difficulty: "intermediate",
+            primaryMuscles: ["Back", "Legs", "Cardiovascular"],
+            secondaryMuscles: ["Arms", "Core", "Shoulders"],
+            equipment: "Rowing Machine",
+            instructions: [
+                "Strap feet in securely",
+                "Start with legs driving, then pull with arms",
+                "Sequence: Legs → Core → Arms (pulling)",
+                "Return: Arms → Core → Legs",
+                "Keep back straight throughout"
+            ],
+            formTips: [
+                "Full body workout",
+                "Power comes from legs, not arms",
+                "Maintain 70-80% legs, 20-30% upper body",
+                "Track split time (500m pace)"
+            ]
+        },
+        {
+            id: 22,
+            name: "Elliptical",
+            category: "cardio",
+            difficulty: "beginner",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Glutes", "Core"],
+            equipment: "Elliptical Machine",
+            instructions: [
+                "Stand upright on pedals",
+                "Grip handles lightly",
+                "Push and pull with legs in fluid motion",
+                "Engage core, don't lean on handles",
+                "Vary resistance and incline"
+            ],
+            formTips: [
+                "Low impact on joints",
+                "Good for recovery or active rest",
+                "Can go backwards to target different muscles",
+                "Maintain consistent rhythm"
+            ]
+        },
+        {
+            id: 23,
+            name: "Jump Rope",
+            category: "cardio",
+            difficulty: "intermediate",
+            primaryMuscles: ["Cardiovascular", "Calves"],
+            secondaryMuscles: ["Shoulders", "Core"],
+            equipment: "Jump Rope",
+            instructions: [
+                "Adjust rope length to armpit height",
+                "Keep elbows close to body",
+                "Rotate from wrists, not arms",
+                "Jump on balls of feet",
+                "Land softly with slight knee bend"
+            ],
+            formTips: [
+                "High intensity cardio",
+                "Start with 30 second intervals",
+                "Great for conditioning",
+                "Improves coordination and footwork"
+            ]
+        },
+        {
+            id: 24,
+            name: "Stair Climber",
+            category: "cardio",
+            difficulty: "intermediate",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Glutes", "Core"],
+            equipment: "Stair Climber Machine",
+            instructions: [
+                "Step with full foot placement",
+                "Keep upright posture",
+                "Light grip on handrails for balance only",
+                "Maintain steady rhythm",
+                "Engage glutes with each step"
+            ],
+            formTips: [
+                "Don't lean on handrails",
+                "Great for building leg strength",
+                "Burns more calories than flat walking",
+                "Start with lower speed"
+            ]
+        },
+        {
+            id: 25,
+            name: "Swimming",
+            category: "cardio",
+            difficulty: "intermediate",
+            primaryMuscles: ["Full Body", "Cardiovascular"],
+            secondaryMuscles: ["Shoulders", "Back", "Legs"],
+            equipment: "Swimming Pool",
+            instructions: [
+                "Choose stroke: freestyle, breaststroke, backstroke",
+                "Focus on form over speed initially",
+                "Breathe rhythmically",
+                "Use full range of motion",
+                "Take breaks between sets"
+            ],
+            formTips: [
+                "Low impact, easy on joints",
+                "Full body workout",
+                "Great for active recovery",
+                "Wear goggles for comfort"
+            ]
         }
     ],
 
