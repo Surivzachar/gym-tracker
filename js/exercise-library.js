@@ -555,6 +555,183 @@ const ExerciseLibrary = {
                 "Great for active recovery",
                 "Wear goggles for comfort"
             ]
+        },
+        // SPORTS & ACTIVITIES
+        {
+            id: 26,
+            name: "Badminton",
+            category: "sports",
+            difficulty: "beginner",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Arms", "Shoulders", "Core"],
+            equipment: "Badminton Racket & Court",
+            instructions: [
+                "Warm up with light rallying",
+                "Maintain proper grip on racket",
+                "Stay on balls of feet for quick movements",
+                "Use wrist action for power shots",
+                "Recover to center after each shot"
+            ],
+            formTips: [
+                "Great cardio and agility workout",
+                "Improves reflexes and coordination",
+                "Stay hydrated during play",
+                "Track duration and calories burned"
+            ]
+        },
+        {
+            id: 27,
+            name: "Tennis",
+            category: "sports",
+            difficulty: "intermediate",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Arms", "Shoulders", "Core"],
+            equipment: "Tennis Racket & Court",
+            instructions: [
+                "Warm up with light rally practice",
+                "Focus on footwork and positioning",
+                "Use proper technique for groundstrokes",
+                "Serve with full body rotation",
+                "Stay alert and react quickly"
+            ],
+            formTips: [
+                "Excellent full-body workout",
+                "High intensity intervals",
+                "Good for bone density",
+                "Wear proper tennis shoes"
+            ]
+        },
+        {
+            id: 28,
+            name: "Basketball",
+            category: "sports",
+            difficulty: "intermediate",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Arms", "Core"],
+            equipment: "Basketball & Court",
+            instructions: [
+                "Warm up with dynamic stretches",
+                "Practice dribbling and shooting",
+                "Focus on defensive stance",
+                "Jump with proper form",
+                "Communicate with teammates"
+            ],
+            formTips: [
+                "High intensity cardio",
+                "Builds leg power and explosiveness",
+                "Great for coordination",
+                "Stay hydrated between quarters"
+            ]
+        },
+        {
+            id: 29,
+            name: "Football/Soccer",
+            category: "sports",
+            difficulty: "intermediate",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Core"],
+            equipment: "Football & Field",
+            instructions: [
+                "Warm up with jogging and stretches",
+                "Practice ball control and passing",
+                "Maintain awareness of field position",
+                "Sprint when attacking or defending",
+                "Cool down with light jogging"
+            ],
+            formTips: [
+                "Excellent endurance builder",
+                "Develops leg strength",
+                "Great team sport for motivation",
+                "Wear proper cleats and shin guards"
+            ]
+        },
+        {
+            id: 30,
+            name: "Volleyball",
+            category: "sports",
+            difficulty: "beginner",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Arms", "Shoulders", "Core"],
+            equipment: "Volleyball & Court",
+            instructions: [
+                "Warm up with passing drills",
+                "Keep knees bent and ready to move",
+                "Use platform for passing",
+                "Jump with proper timing for spikes",
+                "Communicate with teammates"
+            ],
+            formTips: [
+                "Good for explosive power",
+                "Improves jumping ability",
+                "Low to moderate intensity",
+                "Great for social fitness"
+            ]
+        },
+        {
+            id: 31,
+            name: "Table Tennis/Ping Pong",
+            category: "sports",
+            difficulty: "beginner",
+            primaryMuscles: ["Arms", "Core"],
+            secondaryMuscles: ["Legs", "Cardiovascular"],
+            equipment: "Table Tennis Paddle & Table",
+            instructions: [
+                "Maintain ready position",
+                "Use wrist for spin shots",
+                "Stay light on feet",
+                "Focus on ball trajectory",
+                "Practice serves and returns"
+            ],
+            formTips: [
+                "Excellent for reflexes and hand-eye coordination",
+                "Low impact, suitable for all ages",
+                "Good for active recovery",
+                "Can be played casually or competitively"
+            ]
+        },
+        {
+            id: 32,
+            name: "Squash",
+            category: "sports",
+            difficulty: "intermediate",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Arms", "Shoulders", "Core"],
+            equipment: "Squash Racket & Court",
+            instructions: [
+                "Warm up thoroughly",
+                "Stay in T-position when possible",
+                "Use proper wrist action",
+                "Move quickly to corners",
+                "Return to center after each shot"
+            ],
+            formTips: [
+                "Extremely high calorie burn",
+                "Intense cardio workout",
+                "Improves agility and speed",
+                "Wear eye protection"
+            ]
+        },
+        {
+            id: 33,
+            name: "Cricket",
+            category: "sports",
+            difficulty: "beginner",
+            primaryMuscles: ["Legs", "Cardiovascular"],
+            secondaryMuscles: ["Arms", "Shoulders", "Core"],
+            equipment: "Cricket Bat, Ball & Field",
+            instructions: [
+                "Warm up with light jogging and stretches",
+                "Practice batting stance and shots",
+                "Bowl with proper technique",
+                "Field with alertness and quick reactions",
+                "Stay hydrated during long sessions"
+            ],
+            formTips: [
+                "Moderate intensity with bursts",
+                "Good for building endurance",
+                "Develops hand-eye coordination",
+                "Great team sport"
+            ]
         }
     ],
 

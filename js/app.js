@@ -4726,9 +4726,26 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             const targetDate = actualDate.toDateString();
             return workoutDate === targetDate;
         });
-        const totalWorkoutCalories = todayWorkouts.reduce((sum, workout) => sum + (workout.calories || 0), 0);
 
-        // Calculate total calories burnt (cardio + workouts + legacy metrics)
+        // Sum up calories from completed workouts:
+        // 1. Workout-level calories (entered when finishing workout)
+        // 2. Individual exercise calories (from cardio/HIIT exercises within the workout)
+        const totalWorkoutCalories = todayWorkouts.reduce((sum, workout) => {
+            let workoutTotal = workout.calories || 0; // Workout-level calories
+
+            // Add calories from individual exercises (cardio/HIIT)
+            if (workout.exercises) {
+                workout.exercises.forEach(ex => {
+                    if ((ex.type === 'cardio' || ex.type === 'hiit') && ex.calories) {
+                        workoutTotal += parseInt(ex.calories) || 0;
+                    }
+                });
+            }
+
+            return sum + workoutTotal;
+        }, 0);
+
+        // Calculate total calories burnt (cardio sessions + workouts + legacy metrics)
         const totalCaloriesBurnt = totalCardioCalories + totalWorkoutCalories + (metrics.workoutCalories || 0);
 
         // Update metrics - prioritize new storage over legacy DAILY_METRICS
