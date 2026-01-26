@@ -1159,6 +1159,136 @@ class GymTrackerApp {
         }
     }
 
+    // Match exercise name with library using fuzzy matching
+    matchExerciseWithLibrary(exerciseName) {
+        const name = exerciseName.toLowerCase().trim();
+
+        // 1. Try exact match first
+        const exactMatch = ExerciseLibrary.getByName(exerciseName);
+        if (exactMatch) return exactMatch;
+
+        // 2. Try partial word matching (e.g., "Bench Press" in "Flat DB Bench Press")
+        const words = name.split(/\s+/);
+        for (const exercise of ExerciseLibrary.getAllExercises()) {
+            const libName = exercise.name.toLowerCase();
+            const libWords = libName.split(/\s+/);
+
+            // Check if all library words are present in the exercise name
+            const allWordsMatch = libWords.every(libWord =>
+                words.some(word => word.includes(libWord) || libWord.includes(word))
+            );
+
+            if (allWordsMatch) return exercise;
+        }
+
+        // 3. Try synonym/keyword matching for common variations
+        const synonyms = {
+            'cycling': ['Outdoor Cycling', 'Indoor Cycling'],
+            'cycle': ['Outdoor Cycling', 'Indoor Cycling'],
+            'bike': ['Outdoor Cycling', 'Indoor Cycling'],
+            'running': ['Outdoor Running', 'Indoor Running'],
+            'run': ['Outdoor Running', 'Indoor Running'],
+            'curl': ['Barbell Curl', 'Hammer Curl'],
+            'squat': ['Squat'],
+            'deadlift': ['Deadlift', 'Romanian Deadlift'],
+            'press': ['Bench Press', 'Overhead Press', 'Incline Dumbbell Press'],
+            'bench': ['Bench Press'],
+            'pullup': ['Pull-ups'],
+            'pull-up': ['Pull-ups'],
+            'pull up': ['Pull-ups'],
+            'row': ['Barbell Row'],
+            'dip': ['Tricep Dips'],
+            'raise': ['Lateral Raise'],
+            'fly': ['Push-ups']
+        };
+
+        // Check synonyms
+        for (const [key, exerciseNames] of Object.entries(synonyms)) {
+            if (name.includes(key)) {
+                for (const exName of exerciseNames) {
+                    const match = ExerciseLibrary.getByName(exName);
+                    if (match) return match;
+                }
+            }
+        }
+
+        // 4. No match found
+        return null;
+    }
+
+    // Show exercise instructions in a modal/card
+    showExerciseInstructionsForWorkout(exerciseName) {
+        const libraryExercise = this.matchExerciseWithLibrary(exerciseName);
+
+        if (!libraryExercise) {
+            alert('No instructions found for this exercise in the library.');
+            return;
+        }
+
+        // Create a modal overlay to show instructions
+        const overlay = document.createElement('div');
+        overlay.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem;';
+
+        const modal = document.createElement('div');
+        modal.style.cssText = 'background: var(--card-bg); border-radius: 16px; padding: 1.5rem; max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto;';
+
+        modal.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                <div>
+                    <h2 style="color: var(--accent-primary); margin: 0;">📋 ${libraryExercise.name}</h2>
+                    <div style="margin-top: 0.5rem;">
+                        <span style="background: var(--bg-secondary); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; margin-right: 0.5rem;">
+                            ${libraryExercise.difficulty}
+                        </span>
+                        <span style="background: var(--bg-secondary); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; margin-right: 0.5rem;">
+                            ${libraryExercise.equipment}
+                        </span>
+                        <span style="background: var(--bg-secondary); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem;">
+                            ${libraryExercise.category}
+                        </span>
+                    </div>
+                </div>
+                <button onclick="this.closest('div[style*=\"fixed\"]').remove()" style="background: none; border: none; font-size: 2rem; cursor: pointer; color: var(--text-secondary); line-height: 1;">×</button>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <strong style="color: var(--text-primary);">💪 Primary Muscles:</strong>
+                <div style="color: var(--text-secondary); margin-top: 0.25rem;">${libraryExercise.primaryMuscles.join(', ')}</div>
+            </div>
+
+            ${libraryExercise.secondaryMuscles.length > 0 ? `
+                <div style="margin-bottom: 1rem;">
+                    <strong style="color: var(--text-primary);">💪 Secondary Muscles:</strong>
+                    <div style="color: var(--text-secondary); margin-top: 0.25rem;">${libraryExercise.secondaryMuscles.join(', ')}</div>
+                </div>
+            ` : ''}
+
+            <div style="margin-bottom: 1rem;">
+                <strong style="color: var(--text-primary);">📝 Instructions:</strong>
+                <ol style="margin: 0.5rem 0 0 1.25rem; color: var(--text-secondary); line-height: 1.6;">
+                    ${libraryExercise.instructions.map(inst => `<li style="margin-bottom: 0.5rem;">${inst}</li>`).join('')}
+                </ol>
+            </div>
+
+            <div>
+                <strong style="color: var(--text-primary);">✅ Form Tips:</strong>
+                <ul style="margin: 0.5rem 0 0 1.25rem; color: var(--text-secondary); line-height: 1.6;">
+                    ${libraryExercise.formTips.map(tip => `<li style="margin-bottom: 0.5rem;">${tip}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+
+        // Close on overlay click
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.remove();
+            }
+        });
+    }
+
     renderCurrentWorkout() {
         // Render today's completed workouts first
         this.renderTodayCompletedWorkouts();
@@ -1262,11 +1392,16 @@ class GymTrackerApp {
                 `;
             }
 
+            // Check if exercise has library instructions available
+            const libraryMatch = this.matchExerciseWithLibrary(exercise.name);
+            const hasInstructions = libraryMatch !== null;
+
             return `
                 <div class="exercise-card ${type}-exercise">
                     <div class="exercise-header">
-                        <h3>${exerciseIcon} ${exercise.name}</h3>
+                        <h3>${exerciseIcon} ${exercise.name}${hasInstructions ? ' <span style="color: var(--accent-primary); font-size: 0.8rem;" title="Instructions available">📋</span>' : ''}</h3>
                         <div class="exercise-actions">
+                            ${hasInstructions ? `<button class="btn-icon-small" onclick="app.showExerciseInstructionsForWorkout('${exercise.name.replace(/'/g, "\\'")}')" title="View Instructions">📋</button>` : ''}
                             ${exercise.videoUrl ? `<button class="btn-icon-small" onclick="window.open('${exercise.videoUrl}', '_blank')" title="Watch Tutorial">🎥</button>` : ''}
                             ${hasHistory && type === 'strength' ? `<button class="btn-icon-small" onclick="app.toggleExerciseHistory(${exercise.id})" title="View Progress">📊</button>` : ''}
                             <button class="btn-icon-small" onclick="app.openAddExerciseModal(${exercise.id})" title="Edit">✏️</button>
