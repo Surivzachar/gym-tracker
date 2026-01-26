@@ -701,6 +701,12 @@ class GymTrackerApp {
                         nameInput.value = exerciseName;
                         suggestionsDiv.style.display = 'none';
 
+                        // Show exercise instructions and form tips from library
+                        const exerciseData = ExerciseLibrary.getByName(exerciseName);
+                        if (exerciseData) {
+                            this.showExerciseInstructions(exerciseData);
+                        }
+
                         // Check if this exercise has history and show auto-fill suggestion
                         setTimeout(() => {
                             const lastSets = Storage.getLastWorkoutSets(exerciseName);
@@ -739,6 +745,59 @@ class GymTrackerApp {
                 suggestionsDiv.style.display = 'none';
             }
         });
+    }
+
+    showExerciseInstructions(exercise) {
+        // Remove any existing instructions
+        const existingInstructions = document.getElementById('exerciseInstructions');
+        if (existingInstructions) {
+            existingInstructions.remove();
+        }
+
+        // Create instructions display
+        const instructionsDiv = document.createElement('div');
+        instructionsDiv.id = 'exerciseInstructions';
+        instructionsDiv.style.cssText = 'background: var(--bg-tertiary); border: 2px solid var(--accent-primary); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;';
+
+        instructionsDiv.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.75rem;">
+                <div>
+                    <strong style="color: var(--accent-primary); font-size: 1.1rem;">📋 ${exercise.name}</strong>
+                    <div style="margin-top: 0.25rem;">
+                        <span style="background: var(--bg-secondary); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-right: 0.5rem;">
+                            ${exercise.difficulty}
+                        </span>
+                        <span style="background: var(--bg-secondary); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">
+                            ${exercise.equipment}
+                        </span>
+                    </div>
+                </div>
+                <button onclick="this.closest('#exerciseInstructions').remove()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">×</button>
+            </div>
+
+            <div style="margin-bottom: 0.75rem;">
+                <strong style="color: var(--text-primary); font-size: 0.9rem;">💪 Muscles:</strong>
+                <span style="color: var(--text-secondary); font-size: 0.85rem;"> ${exercise.primaryMuscles.join(', ')}</span>
+            </div>
+
+            <div style="margin-bottom: 0.75rem;">
+                <strong style="color: var(--text-primary); font-size: 0.9rem;">📝 Instructions:</strong>
+                <ol style="margin: 0.5rem 0 0 1.25rem; color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6;">
+                    ${exercise.instructions.map(inst => `<li>${inst}</li>`).join('')}
+                </ol>
+            </div>
+
+            <div>
+                <strong style="color: var(--text-primary); font-size: 0.9rem;">✅ Form Tips:</strong>
+                <ul style="margin: 0.5rem 0 0 1.25rem; color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6;">
+                    ${exercise.formTips.map(tip => `<li>${tip}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+
+        // Insert after exercise name input
+        const exerciseNameGroup = document.getElementById('exerciseNameInput').closest('.input-group');
+        exerciseNameGroup.parentNode.insertBefore(instructionsDiv, exerciseNameGroup.nextSibling);
     }
 
     showAutoFillSuggestion(exerciseName, lastSets) {
