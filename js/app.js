@@ -595,6 +595,7 @@ class GymTrackerApp {
                         <button class="btn-icon remove-set">🗑️</button>
                     </div>
                 `).join('');
+                document.getElementById('strengthCalories').value = exercise.calories || '';
             } else if (exercise.type === 'cardio') {
                 document.getElementById('cardioDuration').value = exercise.duration || '';
                 document.getElementById('cardioDistance').value = exercise.distance || '';
@@ -625,6 +626,9 @@ class GymTrackerApp {
                     <button class="btn-icon remove-set">🗑️</button>
                 </div>
             `;
+
+            // Reset strength calories
+            document.getElementById('strengthCalories').value = '';
 
             // Reset cardio inputs
             document.getElementById('cardioDuration').value = '';
@@ -882,6 +886,10 @@ class GymTrackerApp {
             }
 
             exercise.sets = sets;
+
+            // Add calories for strength training (optional)
+            const strengthCalories = document.getElementById('strengthCalories').value;
+            exercise.calories = strengthCalories || null;
         } else if (type === 'cardio') {
             const duration = document.getElementById('cardioDuration').value;
             const distance = document.getElementById('cardioDistance').value;
@@ -1296,10 +1304,13 @@ class GymTrackerApp {
                                 const totalSets = ex.sets.length;
                                 const totalVolume = ex.sets.reduce((sum, set) => sum + (set.weight * set.reps), 0);
                                 details = `${totalSets} sets • ${totalVolume.toFixed(0)} kg total volume`;
+                                if (ex.calories) details += ` • ${ex.calories} cal`;
                             } else if (type === 'cardio') {
                                 details = `${ex.duration} min${ex.distance ? ` • ${ex.distance} km` : ''}`;
+                                if (ex.calories) details += ` • ${ex.calories} cal`;
                             } else if (type === 'hiit') {
                                 details = `${ex.rounds} rounds • ${ex.workSeconds}s work / ${ex.restSeconds}s rest`;
+                                if (ex.calories) details += ` • ${ex.calories} cal`;
                             }
 
                             return `
@@ -4736,11 +4747,11 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
                 return sum + parseInt(workout.calories);
             }
 
-            // Otherwise, sum up individual exercise calories
+            // Otherwise, sum up individual exercise calories (cardio, HIIT, and strength)
             let exerciseCaloriesTotal = 0;
             if (workout.exercises) {
                 workout.exercises.forEach(ex => {
-                    if ((ex.type === 'cardio' || ex.type === 'hiit') && ex.calories) {
+                    if (ex.calories) {
                         exerciseCaloriesTotal += parseInt(ex.calories) || 0;
                     }
                 });
