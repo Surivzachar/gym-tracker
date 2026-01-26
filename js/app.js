@@ -4728,21 +4728,25 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         });
 
         // Sum up calories from completed workouts:
-        // 1. Workout-level calories (entered when finishing workout)
-        // 2. Individual exercise calories (from cardio/HIIT exercises within the workout)
+        // Priority: If workout has total calories (from watch), use that ONLY
+        // Otherwise: Sum individual exercise calories (from cardio/HIIT)
         const totalWorkoutCalories = todayWorkouts.reduce((sum, workout) => {
-            let workoutTotal = workout.calories || 0; // Workout-level calories
+            // If workout has total calories from watch/tracker, use ONLY that (overrides individual)
+            if (workout.calories && workout.calories > 0) {
+                return sum + parseInt(workout.calories);
+            }
 
-            // Add calories from individual exercises (cardio/HIIT)
+            // Otherwise, sum up individual exercise calories
+            let exerciseCaloriesTotal = 0;
             if (workout.exercises) {
                 workout.exercises.forEach(ex => {
                     if ((ex.type === 'cardio' || ex.type === 'hiit') && ex.calories) {
-                        workoutTotal += parseInt(ex.calories) || 0;
+                        exerciseCaloriesTotal += parseInt(ex.calories) || 0;
                     }
                 });
             }
 
-            return sum + workoutTotal;
+            return sum + exerciseCaloriesTotal;
         }, 0);
 
         // Calculate total calories burnt (cardio sessions + workouts + legacy metrics)
