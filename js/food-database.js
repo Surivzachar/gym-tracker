@@ -6,13 +6,14 @@ const FoodDatabase = [
     { name: "Chicken Breast", calories: 165, protein: 31, carbs: 0, fats: 3.6, category: "Protein", serving: "100g" },
     { name: "Chicken Thigh", calories: 209, protein: 26, carbs: 0, fats: 11, category: "Protein", serving: "100g" },
     { name: "Egg (1 large)", calories: 70, protein: 6, carbs: 0.5, fats: 5, category: "Protein", serving: "1 egg" },
-    { name: "Egg White (1 large)", calories: 17, protein: 4, carbs: 0, fats: 0, category: "Protein", serving: "1 egg white" },
+    { name: "Egg White (1 large)", calories: 17, protein: 3.5, carbs: 0.25, fats: 0, category: "Protein", serving: "1 egg white" },
     { name: "Salmon", calories: 208, protein: 20, carbs: 0, fats: 13, category: "Protein", serving: "100g" },
     { name: "Tuna (canned)", calories: 132, protein: 28, carbs: 0, fats: 1, category: "Protein", serving: "100g" },
+    { name: "White Fish (cooked)", calories: 167, protein: 30, carbs: 0, fats: 3.3, category: "Protein", serving: "100g" },
     { name: "Greek Yogurt", calories: 59, protein: 10, carbs: 3.6, fats: 0.4, category: "Protein", serving: "100g" },
     { name: "Cottage Cheese", calories: 98, protein: 11, carbs: 3.4, fats: 4.3, category: "Protein", serving: "100g" },
     { name: "Whey Protein (1 scoop)", calories: 120, protein: 24, carbs: 3, fats: 1.5, category: "Protein", serving: "1 scoop (30g)" },
-    { name: "ISO Whey Protein (1 scoop)", calories: 120, protein: 30, carbs: 2, fats: 1, category: "Protein", serving: "1 scoop (30g)" },
+    { name: "ISO Whey Protein (1 scoop)", calories: 100, protein: 25, carbs: 1, fats: 0, category: "Protein", serving: "1 scoop (30g)" },
     { name: "Beef (lean)", calories: 250, protein: 26, carbs: 0, fats: 15, category: "Protein", serving: "100g" },
     { name: "Pork Chop", calories: 242, protein: 27, carbs: 0, fats: 14, category: "Protein", serving: "100g" },
     { name: "Turkey Breast", calories: 135, protein: 30, carbs: 0, fats: 1, category: "Protein", serving: "100g" },
@@ -44,7 +45,7 @@ const FoodDatabase = [
     // Carbs
     { name: "White Rice (cooked)", calories: 130, protein: 2.7, carbs: 28, fats: 0.3, category: "Carbs", serving: "100g" },
     { name: "Brown Rice (cooked)", calories: 112, protein: 2.6, carbs: 24, fats: 0.9, category: "Carbs", serving: "100g" },
-    { name: "Basmati Rice (cooked)", calories: 121, protein: 3, carbs: 25, fats: 0.4, category: "Carbs", serving: "100g" },
+    { name: "Basmati Rice (cooked)", calories: 130, protein: 2.5, carbs: 28, fats: 0.25, category: "Carbs", serving: "100g" },
     { name: "Oats (dry)", calories: 389, protein: 17, carbs: 66, fats: 7, category: "Carbs", serving: "100g" },
     { name: "Quinoa (cooked)", calories: 120, protein: 4.4, carbs: 21, fats: 1.9, category: "Carbs", serving: "100g" },
     { name: "Sweet Potato", calories: 86, protein: 1.6, carbs: 20, fats: 0.1, category: "Carbs", serving: "100g" },
@@ -332,6 +333,7 @@ const FoodDatabase = [
     { name: "Rice Cake (1 cake)", calories: 35, protein: 0.7, carbs: 7.3, fats: 0.3, category: "Carbs", serving: "1 rice cake (9g)" },
     { name: "Herbal Tea", calories: 2, protein: 0, carbs: 0.4, fats: 0, category: "Beverages", serving: "1 cup" },
     { name: "Black Tea/Coffee", calories: 2, protein: 0.3, carbs: 0, fats: 0, category: "Beverages", serving: "1 cup" },
+    { name: "Cooked Vegetables", calories: 35, protein: 2, carbs: 7, fats: 0, category: "Vegetables", serving: "100g" },
     { name: "Mixed Vegetables (cooked)", calories: 65, protein: 2.5, carbs: 13, fats: 0.5, category: "Vegetables", serving: "1 cup (150g)" },
 
     // === EXPANDED FOOD DATABASE ===
@@ -712,6 +714,8 @@ const FoodDatabase = [
     { name: "Cappuccino (1 cup)", calories: 120, protein: 6, carbs: 10, fats: 6, category: "Beverages", serving: "240ml" },
     { name: "Mocha (1 cup)", calories: 260, protein: 10, carbs: 33, fats: 10, category: "Beverages", serving: "350ml" },
     { name: "Hot Chocolate (1 cup)", calories: 192, protein: 9, carbs: 27, fats: 6, category: "Beverages", serving: "250ml" },
+    { name: "Warm Water with Lime", calories: 5, protein: 0, carbs: 1, fats: 0, category: "Beverages", serving: "1 glass (250ml)" },
+    { name: "Lemon Water", calories: 6, protein: 0, carbs: 1.5, fats: 0, category: "Beverages", serving: "1 glass (250ml)" },
 
     // Condiments & Sauces
     { name: "Ketchup (1 tbsp)", calories: 17, protein: 0.2, carbs: 4.5, fats: 0, category: "Condiments", serving: "15g" },
@@ -734,6 +738,16 @@ const FoodDatabase = [
         category: "Carbs",
         serving: "150g (1 bowl)",
         recipe: "Traditional Indian dessert made with grated carrots, milk, sugar, ghee, and nuts"
+    },
+    {
+        name: "Multi-Seed Laddu",
+        calories: 110,
+        protein: 3,
+        carbs: 5,
+        fats: 8,
+        category: "Snacks",
+        serving: "1 piece (25g)",
+        recipe: "Nutritious energy ball made with mixed seeds (sesame, flax, pumpkin), jaggery, and ghee"
     },
     {
         name: "Banana Chips",
