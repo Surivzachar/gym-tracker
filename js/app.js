@@ -2592,6 +2592,10 @@ class GymTrackerApp {
 
         // Setup autocomplete
         this.setupFoodAutocomplete();
+
+        // Setup grams mode toggle
+        this.setupGramsModeToggle();
+
         document.getElementById('foodNameInput').focus();
     }
 
@@ -2812,9 +2816,92 @@ class GymTrackerApp {
         recipeDisplay.style.display = 'block';
     }
 
+    setupGramsModeToggle() {
+        const toggleBtn = document.getElementById('toggleQuantityMode');
+        const quantityInput = document.getElementById('quantityInput');
+        const gramsInput = document.getElementById('gramsInput');
+        const quantityLabel = document.getElementById('quantityModeLabel');
+        const quantityHelper = document.getElementById('quantityHelperText');
+        const gramsHelper = document.getElementById('gramsHelperText');
+
+        let isGramsMode = false;
+
+        toggleBtn.onclick = () => {
+            isGramsMode = !isGramsMode;
+
+            if (isGramsMode) {
+                // Switch to grams mode
+                quantityInput.style.display = 'none';
+                gramsInput.style.display = 'block';
+                quantityLabel.textContent = 'Weight (Grams)';
+                toggleBtn.textContent = '📊';
+                toggleBtn.title = 'Switch to servings';
+                quantityHelper.style.display = 'none';
+                gramsHelper.style.display = 'block';
+
+                // Convert current quantity to grams (if food is selected)
+                if (this.selectedFood && this.selectedFood.serving) {
+                    // Default to 100g for calculation base
+                    gramsInput.value = '100';
+                    this.updateMacrosForGrams(100);
+                }
+            } else {
+                // Switch to servings mode
+                quantityInput.style.display = 'block';
+                gramsInput.style.display = 'none';
+                quantityLabel.textContent = 'Quantity / Servings';
+                toggleBtn.textContent = '⚖️';
+                toggleBtn.title = 'Switch to grams';
+                quantityHelper.style.display = 'block';
+                gramsHelper.style.display = 'none';
+
+                // Reset to 1 serving
+                quantityInput.value = '1';
+                if (this.selectedFood) {
+                    this.updateMacrosForPortion(1);
+                }
+            }
+        };
+
+        // Listen for grams input changes
+        gramsInput.addEventListener('input', (e) => {
+            const grams = parseFloat(e.target.value) || 0;
+            this.updateMacrosForGrams(grams);
+        });
+
+        // Store mode state
+        this.isGramsMode = () => isGramsMode;
+    }
+
+    updateMacrosForGrams(grams) {
+        if (!this.selectedFood) return;
+
+        // Calculate per 100g values from the original serving
+        // Assuming the original values are for the stated serving size
+        // We need to convert to per-100g equivalent
+
+        // For simplicity, we'll calculate based on ratio
+        // If original serving was "150g" and had 200 cal, then per 100g = (200/150)*100 = 133 cal
+
+        const per100gCalories = this.selectedFood.calories;
+        const per100gProtein = this.selectedFood.protein;
+        const per100gCarbs = this.selectedFood.carbs;
+        const per100gFats = this.selectedFood.fats;
+
+        // Calculate for the entered grams
+        const multiplier = grams / 100;
+
+        document.getElementById('caloriesInput').value = Math.round(per100gCalories * multiplier);
+        document.getElementById('proteinInput').value = Math.round(per100gProtein * multiplier * 10) / 10;
+        document.getElementById('carbsInput').value = Math.round(per100gCarbs * multiplier * 10) / 10;
+        document.getElementById('fatsInput').value = Math.round(per100gFats * multiplier * 10) / 10;
+    }
+
     saveFood() {
         const name = document.getElementById('foodNameInput').value.trim();
+        const isGramsMode = this.isGramsMode ? this.isGramsMode() : false;
         const quantity = parseFloat(document.getElementById('quantityInput').value) || 1;
+        const grams = parseFloat(document.getElementById('gramsInput').value) || 0;
         const calories = parseFloat(document.getElementById('caloriesInput').value) || 0;
         const protein = parseFloat(document.getElementById('proteinInput').value) || 0;
         const carbs = parseFloat(document.getElementById('carbsInput').value) || 0;
@@ -2830,15 +2917,20 @@ class GymTrackerApp {
             return;
         }
 
-        // NOTE: The calories/macros in the inputs are ALREADY adjusted for quantity
-        // by updateMacrosForPortion(), so we don't multiply again here
+        // NOTE: The calories/macros in the inputs are ALREADY adjusted for quantity/grams
+        // by updateMacrosForPortion() or updateMacrosForGrams(), so we don't multiply again here
         const totalCalories = Math.round(calories);
         const totalProtein = Math.round(protein * 10) / 10;
         const totalCarbs = Math.round(carbs * 10) / 10;
         const totalFats = Math.round(fats * 10) / 10;
 
-        // Add quantity indicator to name if quantity > 1
-        const displayName = quantity > 1 ? `${quantity}x ${name}` : name;
+        // Add quantity/grams indicator to name
+        let displayName = name;
+        if (isGramsMode && grams > 0 && grams !== 100) {
+            displayName = `${grams}g ${name}`;
+        } else if (!isGramsMode && quantity > 1) {
+            displayName = `${quantity}x ${name}`;
+        }
 
         const foodItem = {
             name: displayName,

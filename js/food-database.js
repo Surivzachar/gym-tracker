@@ -723,6 +723,312 @@ const FoodDatabase = [
     { name: "Soy Sauce (1 tbsp)", calories: 8, protein: 1.3, carbs: 0.8, fats: 0, category: "Condiments", serving: "15ml" },
     { name: "Hot Sauce (1 tsp)", calories: 1, protein: 0, carbs: 0.1, fats: 0, category: "Condiments", serving: "5ml" },
     { name: "Sriracha (1 tsp)", calories: 5, protein: 0.1, carbs: 1, fats: 0.1, category: "Condiments", serving: "5g" },
+
+    // Additional Indian & Asian Sweets/Snacks
+    {
+        name: "Carrot Halwa (Gajar Ka Halwa)",
+        calories: 260,
+        protein: 4,
+        carbs: 45,
+        fats: 8,
+        category: "Carbs",
+        serving: "150g (1 bowl)",
+        recipe: "Traditional Indian dessert made with grated carrots, milk, sugar, ghee, and nuts"
+    },
+    {
+        name: "Banana Chips",
+        calories: 520,
+        protein: 2,
+        carbs: 58,
+        fats: 31,
+        category: "Snacks",
+        serving: "100g",
+        recipe: "Deep fried banana slices, popular South Indian snack"
+    },
+    {
+        name: "Murukku",
+        calories: 500,
+        protein: 9,
+        carbs: 58,
+        fats: 25,
+        category: "Snacks",
+        serving: "100g",
+        recipe: "Crunchy South Indian spiral snack made from rice flour and urad dal"
+    },
+    {
+        name: "Mixture (South Indian Snack)",
+        calories: 480,
+        protein: 10,
+        carbs: 55,
+        fats: 24,
+        category: "Snacks",
+        serving: "100g",
+        recipe: "Savory mix of fried lentils, peanuts, sev, and spices"
+    },
+    {
+        name: "Jalebi",
+        calories: 320,
+        protein: 2,
+        carbs: 68,
+        fats: 7,
+        category: "Carbs",
+        serving: "100g (3-4 pieces)",
+        recipe: "Crispy spiral-shaped Indian sweet soaked in sugar syrup"
+    },
+    {
+        name: "Gulab Jamun",
+        calories: 175,
+        protein: 3,
+        carbs: 28,
+        fats: 6,
+        category: "Carbs",
+        serving: "50g (2 pieces)",
+        recipe: "Soft milk solid balls deep fried and soaked in sugar syrup"
+    },
+    {
+        name: "Rasgulla",
+        calories: 145,
+        protein: 3,
+        carbs: 32,
+        fats: 1,
+        category: "Carbs",
+        serving: "100g (2 pieces)",
+        recipe: "Spongy cottage cheese balls soaked in light sugar syrup"
+    },
+    {
+        name: "Pani Puri (6 pieces)",
+        calories: 160,
+        protein: 4,
+        carbs: 32,
+        fats: 2,
+        category: "Snacks",
+        serving: "6 puris with pani",
+        recipe: "Crispy hollow puris filled with spiced water, potatoes, and chickpeas"
+    },
+    {
+        name: "Bhel Puri",
+        calories: 180,
+        protein: 5,
+        carbs: 35,
+        fats: 3,
+        category: "Snacks",
+        serving: "150g (1 plate)",
+        recipe: "Mumbai street food with puffed rice, sev, vegetables, and tamarind chutney"
+    },
+    {
+        name: "Pav Bhaji",
+        calories: 420,
+        protein: 10,
+        carbs: 58,
+        fats: 16,
+        category: "Carbs",
+        serving: "300g (2 pav + bhaji)",
+        recipe: "Spiced mashed vegetable curry served with buttered bread rolls"
+    },
+    {
+        name: "Vada Pav",
+        calories: 290,
+        protein: 7,
+        carbs: 42,
+        fats: 11,
+        category: "Carbs",
+        serving: "1 vada pav",
+        recipe: "Potato fritter in bread bun with chutneys - Mumbai street food"
+    },
+
+    // Japanese/Asian Foods
+    {
+        name: "Chicken Katsu",
+        calories: 380,
+        protein: 28,
+        carbs: 28,
+        fats: 16,
+        category: "Protein",
+        serving: "200g (1 piece with sauce)",
+        recipe: "Breaded and deep-fried chicken cutlet, Japanese style"
+    },
+    {
+        name: "Chicken Teriyaki",
+        calories: 280,
+        protein: 32,
+        carbs: 18,
+        fats: 9,
+        category: "Protein",
+        serving: "200g",
+        recipe: "Grilled chicken glazed with sweet soy sauce"
+    },
+    {
+        name: "Ramen (Bowl)",
+        calories: 450,
+        protein: 22,
+        carbs: 60,
+        fats: 14,
+        category: "Carbs",
+        serving: "400g (1 bowl)",
+        recipe: "Japanese noodle soup with broth, noodles, egg, pork, and vegetables"
+    },
+    {
+        name: "Pad Thai",
+        calories: 400,
+        protein: 18,
+        carbs: 55,
+        fats: 12,
+        category: "Carbs",
+        serving: "350g (1 plate)",
+        recipe: "Thai stir-fried rice noodles with eggs, peanuts, and vegetables"
+    },
+    {
+        name: "Spring Rolls (2 pieces)",
+        calories: 180,
+        protein: 6,
+        carbs: 22,
+        fats: 8,
+        category: "Snacks",
+        serving: "100g (2 rolls)",
+        recipe: "Fried rolls filled with vegetables and sometimes meat"
+    },
+    {
+        name: "Dim Sum (4 pieces)",
+        calories: 240,
+        protein: 12,
+        carbs: 28,
+        fats: 8,
+        category: "Protein",
+        serving: "4 pieces",
+        recipe: "Steamed or fried Chinese dumplings with various fillings"
+    },
+    {
+        name: "Fried Rice (Chicken)",
+        calories: 340,
+        protein: 18,
+        carbs: 48,
+        fats: 9,
+        category: "Carbs",
+        serving: "250g (1 plate)",
+        recipe: "Stir-fried rice with chicken, eggs, and vegetables"
+    },
+    {
+        name: "Nasi Goreng",
+        calories: 360,
+        protein: 16,
+        carbs: 52,
+        fats: 10,
+        category: "Carbs",
+        serving: "250g (1 plate)",
+        recipe: "Indonesian fried rice with sweet soy sauce, vegetables, and egg"
+    },
+    {
+        name: "Sushi Roll (8 pieces)",
+        calories: 280,
+        protein: 16,
+        carbs: 42,
+        fats: 6,
+        category: "Protein",
+        serving: "8 pieces",
+        recipe: "Vinegared rice with fish, vegetables wrapped in seaweed"
+    },
+    {
+        name: "Poke Bowl",
+        calories: 420,
+        protein: 28,
+        carbs: 52,
+        fats: 12,
+        category: "Protein",
+        serving: "400g (1 bowl)",
+        recipe: "Hawaiian bowl with raw fish, rice, vegetables, and sauce"
+    },
+
+    // Subway & Fast Food
+    {
+        name: "Subway Chicken Teriyaki Wrap (6 inch)",
+        calories: 320,
+        protein: 22,
+        carbs: 52,
+        fats: 4,
+        category: "Protein",
+        serving: "1 wrap",
+        recipe: "Subway wrap with chicken teriyaki, vegetables, and sauce"
+    },
+    {
+        name: "Subway Veggie Delite Wrap (6 inch)",
+        calories: 230,
+        protein: 9,
+        carbs: 44,
+        fats: 2,
+        category: "Carbs",
+        serving: "1 wrap",
+        recipe: "Subway wrap with assorted vegetables and light dressing"
+    },
+    {
+        name: "Subway Turkey Sub (6 inch)",
+        calories: 280,
+        protein: 19,
+        carbs: 46,
+        fats: 4,
+        category: "Protein",
+        serving: "1 sub",
+        recipe: "Subway sandwich with turkey, lettuce, tomato, and condiments"
+    },
+    {
+        name: "Subway Italian BMT (6 inch)",
+        calories: 410,
+        protein: 20,
+        carbs: 45,
+        fats: 16,
+        category: "Protein",
+        serving: "1 sub",
+        recipe: "Subway sandwich with salami, pepperoni, ham, and cheese"
+    },
+    {
+        name: "Subway Meatball Marinara (6 inch)",
+        calories: 480,
+        protein: 22,
+        carbs: 56,
+        fats: 18,
+        category: "Protein",
+        serving: "1 sub",
+        recipe: "Subway sandwich with meatballs in marinara sauce"
+    },
+    {
+        name: "Subway Tuna Sub (6 inch)",
+        calories: 480,
+        protein: 22,
+        carbs: 42,
+        fats: 24,
+        category: "Protein",
+        serving: "1 sub",
+        recipe: "Subway sandwich with tuna salad and vegetables"
+    },
+    {
+        name: "Burrito Bowl (Chicken)",
+        calories: 520,
+        protein: 35,
+        carbs: 58,
+        fats: 16,
+        category: "Protein",
+        serving: "400g (1 bowl)",
+        recipe: "Mexican bowl with rice, chicken, beans, vegetables, and toppings"
+    },
+    {
+        name: "Chicken Shawarma Wrap",
+        calories: 450,
+        protein: 28,
+        carbs: 48,
+        fats: 16,
+        category: "Protein",
+        serving: "1 wrap",
+        recipe: "Middle Eastern wrap with spiced chicken, vegetables, and garlic sauce"
+    },
+    {
+        name: "Falafel Wrap",
+        calories: 420,
+        protein: 14,
+        carbs: 54,
+        fats: 16,
+        category: "Carbs",
+        serving: "1 wrap",
+        recipe: "Mediterranean wrap with chickpea fritters, vegetables, and tahini"
+    },
 ];
 
 // Search function for food database

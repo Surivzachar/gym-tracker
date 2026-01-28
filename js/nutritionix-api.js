@@ -1,5 +1,21 @@
 // Nutritionix API Integration for comprehensive food database
 // Get your free API keys at: https://developer.nutritionix.com/
+//
+// SETUP INSTRUCTIONS:
+// 1. Go to https://developer.nutritionix.com/
+// 2. Sign up for a free account (500 requests/day free tier)
+// 3. Create a new application
+// 4. Copy your App ID and API Key
+// 5. Replace 'YOUR_APP_ID_HERE' and 'YOUR_API_KEY_HERE' below with your actual keys
+// 6. Save this file and refresh the app
+//
+// Once configured, you'll have access to:
+// - 800,000+ common foods with full nutrition data
+// - 1,000,000+ branded foods (e.g., Subway, Chicken Katsu from specific restaurants)
+// - Automatic portion calculations
+// - Restaurant menu items
+//
+// Currently using local database only (380+ foods)
 
 const NutritionixAPI = {
     // API Configuration

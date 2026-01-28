@@ -1149,9 +1149,14 @@
                     </div>
 
                     <div class="input-group">
-                        <label class="input-label">Quantity / Servings</label>
+                        <label class="input-label">
+                            <span id="quantityModeLabel">Quantity / Servings</span>
+                            <button type="button" id="toggleQuantityMode" class="btn-icon-small" title="Switch to grams">⚖️</button>
+                        </label>
                         <input type="number" id="quantityInput" placeholder="1" value="1" min="0.5" step="0.5" class="input">
-                        <p class="helper-text">Enter quantity (e.g., 2 for 2 eggs, 1.5 for 1.5 cups)</p>
+                        <input type="number" id="gramsInput" placeholder="100" min="1" step="1" class="input" style="display: none;">
+                        <p class="helper-text" id="quantityHelperText">Enter quantity (e.g., 2 for 2 eggs, 1.5 for 1.5 cups)</p>
+                        <p class="helper-text" id="gramsHelperText" style="display: none;">Enter weight in grams (nutrition calculated per 100g)</p>
                     </div>
                     <div class="input-group">
                         <label class="input-label">Calories (per serving)</label>
@@ -1182,7 +1187,7 @@
                             <button type="button" class="btn-secondary btn-sm" onclick="app.removeFoodPhoto()" style="margin-top: 0.5rem;">Remove Photo</button>
                         </div>
                     </div>
-                    <p class="helper-text">💡 Search 340+ Indian & Western foods. Online? Access millions more via Nutritionix API! 🌐</p>
+                    <p class="helper-text">💡 Search 380+ Indian, Asian & Western foods. To access millions more, configure Nutritionix API in js/nutritionix-api.js 🌐</p>
                 </div>
                 <div class="modal-footer">
                     <button id="cancelFoodBtn" class="btn-secondary">Cancel</button>
@@ -1368,7 +1373,7 @@
                     <div class="input-group">
                         <label class="input-label">🔧 App Version & Cache</label>
                         <div class="settings-info" style="background: #0f172a; border-left: 3px solid #10b981;">
-                            <p style="color: #cbd5e1;"><strong>Version:</strong> v100 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
+                            <p style="color: #cbd5e1;"><strong>Version:</strong> v101 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
                         </div>
                         <p class="helper-text">If app features aren't working, clear the cache to reload the latest version.</p>
                         <button id="clearCacheBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🔄 Clear Cache & Reload</button>
