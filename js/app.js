@@ -310,6 +310,15 @@ class GymTrackerApp {
             this.handleFoodPhotoSelection(e);
         });
 
+        // Food Scanner with AI
+        document.getElementById('scanFoodBtn').addEventListener('click', () => {
+            document.getElementById('foodScanInput').click();
+        });
+
+        document.getElementById('foodScanInput').addEventListener('change', (e) => {
+            this.handleFoodScan(e);
+        });
+
         document.getElementById('viewFoodHistoryBtn').addEventListener('click', () => {
             this.openFoodHistoryModal();
         });
@@ -3073,6 +3082,98 @@ class GymTrackerApp {
         this.currentFoodPhoto = null;
         document.getElementById('foodPhotoInput').value = '';
         document.getElementById('foodPhotoPreview').style.display = 'none';
+    }
+
+    async handleFoodScan(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Check if API is configured
+        if (!NutritionixAPI.isConfigured()) {
+            alert('⚠️ Nutritionix API Not Configured\n\nTo use AI food scanning:\n\n1. Go to https://developer.nutritionix.com/\n2. Sign up for free (500 scans/day)\n3. Get your App ID and API Key\n4. Open: js/nutritionix-api.js\n5. Replace YOUR_APP_ID_HERE and YOUR_API_KEY_HERE\n6. Save and refresh!\n\nFor now, you can search manually from 380+ foods in the database.');
+            event.target.value = '';
+            return;
+        }
+
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            alert('Please select a valid image file');
+            event.target.value = '';
+            return;
+        }
+
+        // Show loading status
+        const scanningStatus = document.getElementById('scanningStatus');
+        const scanBtn = document.getElementById('scanFoodBtn');
+        scanningStatus.style.display = 'block';
+        scanBtn.disabled = true;
+        scanBtn.textContent = '⏳ Analyzing...';
+
+        try {
+            // Read and compress image
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    // Compress for faster upload (AI needs good quality, so use 0.7)
+                    this.compressFoodPhoto(e.target.result, async (compressedImage) => {
+                        console.log('Sending image to Nutritionix AI...');
+
+                        // Call Nutritionix API
+                        const result = await NutritionixAPI.analyzePhoto(compressedImage);
+
+                        // Hide loading
+                        scanningStatus.style.display = 'none';
+                        scanBtn.disabled = false;
+                        scanBtn.textContent = '📸 Scan Food Photo (AI)';
+                        event.target.value = '';
+
+                        if (result.success) {
+                            // Auto-fill the form with detected food
+                            const food = result.food;
+                            document.getElementById('foodNameInput').value = food.name;
+                            document.getElementById('caloriesInput').value = food.calories;
+                            document.getElementById('proteinInput').value = food.protein;
+                            document.getElementById('carbsInput').value = food.carbs;
+                            document.getElementById('fatsInput').value = food.fats;
+                            document.getElementById('quantityInput').value = 1;
+
+                            // Store food data
+                            this.selectedFood = food;
+
+                            // Show success message with all detected foods
+                            let message = `✅ Food Detected: ${food.name}\n\n📊 Nutrition (${food.serving}):\nCalories: ${food.calories}\nProtein: ${food.protein}g\nCarbs: ${food.carbs}g\nFats: ${food.fats}g`;
+
+                            if (result.allFoods && result.allFoods.length > 1) {
+                                message += '\n\n💡 Other foods detected:\n' + result.allFoods.slice(1, 3).map(f => `• ${f.name} (${f.serving})`).join('\n');
+                            }
+
+                            message += '\n\nAdjust the values if needed, then save!';
+                            alert(message);
+
+                        } else {
+                            alert(`❌ ${result.error}\n\nTips for better results:\n• Take a clear, well-lit photo\n• Show the whole dish\n• Avoid shadows\n• Try from different angles`);
+                        }
+                    });
+
+                } catch (error) {
+                    console.error('Food scan error:', error);
+                    scanningStatus.style.display = 'none';
+                    scanBtn.disabled = false;
+                    scanBtn.textContent = '📸 Scan Food Photo (AI)';
+                    event.target.value = '';
+                    alert('Error analyzing image: ' + error.message);
+                }
+            };
+            reader.readAsDataURL(file);
+
+        } catch (error) {
+            console.error('File read error:', error);
+            scanningStatus.style.display = 'none';
+            scanBtn.disabled = false;
+            scanBtn.textContent = '📸 Scan Food Photo (AI)';
+            event.target.value = '';
+            alert('Error reading image file');
+        }
     }
 
     renderFood() {

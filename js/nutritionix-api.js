@@ -111,6 +111,76 @@ const NutritionixAPI = {
     // Capitalize words in food name
     capitalizeWords(str) {
         return str.replace(/\b\w/g, char => char.toUpperCase());
+    },
+
+    // Analyze food photo using Nutritionix Photo Recognition
+    async analyzePhoto(base64Image) {
+        if (!this.isConfigured()) {
+            throw new Error('Nutritionix API not configured. Please add your API keys in js/nutritionix-api.js');
+        }
+
+        try {
+            // Remove data URL prefix if present
+            const base64Data = base64Image.replace(/^data:image\/[a-z]+;base64,/, '');
+
+            const response = await fetch('https://trackapi.nutritionix.com/v2/natural/nutrients', {
+                method: 'POST',
+                headers: {
+                    'x-app-id': this.config.appId,
+                    'x-app-key': this.config.apiKey,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    query: '',  // Empty query for photo-only analysis
+                    photo: base64Data
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `API error: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // Parse the response and return food data
+            if (data.foods && data.foods.length > 0) {
+                const food = data.foods[0]; // Take the first (most likely) food item
+
+                return {
+                    success: true,
+                    food: {
+                        name: this.capitalizeWords(food.food_name),
+                        calories: Math.round(food.nf_calories || 0),
+                        protein: Math.round((food.nf_protein || 0) * 10) / 10,
+                        carbs: Math.round((food.nf_total_carbohydrate || 0) * 10) / 10,
+                        fats: Math.round((food.nf_total_fat || 0) * 10) / 10,
+                        category: this.categorizeFood(food),
+                        serving: `${food.serving_qty} ${food.serving_unit}`,
+                        weight_grams: food.serving_weight_grams || null,
+                        source: 'photo-ai',
+                        confidence: food.photo?.photo_confidence || 'unknown'
+                    },
+                    allFoods: data.foods.map(f => ({
+                        name: this.capitalizeWords(f.food_name),
+                        calories: Math.round(f.nf_calories || 0),
+                        serving: `${f.serving_qty} ${f.serving_unit}`
+                    }))
+                };
+            } else {
+                return {
+                    success: false,
+                    error: 'No food detected in image. Try a clearer photo.'
+                };
+            }
+
+        } catch (error) {
+            console.error('Nutritionix photo analysis error:', error);
+            return {
+                success: false,
+                error: error.message || 'Failed to analyze image'
+            };
+        }
     }
 };
 

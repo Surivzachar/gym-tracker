@@ -1130,6 +1130,19 @@
                         <div id="foodSuggestions" class="food-suggestions"></div>
                     </div>
 
+                    <!-- AI Food Scanner -->
+                    <div style="margin: 1rem 0;">
+                        <input type="file" id="foodScanInput" accept="image/*" capture="environment" style="display: none;">
+                        <button type="button" id="scanFoodBtn" class="btn-secondary" style="width: 100%;">
+                            📸 Scan Food Photo (AI)
+                        </button>
+                        <p class="helper-text">Take a photo of your food for automatic nutrition detection (requires Nutritionix API)</p>
+                        <div id="scanningStatus" style="display: none; text-align: center; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px; margin-top: 0.5rem;">
+                            <div class="loading-spinner" style="margin: 0 auto 0.5rem;"></div>
+                            <p style="color: var(--text-secondary); margin: 0;">Analyzing food image...</p>
+                        </div>
+                    </div>
+
                     <!-- Portion Size Quick Buttons -->
                     <div id="portionSizeButtons" class="portion-size-buttons" style="display: none; margin-top: 1rem; margin-bottom: 1rem;">
                         <label class="input-label">Quick Portion Size</label>
@@ -1388,7 +1401,7 @@
                     <div class="input-group">
                         <label class="input-label">🔧 App Version & Cache</label>
                         <div class="settings-info" style="background: #0f172a; border-left: 3px solid #10b981;">
-                            <p style="color: #cbd5e1;"><strong>Version:</strong> v105 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
+                            <p style="color: #cbd5e1;"><strong>Version:</strong> v106 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
                         </div>
                         <p class="helper-text">If app features aren't working, clear the cache to reload the latest version.</p>
                         <button id="clearCacheBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🔄 Clear Cache & Reload</button>
