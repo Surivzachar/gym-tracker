@@ -1375,8 +1375,12 @@
                         <div class="settings-info" style="background: #0f172a; border-left: 3px solid #fbbf24;">
                             <p style="color: #cbd5e1;"><strong>Storage Used:</strong> <span id="storageUsedDisplay">Calculating...</span></p>
                         </div>
-                        <p class="helper-text">Remove old food photos to free up storage space. Your food data will be kept.</p>
-                        <button id="clearOldPhotosBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🗑️ Clear Photos (7+ Days Old)</button>
+                        <p class="helper-text">
+                            ✅ <strong>Progress/Transformation Photos:</strong> Never auto-deleted<br>
+                            🗑️ <strong>Food Photos:</strong> Can be cleared after 7 days<br>
+                            💡 <strong>For unlimited storage:</strong> Use Google Drive Sync below
+                        </p>
+                        <button id="clearOldPhotosBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🗑️ Clear Old Food Photos Only</button>
                     </div>
 
                     <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #e5e7eb;">
@@ -1384,7 +1388,7 @@
                     <div class="input-group">
                         <label class="input-label">🔧 App Version & Cache</label>
                         <div class="settings-info" style="background: #0f172a; border-left: 3px solid #10b981;">
-                            <p style="color: #cbd5e1;"><strong>Version:</strong> v103 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
+                            <p style="color: #cbd5e1;"><strong>Version:</strong> v104 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
                         </div>
                         <p class="helper-text">If app features aren't working, clear the cache to reload the latest version.</p>
                         <button id="clearCacheBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🔄 Clear Cache & Reload</button>

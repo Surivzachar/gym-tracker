@@ -3021,9 +3021,9 @@ class GymTrackerApp {
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            // Compress image before storing (uses existing compressImage function)
-            this.compressImage(e.target.result, (compressedDataUrl) => {
-                console.log('Original size:', e.target.result.length, 'Compressed size:', compressedDataUrl.length);
+            // Compress food photos more aggressively to save space
+            this.compressFoodPhoto(e.target.result, (compressedDataUrl) => {
+                console.log('Food photo - Original size:', e.target.result.length, 'Compressed size:', compressedDataUrl.length);
                 console.log('Compression ratio:', Math.round((1 - compressedDataUrl.length / e.target.result.length) * 100) + '%');
 
                 this.currentFoodPhoto = compressedDataUrl;
@@ -3032,6 +3032,41 @@ class GymTrackerApp {
             });
         };
         reader.readAsDataURL(file);
+    }
+
+    compressFoodPhoto(dataUrl, callback) {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // More aggressive compression for food photos (max 600px, maintain aspect ratio)
+            let width = img.width;
+            let height = img.height;
+            const maxWidth = 600;
+
+            if (width > height) {
+                if (width > maxWidth) {
+                    height = Math.round((height * maxWidth) / width);
+                    width = maxWidth;
+                }
+            } else {
+                if (height > maxWidth) {
+                    width = Math.round((width * maxWidth) / height);
+                    height = maxWidth;
+                }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            // Draw and compress with lower quality (0.5 = smaller file, still good enough for food)
+            ctx.drawImage(img, 0, 0, width, height);
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.5);
+
+            callback(compressedDataUrl);
+        };
+        img.src = dataUrl;
     }
 
     removeFoodPhoto() {
@@ -3693,50 +3728,40 @@ class GymTrackerApp {
         const cutoffDate = new Date();
         cutoffDate.setDate(cutoffDate.getDate() - daysOld);
 
-        let photosRemoved = 0;
-        let foodEntriesChecked = 0;
+        let foodPhotosRemoved = 0;
+        let foodEntriesWithPhotos = 0;
 
         try {
             // Get all food data
             const foodData = JSON.parse(localStorage.getItem('foodLog') || '{"meals":[]}');
 
-            // Remove photos from old food entries
+            // Remove photos ONLY from old food entries
             foodData.meals.forEach(meal => {
                 const mealDate = new Date(meal.date || meal.timestamp);
                 if (mealDate < cutoffDate && meal.photo) {
                     delete meal.photo;
-                    photosRemoved++;
+                    foodPhotosRemoved++;
                 }
                 if (meal.photo) {
-                    foodEntriesChecked++;
+                    foodEntriesWithPhotos++;
                 }
             });
 
             // Save updated food data
             localStorage.setItem('foodLog', JSON.stringify(foodData));
 
-            // Also check progress photos
+            // Count progress photos (never delete these!)
             const progressPhotos = JSON.parse(localStorage.getItem('progressPhotos') || '[]');
-            const oldPhotoCount = progressPhotos.length;
-            const filteredPhotos = progressPhotos.filter(photo => {
-                const photoDate = new Date(photo.date);
-                return photoDate >= cutoffDate;
-            });
-            const progressPhotosRemoved = oldPhotoCount - filteredPhotos.length;
-
-            if (progressPhotosRemoved > 0) {
-                localStorage.setItem('progressPhotos', JSON.stringify(filteredPhotos));
-                photosRemoved += progressPhotosRemoved;
-            }
+            const progressPhotoCount = progressPhotos.length;
 
             // Refresh storage display
             this.calculateStorageUsed();
 
-            if (photosRemoved > 0) {
-                alert(`✅ Success!\n\nRemoved ${photosRemoved} photo(s) from entries older than ${daysOld} days.\n\nYour food data is safe, only photos were removed.\n\nCurrent entries with photos: ${foodEntriesChecked}`);
+            if (foodPhotosRemoved > 0) {
+                alert(`✅ Success!\n\nRemoved ${foodPhotosRemoved} food photo(s) from entries older than ${daysOld} days.\n\n📸 Progress Photos: ${progressPhotoCount} (KEPT - never auto-deleted)\n📝 Recent Food Photos: ${foodEntriesWithPhotos}\n\nYour food data and all progress photos are safe!`);
                 this.renderFood(); // Refresh the food view
             } else {
-                alert(`ℹ️ No old photos found.\n\nAll your photos are from the last ${daysOld} days.\n\nCurrent entries with photos: ${foodEntriesChecked}`);
+                alert(`ℹ️ No old food photos found.\n\nAll your food photos are from the last ${daysOld} days.\n\n📸 Progress Photos: ${progressPhotoCount} (never auto-deleted)\n📝 Food Photos: ${foodEntriesWithPhotos}\n\n💡 Progress photos are kept forever for tracking your transformation!`);
             }
         } catch (error) {
             console.error('Error clearing photos:', error);
