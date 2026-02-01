@@ -1388,7 +1388,7 @@
                     <div class="input-group">
                         <label class="input-label">🔧 App Version & Cache</label>
                         <div class="settings-info" style="background: #0f172a; border-left: 3px solid #10b981;">
-                            <p style="color: #cbd5e1;"><strong>Version:</strong> v104 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
+                            <p style="color: #cbd5e1;"><strong>Version:</strong> v105 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
                         </div>
                         <p class="helper-text">If app features aren't working, clear the cache to reload the latest version.</p>
                         <button id="clearCacheBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🔄 Clear Cache & Reload</button>
@@ -1432,6 +1432,12 @@
                     <!-- Photo Preview -->
                     <div class="photo-preview">
                         <img id="photoPreview" src="" alt="Photo preview">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">📝 Label / Name</label>
+                        <input type="text" id="photoLabel" class="input" placeholder="e.g., Start, Week 4, After Cut, Competition Day">
+                        <p class="helper-text">Give this photo a memorable name (e.g., "Start", "Week 4", "After Cut")</p>
                     </div>
 
                     <div class="input-group">
@@ -1486,6 +1492,10 @@
                         <img id="viewPhotoImage" src="" alt="Progress photo">
 
                         <div class="photo-details">
+                            <div id="viewPhotoLabelContainer" class="photo-info" style="display: none; margin-bottom: 0.5rem;">
+                                <h4 id="viewPhotoLabel" style="color: var(--accent-primary); margin: 0; font-size: 1.2rem;"></h4>
+                            </div>
+
                             <div class="photo-date" id="viewPhotoDate"></div>
 
                             <div id="viewPhotoWeightContainer" class="photo-info">

@@ -4828,6 +4828,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         document.getElementById('photoPreview').src = this.currentPhotoData;
 
         // Clear form
+        document.getElementById('photoLabel').value = '';
         document.getElementById('photoWeight').value = '';
         document.getElementById('photoNotes').value = '';
         document.getElementById('photoChest').value = '';
@@ -4839,6 +4840,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     }
 
     savePhoto() {
+        const label = document.getElementById('photoLabel').value.trim();
         const weight = document.getElementById('photoWeight').value;
         const notes = document.getElementById('photoNotes').value;
         const chest = document.getElementById('photoChest').value;
@@ -4854,6 +4856,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
         const photoData = {
             image: this.currentPhotoData,
+            label: label || null,
             weight: weight ? parseFloat(weight) : null,
             notes: notes,
             measurements: measurements
@@ -4941,6 +4944,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
                 <div class="photo-card" onclick="app.viewPhoto(${photo.id})">
                     <img src="${photo.image}" alt="Progress photo">
                     <div class="photo-card-info">
+                        ${photo.label ? `<div class="photo-label" style="font-weight: 600; color: var(--accent-primary); margin-bottom: 0.25rem;">📝 ${photo.label}</div>` : ''}
                         <div class="photo-date">${formattedDate}</div>
                         <div class="photo-time-ago">${daysSinceLabel}</div>
                         ${photo.weight ? `<div class="photo-weight">⚖️ ${photo.weight} kg</div>` : ''}
@@ -4973,15 +4977,16 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             photos.forEach(photo => {
                 const date = new Date(photo.date);
                 const formatted = formatDateNZ(date, { month: 'short', day: 'numeric', year: 'numeric' });
+                const displayText = photo.label ? `${photo.label} (${formatted})` : formatted;
 
                 const option1 = document.createElement('option');
                 option1.value = photo.id;
-                option1.textContent = formatted;
+                option1.textContent = displayText;
                 beforeSelect.appendChild(option1);
 
                 const option2 = document.createElement('option');
                 option2.value = photo.id;
-                option2.textContent = formatted;
+                option2.textContent = displayText;
                 afterSelect.appendChild(option2);
             });
 
@@ -5049,23 +5054,31 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
         if (!beforePhoto || !afterPhoto) return;
 
-        // Show display
+        // Show display with smooth scroll
         display.style.display = 'block';
+
+        // Scroll to comparison view smoothly
+        setTimeout(() => {
+            display.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
 
         // Update side by side view
         document.getElementById('beforePhotoImg').src = beforePhoto.image;
         document.getElementById('afterPhotoImg').src = afterPhoto.image;
 
-        document.getElementById('beforePhotoDate').textContent = formatDateNZ(new Date(beforePhoto.date), {
+        const beforeDateText = beforePhoto.label || formatDateNZ(new Date(beforePhoto.date), {
             month: 'short',
             day: 'numeric',
             year: 'numeric'
         });
-        document.getElementById('afterPhotoDate').textContent = formatDateNZ(new Date(afterPhoto.date), {
+        const afterDateText = afterPhoto.label || formatDateNZ(new Date(afterPhoto.date), {
             month: 'short',
             day: 'numeric',
             year: 'numeric'
         });
+
+        document.getElementById('beforePhotoDate').textContent = beforeDateText;
+        document.getElementById('afterPhotoDate').textContent = afterDateText;
 
         // Update slider view
         document.getElementById('beforePhotoSlider').src = beforePhoto.image;
@@ -5086,6 +5099,15 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
         // Set image
         document.getElementById('viewPhotoImage').src = photo.image;
+
+        // Set label
+        const labelContainer = document.getElementById('viewPhotoLabelContainer');
+        if (photo.label) {
+            document.getElementById('viewPhotoLabel').textContent = `📝 ${photo.label}`;
+            labelContainer.style.display = 'block';
+        } else {
+            labelContainer.style.display = 'none';
+        }
 
         // Set date
         const date = new Date(photo.date);
