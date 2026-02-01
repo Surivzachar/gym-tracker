@@ -352,6 +352,10 @@ class GymTrackerApp {
             this.closeModal('settingsModal');
         });
 
+        document.getElementById('clearOldPhotosBtn').addEventListener('click', () => {
+            this.clearOldPhotos();
+        });
+
         document.getElementById('clearCacheBtn').addEventListener('click', () => {
             this.clearCacheAndReload();
         });
@@ -2947,19 +2951,35 @@ class GymTrackerApp {
 
         const isEditing = this.editingFoodId !== null;
 
-        if (isEditing) {
-            // Update existing food item
-            foodItem.id = this.editingFoodId;
-            foodItem.mealType = this.currentMealType;
-            Storage.updateFoodItem(this.editingFoodId, foodItem);
-            this.editingFoodId = null;
-        } else {
-            // Add new food item - pass working date if editing past date
-            Storage.addFoodItem(this.currentMealType, foodItem, this.workingDate);
+        try {
+            if (isEditing) {
+                // Update existing food item
+                foodItem.id = this.editingFoodId;
+                foodItem.mealType = this.currentMealType;
+                Storage.updateFoodItem(this.editingFoodId, foodItem);
+                this.editingFoodId = null;
+            } else {
+                // Add new food item - pass working date if editing past date
+                Storage.addFoodItem(this.currentMealType, foodItem, this.workingDate);
 
-            // Add to recent foods (use original food data, not multiplied)
-            if (this.selectedFood) {
-                Storage.addToRecentFoods(this.selectedFood);
+                // Add to recent foods (use original food data, not multiplied)
+                if (this.selectedFood) {
+                    Storage.addToRecentFoods(this.selectedFood);
+                }
+            }
+        } catch (error) {
+            console.error('Storage error:', error);
+            if (error.name === 'QuotaExceededError' || error.message.includes('quota')) {
+                alert('❌ Storage full! Your device storage is full.\n\n' +
+                      '💡 Solutions:\n' +
+                      '1. Go to Settings → Clear Old Photos\n' +
+                      '2. Delete old food entries with photos\n' +
+                      '3. Remove the photo from this food item\n\n' +
+                      'Your food data is safe, but photos take up space.');
+                return; // Don't close modal, let user remove photo
+            } else {
+                alert('Error saving food: ' + error.message);
+                return;
             }
         }
 
@@ -2992,18 +3012,24 @@ class GymTrackerApp {
         const file = event.target.files[0];
         if (!file) return;
 
-        // Check file size (max 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-            alert('Photo size must be less than 5MB');
+        // Check file size (max 10MB for initial upload)
+        if (file.size > 10 * 1024 * 1024) {
+            alert('Photo size must be less than 10MB');
             event.target.value = '';
             return;
         }
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            this.currentFoodPhoto = e.target.result;
-            document.getElementById('foodPhotoPreviewImg').src = e.target.result;
-            document.getElementById('foodPhotoPreview').style.display = 'block';
+            // Compress image before storing (uses existing compressImage function)
+            this.compressImage(e.target.result, (compressedDataUrl) => {
+                console.log('Original size:', e.target.result.length, 'Compressed size:', compressedDataUrl.length);
+                console.log('Compression ratio:', Math.round((1 - compressedDataUrl.length / e.target.result.length) * 100) + '%');
+
+                this.currentFoodPhoto = compressedDataUrl;
+                document.getElementById('foodPhotoPreviewImg').src = compressedDataUrl;
+                document.getElementById('foodPhotoPreview').style.display = 'block';
+            });
         };
         reader.readAsDataURL(file);
     }
@@ -3567,6 +3593,9 @@ class GymTrackerApp {
         // Display cache version
         this.displayCacheVersion();
 
+        // Calculate and display storage used
+        this.calculateStorageUsed();
+
         document.getElementById('settingsModal').classList.add('active');
         startDateInput.focus();
     }
@@ -3615,6 +3644,103 @@ class GymTrackerApp {
         } catch (error) {
             console.error('Error clearing cache:', error);
             alert('Error clearing cache. Try manually refreshing the page (Ctrl+Shift+R or Cmd+Shift+R).');
+        }
+    }
+
+    calculateStorageUsed() {
+        const storageDisplay = document.getElementById('storageUsedDisplay');
+
+        try {
+            // Calculate approximate size of localStorage
+            let totalSize = 0;
+            for (let key in localStorage) {
+                if (localStorage.hasOwnProperty(key)) {
+                    totalSize += localStorage[key].length + key.length;
+                }
+            }
+
+            // Convert to KB/MB
+            const sizeKB = totalSize / 1024;
+            const sizeMB = sizeKB / 1024;
+
+            let displayText = '';
+            let colorClass = '';
+
+            if (sizeMB >= 1) {
+                displayText = sizeMB.toFixed(2) + ' MB';
+                if (sizeMB > 4) {
+                    colorClass = 'color: #ef4444;'; // Red if over 4MB
+                    displayText += ' ⚠️ Nearly Full!';
+                } else if (sizeMB > 2) {
+                    colorClass = 'color: #fbbf24;'; // Yellow if over 2MB
+                    displayText += ' (Getting Full)';
+                } else {
+                    colorClass = 'color: #10b981;'; // Green otherwise
+                }
+            } else {
+                displayText = sizeKB.toFixed(0) + ' KB';
+                colorClass = 'color: #10b981;';
+            }
+
+            storageDisplay.innerHTML = `<span style="${colorClass}">${displayText}</span>`;
+        } catch (error) {
+            storageDisplay.textContent = 'Unable to calculate';
+        }
+    }
+
+    clearOldPhotos() {
+        const daysOld = 7;
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - daysOld);
+
+        let photosRemoved = 0;
+        let foodEntriesChecked = 0;
+
+        try {
+            // Get all food data
+            const foodData = JSON.parse(localStorage.getItem('foodLog') || '{"meals":[]}');
+
+            // Remove photos from old food entries
+            foodData.meals.forEach(meal => {
+                const mealDate = new Date(meal.date || meal.timestamp);
+                if (mealDate < cutoffDate && meal.photo) {
+                    delete meal.photo;
+                    photosRemoved++;
+                }
+                if (meal.photo) {
+                    foodEntriesChecked++;
+                }
+            });
+
+            // Save updated food data
+            localStorage.setItem('foodLog', JSON.stringify(foodData));
+
+            // Also check progress photos
+            const progressPhotos = JSON.parse(localStorage.getItem('progressPhotos') || '[]');
+            const oldPhotoCount = progressPhotos.length;
+            const filteredPhotos = progressPhotos.filter(photo => {
+                const photoDate = new Date(photo.date);
+                return photoDate >= cutoffDate;
+            });
+            const progressPhotosRemoved = oldPhotoCount - filteredPhotos.length;
+
+            if (progressPhotosRemoved > 0) {
+                localStorage.setItem('progressPhotos', JSON.stringify(filteredPhotos));
+                photosRemoved += progressPhotosRemoved;
+            }
+
+            // Refresh storage display
+            this.calculateStorageUsed();
+
+            if (photosRemoved > 0) {
+                alert(`✅ Success!\n\nRemoved ${photosRemoved} photo(s) from entries older than ${daysOld} days.\n\nYour food data is safe, only photos were removed.\n\nCurrent entries with photos: ${foodEntriesChecked}`);
+                this.renderFood(); // Refresh the food view
+            } else {
+                alert(`ℹ️ No old photos found.\n\nAll your photos are from the last ${daysOld} days.\n\nCurrent entries with photos: ${foodEntriesChecked}`);
+            }
+        } catch (error) {
+            console.error('Error clearing photos:', error);
+            alert('Error clearing photos: ' + error.message);
         }
     }
 
