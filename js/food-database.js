@@ -1043,6 +1043,137 @@ const FoodDatabase = [
         serving: "1 wrap",
         recipe: "Mediterranean wrap with chickpea fritters, vegetables, and tahini"
     },
+
+    // Additional Indian Foods - Breakfast
+    { name: "Upma", calories: 200, protein: 4, carbs: 38, fats: 4, category: "Carbs", serving: "200g (1 bowl)" },
+    { name: "Poha", calories: 250, protein: 5, carbs: 40, fats: 8, category: "Carbs", serving: "200g (1 bowl)" },
+    { name: "Medu Vada (2 pieces)", calories: 220, protein: 6, carbs: 28, fats: 9, category: "Carbs", serving: "2 vadas (100g)" },
+    { name: "Idli Sambar (3 idlis)", calories: 180, protein: 6, carbs: 35, fats: 2, category: "Carbs", serving: "3 idlis + sambar" },
+    { name: "Rava Dosa", calories: 160, protein: 4, carbs: 28, fats: 4, category: "Carbs", serving: "1 dosa (150g)" },
+    { name: "Masala Dosa with Potato", calories: 280, protein: 7, carbs: 48, fats: 7, category: "Carbs", serving: "1 dosa (200g)" },
+    { name: "Uttapam (plain)", calories: 140, protein: 4, carbs: 26, fats: 2, category: "Carbs", serving: "1 uttapam (120g)" },
+    { name: "Puri (1 piece)", calories: 110, protein: 2, carbs: 14, fats: 5, category: "Carbs", serving: "1 puri (30g)" },
+    { name: "Aloo Puri (2 puris + curry)", calories: 360, protein: 8, carbs: 52, fats: 13, category: "Carbs", serving: "2 puris + aloo" },
+    { name: "Pongal (Ven Pongal)", calories: 220, protein: 6, carbs: 38, fats: 5, category: "Carbs", serving: "200g (1 bowl)" },
+
+    // Indian Curries & Main Dishes
+    { name: "Chicken Curry (restaurant style)", calories: 250, protein: 24, carbs: 8, fats: 14, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Butter Chicken", calories: 320, protein: 22, carbs: 10, fats: 22, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Chicken Tikka Masala", calories: 300, protein: 26, carbs: 12, fats: 17, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Chicken Biryani", calories: 450, protein: 28, carbs: 58, fats: 12, category: "Carbs", serving: "350g (1 plate)" },
+    { name: "Mutton Biryani", calories: 520, protein: 26, carbs: 60, fats: 18, category: "Carbs", serving: "350g (1 plate)" },
+    { name: "Veg Biryani", calories: 380, protein: 8, carbs: 62, fats: 10, category: "Carbs", serving: "350g (1 plate)" },
+    { name: "Hyderabadi Biryani (Chicken)", calories: 480, protein: 30, carbs: 56, fats: 14, category: "Carbs", serving: "350g (1 plate)" },
+    { name: "Fish Curry (Kerala style)", calories: 220, protein: 28, carbs: 6, fats: 9, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Mutton Rogan Josh", calories: 340, protein: 26, carbs: 8, fats: 23, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Palak Paneer", calories: 260, protein: 14, carbs: 10, fats: 18, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Paneer Butter Masala", calories: 320, protein: 16, carbs: 12, fats: 24, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Kadai Paneer", calories: 280, protein: 15, carbs: 11, fats: 20, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Shahi Paneer", calories: 310, protein: 14, carbs: 13, fats: 23, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Paneer Tikka Masala", calories: 290, protein: 16, carbs: 10, fats: 20, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Aloo Gobi", calories: 180, protein: 4, carbs: 28, fats: 6, category: "Carbs", serving: "200g (1 bowl)" },
+    { name: "Baingan Bharta", calories: 160, protein: 3, carbs: 18, fats: 8, category: "Vegetables", serving: "200g (1 bowl)" },
+    { name: "Bhindi Masala (Okra)", calories: 140, protein: 3, carbs: 16, fats: 7, category: "Vegetables", serving: "200g (1 bowl)" },
+    { name: "Chole (Chickpea Curry)", calories: 240, protein: 12, carbs: 38, fats: 5, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Rajma (Kidney Bean Curry)", calories: 230, protein: 14, carbs: 36, fats: 4, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Egg Curry", calories: 190, protein: 12, carbs: 8, fats: 12, category: "Protein", serving: "200g (2 eggs)" },
+
+    // Dals & Lentils
+    { name: "Moong Dal Tadka", calories: 150, protein: 10, carbs: 24, fats: 2, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Masoor Dal", calories: 140, protein: 9, carbs: 23, fats: 2, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Chana Dal", calories: 160, protein: 10, carbs: 26, fats: 2, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Urad Dal", calories: 170, protein: 11, carbs: 26, fats: 3, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Sambar", calories: 120, protein: 5, carbs: 20, fats: 2, category: "Protein", serving: "200g (1 bowl)" },
+    { name: "Rasam", calories: 80, protein: 3, carbs: 15, fats: 1, category: "Vegetables", serving: "200g (1 bowl)" },
+
+    // Indian Snacks & Street Food
+    { name: "Samosa (1 piece)", calories: 252, protein: 5, carbs: 30, fats: 12, category: "Snacks", serving: "1 samosa (100g)" },
+    { name: "Kachori (1 piece)", calories: 180, protein: 4, carbs: 22, fats: 8, category: "Snacks", serving: "1 kachori (50g)" },
+    { name: "Pakora (100g)", calories: 250, protein: 6, carbs: 28, fats: 12, category: "Snacks", serving: "100g (4-5 pieces)" },
+    { name: "Bhajiya/Bhaji (100g)", calories: 240, protein: 5, carbs: 26, fats: 12, category: "Snacks", serving: "100g (4-5 pieces)" },
+    { name: "Vada Pav", calories: 290, protein: 6, carbs: 42, fats: 11, category: "Carbs", serving: "1 vada pav" },
+    { name: "Pav Bhaji", calories: 380, protein: 10, carbs: 52, fats: 14, category: "Carbs", serving: "2 pavs + bhaji" },
+    { name: "Panipuri (6 pieces)", calories: 120, protein: 3, carbs: 24, fats: 2, category: "Snacks", serving: "6 puris" },
+    { name: "Bhel Puri", calories: 220, protein: 5, carbs: 38, fats: 6, category: "Snacks", serving: "150g (1 plate)" },
+    { name: "Sev Puri", calories: 260, protein: 5, carbs: 36, fats: 10, category: "Snacks", serving: "150g (1 plate)" },
+    { name: "Dahi Puri", calories: 180, protein: 5, carbs: 28, fats: 5, category: "Snacks", serving: "6 puris" },
+    { name: "Aloo Tikki (1 piece)", calories: 150, protein: 3, carbs: 22, fats: 5, category: "Snacks", serving: "1 tikki (80g)" },
+    { name: "Papdi Chaat", calories: 280, protein: 6, carbs: 38, fats: 11, category: "Snacks", serving: "150g (1 plate)" },
+    { name: "Ragda Pattice", calories: 320, protein: 8, carbs: 48, fats: 10, category: "Snacks", serving: "200g (1 plate)" },
+    { name: "Dabeli (1 bun)", calories: 240, protein: 5, carbs: 40, fats: 6, category: "Carbs", serving: "1 bun" },
+    { name: "Misal Pav", calories: 350, protein: 12, carbs: 52, fats: 10, category: "Carbs", serving: "1 plate" },
+
+    // Indian Breads
+    { name: "Naan (plain)", calories: 262, protein: 8, carbs: 45, fats: 5, category: "Carbs", serving: "1 naan (90g)" },
+    { name: "Butter Naan", calories: 310, protein: 8, carbs: 46, fats: 10, category: "Carbs", serving: "1 naan (90g)" },
+    { name: "Garlic Naan", calories: 290, protein: 8, carbs: 44, fats: 8, category: "Carbs", serving: "1 naan (90g)" },
+    { name: "Cheese Naan", calories: 380, protein: 14, carbs: 48, fats: 14, category: "Carbs", serving: "1 naan (100g)" },
+    { name: "Kulcha (plain)", calories: 150, protein: 4, carbs: 26, fats: 3, category: "Carbs", serving: "1 kulcha (60g)" },
+    { name: "Aloo Kulcha", calories: 220, protein: 5, carbs: 38, fats: 5, category: "Carbs", serving: "1 kulcha (90g)" },
+    { name: "Bhatura (1 piece)", calories: 300, protein: 6, carbs: 42, fats: 12, category: "Carbs", serving: "1 bhatura (100g)" },
+    { name: "Chole Bhature", calories: 520, protein: 16, carbs: 72, fats: 16, category: "Carbs", serving: "2 bhature + chole" },
+    { name: "Tandoori Roti", calories: 120, protein: 4, carbs: 23, fats: 1, category: "Carbs", serving: "1 roti (60g)" },
+    { name: "Rumali Roti", calories: 100, protein: 3, carbs: 20, fats: 1, category: "Carbs", serving: "1 roti (50g)" },
+    { name: "Missi Roti", calories: 140, protein: 5, carbs: 24, fats: 2, category: "Carbs", serving: "1 roti (60g)" },
+
+    // Indian Sweets & Desserts
+    { name: "Gulab Jamun (1 piece)", calories: 150, protein: 2, carbs: 25, fats: 5, category: "Sweets", serving: "1 piece (40g)" },
+    { name: "Rasgulla (1 piece)", calories: 106, protein: 2, carbs: 22, fats: 1, category: "Sweets", serving: "1 piece (50g)" },
+    { name: "Jalebi (100g)", calories: 450, protein: 3, carbs: 85, fats: 10, category: "Sweets", serving: "100g (4-5 pieces)" },
+    { name: "Rasmalai (1 piece)", calories: 180, protein: 5, carbs: 24, fats: 7, category: "Sweets", serving: "1 piece (80g)" },
+    { name: "Kheer (Rice Pudding)", calories: 180, protein: 5, carbs: 30, fats: 4, category: "Sweets", serving: "150g (1 bowl)" },
+    { name: "Gajar Halwa (Carrot Halwa)", calories: 240, protein: 4, carbs: 36, fats: 9, category: "Sweets", serving: "150g (1 bowl)" },
+    { name: "Moong Dal Halwa", calories: 280, protein: 6, carbs: 38, fats: 12, category: "Sweets", serving: "150g (1 bowl)" },
+    { name: "Besan Ladoo (1 piece)", calories: 130, protein: 3, carbs: 18, fats: 5, category: "Sweets", serving: "1 ladoo (30g)" },
+    { name: "Motichoor Ladoo (1 piece)", calories: 140, protein: 2, carbs: 22, fats: 5, category: "Sweets", serving: "1 ladoo (35g)" },
+    { name: "Barfi (1 piece)", calories: 120, protein: 3, carbs: 18, fats: 4, category: "Sweets", serving: "1 piece (30g)" },
+    { name: "Mysore Pak (1 piece)", calories: 160, protein: 2, carbs: 20, fats: 8, category: "Sweets", serving: "1 piece (30g)" },
+    { name: "Pedha (1 piece)", calories: 110, protein: 3, carbs: 16, fats: 4, category: "Sweets", serving: "1 piece (30g)" },
+    { name: "Soan Papdi (1 piece)", calories: 140, protein: 2, carbs: 22, fats: 5, category: "Sweets", serving: "1 piece (30g)" },
+    { name: "Khoya/Mawa (100g)", calories: 420, protein: 16, carbs: 26, fats: 27, category: "Sweets", serving: "100g" },
+
+    // Packaged/Branded Foods - Haldiram's
+    { name: "Haldiram's Bhujia (100g)", calories: 524, protein: 14, carbs: 40, fats: 34, category: "Snacks", serving: "100g" },
+    { name: "Haldiram's Aloo Bhujia (100g)", calories: 528, protein: 12, carbs: 42, fats: 35, category: "Snacks", serving: "100g" },
+    { name: "Haldiram's Sev (100g)", calories: 520, protein: 13, carbs: 44, fats: 32, category: "Snacks", serving: "100g" },
+    { name: "Haldiram's Mixture (100g)", calories: 510, protein: 14, carbs: 48, fats: 30, category: "Snacks", serving: "100g" },
+    { name: "Haldiram's Moong Dal (100g)", calories: 485, protein: 22, carbs: 42, fats: 24, category: "Snacks", serving: "100g" },
+    { name: "Haldiram's Samosa (1 piece)", calories: 280, protein: 6, carbs: 32, fats: 14, category: "Snacks", serving: "1 samosa" },
+    { name: "Haldiram's Kachori (1 piece)", calories: 220, protein: 5, carbs: 26, fats: 10, category: "Snacks", serving: "1 kachori" },
+
+    // Packaged/Branded Foods - MTR
+    { name: "MTR Masala Dosa (Ready to Eat)", calories: 180, protein: 5, carbs: 32, fats: 4, category: "Carbs", serving: "1 pack (150g)" },
+    { name: "MTR Rava Idli Mix (3 idlis)", calories: 160, protein: 4, carbs: 32, fats: 2, category: "Carbs", serving: "3 idlis" },
+    { name: "MTR Gulab Jamun Mix (4 pieces)", calories: 520, protein: 6, carbs: 88, fats: 16, category: "Sweets", serving: "4 pieces" },
+
+    // Regional Specialties
+    { name: "Dhokla", calories: 160, protein: 4, carbs: 32, fats: 2, category: "Carbs", serving: "150g (3-4 pieces)" },
+    { name: "Khandvi (100g)", calories: 180, protein: 6, carbs: 22, fats: 8, category: "Snacks", serving: "100g (6-8 rolls)" },
+    { name: "Thepla (1 piece)", calories: 100, protein: 3, carbs: 16, fats: 3, category: "Carbs", serving: "1 thepla" },
+    { name: "Handvo (1 piece)", calories: 200, protein: 6, carbs: 28, fats: 7, category: "Carbs", serving: "1 piece (100g)" },
+    { name: "Appam (1 piece)", calories: 90, protein: 2, carbs: 18, fats: 1, category: "Carbs", serving: "1 appam" },
+    { name: "Puttu (150g)", calories: 160, protein: 4, carbs: 32, fats: 2, category: "Carbs", serving: "150g (1 serving)" },
+    { name: "Pesarattu (Moong Dal Dosa)", calories: 180, protein: 8, carbs: 30, fats: 3, category: "Carbs", serving: "1 dosa" },
+    { name: "Bisibelebath", calories: 280, protein: 8, carbs: 48, fats: 6, category: "Carbs", serving: "250g (1 bowl)" },
+    { name: "Pulao (Veg)", calories: 280, protein: 6, carbs: 52, fats: 5, category: "Carbs", serving: "250g (1 plate)" },
+    { name: "Lemon Rice", calories: 240, protein: 4, carbs: 46, fats: 4, category: "Carbs", serving: "250g (1 plate)" },
+    { name: "Curd Rice", calories: 180, protein: 6, carbs: 32, fats: 3, category: "Carbs", serving: "250g (1 plate)" },
+    { name: "Tamarind Rice", calories: 260, protein: 5, carbs: 50, fats: 5, category: "Carbs", serving: "250g (1 plate)" },
+
+    // More Protein Options
+    { name: "Chicken Tikka (100g)", calories: 150, protein: 24, carbs: 2, fats: 5, category: "Protein", serving: "100g (4-5 pieces)" },
+    { name: "Tandoori Chicken (1 leg piece)", calories: 180, protein: 26, carbs: 2, fats: 7, category: "Protein", serving: "1 leg piece (120g)" },
+    { name: "Chicken Kebab (100g)", calories: 200, protein: 22, carbs: 4, fats: 10, category: "Protein", serving: "100g (2-3 kebabs)" },
+    { name: "Mutton Kebab (100g)", calories: 240, protein: 20, carbs: 3, fats: 16, category: "Protein", serving: "100g (2-3 kebabs)" },
+    { name: "Fish Fry (100g)", calories: 190, protein: 22, carbs: 8, fats: 8, category: "Protein", serving: "100g (1 piece)" },
+    { name: "Prawn Curry", calories: 180, protein: 24, carbs: 6, fats: 6, category: "Protein", serving: "200g (1 bowl)" },
+
+    // Beverages & Others
+    { name: "Lassi (Plain)", calories: 120, protein: 6, carbs: 18, fats: 2, category: "Dairy", serving: "200ml (1 glass)" },
+    { name: "Lassi (Mango)", calories: 180, protein: 5, carbs: 32, fats: 3, category: "Dairy", serving: "200ml (1 glass)" },
+    { name: "Masala Chaas/Buttermilk", calories: 50, protein: 2, carbs: 8, fats: 1, category: "Dairy", serving: "200ml (1 glass)" },
+    { name: "Masala Chai (with sugar)", calories: 80, protein: 2, carbs: 14, fats: 2, category: "Beverages", serving: "200ml (1 cup)" },
+    { name: "Filter Coffee (with sugar)", calories: 60, protein: 1, carbs: 12, fats: 1, category: "Beverages", serving: "150ml (1 cup)" },
 ];
 
 // Search function for food database

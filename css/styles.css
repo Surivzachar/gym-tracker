@@ -6008,3 +6008,158 @@ input:checked + .toggle-slider:before {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* Comparison Display - Make it more visible */
+.comparison-display {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border: 2px solid var(--accent-primary);
+    border-radius: 12px;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.comparison-display::before {
+    content: '✨ Your Comparison';
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent-primary);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+/* Macro Goals Progress Bars */
+.macro-goal-item {
+    margin-bottom: 1rem;
+}
+
+.macro-goal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.4rem;
+}
+
+.macro-goal-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.macro-goal-values {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.macro-goal-values span {
+    font-weight: 600;
+    color: var(--accent-primary);
+}
+
+.macro-progress-bar {
+    width: 100%;
+    height: 12px;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+.macro-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    transition: width 0.3s ease;
+    border-radius: 6px;
+}
+
+.macro-progress-fill.completed {
+    background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.macro-progress-fill.over {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.section-header-with-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-header-with-action h3 {
+    margin: 0;
+}
+
+/* Progress Insights */
+.progress-insights-container {
+    display: grid;
+    gap: 1rem;
+}
+
+.insight-card {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    border-radius: 12px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    animation: slideInUp 0.3s ease-out;
+}
+
+.insight-card-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.insight-card-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.insight-card-subtext {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-top: 0.3rem;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Quick Actions Grid */
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.quick-actions-grid .btn-secondary {
+    padding: 1rem;
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .quick-actions-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}

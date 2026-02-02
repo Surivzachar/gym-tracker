@@ -71,7 +71,7 @@ const Storage = {
 
     // Workout methods
     getCurrentWorkout() {
-        return this.get(this.KEYS.CURRENT_WORKOUT) || { exercises: [] };
+        return this.get(this.KEYS.CURRENT_WORKOUT) || { exercises: [], startTime: null };
     },
 
     saveCurrentWorkout(workout) {
@@ -92,11 +92,18 @@ const Storage = {
         // Use custom date if provided, otherwise use today
         const workoutDate = customDate ? new Date(customDate) : new Date();
 
+        // Calculate workout duration in minutes
+        let duration = null;
+        if (currentWorkout.startTime) {
+            const endTime = Date.now();
+            duration = Math.round((endTime - currentWorkout.startTime) / 60000); // Convert to minutes
+        }
+
         const workout = {
             id: Date.now() + Math.random(), // Add random component for uniqueness
             date: workoutDate.toISOString(),
             exercises: currentWorkout.exercises,
-            duration: null, // Could be calculated if we track start time
+            duration: duration, // Duration in minutes
             routineId: this.getCurrentRoutineId() || null, // Track which routine was used
             calories: calories // Total calories burned for the entire workout
         };

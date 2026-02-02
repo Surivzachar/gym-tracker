@@ -185,7 +185,7 @@ const NutritionixAPI = {
 };
 
 // Enhanced food search with smart fallback
-// Priority: 1. Local Database -> 2. Cached API Foods -> 3. Nutritionix API
+// Priority: 1. Local Database -> 2. Cached API Foods -> 3. Nutritionix API -> 4. FatSecret API
 async function smartFoodSearch(query) {
     if (!query || query.length < 2) {
         return [];
@@ -194,7 +194,8 @@ async function smartFoodSearch(query) {
     const results = {
         local: [],
         cached: [],
-        api: []
+        nutritionix: [],
+        fatsecret: []
     };
 
     // 1. Search local database first (instant, offline)
@@ -216,31 +217,44 @@ async function smartFoodSearch(query) {
         index === self.findIndex(f => f.name === food.name)
     );
 
-    // 5. If online and API is configured, fetch from API
-    if (navigator.onLine && NutritionixAPI.isConfigured()) {
+    // 5. If online, fetch from APIs
+    if (navigator.onLine) {
         try {
-            results.api = await NutritionixAPI.searchAPI(query);
+            // Query Nutritionix API if configured
+            if (NutritionixAPI.isConfigured()) {
+                results.nutritionix = await NutritionixAPI.searchAPI(query);
 
-            // Cache API results for offline use
-            results.api.forEach(food => {
-                Storage.addToCachedAPIFoods(food);
-            });
+                // Cache API results for offline use
+                results.nutritionix.forEach(food => {
+                    Storage.addToCachedAPIFoods(food);
+                });
+            }
+
+            // Query FatSecret API if configured
+            if (typeof FatSecretAPI !== 'undefined' && FatSecretAPI.isConfigured()) {
+                results.fatsecret = await FatSecretAPI.searchAPI(query);
+
+                // Cache API results for offline use
+                results.fatsecret.forEach(food => {
+                    Storage.addToCachedAPIFoods(food);
+                });
+            }
 
             // Combine all results
-            const allResults = [...uniqueCombined, ...results.api];
+            const allResults = [...uniqueCombined, ...results.nutritionix, ...results.fatsecret];
 
-            // Remove duplicates
+            // Remove duplicates by name
             const uniqueResults = allResults.filter((food, index, self) =>
                 index === self.findIndex(f => f.name === food.name)
             );
 
-            return uniqueResults.slice(0, 20);
+            return uniqueResults.slice(0, 25);
         } catch (error) {
             console.error('API search failed, returning local results:', error);
             return uniqueCombined.slice(0, 15);
         }
     }
 
-    // 6. Return local + cached results
+    // 6. Return local + cached results when offline
     return uniqueCombined.slice(0, 15);
 }

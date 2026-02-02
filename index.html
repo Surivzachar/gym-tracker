@@ -229,10 +229,16 @@
                         </div>
                     </div>
 
-                    <!-- Food Summary -->
+                    <!-- Food Summary with Macro Goals -->
                     <div class="dashboard-section">
-                        <h3>🍽️ Food Today</h3>
-                        <div class="food-summary-grid">
+                        <div class="section-header-with-action">
+                            <h3>🍽️ Nutrition Today</h3>
+                            <button class="btn-secondary btn-sm" onclick="app.openNutritionGoalsModal()" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">⚙️ Set Goals</button>
+                        </div>
+                        <div id="macroGoalsContainer">
+                            <!-- Macro progress bars will be inserted here -->
+                        </div>
+                        <div class="food-summary-grid" style="margin-top: 1rem;">
                             <div class="summary-item">
                                 <span class="summary-label">Calories</span>
                                 <span class="summary-value" id="dashFoodCalories">0</span>
@@ -343,6 +349,17 @@
                 <div class="section">
                     <h2>📈 Progress & Analytics</h2>
                     <p class="helper-text">Track your fitness journey with visual insights and trends</p>
+
+                    <!-- Progress Insights -->
+                    <div id="progressInsights" class="progress-insights-container" style="margin-bottom: 2rem;">
+                        <!-- Auto-generated insights will appear here -->
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions-grid" style="margin-bottom: 2rem;">
+                        <button class="btn-secondary" onclick="app.openWeightModal()">⚖️ Log Weight</button>
+                        <button class="btn-secondary" onclick="app.openMeasurementsModal()">📏 Log Measurements</button>
+                    </div>
 
                     <!-- Weight Progress Chart -->
                     <div class="chart-section">
@@ -573,13 +590,7 @@
         <!-- Workout View -->
         <div id="workoutView" class="view">
             <div class="container">
-                <!-- Daily Quote -->
-                <div class="daily-quote-card">
-                    <div class="quote-icon">💪</div>
-                    <div class="quote-content">
-                        <p id="dailyQuote" class="quote-text"></p>
-                    </div>
-                </div>
+                <!-- Removed Daily Quote feature to focus on core tracking -->
 
                 <!-- Today's Completed Workouts -->
                 <div id="todayCompletedSection" class="section" style="display: none;">
@@ -858,6 +869,7 @@
                     <!-- Before/After Comparison -->
                     <div id="beforeAfterSection" class="before-after-section" style="display: none;">
                         <h3>📊 Before & After Comparison</h3>
+                        <p class="helper-text" style="margin-bottom: 1rem;">Select two photos below to compare your transformation. The comparison will appear automatically!</p>
                         <div class="comparison-controls">
                             <div class="photo-selector">
                                 <label>Before Photo:</label>
@@ -1401,7 +1413,7 @@
                     <div class="input-group">
                         <label class="input-label">🔧 App Version & Cache</label>
                         <div class="settings-info" style="background: #0f172a; border-left: 3px solid #10b981;">
-                            <p style="color: #cbd5e1;"><strong>Version:</strong> v106 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
+                            <p style="color: #cbd5e1;"><strong>Version:</strong> v110 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
                         </div>
                         <p class="helper-text">If app features aren't working, clear the cache to reload the latest version.</p>
                         <button id="clearCacheBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🔄 Clear Cache & Reload</button>
@@ -1709,6 +1721,48 @@
 
                     <div class="modal-actions" style="margin-top: 1.5rem;">
                         <button id="saveMeasurementsBtn" class="btn-primary">Save Measurements</button>
+                        <button class="btn-secondary close-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nutrition Goals Modal -->
+        <div id="nutritionGoalsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>🎯 Set Nutrition Goals</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p class="helper-text" style="margin-bottom: 1rem;">Set your daily nutrition targets. Progress bars will show on your dashboard.</p>
+
+                    <div class="input-group">
+                        <label class="input-label">Daily Calorie Target</label>
+                        <input type="number" id="calorieGoalInput" class="input" placeholder="e.g., 2500" min="1000" max="5000" step="50">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Daily Protein Target (g)</label>
+                        <input type="number" id="proteinGoalInput" class="input" placeholder="e.g., 150" min="50" max="500" step="5">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Daily Carbs Target (g)</label>
+                        <input type="number" id="carbsGoalInput" class="input" placeholder="e.g., 250" min="50" max="800" step="5">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Daily Fats Target (g)</label>
+                        <input type="number" id="fatsGoalInput" class="input" placeholder="e.g., 70" min="20" max="300" step="5">
+                    </div>
+
+                    <p class="helper-text" style="margin-top: 1rem; font-size: 0.85rem;">
+                        💡 Tip: These goals will be displayed on your dashboard with progress bars showing your daily progress.
+                    </p>
+
+                    <div class="modal-actions">
+                        <button id="saveNutritionGoalsBtn" class="btn-primary">Save Goals</button>
                         <button class="btn-secondary close-btn">Cancel</button>
                     </div>
                 </div>
@@ -2117,9 +2171,9 @@
     <script src="js/googledrive-sync.js"></script>
     <script src="js/food-database.js"></script>
     <script src="js/nutritionix-api.js"></script>
+    <script src="js/fatsecret-api.js"></script>
     <script src="js/exercise-library.js"></script>
     <script src="js/workout-templates.js"></script>
-    <script src="js/quotes.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

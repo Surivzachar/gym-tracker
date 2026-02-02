@@ -476,6 +476,10 @@ class GymTrackerApp {
             this.saveMeasurements();
         });
 
+        document.getElementById('saveNutritionGoalsBtn').addEventListener('click', () => {
+            this.saveNutritionGoals();
+        });
+
         document.getElementById('saveRestDayBtn').addEventListener('click', () => {
             this.saveRestDay();
         });
@@ -991,6 +995,10 @@ class GymTrackerApp {
         }
 
         if (!isEditing) {
+            // Track workout start time when first exercise is added
+            if (this.currentWorkout.exercises.length === 0 && !this.currentWorkout.startTime) {
+                this.currentWorkout.startTime = Date.now();
+            }
             this.currentWorkout.exercises.push(exercise);
         }
 
@@ -1912,6 +1920,7 @@ class GymTrackerApp {
             const hiitCount = workout.exercises.filter(ex => ex.type === 'hiit').length;
 
             let metaText = `${workout.exercises.length} exercises`;
+            if (workout.duration) metaText += ` • ⏱️ ${workout.duration} min`;
             if (strengthCount > 0) metaText += ` • ${strengthCount} strength`;
             if (cardioCount > 0) metaText += ` • ${cardioCount} cardio`;
             if (hiitCount > 0) metaText += ` • ${hiitCount} HIIT`;
@@ -5355,6 +5364,9 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         document.getElementById('dashFoodCarbs').textContent = foodStats.totalCarbs + 'g';
         document.getElementById('dashFoodFats').textContent = foodStats.totalFats + 'g';
 
+        // Update macro goals progress bars
+        this.renderMacroGoalsProgress(foodStats);
+
         // Update workout summary
         const todayWorkout = this.getTodayWorkout(displayDate);
         const summaryEl = document.getElementById('dashWorkoutSummary');
@@ -5382,6 +5394,78 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
         // Render weekly summary
         this.renderWeeklySummary();
+    }
+
+    renderMacroGoalsProgress(foodStats) {
+        const goals = Storage.getNutritionGoals();
+        const container = document.getElementById('macroGoalsContainer');
+
+        if (!container) return;
+
+        // Check if goals are set (not default values)
+        const goalsSet = goals.calories && goals.protein && goals.carbs && goals.fats;
+
+        if (!goalsSet) {
+            container.innerHTML = `
+                <div style="padding: 1rem; text-align: center; background: var(--bg-secondary); border-radius: 8px; margin-bottom: 0.5rem;">
+                    <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
+                        🎯 Set your daily nutrition goals to track progress with visual bars!
+                    </p>
+                </div>
+            `;
+            return;
+        }
+
+        const macros = [
+            {
+                label: '🔥 Calories',
+                current: foodStats.totalCalories,
+                goal: goals.calories,
+                unit: ''
+            },
+            {
+                label: '🥩 Protein',
+                current: foodStats.totalProtein,
+                goal: goals.protein,
+                unit: 'g'
+            },
+            {
+                label: '🍚 Carbs',
+                current: foodStats.totalCarbs,
+                goal: goals.carbs,
+                unit: 'g'
+            },
+            {
+                label: '🥑 Fats',
+                current: foodStats.totalFats,
+                goal: goals.fats,
+                unit: 'g'
+            }
+        ];
+
+        let html = '';
+        macros.forEach(macro => {
+            const percentage = Math.min((macro.current / macro.goal) * 100, 100);
+            const isCompleted = macro.current >= macro.goal;
+            const isOver = macro.current > macro.goal;
+            const fillClass = isOver ? 'over' : (isCompleted ? 'completed' : '');
+
+            html += `
+                <div class="macro-goal-item">
+                    <div class="macro-goal-header">
+                        <span class="macro-goal-label">${macro.label}</span>
+                        <span class="macro-goal-values">
+                            <span>${Math.round(macro.current)}</span> / ${Math.round(macro.goal)}${macro.unit}
+                        </span>
+                    </div>
+                    <div class="macro-progress-bar">
+                        <div class="macro-progress-fill ${fillClass}" style="width: ${percentage}%"></div>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
     }
 
     calculateWorkoutStreak() {
@@ -5772,6 +5856,49 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         alert('✅ Measurements saved successfully!');
     }
 
+    openNutritionGoalsModal() {
+        const goals = Storage.getNutritionGoals();
+
+        // Pre-fill current goals
+        document.getElementById('calorieGoalInput').value = goals.calories || '';
+        document.getElementById('proteinGoalInput').value = goals.protein || '';
+        document.getElementById('carbsGoalInput').value = goals.carbs || '';
+        document.getElementById('fatsGoalInput').value = goals.fats || '';
+
+        this.openModal('nutritionGoalsModal');
+    }
+
+    saveNutritionGoals() {
+        const calories = parseFloat(document.getElementById('calorieGoalInput').value);
+        const protein = parseFloat(document.getElementById('proteinGoalInput').value);
+        const carbs = parseFloat(document.getElementById('carbsGoalInput').value);
+        const fats = parseFloat(document.getElementById('fatsGoalInput').value);
+
+        // Validate inputs
+        if (!calories || calories < 1000 || calories > 5000) {
+            alert('Please enter a valid calorie goal between 1000 and 5000');
+            return;
+        }
+        if (!protein || protein < 50 || protein > 500) {
+            alert('Please enter a valid protein goal between 50 and 500g');
+            return;
+        }
+        if (!carbs || carbs < 50 || carbs > 800) {
+            alert('Please enter a valid carbs goal between 50 and 800g');
+            return;
+        }
+        if (!fats || fats < 20 || fats > 300) {
+            alert('Please enter a valid fats goal between 20 and 300g');
+            return;
+        }
+
+        Storage.setNutritionGoals(calories, protein, carbs, fats);
+        this.closeModal('nutritionGoalsModal');
+        this.renderDashboard();
+        this.syncAfterChange();
+        alert('✅ Nutrition goals saved! Progress bars will now show on your dashboard.');
+    }
+
     renderWeightChart() {
         const entries = Storage.getAllWeightEntries();
         const weightGoal = Storage.getWeightGoal();
@@ -5954,7 +6081,115 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     }
 
     // Progress Charts
+    renderProgressInsights() {
+        const container = document.getElementById('progressInsights');
+        if (!container) return;
+
+        const insights = [];
+        const workouts = Storage.getAllWorkouts();
+        const weightEntries = Storage.getAllWeightEntries();
+        const startDate = Storage.getStartDate();
+
+        // Weight loss/gain insight
+        if (weightEntries.length >= 2) {
+            const currentWeight = weightEntries[0].weight;
+            const oldestWeight = weightEntries[weightEntries.length - 1].weight;
+            const diff = currentWeight - oldestWeight;
+            const weeks = Math.round((new Date(weightEntries[0].date) - new Date(weightEntries[weightEntries.length - 1].date)) / (7 * 24 * 60 * 60 * 1000));
+
+            if (Math.abs(diff) > 1 && weeks > 0) {
+                const direction = diff < 0 ? 'lost' : 'gained';
+                const emoji = diff < 0 ? '📉' : '📈';
+                insights.push({
+                    icon: emoji,
+                    text: `You've ${direction} ${Math.abs(diff).toFixed(1)}kg in ${weeks} ${weeks === 1 ? 'week' : 'weeks'}!`,
+                    subtext: `Keep up the great work!`
+                });
+            }
+        }
+
+        // Workout milestone
+        if (workouts.length > 0) {
+            const milestones = [5, 10, 25, 50, 100, 150, 200, 300, 500];
+            const nextMilestone = milestones.find(m => m > workouts.length);
+            const lastMilestone = milestones.reverse().find(m => m <= workouts.length);
+
+            if (workouts.length === lastMilestone) {
+                insights.push({
+                    icon: '🏆',
+                    text: `Amazing! You've completed ${workouts.length} workouts!`,
+                    subtext: nextMilestone ? `Only ${nextMilestone - workouts.length} more to reach ${nextMilestone}!` : 'You\'re a fitness legend!'
+                });
+            } else if (workouts.length >= 10 && !lastMilestone) {
+                insights.push({
+                    icon: '💪',
+                    text: `You've completed ${workouts.length} workouts!`,
+                    subtext: nextMilestone ? `${nextMilestone - workouts.length} more until ${nextMilestone}!` : 'Keep crushing it!'
+                });
+            }
+        }
+
+        // Journey duration
+        if (startDate) {
+            const daysSinceStart = Math.floor((Date.now() - new Date(startDate)) / (24 * 60 * 60 * 1000));
+            if (daysSinceStart >= 30 && daysSinceStart % 30 < 7) { // Show near monthly milestones
+                const months = Math.floor(daysSinceStart / 30);
+                insights.push({
+                    icon: '📅',
+                    text: `You've been on your fitness journey for ${months} ${months === 1 ? 'month' : 'months'}!`,
+                    subtext: `${daysSinceStart} days of dedication!`
+                });
+            }
+        }
+
+        // Workout streak
+        const streak = this.calculateWorkoutStreak();
+        if (streak >= 3) {
+            insights.push({
+                icon: '🔥',
+                text: `You're on a ${streak}-day workout streak!`,
+                subtext: `Don't break the chain!`
+            });
+        }
+
+        // Recent PR
+        const allPRs = this.getAllPRs();
+        if (allPRs.length > 0) {
+            const recentPR = allPRs[0]; // Most recent PR
+            const prDate = new Date(recentPR.date);
+            const daysSincePR = Math.floor((Date.now() - prDate) / (24 * 60 * 60 * 1000));
+
+            if (daysSincePR <= 7) {
+                insights.push({
+                    icon: '🎉',
+                    text: `New PR: ${recentPR.exercise}!`,
+                    subtext: `${recentPR.weight}${recentPR.unit} × ${recentPR.reps} reps`
+                });
+            }
+        }
+
+        // Render insights
+        if (insights.length === 0) {
+            container.innerHTML = '';
+            return;
+        }
+
+        container.innerHTML = insights.slice(0, 3).map(insight => `
+            <div class="insight-card">
+                <div class="insight-card-icon">${insight.icon}</div>
+                <div class="insight-card-text">${insight.text}</div>
+                ${insight.subtext ? `<div class="insight-card-subtext">${insight.subtext}</div>` : ''}
+            </div>
+        `).join('');
+    }
+
     renderProgress() {
+        try {
+            this.renderProgressInsights();
+        } catch (e) {
+            console.error('Error rendering progress insights:', e);
+        }
+
         try {
             this.renderProgressCharts();
         } catch (e) {
