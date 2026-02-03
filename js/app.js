@@ -311,13 +311,8 @@ class GymTrackerApp {
         });
 
         // Food Scanner with AI
-        document.getElementById('scanFoodBtn').addEventListener('click', () => {
-            document.getElementById('foodScanInput').click();
-        });
-
-        document.getElementById('foodScanInput').addEventListener('change', (e) => {
-            this.handleFoodScan(e);
-        });
+        // Food photo scanner removed - Nutritionix no longer offers free personal API access
+        // Users can still search 500+ local foods + optional FatSecret API (1M+ foods)
 
         document.getElementById('viewFoodHistoryBtn').addEventListener('click', () => {
             this.openFoodHistoryModal();

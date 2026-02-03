@@ -185,7 +185,7 @@ const NutritionixAPI = {
 };
 
 // Enhanced food search with smart fallback
-// Priority: 1. Local Database -> 2. Cached API Foods -> 3. Nutritionix API -> 4. FatSecret API
+// Priority: 1. Local Database -> 2. Cached API Foods -> 3. FatSecret API -> 4. Nutritionix API (optional)
 async function smartFoodSearch(query) {
     if (!query || query.length < 2) {
         return [];
@@ -194,8 +194,8 @@ async function smartFoodSearch(query) {
     const results = {
         local: [],
         cached: [],
-        nutritionix: [],
-        fatsecret: []
+        fatsecret: [],
+        nutritionix: []
     };
 
     // 1. Search local database first (instant, offline)
@@ -217,20 +217,10 @@ async function smartFoodSearch(query) {
         index === self.findIndex(f => f.name === food.name)
     );
 
-    // 5. If online, fetch from APIs
+    // 5. If online, fetch from APIs (FatSecret prioritized as it's free for personal use)
     if (navigator.onLine) {
         try {
-            // Query Nutritionix API if configured
-            if (NutritionixAPI.isConfigured()) {
-                results.nutritionix = await NutritionixAPI.searchAPI(query);
-
-                // Cache API results for offline use
-                results.nutritionix.forEach(food => {
-                    Storage.addToCachedAPIFoods(food);
-                });
-            }
-
-            // Query FatSecret API if configured
+            // Query FatSecret API first (free for personal use)
             if (typeof FatSecretAPI !== 'undefined' && FatSecretAPI.isConfigured()) {
                 results.fatsecret = await FatSecretAPI.searchAPI(query);
 
@@ -240,8 +230,18 @@ async function smartFoodSearch(query) {
                 });
             }
 
-            // Combine all results
-            const allResults = [...uniqueCombined, ...results.nutritionix, ...results.fatsecret];
+            // Query Nutritionix API if configured (optional - requires commercial trial)
+            if (NutritionixAPI.isConfigured()) {
+                results.nutritionix = await NutritionixAPI.searchAPI(query);
+
+                // Cache API results for offline use
+                results.nutritionix.forEach(food => {
+                    Storage.addToCachedAPIFoods(food);
+                });
+            }
+
+            // Combine all results (FatSecret results appear first)
+            const allResults = [...uniqueCombined, ...results.fatsecret, ...results.nutritionix];
 
             // Remove duplicates by name
             const uniqueResults = allResults.filter((food, index, self) =>
