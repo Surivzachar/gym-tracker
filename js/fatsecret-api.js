@@ -20,8 +20,8 @@
 const FatSecretAPI = {
     // API Configuration
     config: {
-        clientId: 'YOUR_CLIENT_ID_HERE',  // Replace with your FatSecret Client ID
-        clientSecret: 'YOUR_CLIENT_SECRET_HERE',  // Replace with your FatSecret Client Secret
+        clientId: 'YOUR_CLIENT_ID_HERE',  // Will be loaded from localStorage if available
+        clientSecret: 'YOUR_CLIENT_SECRET_HERE',  // Will be loaded from localStorage if available
         endpoint: 'https://platform.fatsecret.com/rest/server.api',
         authEndpoint: 'https://oauth.fatsecret.com/connect/token'
     },
@@ -29,8 +29,43 @@ const FatSecretAPI = {
     accessToken: null,
     tokenExpiry: null,
 
+    // Load API keys from localStorage (so they stay on your device only)
+    loadKeysFromStorage() {
+        const storedKeys = localStorage.getItem('fatsecret_api_keys');
+        if (storedKeys) {
+            try {
+                const keys = JSON.parse(storedKeys);
+                if (keys.clientId && keys.clientSecret) {
+                    this.config.clientId = keys.clientId;
+                    this.config.clientSecret = keys.clientSecret;
+                }
+            } catch (e) {
+                console.error('Error loading FatSecret keys:', e);
+            }
+        }
+    },
+
+    // Save API keys to localStorage (device-only storage)
+    saveKeysToStorage(clientId, clientSecret) {
+        const keys = { clientId, clientSecret };
+        localStorage.setItem('fatsecret_api_keys', JSON.stringify(keys));
+        this.config.clientId = clientId;
+        this.config.clientSecret = clientSecret;
+    },
+
+    // Clear API keys from storage
+    clearKeysFromStorage() {
+        localStorage.removeItem('fatsecret_api_keys');
+        this.config.clientId = 'YOUR_CLIENT_ID_HERE';
+        this.config.clientSecret = 'YOUR_CLIENT_SECRET_HERE';
+    },
+
     // Check if API is configured
     isConfigured() {
+        // Try loading from storage first
+        if (this.config.clientId === 'YOUR_CLIENT_ID_HERE') {
+            this.loadKeysFromStorage();
+        }
         return this.config.clientId !== 'YOUR_CLIENT_ID_HERE' &&
                this.config.clientSecret !== 'YOUR_CLIENT_SECRET_HERE';
     },

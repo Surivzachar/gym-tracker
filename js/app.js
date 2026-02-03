@@ -356,6 +356,14 @@ class GymTrackerApp {
             this.closeModal('settingsModal');
         });
 
+        document.getElementById('saveFatSecretKeysBtn').addEventListener('click', () => {
+            this.saveFatSecretKeys();
+        });
+
+        document.getElementById('clearFatSecretKeysBtn').addEventListener('click', () => {
+            this.clearFatSecretKeys();
+        });
+
         document.getElementById('clearOldPhotosBtn').addEventListener('click', () => {
             this.clearOldPhotos();
         });
@@ -3736,8 +3744,100 @@ class GymTrackerApp {
         // Calculate and display storage used
         this.calculateStorageUsed();
 
+        // Display FatSecret API status
+        this.displayFatSecretApiStatus();
+
         document.getElementById('settingsModal').classList.add('active');
         startDateInput.focus();
+    }
+
+    displayFatSecretApiStatus() {
+        const statusDiv = document.getElementById('fatSecretApiStatus');
+        const clientIdInput = document.getElementById('fatSecretClientIdInput');
+        const clientSecretInput = document.getElementById('fatSecretClientSecretInput');
+
+        // Check if keys are saved
+        const savedKeys = localStorage.getItem('fatsecret_api_keys');
+
+        if (savedKeys) {
+            try {
+                const keys = JSON.parse(savedKeys);
+                statusDiv.innerHTML = `
+                    <p style="color: #10b981;">✅ <strong>API Configured!</strong> Access to 1,000,000+ foods enabled.</p>
+                `;
+                statusDiv.style.background = '#d1fae5';
+                statusDiv.style.borderLeftColor = '#10b981';
+
+                // Show masked values
+                clientIdInput.value = keys.clientId ? '••••••' + keys.clientId.slice(-4) : '';
+                clientSecretInput.value = keys.clientSecret ? '••••••••••••' : '';
+            } catch (e) {
+                statusDiv.innerHTML = `
+                    <p style="color: #ef4444;">❌ <strong>Error loading keys.</strong> Please re-enter them.</p>
+                `;
+                statusDiv.style.background = '#fee2e2';
+                statusDiv.style.borderLeftColor = '#ef4444';
+                clientIdInput.value = '';
+                clientSecretInput.value = '';
+            }
+        } else {
+            statusDiv.innerHTML = `
+                <p style="color: #6b7280;">⚠️ <strong>Not configured.</strong> Add your FatSecret API keys to search 1,000,000+ foods.</p>
+            `;
+            statusDiv.style.background = '#f3f4f6';
+            statusDiv.style.borderLeftColor = '#6b7280';
+            clientIdInput.value = '';
+            clientSecretInput.value = '';
+        }
+    }
+
+    saveFatSecretKeys() {
+        const clientId = document.getElementById('fatSecretClientIdInput').value.trim();
+        const clientSecret = document.getElementById('fatSecretClientSecretInput').value.trim();
+
+        // Don't save if showing masked value
+        if (clientId.startsWith('••••••') || clientSecret.startsWith('••••••')) {
+            alert('Keys are already saved! To update, click "Clear Keys" first, then enter new keys.');
+            return;
+        }
+
+        if (!clientId || !clientSecret) {
+            alert('Please enter both Client ID and Client Secret');
+            return;
+        }
+
+        // Validate format (basic check)
+        if (clientId.length < 10) {
+            alert('Client ID seems too short. Please check and try again.');
+            return;
+        }
+        if (clientSecret.length < 10) {
+            alert('Client Secret seems too short. Please check and try again.');
+            return;
+        }
+
+        // Save to localStorage (device-only)
+        if (typeof FatSecretAPI !== 'undefined') {
+            FatSecretAPI.saveKeysToStorage(clientId, clientSecret);
+            this.displayFatSecretApiStatus();
+            alert('✅ API keys saved successfully on your device!\n\nYour keys are stored locally and never uploaded anywhere.\n\nTry searching for foods now - you have access to 1,000,000+ foods!');
+        } else {
+            alert('Error: FatSecret API not loaded. Please refresh the app and try again.');
+        }
+    }
+
+    clearFatSecretKeys() {
+        if (!confirm('Are you sure you want to clear your FatSecret API keys?\n\nYou will need to re-enter them to search online foods.')) {
+            return;
+        }
+
+        if (typeof FatSecretAPI !== 'undefined') {
+            FatSecretAPI.clearKeysFromStorage();
+            this.displayFatSecretApiStatus();
+            alert('✅ API keys cleared from your device.\n\nYou can still search 500+ local foods offline.');
+        } else {
+            alert('Error: FatSecret API not loaded. Please refresh the app and try again.');
+        }
     }
 
     async displayCacheVersion() {
