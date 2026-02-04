@@ -1174,6 +1174,86 @@ const FoodDatabase = [
     { name: "Masala Chaas/Buttermilk", calories: 50, protein: 2, carbs: 8, fats: 1, category: "Dairy", serving: "200ml (1 glass)" },
     { name: "Masala Chai (with sugar)", calories: 80, protein: 2, carbs: 14, fats: 2, category: "Beverages", serving: "200ml (1 cup)" },
     { name: "Filter Coffee (with sugar)", calories: 60, protein: 1, carbs: 12, fats: 1, category: "Beverages", serving: "150ml (1 cup)" },
+
+    // ========== BRANDED & JUNK FOODS ==========
+
+    // Chocolates & Candies
+    { name: "KitKat (4 finger bar)", calories: 218, protein: 3, carbs: 28, fats: 11, fiber: 1, sugar: 23, sodium: 16, category: "Snacks", serving: "42g (1 bar)", brand: "Nestlé" },
+    { name: "Dairy Milk Chocolate", calories: 240, protein: 3.5, carbs: 28, fats: 13, fiber: 1, sugar: 25, sodium: 50, category: "Snacks", serving: "45g (1 bar)", brand: "Cadbury" },
+    { name: "5 Star Chocolate", calories: 270, protein: 3, carbs: 35, fats: 13, fiber: 0.5, sugar: 32, sodium: 45, category: "Snacks", serving: "50g (1 bar)", brand: "Cadbury" },
+    { name: "Snickers Bar", calories: 250, protein: 4, carbs: 33, fats: 12, fiber: 1, sugar: 27, sodium: 120, category: "Snacks", serving: "50g (1 bar)", brand: "Mars" },
+    { name: "Mars Bar", calories: 228, protein: 2, carbs: 37, fats: 9, fiber: 0.5, sugar: 31, sodium: 85, category: "Snacks", serving: "51g (1 bar)", brand: "Mars" },
+    { name: "Munch Chocolate", calories: 285, protein: 4, carbs: 32, fats: 15, fiber: 1.5, sugar: 28, sodium: 40, category: "Snacks", serving: "50g (1 bar)", brand: "Nestlé" },
+    { name: "Perk Chocolate", calories: 225, protein: 3, carbs: 29, fats: 11, fiber: 1, sugar: 24, sodium: 35, category: "Snacks", serving: "42g (1 bar)", brand: "Cadbury" },
+
+    // Chips & Crisps
+    { name: "Lay's Classic Salted", calories: 536, protein: 6, carbs: 53, fats: 33, fiber: 4, sugar: 1, sodium: 380, category: "Snacks", serving: "100g", brand: "Lay's" },
+    { name: "Lay's Masala", calories: 534, protein: 6, carbs: 52, fats: 34, fiber: 4, sugar: 2, sodium: 420, category: "Snacks", serving: "100g", brand: "Lay's" },
+    { name: "Pringles Original", calories: 536, protein: 4, carbs: 51, fats: 35, fiber: 2, sugar: 0.5, sodium: 550, category: "Snacks", serving: "100g", brand: "Pringles" },
+    { name: "Pringles Sour Cream", calories: 540, protein: 4, carbs: 52, fats: 36, fiber: 2, sugar: 2.5, sodium: 520, category: "Snacks", serving: "100g", brand: "Pringles" },
+    { name: "Bingo Mad Angles", calories: 516, protein: 7, carbs: 60, fats: 27, fiber: 3, sugar: 3, sodium: 440, category: "Snacks", serving: "100g", brand: "Bingo" },
+    { name: "Kurkure Masala Munch", calories: 520, protein: 6, carbs: 58, fats: 29, fiber: 3.5, sugar: 4, sodium: 480, category: "Snacks", serving: "100g", brand: "Kurkure" },
+    { name: "Uncle Chips Spicy", calories: 528, protein: 6, carbs: 54, fats: 32, fiber: 4, sugar: 2, sodium: 460, category: "Snacks", serving: "100g", brand: "Uncle Chips" },
+
+    // Biscuits & Cookies
+    { name: "Parle-G Biscuits", calories: 455, protein: 7, carbs: 76, fats: 13, fiber: 2, sugar: 25, sodium: 340, category: "Snacks", serving: "100g (10 biscuits)", brand: "Parle" },
+    { name: "Oreo Cookies", calories: 480, protein: 5, carbs: 68, fats: 20, fiber: 3, sugar: 39, sodium: 380, category: "Snacks", serving: "100g (10 cookies)", brand: "Cadbury" },
+    { name: "Good Day Butter Cookies", calories: 510, protein: 6, carbs: 66, fats: 24, fiber: 1.5, sugar: 28, sodium: 320, category: "Snacks", serving: "100g (8 cookies)", brand: "Britannia" },
+    { name: "Hide & Seek Cookies", calories: 495, protein: 7, carbs: 65, fats: 23, fiber: 2, sugar: 30, sodium: 350, category: "Snacks", serving: "100g (8 cookies)", brand: "Parle" },
+    { name: "Monaco Biscuits", calories: 460, protein: 9, carbs: 68, fats: 16, fiber: 2, sugar: 5, sodium: 620, category: "Snacks", serving: "100g (15 biscuits)", brand: "Parle" },
+    { name: "Marie Gold Biscuits", calories: 445, protein: 8, carbs: 74, fats: 12, fiber: 2, sugar: 22, sodium: 280, category: "Snacks", serving: "100g (12 biscuits)", brand: "Britannia" },
+
+    // Ice Cream
+    { name: "Amul Vanilla Ice Cream", calories: 207, protein: 4, carbs: 24, fats: 10, fiber: 0, sugar: 22, sodium: 55, calcium: 120, category: "Sweets", serving: "100g (1 scoop)", brand: "Amul" },
+    { name: "Kwality Walls Cornetto", calories: 246, protein: 3.5, carbs: 32, fats: 12, fiber: 0.5, sugar: 26, sodium: 60, category: "Sweets", serving: "100g (1 cone)", brand: "Kwality Walls" },
+    { name: "Magnum Classic", calories: 310, protein: 4, carbs: 30, fats: 19, fiber: 1, sugar: 27, sodium: 45, category: "Sweets", serving: "100g (1 bar)", brand: "Kwality Walls" },
+
+    // Soft Drinks & Beverages
+    { name: "Coca-Cola", calories: 42, protein: 0, carbs: 10.6, fats: 0, fiber: 0, sugar: 10.6, sodium: 10, category: "Beverages", serving: "100ml", brand: "Coca-Cola" },
+    { name: "Pepsi", calories: 41, protein: 0, carbs: 11, fats: 0, fiber: 0, sugar: 11, sodium: 10, category: "Beverages", serving: "100ml", brand: "Pepsi" },
+    { name: "Sprite", calories: 38, protein: 0, carbs: 9.8, fats: 0, fiber: 0, sugar: 9.8, sodium: 15, category: "Beverages", serving: "100ml", brand: "Coca-Cola" },
+    { name: "Thums Up", calories: 43, protein: 0, carbs: 11, fats: 0, fiber: 0, sugar: 11, sodium: 12, category: "Beverages", serving: "100ml", brand: "Coca-Cola" },
+    { name: "Limca", calories: 44, protein: 0, carbs: 11.2, fats: 0, fiber: 0, sugar: 11.2, sodium: 12, category: "Beverages", serving: "100ml", brand: "Coca-Cola" },
+    { name: "Mountain Dew", calories: 46, protein: 0, carbs: 11.6, fats: 0, fiber: 0, sugar: 11.6, sodium: 25, category: "Beverages", serving: "100ml", brand: "Pepsi" },
+    { name: "Fanta Orange", calories: 45, protein: 0, carbs: 11.4, fats: 0, fiber: 0, sugar: 11.4, sodium: 8, category: "Beverages", serving: "100ml", brand: "Coca-Cola" },
+
+    // Energy Drinks
+    { name: "Red Bull", calories: 45, protein: 0, carbs: 11, fats: 0, fiber: 0, sugar: 11, sodium: 105, caffeine: 32, category: "Beverages", serving: "100ml", brand: "Red Bull" },
+    { name: "Monster Energy", calories: 50, protein: 0, carbs: 13, fats: 0, fiber: 0, sugar: 11, sodium: 180, caffeine: 32, category: "Beverages", serving: "100ml", brand: "Monster" },
+    { name: "Sting Energy Drink", calories: 42, protein: 0, carbs: 10.5, fats: 0, fiber: 0, sugar: 10.5, sodium: 110, caffeine: 34, category: "Beverages", serving: "100ml", brand: "Sting" },
+
+    // Fast Food Favorites
+    { name: "McDonald's Chicken Burger", calories: 360, protein: 15, carbs: 42, fats: 15, fiber: 3, sugar: 7, sodium: 720, category: "Fast Food", serving: "1 burger (150g)", brand: "McDonald's" },
+    { name: "McDonald's French Fries (Medium)", calories: 340, protein: 4, carbs: 44, fats: 16, fiber: 4, sugar: 0, sodium: 190, category: "Fast Food", serving: "1 serving (117g)", brand: "McDonald's" },
+    { name: "KFC Chicken Zinger", calories: 450, protein: 22, carbs: 45, fats: 21, fiber: 3, sugar: 5, sodium: 980, category: "Fast Food", serving: "1 burger (185g)", brand: "KFC" },
+    { name: "Domino's Cheese Pizza (Slice)", calories: 250, protein: 11, carbs: 30, fats: 10, fiber: 2, sugar: 4, sodium: 580, category: "Fast Food", serving: "1 slice (100g)", brand: "Domino's" },
+    { name: "Pizza Hut Margherita (Slice)", calories: 230, protein: 10, carbs: 28, fats: 9, fiber: 2, sugar: 3, sodium: 520, category: "Fast Food", serving: "1 slice (95g)", brand: "Pizza Hut" },
+
+    // Indian Street Food (Packaged/Branded)
+    { name: "Vada Pav (Street Style)", calories: 290, protein: 6, carbs: 42, fats: 11, fiber: 3, sugar: 3, sodium: 420, category: "Fast Food", serving: "1 vada pav", brand: "Street Food" },
+    { name: "Pav Bhaji (Street Style)", calories: 380, protein: 10, carbs: 52, fats: 14, fiber: 6, sugar: 8, sodium: 680, category: "Fast Food", serving: "2 pavs + bhaji", brand: "Street Food" },
+    { name: "Samosa (Big)", calories: 308, protein: 6, carbs: 36, fats: 15, fiber: 3, sugar: 2, sodium: 380, category: "Fast Food", serving: "1 samosa (125g)", brand: "Street Food" },
+
+    // Instant Noodles
+    { name: "Maggi 2-Minute Noodles", calories: 205, protein: 5, carbs: 30, fats: 7, fiber: 2, sugar: 2, sodium: 820, category: "Fast Food", serving: "1 pack (70g)", brand: "Maggi" },
+    { name: "Yippee Noodles", calories: 362, protein: 8, carbs: 57, fats: 12, fiber: 2, sugar: 3, sodium: 780, category: "Fast Food", serving: "1 pack (70g)", brand: "Yippee" },
+    { name: "Top Ramen Curry", calories: 379, protein: 9, carbs: 60, fats: 12, fiber: 3, sugar: 4, sodium: 890, category: "Fast Food", serving: "1 pack (75g)", brand: "Top Ramen" },
+
+    // Packaged Juices
+    { name: "Real Fruit Juice Orange", calories: 50, protein: 0.5, carbs: 12, fats: 0, fiber: 0.5, sugar: 11, sodium: 10, vitaminC: 30, category: "Beverages", serving: "100ml", brand: "Dabur" },
+    { name: "Tropicana Orange Juice", calories: 45, protein: 0.7, carbs: 10, fats: 0, fiber: 0, sugar: 9, sodium: 5, vitaminC: 40, category: "Beverages", serving: "100ml", brand: "Tropicana" },
+    { name: "Maaza Mango Drink", calories: 56, protein: 0, carbs: 14, fats: 0, fiber: 0, sugar: 13, sodium: 10, vitaminA: 15, category: "Beverages", serving: "100ml", brand: "Coca-Cola" },
+    { name: "Frooti Mango Drink", calories: 58, protein: 0, carbs: 14.5, fats: 0, fiber: 0, sugar: 14, sodium: 12, category: "Beverages", serving: "100ml", brand: "Parle Agro" },
+
+    // Dairy Products (Branded)
+    { name: "Amul Butter (Salted)", calories: 717, protein: 0.5, carbs: 0.4, fats: 81, fiber: 0, sugar: 0.4, sodium: 625, vitaminA: 560, category: "Dairy", serving: "100g", brand: "Amul" },
+    { name: "Amul Cheese Slices", calories: 287, protein: 18, carbs: 4, fats: 22, fiber: 0, sugar: 4, sodium: 620, calcium: 620, category: "Dairy", serving: "100g (5 slices)", brand: "Amul" },
+    { name: "Mother Dairy Milk (Full Cream)", calories: 66, protein: 3.3, carbs: 4.9, fats: 3.6, fiber: 0, sugar: 4.9, sodium: 40, calcium: 125, category: "Dairy", serving: "100ml", brand: "Mother Dairy" },
+
+    // Breakfast Cereals
+    { name: "Kellogg's Corn Flakes", calories: 357, protein: 7, carbs: 84, fats: 0.9, fiber: 3, sugar: 8, sodium: 660, iron: 28, category: "Carbs", serving: "100g", brand: "Kellogg's" },
+    { name: "Kellogg's Chocos", calories: 390, protein: 6, carbs: 83, fats: 4, fiber: 5, sugar: 36, sodium: 340, iron: 14, category: "Carbs", serving: "100g", brand: "Kellogg's" },
+    { name: "Quaker Oats", calories: 389, protein: 17, carbs: 66, fats: 7, fiber: 10, sugar: 1, sodium: 5, iron: 4.5, category: "Carbs", serving: "100g (dry)", brand: "Quaker" },
 ];
 
 // Search function for food database

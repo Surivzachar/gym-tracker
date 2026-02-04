@@ -418,6 +418,32 @@
                         </div>
                     </div>
 
+                    <!-- Weekly Nutrition Breakdown (HealthifyMe-style) -->
+                    <div class="chart-section">
+                        <div class="chart-header">
+                            <h3>📊 Weekly Nutrition Breakdown</h3>
+                            <div class="chart-time-filter">
+                                <button class="filter-btn active" data-chart="nutrition" data-weeks="4">4 Weeks</button>
+                                <button class="filter-btn" data-chart="nutrition" data-weeks="8">8 Weeks</button>
+                                <button class="filter-btn" data-chart="nutrition" data-weeks="12">12 Weeks</button>
+                            </div>
+                        </div>
+                        <div class="nutrition-charts-grid">
+                            <div class="chart-container">
+                                <h4 style="text-align: center; margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.95rem;">Macronutrients (Weekly Average)</h4>
+                                <canvas id="macrosChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h4 style="text-align: center; margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.95rem;">Micronutrients (Weekly Average)</h4>
+                                <canvas id="micronutrientsChart"></canvas>
+                            </div>
+                        </div>
+                        <div id="nutritionChartEmpty" class="chart-empty">
+                            <span class="chart-empty-icon">📊</span>
+                            Log your meals to see weekly nutrition trends here
+                        </div>
+                    </div>
+
                     <!-- Body Measurements Chart -->
                     <div class="chart-section">
                         <div class="chart-header">
@@ -1431,7 +1457,7 @@
                     <div class="input-group">
                         <label class="input-label">🔧 App Version & Cache</label>
                         <div class="settings-info" style="background: #0f172a; border-left: 3px solid #10b981;">
-                            <p style="color: #cbd5e1;"><strong>Version:</strong> v112 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
+                            <p style="color: #cbd5e1;"><strong>Version:</strong> v113 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
                         </div>
                         <p class="helper-text">If app features aren't working, clear the cache to reload the latest version.</p>
                         <button id="clearCacheBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🔄 Clear Cache & Reload</button>

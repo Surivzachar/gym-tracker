@@ -6163,3 +6163,58 @@ input:checked + .toggle-slider:before {
         grid-template-columns: 1fr 1fr;
     }
 }
+
+/* Micronutrients Panel (HealthifyMe-style) */
+.micronutrients-panel {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-primary);
+}
+
+.micronutrients-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-primary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.micronutrients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.5rem;
+}
+
+.micronutrient-item {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    padding: 0.4rem 0.6rem;
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .micronutrients-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Weekly Nutrition Charts Grid (HealthifyMe-style) */
+.nutrition-charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 1024px) {
+    .nutrition-charts-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}

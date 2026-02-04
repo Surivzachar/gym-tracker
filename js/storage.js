@@ -307,6 +307,32 @@ const Storage = {
             time: targetDate.toISOString()
         };
 
+        // Include micronutrients if they exist (for HealthifyMe-style nutrition panel)
+        if (foodItem.fiber !== undefined && foodItem.fiber !== null) {
+            foodEntry.fiber = parseFloat(foodItem.fiber) || 0;
+        }
+        if (foodItem.sugar !== undefined && foodItem.sugar !== null) {
+            foodEntry.sugar = parseFloat(foodItem.sugar) || 0;
+        }
+        if (foodItem.sodium !== undefined && foodItem.sodium !== null) {
+            foodEntry.sodium = parseFloat(foodItem.sodium) || 0;
+        }
+        if (foodItem.calcium !== undefined && foodItem.calcium !== null) {
+            foodEntry.calcium = parseFloat(foodItem.calcium) || 0;
+        }
+        if (foodItem.iron !== undefined && foodItem.iron !== null) {
+            foodEntry.iron = parseFloat(foodItem.iron) || 0;
+        }
+        if (foodItem.vitaminC !== undefined && foodItem.vitaminC !== null) {
+            foodEntry.vitaminC = parseFloat(foodItem.vitaminC) || 0;
+        }
+        if (foodItem.vitaminA !== undefined && foodItem.vitaminA !== null) {
+            foodEntry.vitaminA = parseFloat(foodItem.vitaminA) || 0;
+        }
+        if (foodItem.caffeine !== undefined && foodItem.caffeine !== null) {
+            foodEntry.caffeine = parseFloat(foodItem.caffeine) || 0;
+        }
+
         // Include photo if it exists
         if (foodItem.photo) {
             foodEntry.photo = foodItem.photo;

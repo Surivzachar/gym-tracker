@@ -22,6 +22,60 @@ function getCurrentDateNZ() {
     return new Date(now.toLocaleString('en-US', { timeZone: NZ_TIMEZONE }));
 }
 
+// Helper function to generate micronutrient display HTML (HealthifyMe-style)
+function getMicronutrientDisplay(food, showInline = false) {
+    const micronutrients = [];
+
+    // Common micronutrients
+    if (food.fiber !== undefined && food.fiber !== null && food.fiber > 0) {
+        micronutrients.push(`Fiber: ${food.fiber}g`);
+    }
+    if (food.sugar !== undefined && food.sugar !== null && food.sugar > 0) {
+        micronutrients.push(`Sugar: ${food.sugar}g`);
+    }
+    if (food.sodium !== undefined && food.sodium !== null && food.sodium > 0) {
+        micronutrients.push(`Sodium: ${food.sodium}mg`);
+    }
+
+    // Vitamins and minerals
+    if (food.calcium !== undefined && food.calcium !== null && food.calcium > 0) {
+        micronutrients.push(`Calcium: ${food.calcium}mg`);
+    }
+    if (food.iron !== undefined && food.iron !== null && food.iron > 0) {
+        micronutrients.push(`Iron: ${food.iron}mg`);
+    }
+    if (food.vitaminC !== undefined && food.vitaminC !== null && food.vitaminC > 0) {
+        micronutrients.push(`Vitamin C: ${food.vitaminC}mg`);
+    }
+    if (food.vitaminA !== undefined && food.vitaminA !== null && food.vitaminA > 0) {
+        micronutrients.push(`Vitamin A: ${food.vitaminA}mcg`);
+    }
+
+    // Special nutrients
+    if (food.caffeine !== undefined && food.caffeine !== null && food.caffeine > 0) {
+        micronutrients.push(`Caffeine: ${food.caffeine}mg`);
+    }
+
+    if (micronutrients.length === 0) {
+        return '';
+    }
+
+    if (showInline) {
+        // Show inline with bullet separators
+        return ' • ' + micronutrients.join(' • ');
+    } else {
+        // Show as a styled nutrition panel
+        return `
+            <div class="micronutrients-panel">
+                <div class="micronutrients-title">📊 Nutrition Facts</div>
+                <div class="micronutrients-grid">
+                    ${micronutrients.map(m => `<div class="micronutrient-item">${m}</div>`).join('')}
+                </div>
+            </div>
+        `;
+    }
+}
+
 class GymTrackerApp {
     constructor() {
         this.currentWorkout = Storage.getCurrentWorkout();
@@ -2656,11 +2710,11 @@ class GymTrackerApp {
 
                 suggestionsContainer.innerHTML = results.map(food => `
                     <div class="food-suggestion-item" data-food='${JSON.stringify(food)}'>
-                        <span class="food-suggestion-category">${food.category}${food.source === 'api' ? ' 🌐' : ''}</span>
+                        <span class="food-suggestion-category">${food.category}${food.source === 'api' ? ' 🌐' : ''}${food.brand ? ` - ${food.brand}` : ''}</span>
                         <span class="food-suggestion-name">${food.name}${food.recipe ? ' 📖' : ''}</span>
                         <div class="food-suggestion-info">
                             ${food.calories} cal • P: ${food.protein}g • C: ${food.carbs}g • F: ${food.fats}g
-                            ${food.serving ? ` • ${food.serving}` : ''}
+                            ${food.serving ? ` • ${food.serving}` : ''}${getMicronutrientDisplay(food, true)}
                         </div>
                     </div>
                 `).join('');
@@ -3245,7 +3299,9 @@ class GymTrackerApp {
                     ${meal.photo ? `<img src="${meal.photo}" class="food-photo-thumb" onclick="app.viewFoodPhoto('${meal.photo}')" title="Click to view full size">` : ''}
                     <div class="food-item-info">
                         <strong>${meal.name}</strong>
-                        <span class="food-macros">${meal.calories} cal • P: ${meal.protein}g • C: ${meal.carbs}g • F: ${meal.fats}g</span>
+                        <span class="food-macros">
+                            ${meal.calories} cal • P: ${meal.protein}g • C: ${meal.carbs}g • F: ${meal.fats}g${getMicronutrientDisplay(meal, true)}
+                        </span>
                     </div>
                     <div class="food-item-actions">
                         <button class="btn-icon-small" onclick="app.editFood(${meal.id})" title="Edit">✏️</button>
@@ -4661,7 +4717,7 @@ class GymTrackerApp {
                         content += `
                             <div class="date-food-item">
                                 <strong>${meal.name}</strong>
-                                <span>${meal.calories} cal • P: ${meal.protein}g • C: ${meal.carbs}g • F: ${meal.fats}g</span>
+                                <span>${meal.calories} cal • P: ${meal.protein}g • C: ${meal.carbs}g • F: ${meal.fats}g${getMicronutrientDisplay(meal, true)}</span>
                             </div>
                         `;
                     });
@@ -6292,6 +6348,12 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         }
 
         try {
+            this.renderWeeklyNutritionCharts(4); // Default to 4 weeks
+        } catch (e) {
+            console.error('Error rendering weekly nutrition charts:', e);
+        }
+
+        try {
             this.populateExerciseSelector();
         } catch (e) {
             console.error('Error populating exercise selector:', e);
@@ -6369,6 +6431,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             btn.addEventListener('click', (e) => {
                 const chartType = e.target.dataset.chart;
                 const days = parseInt(e.target.dataset.days);
+                const weeks = parseInt(e.target.dataset.weeks);
 
                 // Update active state
                 document.querySelectorAll(`.filter-btn[data-chart="${chartType}"]`).forEach(b => {
@@ -6385,6 +6448,8 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
                     this.renderCaloriesChart(days);
                 } else if (chartType === 'measurements') {
                     this.renderMeasurementsChart(days);
+                } else if (chartType === 'nutrition') {
+                    this.renderWeeklyNutritionCharts(weeks);
                 }
             });
         });
@@ -7047,6 +7112,310 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
                 }
             }
         });
+    }
+
+    renderWeeklyNutritionCharts(weeks = 4) {
+        const foodDays = Storage.getAllFoodDays();
+        const macrosCanvas = document.getElementById('macrosChart');
+        const micronutrientsCanvas = document.getElementById('micronutrientsChart');
+        const emptyState = document.getElementById('nutritionChartEmpty');
+
+        if (foodDays.length === 0) {
+            if (macrosCanvas) macrosCanvas.style.display = 'none';
+            if (micronutrientsCanvas) micronutrientsCanvas.style.display = 'none';
+            if (emptyState) emptyState.classList.add('show');
+            return;
+        }
+
+        if (macrosCanvas) macrosCanvas.style.display = 'block';
+        if (micronutrientsCanvas) micronutrientsCanvas.style.display = 'block';
+        if (emptyState) emptyState.classList.remove('show');
+
+        // Calculate cutoff date (N weeks ago)
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - (weeks * 7));
+
+        // Filter food days within the date range
+        const filteredDays = foodDays.filter(day => new Date(day.date) >= cutoffDate);
+
+        if (filteredDays.length === 0) {
+            if (macrosCanvas) macrosCanvas.style.display = 'none';
+            if (micronutrientsCanvas) micronutrientsCanvas.style.display = 'none';
+            if (emptyState) emptyState.classList.add('show');
+            return;
+        }
+
+        // Group data by week
+        const weeklyData = {};
+
+        filteredDays.forEach(day => {
+            const date = new Date(day.date);
+            // Calculate week number
+            const weekStart = new Date(date);
+            weekStart.setDate(date.getDate() - date.getDay()); // Start of week (Sunday)
+            const weekKey = weekStart.toISOString().split('T')[0];
+
+            if (!weeklyData[weekKey]) {
+                weeklyData[weekKey] = {
+                    calories: [], protein: [], carbs: [], fats: [],
+                    fiber: [], sugar: [], sodium: [],
+                    calcium: [], iron: [], vitaminC: []
+                };
+            }
+
+            // Calculate daily totals
+            let dailyCalories = 0, dailyProtein = 0, dailyCarbs = 0, dailyFats = 0;
+            let dailyFiber = 0, dailySugar = 0, dailySodium = 0;
+            let dailyCalcium = 0, dailyIron = 0, dailyVitaminC = 0;
+
+            day.meals.forEach(meal => {
+                dailyCalories += meal.calories || 0;
+                dailyProtein += meal.protein || 0;
+                dailyCarbs += meal.carbs || 0;
+                dailyFats += meal.fats || 0;
+                dailyFiber += meal.fiber || 0;
+                dailySugar += meal.sugar || 0;
+                dailySodium += meal.sodium || 0;
+                dailyCalcium += meal.calcium || 0;
+                dailyIron += meal.iron || 0;
+                dailyVitaminC += meal.vitaminC || 0;
+            });
+
+            weeklyData[weekKey].calories.push(dailyCalories);
+            weeklyData[weekKey].protein.push(dailyProtein);
+            weeklyData[weekKey].carbs.push(dailyCarbs);
+            weeklyData[weekKey].fats.push(dailyFats);
+            weeklyData[weekKey].fiber.push(dailyFiber);
+            weeklyData[weekKey].sugar.push(dailySugar);
+            weeklyData[weekKey].sodium.push(dailySodium);
+            weeklyData[weekKey].calcium.push(dailyCalcium);
+            weeklyData[weekKey].iron.push(dailyIron);
+            weeklyData[weekKey].vitaminC.push(dailyVitaminC);
+        });
+
+        // Calculate weekly averages
+        const weekLabels = [];
+        const avgProtein = [], avgCarbs = [], avgFats = [];
+        const avgFiber = [], avgSugar = [], avgSodium = [];
+        const avgCalcium = [], avgIron = [], avgVitaminC = [];
+
+        Object.keys(weeklyData).sort().forEach(weekKey => {
+            const week = weeklyData[weekKey];
+            const weekDate = new Date(weekKey);
+            weekLabels.push(weekDate.toLocaleDateString('en-NZ', { month: 'short', day: 'numeric' }));
+
+            const avg = (arr) => arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+
+            avgProtein.push(Math.round(avg(week.protein)));
+            avgCarbs.push(Math.round(avg(week.carbs)));
+            avgFats.push(Math.round(avg(week.fats)));
+            avgFiber.push(Math.round(avg(week.fiber) * 10) / 10);
+            avgSugar.push(Math.round(avg(week.sugar)));
+            avgSodium.push(Math.round(avg(week.sodium)));
+            avgCalcium.push(Math.round(avg(week.calcium)));
+            avgIron.push(Math.round(avg(week.iron) * 10) / 10);
+            avgVitaminC.push(Math.round(avg(week.vitaminC)));
+        });
+
+        const isDark = this.isDarkMode();
+
+        // Render Macros Chart
+        if (macrosCanvas) {
+            const macrosCtx = macrosCanvas.getContext('2d');
+
+            if (macrosCanvas.chart) {
+                macrosCanvas.chart.destroy();
+            }
+
+            macrosCanvas.chart = new Chart(macrosCtx, {
+                type: 'bar',
+                data: {
+                    labels: weekLabels,
+                    datasets: [
+                        {
+                            label: 'Protein (g)',
+                            data: avgProtein,
+                            backgroundColor: '#3b82f6',
+                            borderColor: '#3b82f6',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Carbs (g)',
+                            data: avgCarbs,
+                            backgroundColor: '#10b981',
+                            borderColor: '#10b981',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Fats (g)',
+                            data: avgFats,
+                            backgroundColor: '#f59e0b',
+                            borderColor: '#f59e0b',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: isDark ? '#d1d5db' : '#6b7280',
+                                padding: 15,
+                                font: { size: 12, weight: '600' }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: isDark ? '#374151' : '#ffffff',
+                            titleColor: isDark ? '#f9fafb' : '#1f2937',
+                            bodyColor: isDark ? '#d1d5db' : '#6b7280',
+                            borderColor: isDark ? '#4b5563' : '#e5e7eb',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: isDark ? '#d1d5db' : '#6b7280' },
+                            grid: { color: isDark ? '#374151' : '#e5e7eb' }
+                        },
+                        x: {
+                            ticks: { color: isDark ? '#d1d5db' : '#6b7280' },
+                            grid: { color: isDark ? '#374151' : '#e5e7eb' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render Micronutrients Chart (only if data exists)
+        const hasMicronutrients = avgFiber.some(v => v > 0) || avgSugar.some(v => v > 0) ||
+                                  avgSodium.some(v => v > 0) || avgCalcium.some(v => v > 0) ||
+                                  avgIron.some(v => v > 0) || avgVitaminC.some(v => v > 0);
+
+        if (micronutrientsCanvas && hasMicronutrients) {
+            const microCtx = micronutrientsCanvas.getContext('2d');
+
+            if (micronutrientsCanvas.chart) {
+                micronutrientsCanvas.chart.destroy();
+            }
+
+            const datasets = [];
+
+            if (avgFiber.some(v => v > 0)) {
+                datasets.push({
+                    label: 'Fiber (g)',
+                    data: avgFiber,
+                    backgroundColor: '#8b5cf6',
+                    borderColor: '#8b5cf6',
+                    borderWidth: 1
+                });
+            }
+            if (avgSugar.some(v => v > 0)) {
+                datasets.push({
+                    label: 'Sugar (g)',
+                    data: avgSugar,
+                    backgroundColor: '#ec4899',
+                    borderColor: '#ec4899',
+                    borderWidth: 1
+                });
+            }
+            if (avgSodium.some(v => v > 0)) {
+                datasets.push({
+                    label: 'Sodium (mg)',
+                    data: avgSodium,
+                    backgroundColor: '#ef4444',
+                    borderColor: '#ef4444',
+                    borderWidth: 1
+                });
+            }
+            if (avgCalcium.some(v => v > 0)) {
+                datasets.push({
+                    label: 'Calcium (mg)',
+                    data: avgCalcium,
+                    backgroundColor: '#06b6d4',
+                    borderColor: '#06b6d4',
+                    borderWidth: 1
+                });
+            }
+            if (avgIron.some(v => v > 0)) {
+                datasets.push({
+                    label: 'Iron (mg)',
+                    data: avgIron,
+                    backgroundColor: '#64748b',
+                    borderColor: '#64748b',
+                    borderWidth: 1
+                });
+            }
+            if (avgVitaminC.some(v => v > 0)) {
+                datasets.push({
+                    label: 'Vitamin C (mg)',
+                    data: avgVitaminC,
+                    backgroundColor: '#f59e0b',
+                    borderColor: '#f59e0b',
+                    borderWidth: 1
+                });
+            }
+
+            micronutrientsCanvas.chart = new Chart(microCtx, {
+                type: 'bar',
+                data: {
+                    labels: weekLabels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: isDark ? '#d1d5db' : '#6b7280',
+                                padding: 15,
+                                font: { size: 11, weight: '600' }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: isDark ? '#374151' : '#ffffff',
+                            titleColor: isDark ? '#f9fafb' : '#1f2937',
+                            bodyColor: isDark ? '#d1d5db' : '#6b7280',
+                            borderColor: isDark ? '#4b5563' : '#e5e7eb',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: isDark ? '#d1d5db' : '#6b7280' },
+                            grid: { color: isDark ? '#374151' : '#e5e7eb' }
+                        },
+                        x: {
+                            ticks: { color: isDark ? '#d1d5db' : '#6b7280' },
+                            grid: { color: isDark ? '#374151' : '#e5e7eb' }
+                        }
+                    }
+                }
+            });
+        } else if (micronutrientsCanvas) {
+            // Hide micronutrients chart if no data
+            micronutrientsCanvas.style.display = 'none';
+            // Show a message
+            const parent = micronutrientsCanvas.parentElement;
+            if (parent) {
+                let noDataMsg = parent.querySelector('.no-micronutrient-data');
+                if (!noDataMsg) {
+                    noDataMsg = document.createElement('div');
+                    noDataMsg.className = 'no-micronutrient-data';
+                    noDataMsg.style.cssText = 'text-align: center; padding: 2rem; color: var(--text-secondary); font-style: italic;';
+                    noDataMsg.textContent = 'No micronutrient data available. Add foods with fiber, vitamins, and minerals to see trends here.';
+                    parent.appendChild(noDataMsg);
+                }
+            }
+        }
     }
 
     renderPersonalRecords() {
