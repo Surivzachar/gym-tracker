@@ -2743,54 +2743,119 @@ class GymTrackerApp {
     }
 
     selectFood(food) {
-        // Store original food data for portion calculations and recent foods
-        this.selectedFood = {
-            name: food.name,
-            calories: parseFloat(food.calories),
-            protein: parseFloat(food.protein),
-            carbs: parseFloat(food.carbs),
-            fats: parseFloat(food.fats),
-            category: food.category,
-            serving: food.serving,
-            recipe: food.recipe || null,
-            source: food.source || 'database'
-        };
+        // Check if food has multiple servings (advanced serving system)
+        const hasMultipleServings = food.servings && Array.isArray(food.servings) && food.servings.length > 0;
 
-        // Fill form with original values
-        document.getElementById('foodNameInput').value = food.name;
-        document.getElementById('caloriesInput').value = food.calories;
-        document.getElementById('proteinInput').value = food.protein;
-        document.getElementById('carbsInput').value = food.carbs;
-        document.getElementById('fatsInput').value = food.fats;
-        document.getElementById('quantityInput').value = 1;
+        if (hasMultipleServings) {
+            // ===== ADVANCED SERVING SYSTEM =====
+            // Store full food data including servings array
+            this.selectedFood = {
+                name: food.name,
+                servings: food.servings,
+                category: food.category,
+                recipe: food.recipe || null,
+                source: food.source || 'database',
+                hasMultipleServings: true
+            };
+
+            // Show serving type dropdown, hide legacy quantity input
+            document.getElementById('servingTypeGroup').style.display = 'block';
+            document.getElementById('legacyQuantityGroup').style.display = 'none';
+            document.getElementById('portionSizeButtons').style.display = 'none';
+
+            // Populate serving type dropdown
+            const servingSelect = document.getElementById('servingTypeSelect');
+            servingSelect.innerHTML = '<option value="">Select serving size...</option>' +
+                food.servings.map((serving, index) =>
+                    `<option value="${index}">${serving.type}</option>`
+                ).join('');
+
+            // Set up serving type change listener
+            servingSelect.onchange = (e) => {
+                const servingIndex = parseInt(e.target.value);
+                if (servingIndex >= 0 && servingIndex < food.servings.length) {
+                    const selectedServing = food.servings[servingIndex];
+
+                    // Auto-fill nutrition values
+                    document.getElementById('caloriesInput').value = selectedServing.calories;
+                    document.getElementById('proteinInput').value = selectedServing.protein;
+                    document.getElementById('carbsInput').value = selectedServing.carbs;
+                    document.getElementById('fatsInput').value = selectedServing.fats;
+
+                    // Store selected serving in selectedFood for saving later
+                    this.selectedFood.selectedServing = selectedServing;
+                    this.selectedFood.selectedServingType = selectedServing.type;
+                }
+            };
+
+            // Clear form initially
+            document.getElementById('foodNameInput').value = food.name;
+            document.getElementById('caloriesInput').value = '';
+            document.getElementById('proteinInput').value = '';
+            document.getElementById('carbsInput').value = '';
+            document.getElementById('fatsInput').value = '';
+
+            // Hide serving size display for advanced system
+            document.getElementById('currentServingSize').textContent = '';
+
+        } else {
+            // ===== LEGACY SERVING SYSTEM =====
+            // Store original food data for portion calculations and recent foods
+            this.selectedFood = {
+                name: food.name,
+                calories: parseFloat(food.calories),
+                protein: parseFloat(food.protein),
+                carbs: parseFloat(food.carbs),
+                fats: parseFloat(food.fats),
+                category: food.category,
+                serving: food.serving,
+                recipe: food.recipe || null,
+                source: food.source || 'database',
+                hasMultipleServings: false
+            };
+
+            // Hide serving type dropdown, show legacy quantity input
+            document.getElementById('servingTypeGroup').style.display = 'none';
+            document.getElementById('legacyQuantityGroup').style.display = 'block';
+
+            // Fill form with original values
+            document.getElementById('foodNameInput').value = food.name;
+            document.getElementById('caloriesInput').value = food.calories;
+            document.getElementById('proteinInput').value = food.protein;
+            document.getElementById('carbsInput').value = food.carbs;
+            document.getElementById('fatsInput').value = food.fats;
+            document.getElementById('quantityInput').value = 1;
+
+            // Show portion size buttons
+            const portionButtons = document.getElementById('portionSizeButtons');
+            portionButtons.style.display = 'block';
+
+            // Update serving size display
+            const servingSizeDisplay = document.getElementById('currentServingSize');
+            servingSizeDisplay.textContent = food.serving ? `Serving: ${food.serving}` : '';
+
+            // Reset portion buttons
+            document.querySelectorAll('.portion-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.multiplier === '1') {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Setup portion button listeners
+            this.setupPortionButtons();
+        }
+
+        // Common for both systems
         document.getElementById('foodSuggestions').classList.remove('active');
         document.getElementById('foodSuggestions').innerHTML = '';
-
-        // Show portion size buttons
-        const portionButtons = document.getElementById('portionSizeButtons');
-        portionButtons.style.display = 'block';
-
-        // Update serving size display
-        const servingSizeDisplay = document.getElementById('currentServingSize');
-        servingSizeDisplay.textContent = food.serving ? `Serving: ${food.serving}` : '';
-
-        // Reset portion buttons
-        document.querySelectorAll('.portion-btn').forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.dataset.multiplier === '1') {
-                btn.classList.add('active');
-            }
-        });
-
-        // Setup portion button listeners
-        this.setupPortionButtons();
 
         // Setup favorite button
         this.setupFavoriteButton();
 
         // Store recipe if available and show it
         if (food.recipe) {
-            this.showFoodRecipe(food.name, food.recipe, food.serving);
+            this.showFoodRecipe(food.name, food.recipe, food.servings ? 'Multiple serving options available' : food.serving);
         }
     }
 
@@ -2978,9 +3043,6 @@ class GymTrackerApp {
 
     saveFood() {
         const name = document.getElementById('foodNameInput').value.trim();
-        const isGramsMode = this.isGramsMode ? this.isGramsMode() : false;
-        const quantity = parseFloat(document.getElementById('quantityInput').value) || 1;
-        const grams = parseFloat(document.getElementById('gramsInput').value) || 0;
         const calories = parseFloat(document.getElementById('caloriesInput').value) || 0;
         const protein = parseFloat(document.getElementById('proteinInput').value) || 0;
         const carbs = parseFloat(document.getElementById('carbsInput').value) || 0;
@@ -2996,20 +3058,44 @@ class GymTrackerApp {
             return;
         }
 
-        // NOTE: The calories/macros in the inputs are ALREADY adjusted for quantity/grams
-        // by updateMacrosForPortion() or updateMacrosForGrams(), so we don't multiply again here
+        // Check if using advanced serving system
+        const isAdvancedServing = this.selectedFood && this.selectedFood.hasMultipleServings;
+
+        let displayName = name;
+        let servingType = null;
+
+        if (isAdvancedServing) {
+            // ===== ADVANCED SERVING SYSTEM =====
+            const servingSelect = document.getElementById('servingTypeSelect');
+            const servingIndex = parseInt(servingSelect.value);
+
+            if (servingIndex < 0 || !this.selectedFood.selectedServing) {
+                alert('Please select a serving size');
+                return;
+            }
+
+            servingType = this.selectedFood.selectedServingType;
+            displayName = `${name} (${servingType})`;
+
+        } else {
+            // ===== LEGACY SERVING SYSTEM =====
+            const isGramsMode = this.isGramsMode ? this.isGramsMode() : false;
+            const quantity = parseFloat(document.getElementById('quantityInput').value) || 1;
+            const grams = parseFloat(document.getElementById('gramsInput').value) || 0;
+
+            // Add quantity/grams indicator to name
+            if (isGramsMode && grams > 0 && grams !== 100) {
+                displayName = `${grams}g ${name}`;
+            } else if (!isGramsMode && quantity > 1) {
+                displayName = `${quantity}x ${name}`;
+            }
+        }
+
+        // Round values
         const totalCalories = Math.round(calories);
         const totalProtein = Math.round(protein * 10) / 10;
         const totalCarbs = Math.round(carbs * 10) / 10;
         const totalFats = Math.round(fats * 10) / 10;
-
-        // Add quantity/grams indicator to name
-        let displayName = name;
-        if (isGramsMode && grams > 0 && grams !== 100) {
-            displayName = `${grams}g ${name}`;
-        } else if (!isGramsMode && quantity > 1) {
-            displayName = `${quantity}x ${name}`;
-        }
 
         const foodItem = {
             name: displayName,
@@ -3018,6 +3104,24 @@ class GymTrackerApp {
             carbs: totalCarbs.toString(),
             fats: totalFats.toString()
         };
+
+        // Add serving type for advanced system
+        if (servingType) {
+            foodItem.servingType = servingType;
+        }
+
+        // Add micronutrients if present in selected serving
+        if (isAdvancedServing && this.selectedFood.selectedServing) {
+            const serving = this.selectedFood.selectedServing;
+            if (serving.fiber !== undefined) foodItem.fiber = serving.fiber;
+            if (serving.sugar !== undefined) foodItem.sugar = serving.sugar;
+            if (serving.sodium !== undefined) foodItem.sodium = serving.sodium;
+            if (serving.calcium !== undefined) foodItem.calcium = serving.calcium;
+            if (serving.iron !== undefined) foodItem.iron = serving.iron;
+            if (serving.vitaminC !== undefined) foodItem.vitaminC = serving.vitaminC;
+            if (serving.vitaminA !== undefined) foodItem.vitaminA = serving.vitaminA;
+            if (serving.caffeine !== undefined) foodItem.caffeine = serving.caffeine;
+        }
 
         // Add photo if one was selected
         if (this.currentFoodPhoto) {

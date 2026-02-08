@@ -3,10 +3,39 @@
 
 const FoodDatabase = [
     // Proteins
-    { name: "Chicken Breast", calories: 165, protein: 31, carbs: 0, fats: 3.6, category: "Protein", serving: "100g" },
+    {
+        name: "Chicken Breast",
+        category: "Protein",
+        servings: [
+            { type: "1 breast (150g)", calories: 248, protein: 46.5, carbs: 0, fats: 5.4 },
+            { type: "100g", calories: 165, protein: 31, carbs: 0, fats: 3.6 },
+            { type: "1 oz (28g)", calories: 46, protein: 8.7, carbs: 0, fats: 1 },
+            { type: "200g", calories: 330, protein: 62, carbs: 0, fats: 7.2 }
+        ]
+    },
     { name: "Chicken Thigh", calories: 209, protein: 26, carbs: 0, fats: 11, category: "Protein", serving: "100g" },
-    { name: "Egg (1 large)", calories: 70, protein: 6, carbs: 0.5, fats: 5, category: "Protein", serving: "1 egg" },
-    { name: "Egg White (1 large)", calories: 17, protein: 3.5, carbs: 0.25, fats: 0, category: "Protein", serving: "1 egg white" },
+    {
+        name: "Egg (whole)",
+        category: "Protein",
+        servings: [
+            { type: "1 egg (50g)", calories: 70, protein: 6, carbs: 0.5, fats: 5 },
+            { type: "2 eggs (100g)", calories: 140, protein: 12, carbs: 1, fats: 10 },
+            { type: "3 eggs (150g)", calories: 210, protein: 18, carbs: 1.5, fats: 15 },
+            { type: "4 eggs (200g)", calories: 280, protein: 24, carbs: 2, fats: 20 },
+            { type: "100g", calories: 140, protein: 12, carbs: 1, fats: 10 }
+        ]
+    },
+    {
+        name: "Egg White",
+        category: "Protein",
+        servings: [
+            { type: "1 egg white (33g)", calories: 17, protein: 3.5, carbs: 0.25, fats: 0 },
+            { type: "2 egg whites (66g)", calories: 34, protein: 7, carbs: 0.5, fats: 0 },
+            { type: "3 egg whites (99g)", calories: 51, protein: 10.5, carbs: 0.75, fats: 0 },
+            { type: "4 egg whites (132g)", calories: 68, protein: 14, carbs: 1, fats: 0 },
+            { type: "100g", calories: 52, protein: 10.6, carbs: 0.76, fats: 0 }
+        ]
+    },
     { name: "Salmon", calories: 208, protein: 20, carbs: 0, fats: 13, category: "Protein", serving: "100g" },
     { name: "Tuna (canned)", calories: 132, protein: 28, carbs: 0, fats: 1, category: "Protein", serving: "100g" },
     { name: "White Fish (cooked)", calories: 167, protein: 30, carbs: 0, fats: 3.3, category: "Protein", serving: "100g" },
@@ -22,9 +51,14 @@ const FoodDatabase = [
     // Paneer Dishes
     {
         name: "Paneer (raw)",
-        calories: 265, protein: 18, carbs: 3, fats: 20,
         category: "Protein",
-        serving: "100g",
+        servings: [
+            { type: "1 cube (25g)", calories: 66, protein: 4.5, carbs: 0.75, fats: 5 },
+            { type: "50g", calories: 133, protein: 9, carbs: 1.5, fats: 10 },
+            { type: "100g", calories: 265, protein: 18, carbs: 3, fats: 20 },
+            { type: "150g", calories: 398, protein: 27, carbs: 4.5, fats: 30 },
+            { type: "1 oz (28g)", calories: 74, protein: 5, carbs: 0.84, fats: 5.6 }
+        ],
         recipe: "Raw paneer - no preparation needed. Can be cubed and added to curries or grilled."
     },
     {
@@ -43,29 +77,87 @@ const FoodDatabase = [
     },
 
     // Carbs
-    { name: "White Rice (cooked)", calories: 130, protein: 2.7, carbs: 28, fats: 0.3, category: "Carbs", serving: "100g" },
-    { name: "Brown Rice (cooked)", calories: 112, protein: 2.6, carbs: 24, fats: 0.9, category: "Carbs", serving: "100g" },
-    { name: "Basmati Rice (cooked)", calories: 130, protein: 2.5, carbs: 28, fats: 0.25, category: "Carbs", serving: "100g" },
+    {
+        name: "White Rice (cooked)",
+        category: "Carbs",
+        servings: [
+            { type: "1 katori (150g)", calories: 195, protein: 4.05, carbs: 42, fats: 0.45 },
+            { type: "1 bowl (200g)", calories: 260, protein: 5.4, carbs: 56, fats: 0.6 },
+            { type: "1 cup (158g)", calories: 205, protein: 4.3, carbs: 44.2, fats: 0.47 },
+            { type: "100g", calories: 130, protein: 2.7, carbs: 28, fats: 0.3 },
+            { type: "1 oz (28g)", calories: 36, protein: 0.76, carbs: 7.8, fats: 0.08 }
+        ]
+    },
+    {
+        name: "Brown Rice (cooked)",
+        category: "Carbs",
+        servings: [
+            { type: "1 katori (150g)", calories: 168, protein: 3.9, carbs: 36, fats: 1.35 },
+            { type: "1 bowl (200g)", calories: 224, protein: 5.2, carbs: 48, fats: 1.8 },
+            { type: "1 cup (195g)", calories: 218, protein: 5.1, carbs: 46.8, fats: 1.76 },
+            { type: "100g", calories: 112, protein: 2.6, carbs: 24, fats: 0.9 },
+            { type: "1 oz (28g)", calories: 31, protein: 0.73, carbs: 6.7, fats: 0.25 }
+        ]
+    },
+    {
+        name: "Basmati Rice (cooked)",
+        category: "Carbs",
+        servings: [
+            { type: "1 katori (150g)", calories: 195, protein: 3.75, carbs: 42, fats: 0.38 },
+            { type: "1 bowl (200g)", calories: 260, protein: 5, carbs: 56, fats: 0.5 },
+            { type: "1 cup (158g)", calories: 205, protein: 3.95, carbs: 44.2, fats: 0.4 },
+            { type: "100g", calories: 130, protein: 2.5, carbs: 28, fats: 0.25 },
+            { type: "1 oz (28g)", calories: 36, protein: 0.7, carbs: 7.8, fats: 0.07 }
+        ]
+    },
     { name: "Oats (dry)", calories: 389, protein: 17, carbs: 66, fats: 7, category: "Carbs", serving: "100g" },
     { name: "Quinoa (cooked)", calories: 120, protein: 4.4, carbs: 21, fats: 1.9, category: "Carbs", serving: "100g" },
     { name: "Sweet Potato", calories: 86, protein: 1.6, carbs: 20, fats: 0.1, category: "Carbs", serving: "100g" },
     { name: "Potato", calories: 77, protein: 2, carbs: 17, fats: 0.1, category: "Carbs", serving: "100g" },
-    { name: "Whole Wheat Bread (1 slice)", calories: 80, protein: 4, carbs: 14, fats: 1, category: "Carbs", serving: "1 slice" },
-    { name: "Multigrain Bread (1 thin slice)", calories: 90, protein: 4, carbs: 17, fats: 1.5, category: "Carbs", serving: "1 thin slice" },
-    { name: "White Bread (1 slice)", calories: 75, protein: 2.5, carbs: 14, fats: 1, category: "Carbs", serving: "1 slice" },
+    {
+        name: "Whole Wheat Bread",
+        category: "Carbs",
+        servings: [
+            { type: "1 slice (30g)", calories: 80, protein: 4, carbs: 14, fats: 1 },
+            { type: "2 slices (60g)", calories: 160, protein: 8, carbs: 28, fats: 2 },
+            { type: "3 slices (90g)", calories: 240, protein: 12, carbs: 42, fats: 3 },
+            { type: "100g", calories: 267, protein: 13.3, carbs: 46.7, fats: 3.3 },
+            { type: "1 oz (28g)", calories: 75, protein: 3.7, carbs: 13.1, fats: 0.9 }
+        ]
+    },
+    {
+        name: "White Bread",
+        category: "Carbs",
+        servings: [
+            { type: "1 slice (25g)", calories: 75, protein: 2.5, carbs: 14, fats: 1 },
+            { type: "2 slices (50g)", calories: 150, protein: 5, carbs: 28, fats: 2 },
+            { type: "3 slices (75g)", calories: 225, protein: 7.5, carbs: 42, fats: 3 },
+            { type: "100g", calories: 300, protein: 10, carbs: 56, fats: 4 },
+            { type: "1 oz (28g)", calories: 84, protein: 2.8, carbs: 15.7, fats: 1.1 }
+        ]
+    },
     { name: "Pasta (cooked)", calories: 131, protein: 5, carbs: 25, fats: 1.1, category: "Carbs", serving: "100g" },
     {
-        name: "Roti/Chapati (1 medium)",
-        calories: 71, protein: 2, carbs: 15, fats: 0.4,
+        name: "Roti/Chapati",
         category: "Carbs",
-        serving: "1 roti (30g)",
+        servings: [
+            { type: "1 roti (30g)", calories: 71, protein: 2, carbs: 15, fats: 0.4 },
+            { type: "2 roti (60g)", calories: 142, protein: 4, carbs: 30, fats: 0.8 },
+            { type: "3 roti (90g)", calories: 213, protein: 6, carbs: 45, fats: 1.2 },
+            { type: "4 roti (120g)", calories: 284, protein: 8, carbs: 60, fats: 1.6 },
+            { type: "100g", calories: 237, protein: 6.7, carbs: 50, fats: 1.3 }
+        ],
         recipe: "Ingredients (for 1 roti):\n• Whole wheat flour - 30g\n• Water - 15ml\n• Salt - pinch\n\nPreparation:\n1. Knead flour with water into soft dough\n2. Roll into thin circle (6-7 inches)\n3. Cook on hot tawa (1 min each side)\n4. Optional: apply 1/2 tsp ghee"
     },
     {
-        name: "Paratha (1 medium)",
-        calories: 268, protein: 6, carbs: 38, fats: 10,
+        name: "Paratha",
         category: "Carbs",
-        serving: "1 paratha (80g)",
+        servings: [
+            { type: "1 paratha (80g)", calories: 268, protein: 6, carbs: 38, fats: 10 },
+            { type: "2 paratha (160g)", calories: 536, protein: 12, carbs: 76, fats: 20 },
+            { type: "3 paratha (240g)", calories: 804, protein: 18, carbs: 114, fats: 30 },
+            { type: "100g", calories: 335, protein: 7.5, carbs: 47.5, fats: 12.5 }
+        ],
         recipe: "Ingredients (for 1 paratha):\n• Whole wheat flour - 60g\n• Ghee/Oil - 1 tbsp (10g)\n• Water - 30ml\n• Salt - pinch\n\nPreparation:\n1. Make dough, rest 15 min\n2. Roll, apply ghee, fold and roll again\n3. Cook on tawa with ghee until golden\n4. Takes 3-4 minutes"
     },
     { name: "Banana", calories: 89, protein: 1.1, carbs: 23, fats: 0.3, category: "Carbs", serving: "100g" },
@@ -88,8 +180,26 @@ const FoodDatabase = [
     { name: "Cauliflower", calories: 25, protein: 1.9, carbs: 5, fats: 0.3, category: "Vegetables", serving: "100g" },
 
     // Dairy
-    { name: "Milk (whole)", calories: 61, protein: 3.2, carbs: 4.8, fats: 3.3, category: "Dairy", serving: "100ml" },
-    { name: "Milk (skim)", calories: 34, protein: 3.4, carbs: 5, fats: 0.1, category: "Dairy", serving: "100ml" },
+    {
+        name: "Milk (whole)",
+        category: "Dairy",
+        servings: [
+            { type: "1 glass (250ml)", calories: 153, protein: 8, carbs: 12, fats: 8.3, calcium: 300 },
+            { type: "1 cup (200ml)", calories: 122, protein: 6.4, carbs: 9.6, fats: 6.6, calcium: 240 },
+            { type: "100ml", calories: 61, protein: 3.2, carbs: 4.8, fats: 3.3, calcium: 120 },
+            { type: "1 oz (30ml)", calories: 18, protein: 1, carbs: 1.4, fats: 1, calcium: 36 }
+        ]
+    },
+    {
+        name: "Milk (skim)",
+        category: "Dairy",
+        servings: [
+            { type: "1 glass (250ml)", calories: 85, protein: 8.5, carbs: 12.5, fats: 0.25, calcium: 300 },
+            { type: "1 cup (200ml)", calories: 68, protein: 6.8, carbs: 10, fats: 0.2, calcium: 240 },
+            { type: "100ml", calories: 34, protein: 3.4, carbs: 5, fats: 0.1, calcium: 120 },
+            { type: "1 oz (30ml)", calories: 10, protein: 1, carbs: 1.5, fats: 0.03, calcium: 36 }
+        ]
+    },
     { name: "Cheddar Cheese", calories: 402, protein: 25, carbs: 1.3, fats: 33, category: "Dairy", serving: "100g" },
     { name: "Mozzarella Cheese", calories: 280, protein: 28, carbs: 2.2, fats: 17, category: "Dairy", serving: "100g" },
     { name: "Butter (1 tbsp)", calories: 102, protein: 0.1, carbs: 0, fats: 12, category: "Dairy", serving: "1 tbsp (15g)" },
