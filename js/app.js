@@ -368,6 +368,34 @@ class GymTrackerApp {
         // Food photo scanner removed - Nutritionix no longer offers free personal API access
         // Users can still search 500+ local foods + optional FatSecret API (1M+ foods)
 
+        // Barcode Scanner
+        document.getElementById('barcodeScanBtn').addEventListener('click', () => {
+            this.openBarcodeScanner();
+        });
+
+        document.getElementById('closeBarcodeScanner').addEventListener('click', () => {
+            this.closeBarcodeScanner();
+        });
+
+        document.getElementById('searchBarcodeBtn').addEventListener('click', () => {
+            this.searchBarcode();
+        });
+
+        document.getElementById('useCameraBtn').addEventListener('click', () => {
+            this.useBarcodeCamera();
+        });
+
+        document.getElementById('barcodeInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.searchBarcode();
+            }
+        });
+
+        // Smart Suggestions
+        document.getElementById('closeSmartSuggestions').addEventListener('click', () => {
+            document.getElementById('smartSuggestionsContainer').style.display = 'none';
+        });
+
         document.getElementById('viewFoodHistoryBtn').addEventListener('click', () => {
             this.openFoodHistoryModal();
         });
@@ -527,6 +555,19 @@ class GymTrackerApp {
 
         document.getElementById('saveWeightBtn').addEventListener('click', () => {
             this.saveWeight();
+        });
+
+        // Fasting Timer
+        document.getElementById('fastingSettingsBtn').addEventListener('click', () => {
+            this.openFastingSettingsModal();
+        });
+
+        document.getElementById('saveFastingSettingsBtn').addEventListener('click', () => {
+            this.saveFastingSettings();
+        });
+
+        document.getElementById('cancelFastingBtn').addEventListener('click', () => {
+            this.closeModal('fastingSettingsModal');
         });
 
         document.getElementById('saveMeasurementsBtn').addEventListener('click', () => {
@@ -2663,6 +2704,9 @@ class GymTrackerApp {
             if (saveBtn) {
                 saveBtn.textContent = 'Save Food';
             }
+
+            // Show smart meal suggestions
+            this.renderSmartSuggestions(this.currentMealType);
         }
 
         document.getElementById('foodSuggestions').innerHTML = '';
@@ -3577,6 +3621,151 @@ class GymTrackerApp {
         overlay.onclick = () => document.body.removeChild(overlay);
 
         document.body.appendChild(overlay);
+    }
+
+    // Barcode Scanner Methods
+    openBarcodeScanner() {
+        const container = document.getElementById('barcodeScannerContainer');
+        const barcodeInput = document.getElementById('barcodeInput');
+        const resultDiv = document.getElementById('barcodeResult');
+
+        container.style.display = 'block';
+        barcodeInput.value = '';
+        barcodeInput.focus();
+        resultDiv.style.display = 'none';
+        resultDiv.innerHTML = '';
+    }
+
+    closeBarcodeScanner() {
+        const container = document.getElementById('barcodeScannerContainer');
+        const resultDiv = document.getElementById('barcodeResult');
+
+        container.style.display = 'none';
+        resultDiv.style.display = 'none';
+        resultDiv.innerHTML = '';
+    }
+
+    async searchBarcode() {
+        const barcodeInput = document.getElementById('barcodeInput');
+        const barcode = barcodeInput.value.trim();
+        const resultDiv = document.getElementById('barcodeResult');
+
+        if (!barcode) {
+            alert('Please enter a barcode');
+            return;
+        }
+
+        if (!OpenFoodFactsAPI.isValidBarcode(barcode)) {
+            alert('Invalid barcode format. Please enter 8-13 digits.');
+            return;
+        }
+
+        // Show loading state
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = '<div style="text-align: center; padding: 1rem; color: var(--text-secondary);">🔍 Searching for product...</div>';
+
+        try {
+            const product = await OpenFoodFactsAPI.searchByBarcode(barcode);
+
+            if (product) {
+                // Product found! Show success and auto-fill food form
+                resultDiv.innerHTML = `
+                    <div style="background: var(--success); color: white; padding: 0.75rem; border-radius: 6px; margin-bottom: 0.5rem;">
+                        ✅ Product found: <strong>${product.name}</strong>
+                    </div>
+                `;
+
+                // Close scanner and auto-fill food form
+                setTimeout(() => {
+                    this.closeBarcodeScanner();
+                    this.selectFood(product);
+                }, 1500);
+
+            } else {
+                // Product not found
+                resultDiv.innerHTML = `
+                    <div style="background: var(--danger); color: white; padding: 0.75rem; border-radius: 6px;">
+                        ❌ Product not found in Open Food Facts database
+                        <p style="font-size: 0.85rem; margin-top: 0.5rem; opacity: 0.9;">
+                            Try manually searching or entering the food details.
+                        </p>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error('Barcode search error:', error);
+            resultDiv.innerHTML = `
+                <div style="background: var(--danger); color: white; padding: 0.75rem; border-radius: 6px;">
+                    ❌ Error searching barcode
+                    <p style="font-size: 0.85rem; margin-top: 0.5rem; opacity: 0.9;">
+                        ${error.message || 'Please check your internet connection and try again.'}
+                    </p>
+                </div>
+            `;
+        }
+    }
+
+    async useBarcodeCamera() {
+        // Check if browser supports Barcode Detection API
+        if ('BarcodeDetector' in window) {
+            try {
+                // Request camera access
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' } // Use back camera on mobile
+                });
+
+                // Create video element for camera preview
+                const video = document.createElement('video');
+                video.srcObject = stream;
+                video.autoplay = true;
+                video.style.cssText = 'width: 100%; border-radius: 8px; margin-top: 0.5rem;';
+
+                // Add video to barcode result div
+                const resultDiv = document.getElementById('barcodeResult');
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<div style="background: var(--bg-tertiary); padding: 0.75rem; border-radius: 6px;"><p style="margin-bottom: 0.5rem; text-align: center;">📷 Point camera at barcode</p></div>';
+                resultDiv.appendChild(video);
+
+                // Create barcode detector
+                const barcodeDetector = new BarcodeDetector();
+
+                // Scan for barcodes continuously
+                const scanBarcodes = async () => {
+                    try {
+                        const barcodes = await barcodeDetector.detect(video);
+
+                        if (barcodes.length > 0) {
+                            const barcode = barcodes[0].rawValue;
+
+                            // Stop camera
+                            stream.getTracks().forEach(track => track.stop());
+
+                            // Fill barcode input and search
+                            document.getElementById('barcodeInput').value = barcode;
+                            this.searchBarcode();
+                        } else {
+                            // Keep scanning
+                            requestAnimationFrame(scanBarcodes);
+                        }
+                    } catch (error) {
+                        console.error('Barcode detection error:', error);
+                        requestAnimationFrame(scanBarcodes);
+                    }
+                };
+
+                // Start scanning
+                video.onloadedmetadata = () => {
+                    scanBarcodes();
+                };
+
+            } catch (error) {
+                console.error('Camera access error:', error);
+                alert('❌ Camera access denied or not available.\n\nPlease enter the barcode manually or grant camera permissions in your browser settings.');
+            }
+        } else {
+            // Barcode Detection API not supported
+            alert('📷 Camera barcode scanning not supported on this device.\n\nPlease manually type the barcode number from the product package.');
+        }
     }
 
     updateNutritionStat(nutrientType, consumed, goal) {
@@ -5622,6 +5811,12 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         // Update macro goals progress bars
         this.renderMacroGoalsProgress(foodStats);
 
+        // Update nutrition score card
+        this.renderNutritionScore(foodStats);
+
+        // Update fasting timer
+        this.renderFastingTimer();
+
         // Update workout summary
         const todayWorkout = this.getTodayWorkout(displayDate);
         const summaryEl = document.getElementById('dashWorkoutSummary');
@@ -5721,6 +5916,185 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         });
 
         container.innerHTML = html;
+    }
+
+    calculateNutritionScore(foodStats) {
+        const goals = Storage.getNutritionGoals();
+
+        // Check if goals are set
+        const goalsSet = goals.calories && goals.protein && goals.carbs && goals.fats;
+        if (!goalsSet) {
+            return null; // Don't show score if goals not set
+        }
+
+        // Check if user has logged any food
+        if (foodStats.totalCalories === 0) {
+            return null; // Don't show score if no food logged
+        }
+
+        let totalScore = 0;
+        let maxScore = 100;
+        const breakdown = [];
+
+        // 1. Calorie Adherence (25 points)
+        const calorieAccuracy = 1 - Math.abs(foodStats.totalCalories - goals.calories) / goals.calories;
+        const calorieScore = Math.max(0, Math.min(25, calorieAccuracy * 25));
+        totalScore += calorieScore;
+        breakdown.push({
+            label: 'Calorie Target',
+            score: Math.round(calorieScore),
+            max: 25,
+            icon: calorieScore >= 20 ? '✅' : calorieScore >= 15 ? '⚠️' : '❌'
+        });
+
+        // 2. Protein Adherence (25 points)
+        const proteinAccuracy = 1 - Math.abs(foodStats.totalProtein - goals.protein) / goals.protein;
+        const proteinScore = Math.max(0, Math.min(25, proteinAccuracy * 25));
+        totalScore += proteinScore;
+        breakdown.push({
+            label: 'Protein Target',
+            score: Math.round(proteinScore),
+            max: 25,
+            icon: proteinScore >= 20 ? '✅' : proteinScore >= 15 ? '⚠️' : '❌'
+        });
+
+        // 3. Macro Balance (20 points)
+        const carbsAccuracy = 1 - Math.abs(foodStats.totalCarbs - goals.carbs) / goals.carbs;
+        const fatsAccuracy = 1 - Math.abs(foodStats.totalFats - goals.fats) / goals.fats;
+        const macroBalanceScore = Math.max(0, Math.min(20, (carbsAccuracy + fatsAccuracy) / 2 * 20));
+        totalScore += macroBalanceScore;
+        breakdown.push({
+            label: 'Macro Balance',
+            score: Math.round(macroBalanceScore),
+            max: 20,
+            icon: macroBalanceScore >= 16 ? '✅' : macroBalanceScore >= 12 ? '⚠️' : '❌'
+        });
+
+        // 4. Meal Frequency (15 points) - eating 3+ times is better
+        const mealCount = [
+            foodStats.breakfast.length,
+            foodStats.lunch.length,
+            foodStats.dinner.length,
+            foodStats.snacks.length
+        ].filter(count => count > 0).length;
+
+        const mealFrequencyScore = Math.min(15, (mealCount / 4) * 15);
+        totalScore += mealFrequencyScore;
+        breakdown.push({
+            label: 'Meal Frequency',
+            score: Math.round(mealFrequencyScore),
+            max: 15,
+            icon: mealCount >= 3 ? '✅' : mealCount >= 2 ? '⚠️' : '❌'
+        });
+
+        // 5. Water Intake (15 points)
+        const waterData = Storage.getWaterIntakeForDate(new Date());
+        const waterScore = Math.min(15, (waterData.glasses / waterData.goal) * 15);
+        totalScore += waterScore;
+        breakdown.push({
+            label: 'Hydration',
+            score: Math.round(waterScore),
+            max: 15,
+            icon: waterData.glasses >= waterData.goal ? '✅' : waterData.glasses >= waterData.goal * 0.7 ? '⚠️' : '❌'
+        });
+
+        // Calculate percentage and grade
+        const percentage = Math.round((totalScore / maxScore) * 100);
+        let grade, gradeClass, gradeLabel;
+
+        if (percentage >= 90) {
+            grade = 'A';
+            gradeClass = 'grade-a';
+            gradeLabel = 'Excellent';
+        } else if (percentage >= 80) {
+            grade = 'B';
+            gradeClass = 'grade-b';
+            gradeLabel = 'Good';
+        } else if (percentage >= 70) {
+            grade = 'C';
+            gradeClass = 'grade-c';
+            gradeLabel = 'Fair';
+        } else if (percentage >= 60) {
+            grade = 'D';
+            gradeClass = 'grade-d';
+            gradeLabel = 'Needs Improvement';
+        } else {
+            grade = 'F';
+            gradeClass = 'grade-f';
+            gradeLabel = 'Poor';
+        }
+
+        // Generate tips
+        const tips = [];
+        if (calorieScore < 20) {
+            if (foodStats.totalCalories < goals.calories) {
+                tips.push('Eat more to reach your calorie goal');
+            } else {
+                tips.push('Reduce calories to stay within goal');
+            }
+        }
+        if (proteinScore < 20) {
+            tips.push('Add more protein-rich foods');
+        }
+        if (mealFrequencyScore < 12) {
+            tips.push('Spread meals throughout the day');
+        }
+        if (waterScore < 12) {
+            tips.push('Drink more water');
+        }
+
+        return {
+            grade,
+            gradeClass,
+            gradeLabel,
+            percentage,
+            breakdown,
+            tips: tips.length > 0 ? tips[0] : 'Great job! Keep it up!'
+        };
+    }
+
+    renderNutritionScore(foodStats) {
+        const section = document.getElementById('nutritionScoreSection');
+        const card = document.getElementById('nutritionScoreCard');
+
+        if (!section || !card) return;
+
+        const score = this.calculateNutritionScore(foodStats);
+
+        if (!score) {
+            section.style.display = 'none';
+            return;
+        }
+
+        section.style.display = 'block';
+
+        // Apply grade-specific styling
+        card.className = `nutrition-score-card ${score.gradeClass}`;
+
+        card.innerHTML = `
+            <div class="nutrition-score-display">
+                <div class="nutrition-grade-circle">
+                    <div class="nutrition-grade-letter">${score.grade}</div>
+                    <div class="nutrition-grade-score">${score.percentage}/100</div>
+                </div>
+                <div>
+                    <div class="nutrition-grade-label">${score.gradeLabel}</div>
+                </div>
+            </div>
+
+            <div class="nutrition-score-breakdown">
+                ${score.breakdown.map(item => `
+                    <div class="nutrition-score-item">
+                        <span class="nutrition-score-item-label">${item.icon} ${item.label}</span>
+                        <span class="nutrition-score-item-value">${item.score}/${item.max}</span>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="nutrition-score-tips">
+                <strong>💡 Tip:</strong> ${score.tips}
+            </div>
+        `;
     }
 
     calculateWorkoutStreak() {
@@ -6013,6 +6387,479 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.closeModal('sleepModal');
         this.renderDashboard();
         this.syncAfterChange();
+    }
+
+    // ===== Intermittent Fasting Timer Methods =====
+
+    getFastingSettings() {
+        const saved = localStorage.getItem('fastingSettings');
+        if (saved) {
+            return JSON.parse(saved);
+        }
+        // Default settings
+        return {
+            enabled: false,
+            protocol: '16:8',
+            startTime: '20:00'
+        };
+    }
+
+    openFastingSettingsModal() {
+        const settings = this.getFastingSettings();
+
+        document.getElementById('fastingProtocolSelect').value = settings.protocol;
+        document.getElementById('fastingStartTimeInput').value = settings.startTime;
+
+        this.openModal('fastingSettingsModal');
+    }
+
+    saveFastingSettings() {
+        const protocol = document.getElementById('fastingProtocolSelect').value;
+        const startTime = document.getElementById('fastingStartTimeInput').value;
+
+        const settings = {
+            enabled: true,
+            protocol: protocol,
+            startTime: startTime
+        };
+
+        localStorage.setItem('fastingSettings', JSON.stringify(settings));
+
+        this.closeModal('fastingSettingsModal');
+        this.renderFastingTimer();
+
+        // Show success message
+        this.showNotification('✅ Fasting timer started!', 'success');
+    }
+
+    calculateFastingStatus() {
+        const settings = this.getFastingSettings();
+
+        if (!settings.enabled) {
+            return {
+                active: false,
+                isFasting: false,
+                message: 'Fasting timer not active',
+                timeRemaining: ''
+            };
+        }
+
+        // Parse protocol (e.g., "16:8" -> fastHours: 16, eatHours: 8)
+        const [fastHours, eatHours] = settings.protocol.split(':').map(Number);
+
+        // Parse start time (e.g., "20:00")
+        const [startHour, startMinute] = settings.startTime.split(':').map(Number);
+
+        // Get current time
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
+        const currentTotalMinutes = currentHour * 60 + currentMinute;
+
+        // Calculate fasting start and end times in minutes since midnight
+        const fastStartMinutes = startHour * 60 + startMinute;
+        const fastEndMinutes = (fastStartMinutes + fastHours * 60) % (24 * 60);
+        const eatEndMinutes = fastStartMinutes;
+
+        let isFasting, minutesRemaining, nextPhase;
+
+        // Check if currently fasting
+        if (fastStartMinutes < fastEndMinutes) {
+            // Fasting window doesn't cross midnight
+            isFasting = currentTotalMinutes >= fastStartMinutes && currentTotalMinutes < fastEndMinutes;
+
+            if (isFasting) {
+                minutesRemaining = fastEndMinutes - currentTotalMinutes;
+                nextPhase = 'eating window';
+            } else if (currentTotalMinutes < fastStartMinutes) {
+                // Before fasting window (in eating window)
+                minutesRemaining = fastStartMinutes - currentTotalMinutes;
+                nextPhase = 'fasting window';
+            } else {
+                // After fasting window (in eating window)
+                minutesRemaining = (24 * 60 - currentTotalMinutes) + fastStartMinutes;
+                nextPhase = 'fasting window';
+            }
+        } else {
+            // Fasting window crosses midnight
+            isFasting = currentTotalMinutes >= fastStartMinutes || currentTotalMinutes < fastEndMinutes;
+
+            if (isFasting) {
+                if (currentTotalMinutes >= fastStartMinutes) {
+                    minutesRemaining = (24 * 60 - currentTotalMinutes) + fastEndMinutes;
+                } else {
+                    minutesRemaining = fastEndMinutes - currentTotalMinutes;
+                }
+                nextPhase = 'eating window';
+            } else {
+                minutesRemaining = fastStartMinutes - currentTotalMinutes;
+                nextPhase = 'fasting window';
+            }
+        }
+
+        // Format time remaining
+        const hours = Math.floor(minutesRemaining / 60);
+        const minutes = minutesRemaining % 60;
+        const timeRemaining = `${hours}h ${minutes}m`;
+
+        return {
+            active: true,
+            isFasting: isFasting,
+            protocol: settings.protocol,
+            timeRemaining: timeRemaining,
+            nextPhase: nextPhase
+        };
+    }
+
+    renderFastingTimer() {
+        const display = document.getElementById('fastingTimerDisplay');
+        if (!display) return;
+
+        const status = this.calculateFastingStatus();
+
+        if (!status.active) {
+            display.className = 'fasting-timer-display not-active';
+            display.innerHTML = `
+                <div class="fasting-status-label">⏱️ Intermittent Fasting</div>
+                <p style="margin: 1rem 0; opacity: 0.9;">Set up your fasting schedule to track eating and fasting windows</p>
+                <button class="fasting-btn" onclick="app.openFastingSettingsModal()">⚙️ Configure Timer</button>
+            `;
+            return;
+        }
+
+        const windowClass = status.isFasting ? '' : 'eating-window';
+        display.className = `fasting-timer-display ${windowClass}`;
+
+        const statusIcon = status.isFasting ? '🚫' : '✅';
+        const statusLabel = status.isFasting ? 'Fasting Window' : 'Eating Window';
+        const statusMessage = status.isFasting
+            ? `Stay strong! ${status.timeRemaining} until eating window`
+            : `Eating window open for ${status.timeRemaining}`;
+
+        display.innerHTML = `
+            <div class="fasting-status-label">${statusIcon} ${statusLabel}</div>
+            <div class="fasting-time-remaining">${status.timeRemaining}</div>
+            <p style="margin: 0.5rem 0; opacity: 0.9; font-size: 0.95rem;">${statusMessage}</p>
+            <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.85rem;">Protocol: ${status.protocol}</p>
+            <div class="fasting-controls">
+                <button class="fasting-btn" onclick="app.openFastingSettingsModal()">⚙️ Settings</button>
+                <button class="fasting-btn" onclick="app.stopFasting()">⏹️ Stop</button>
+            </div>
+        `;
+    }
+
+    stopFasting() {
+        if (confirm('Are you sure you want to stop the fasting timer?')) {
+            const settings = this.getFastingSettings();
+            settings.enabled = false;
+            localStorage.setItem('fastingSettings', JSON.stringify(settings));
+
+            this.renderFastingTimer();
+            this.showNotification('⏹️ Fasting timer stopped', 'info');
+        }
+    }
+
+    // ===== Smart Meal Suggestions Methods =====
+
+    getSmartMealSuggestions(mealType) {
+        const suggestions = [];
+        const foodStats = Storage.getFoodStats();
+        const goals = Storage.getNutritionGoals();
+
+        // Calculate remaining macros
+        const remaining = {
+            calories: (goals.calories || 2000) - foodStats.totalCalories,
+            protein: (goals.protein || 150) - foodStats.totalProtein,
+            carbs: (goals.carbs || 200) - foodStats.totalCarbs,
+            fats: (goals.fats || 60) - foodStats.totalFats
+        };
+
+        // Get recent foods (last 7 days)
+        const recentFoods = this.getRecentFoods(7);
+        const recentFoodNames = recentFoods.map(f => f.name.toLowerCase());
+
+        // Get favorites
+        const favorites = Storage.getFavoriteFoods() || [];
+
+        // Get all foods from database (FoodDatabase is an array)
+        const allFoods = FoodDatabase;
+
+        // Normalize foods to have consistent structure
+        const normalizedFoods = allFoods.map(food => {
+            // If food has servings array, use first serving
+            if (food.servings && food.servings.length > 0) {
+                const serving = food.servings[0];
+                return {
+                    name: food.name,
+                    calories: serving.calories,
+                    protein: serving.protein,
+                    carbs: serving.carbs,
+                    fats: serving.fats,
+                    category: food.category
+                };
+            }
+            // Otherwise use direct properties
+            return {
+                name: food.name,
+                calories: food.calories || 0,
+                protein: food.protein || 0,
+                carbs: food.carbs || 0,
+                fats: food.fats || 0,
+                category: food.category || 'Mixed'
+            };
+        });
+
+        // Determine meal-specific foods
+        const mealTypeFoods = this.getFoodsForMealType(mealType, normalizedFoods);
+
+        // Analyze what macro is most needed
+        const proteinPercent = remaining.protein / (goals.protein || 150);
+        const carbsPercent = remaining.carbs / (goals.carbs || 200);
+        const fatsPercent = remaining.fats / (goals.fats || 60);
+
+        // Add suggestions based on remaining macros
+        if (proteinPercent > 0.3) {
+            // Need protein
+            const proteinFoods = mealTypeFoods
+                .filter(f => (f.protein / f.calories) > 0.15) // High protein ratio
+                .sort((a, b) => b.protein - a.protein)
+                .slice(0, 3);
+
+            proteinFoods.forEach(food => {
+                if (!recentFoodNames.includes(food.name.toLowerCase())) {
+                    suggestions.push({
+                        food: food,
+                        reason: '💪 High Protein',
+                        priority: 3
+                    });
+                }
+            });
+        }
+
+        if (carbsPercent > 0.3) {
+            // Need carbs
+            const carbFoods = mealTypeFoods
+                .filter(f => (f.carbs / f.calories) > 0.15) // High carb ratio
+                .sort((a, b) => b.carbs - a.carbs)
+                .slice(0, 3);
+
+            carbFoods.forEach(food => {
+                if (!recentFoodNames.includes(food.name.toLowerCase())) {
+                    suggestions.push({
+                        food: food,
+                        reason: '⚡ High Carbs',
+                        priority: 2
+                    });
+                }
+            });
+        }
+
+        // Add favorites that match meal type
+        favorites.forEach(fav => {
+            if (this.isFoodSuitableForMeal(fav, mealType)) {
+                suggestions.push({
+                    food: fav,
+                    reason: '⭐ Favorite',
+                    priority: 1
+                });
+            }
+        });
+
+        // Add recently eaten foods
+        recentFoods.slice(0, 3).forEach(food => {
+            if (this.isFoodSuitableForMeal(food, mealType)) {
+                suggestions.push({
+                    food: food,
+                    reason: '🕐 Recent',
+                    priority: 0
+                });
+            }
+        });
+
+        // Sort by priority (higher priority first) and remove duplicates
+        const uniqueSuggestions = [];
+        const seenNames = new Set();
+
+        suggestions
+            .sort((a, b) => b.priority - a.priority)
+            .forEach(suggestion => {
+                const name = suggestion.food.name.toLowerCase();
+                if (!seenNames.has(name)) {
+                    seenNames.add(name);
+                    uniqueSuggestions.push(suggestion);
+                }
+            });
+
+        return uniqueSuggestions.slice(0, 6); // Return top 6 suggestions
+    }
+
+    getFoodsForMealType(mealType, allFoods) {
+        // Define meal type categories
+        const breakfastKeywords = ['egg', 'oats', 'milk', 'bread', 'cereal', 'yogurt', 'banana', 'apple'];
+        const lunchDinnerKeywords = ['chicken', 'rice', 'roti', 'dal', 'paneer', 'fish', 'vegetable', 'curry'];
+        const snackKeywords = ['protein', 'nuts', 'fruit', 'bar'];
+
+        if (mealType === 'breakfast' || mealType === 'midmorning') {
+            return allFoods.filter(f =>
+                breakfastKeywords.some(kw => f.name.toLowerCase().includes(kw))
+            );
+        } else if (mealType === 'lunch' || mealType === 'dinner' || mealType === 'postworkout') {
+            return allFoods.filter(f =>
+                lunchDinnerKeywords.some(kw => f.name.toLowerCase().includes(kw))
+            );
+        } else {
+            // Snacks or general
+            return allFoods;
+        }
+    }
+
+    isFoodSuitableForMeal(food, mealType) {
+        const name = food.name.toLowerCase();
+        const breakfastKeywords = ['egg', 'oats', 'milk', 'bread', 'cereal', 'yogurt'];
+        const lunchDinnerKeywords = ['chicken', 'rice', 'roti', 'dal', 'paneer', 'fish'];
+
+        if (mealType === 'breakfast' || mealType === 'midmorning') {
+            return breakfastKeywords.some(kw => name.includes(kw));
+        } else if (mealType === 'lunch' || mealType === 'dinner') {
+            return lunchDinnerKeywords.some(kw => name.includes(kw));
+        }
+
+        return true; // All foods suitable for snacks
+    }
+
+    getRecentFoods(days = 7) {
+        const allFood = Storage.getAllFood();
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+
+        const recentFoods = [];
+        allFood.forEach(dayData => {
+            const date = new Date(dayData.date);
+            if (date >= cutoffDate) {
+                dayData.meals.forEach(meal => {
+                    recentFoods.push({
+                        name: meal.name,
+                        calories: meal.calories,
+                        protein: meal.protein,
+                        carbs: meal.carbs,
+                        fats: meal.fats,
+                        date: dayData.date
+                    });
+                });
+            }
+        });
+
+        // Remove duplicates and sort by date
+        const uniqueFoods = [];
+        const seenNames = new Set();
+
+        recentFoods
+            .sort((a, b) => new Date(b.date) - new Date(a.date))
+            .forEach(food => {
+                const name = food.name.toLowerCase();
+                if (!seenNames.has(name)) {
+                    seenNames.add(name);
+                    uniqueFoods.push(food);
+                }
+            });
+
+        return uniqueFoods;
+    }
+
+    renderSmartSuggestions(mealType) {
+        const container = document.getElementById('smartSuggestionsContainer');
+        const content = document.getElementById('smartSuggestionsContent');
+
+        if (!container || !content) return;
+
+        const suggestions = this.getSmartMealSuggestions(mealType);
+
+        if (suggestions.length === 0) {
+            container.style.display = 'none';
+            return;
+        }
+
+        container.style.display = 'block';
+
+        // Group suggestions by reason
+        const grouped = {
+            favorites: suggestions.filter(s => s.reason === '⭐ Favorite'),
+            macro: suggestions.filter(s => s.reason.includes('High')),
+            recent: suggestions.filter(s => s.reason === '🕐 Recent')
+        };
+
+        let html = '';
+
+        // Render macro-based suggestions first
+        if (grouped.macro.length > 0) {
+            html += '<div class="suggestion-section-title">Based on Your Remaining Macros</div>';
+            grouped.macro.forEach(suggestion => {
+                html += this.renderSuggestionItem(suggestion);
+            });
+        }
+
+        // Then favorites
+        if (grouped.favorites.length > 0) {
+            html += '<div class="suggestion-section-title">Your Favorites</div>';
+            grouped.favorites.forEach(suggestion => {
+                html += this.renderSuggestionItem(suggestion);
+            });
+        }
+
+        // Then recent foods
+        if (grouped.recent.length > 0) {
+            html += '<div class="suggestion-section-title">Recently Added</div>';
+            grouped.recent.forEach(suggestion => {
+                html += this.renderSuggestionItem(suggestion);
+            });
+        }
+
+        content.innerHTML = html;
+
+        // Add click handlers
+        content.querySelectorAll('.smart-suggestion-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const foodName = e.currentTarget.dataset.foodName;
+                this.selectFoodFromSuggestion(foodName);
+            });
+        });
+    }
+
+    renderSuggestionItem(suggestion) {
+        const food = suggestion.food;
+        return `
+            <div class="smart-suggestion-item" data-food-name="${food.name}">
+                <div class="suggestion-header">
+                    <span class="suggestion-food-name">${food.name}</span>
+                    <span class="suggestion-reason">${suggestion.reason}</span>
+                </div>
+                <div class="suggestion-macros">
+                    <span class="suggestion-macro">🔥 ${food.calories} cal</span>
+                    <span class="suggestion-macro">💪 ${food.protein}g P</span>
+                    <span class="suggestion-macro">🍞 ${food.carbs}g C</span>
+                    <span class="suggestion-macro">🥑 ${food.fats}g F</span>
+                </div>
+            </div>
+        `;
+    }
+
+    selectFoodFromSuggestion(foodName) {
+        // Hide smart suggestions
+        document.getElementById('smartSuggestionsContainer').style.display = 'none';
+
+        // Set the food name in the input
+        document.getElementById('foodNameInput').value = foodName;
+
+        // Find the food in database
+        const food = FoodDatabase.find(f => f.name.toLowerCase() === foodName.toLowerCase());
+        if (food) {
+            this.selectFood(food);
+        }
+
+        // Focus on quantity input
+        setTimeout(() => {
+            document.getElementById('quantityInput').focus();
+        }, 100);
     }
 
     openWeightModal() {

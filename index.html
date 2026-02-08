@@ -229,6 +229,14 @@
                         </div>
                     </div>
 
+                    <!-- Nutrition Score Card -->
+                    <div class="dashboard-section" id="nutritionScoreSection" style="display: none;">
+                        <h3>🏆 Today's Nutrition Score</h3>
+                        <div id="nutritionScoreCard" class="nutrition-score-card">
+                            <!-- Score will be rendered here -->
+                        </div>
+                    </div>
+
                     <!-- Food Summary with Macro Goals -->
                     <div class="dashboard-section">
                         <div class="section-header-with-action">
@@ -255,6 +263,17 @@
                                 <span class="summary-label">Fats</span>
                                 <span class="summary-value" id="dashFoodFats">0g</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Intermittent Fasting Timer -->
+                    <div class="dashboard-section" id="fastingTimerSection">
+                        <div class="section-header-with-action">
+                            <h3>⏱️ Intermittent Fasting</h3>
+                            <button class="btn-secondary btn-sm" id="fastingSettingsBtn" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">⚙️ Settings</button>
+                        </div>
+                        <div id="fastingTimerDisplay" class="fasting-timer-display">
+                            <!-- Timer will be rendered here -->
                         </div>
                     </div>
 
@@ -1164,8 +1183,41 @@
                 <div class="modal-body">
                     <div class="food-search-container">
                         <label class="input-label">Food Name</label>
-                        <input type="text" id="foodNameInput" placeholder="Search or type food name..." class="input" autocomplete="off">
+                        <div style="display: flex; gap: 0.5rem; align-items: stretch;">
+                            <input type="text" id="foodNameInput" placeholder="Search or type food name..." class="input" autocomplete="off" style="flex: 1;">
+                            <button type="button" id="barcodeScanBtn" class="btn-secondary" title="Scan barcode" style="padding: 0.75rem 1rem; white-space: nowrap;">
+                                📷 Scan
+                            </button>
+                        </div>
                         <div id="foodSuggestions" class="food-suggestions"></div>
+                    </div>
+
+                    <!-- Smart Meal Suggestions -->
+                    <div id="smartSuggestionsContainer" style="display: none; margin-top: 1rem; margin-bottom: 1rem;">
+                        <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent-primary);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                                <label class="input-label" style="margin: 0;">💡 Smart Suggestions</label>
+                                <button type="button" id="closeSmartSuggestions" class="btn-icon-small" title="Hide suggestions">✕</button>
+                            </div>
+                            <div id="smartSuggestionsContent"></div>
+                        </div>
+                    </div>
+
+                    <!-- Barcode Scanner Modal -->
+                    <div id="barcodeScannerContainer" style="display: none; margin-top: 1rem;">
+                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent-primary);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <label class="input-label" style="margin: 0;">📷 Barcode Scanner</label>
+                                <button type="button" id="closeBarcodeScanner" class="btn-icon-small" title="Close scanner">✕</button>
+                            </div>
+                            <input type="text" id="barcodeInput" placeholder="Enter barcode or use camera..." class="input" style="margin-bottom: 0.5rem;">
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button type="button" id="useCameraBtn" class="btn-secondary" style="flex: 1;">📷 Use Camera</button>
+                                <button type="button" id="searchBarcodeBtn" class="btn-primary" style="flex: 1;">🔍 Search</button>
+                            </div>
+                            <p class="helper-text" style="margin-top: 0.5rem; margin-bottom: 0;">Scan or type the barcode from packaged food</p>
+                            <div id="barcodeResult" style="margin-top: 0.75rem; display: none;"></div>
+                        </div>
                     </div>
 
                     <!-- Portion Size Quick Buttons -->
@@ -1681,6 +1733,47 @@
                         <button id="saveDashboardSleepBtn" class="btn-primary">Save Sleep</button>
                         <button class="btn-secondary close-btn">Cancel</button>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fasting Settings Modal -->
+        <div id="fastingSettingsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>⏱️ Fasting Settings</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-label">Fasting Protocol</label>
+                        <select id="fastingProtocolSelect" class="input">
+                            <option value="16:8">16:8 (Fast 16h, Eat 8h)</option>
+                            <option value="18:6">18:6 (Fast 18h, Eat 6h)</option>
+                            <option value="20:4">20:4 (Fast 20h, Eat 4h)</option>
+                            <option value="14:10">14:10 (Fast 14h, Eat 10h)</option>
+                            <option value="12:12">12:12 (Fast 12h, Eat 12h)</option>
+                        </select>
+                        <p class="helper-text">Choose your intermittent fasting schedule</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Start Fasting Time</label>
+                        <input type="time" id="fastingStartTimeInput" class="input" value="20:00">
+                        <p class="helper-text">When do you start fasting? (e.g., after last meal)</p>
+                    </div>
+
+                    <div id="fastingTimerInfo" style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent-primary); margin-top: 1rem;">
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
+                            <strong>💡 How it works:</strong><br>
+                            Your fasting timer will automatically start at your set time each day.
+                            You'll see the countdown on your dashboard showing when your fasting window ends.
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelFastingBtn" class="btn-secondary">Cancel</button>
+                    <button id="saveFastingSettingsBtn" class="btn-primary">Save Settings</button>
                 </div>
             </div>
         </div>
@@ -2226,6 +2319,7 @@
     <script src="js/food-database.js"></script>
     <script src="js/nutritionix-api.js"></script>
     <script src="js/fatsecret-api.js"></script>
+    <script src="js/openfoodfacts-api.js"></script>
     <script src="js/exercise-library.js"></script>
     <script src="js/workout-templates.js"></script>
     <script src="js/app.js"></script>
