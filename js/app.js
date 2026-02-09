@@ -369,32 +369,51 @@ class GymTrackerApp {
         // Users can still search 500+ local foods + optional FatSecret API (1M+ foods)
 
         // Barcode Scanner
-        document.getElementById('barcodeScanBtn').addEventListener('click', () => {
-            this.openBarcodeScanner();
-        });
+        // Barcode Scanner
+        const barcodeScanBtn = document.getElementById('barcodeScanBtn');
+        if (barcodeScanBtn) {
+            barcodeScanBtn.addEventListener('click', () => {
+                this.openBarcodeScanner();
+            });
+        }
 
-        document.getElementById('closeBarcodeScanner').addEventListener('click', () => {
-            this.closeBarcodeScanner();
-        });
+        const closeBarcodeScanner = document.getElementById('closeBarcodeScanner');
+        if (closeBarcodeScanner) {
+            closeBarcodeScanner.addEventListener('click', () => {
+                this.closeBarcodeScanner();
+            });
+        }
 
-        document.getElementById('searchBarcodeBtn').addEventListener('click', () => {
-            this.searchBarcode();
-        });
-
-        document.getElementById('useCameraBtn').addEventListener('click', () => {
-            this.useBarcodeCamera();
-        });
-
-        document.getElementById('barcodeInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
+        const searchBarcodeBtn = document.getElementById('searchBarcodeBtn');
+        if (searchBarcodeBtn) {
+            searchBarcodeBtn.addEventListener('click', () => {
                 this.searchBarcode();
-            }
-        });
+            });
+        }
+
+        const useCameraBtn = document.getElementById('useCameraBtn');
+        if (useCameraBtn) {
+            useCameraBtn.addEventListener('click', () => {
+                this.useBarcodeCamera();
+            });
+        }
+
+        const barcodeInput = document.getElementById('barcodeInput');
+        if (barcodeInput) {
+            barcodeInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.searchBarcode();
+                }
+            });
+        }
 
         // Smart Suggestions
-        document.getElementById('closeSmartSuggestions').addEventListener('click', () => {
-            document.getElementById('smartSuggestionsContainer').style.display = 'none';
-        });
+        const closeSmartSuggestionsBtn = document.getElementById('closeSmartSuggestions');
+        if (closeSmartSuggestionsBtn) {
+            closeSmartSuggestionsBtn.addEventListener('click', () => {
+                document.getElementById('smartSuggestionsContainer').style.display = 'none';
+            });
+        }
 
         document.getElementById('viewFoodHistoryBtn').addEventListener('click', () => {
             this.openFoodHistoryModal();
@@ -558,17 +577,26 @@ class GymTrackerApp {
         });
 
         // Fasting Timer
-        document.getElementById('fastingSettingsBtn').addEventListener('click', () => {
-            this.openFastingSettingsModal();
-        });
+        const fastingSettingsBtn = document.getElementById('fastingSettingsBtn');
+        if (fastingSettingsBtn) {
+            fastingSettingsBtn.addEventListener('click', () => {
+                this.openFastingSettingsModal();
+            });
+        }
 
-        document.getElementById('saveFastingSettingsBtn').addEventListener('click', () => {
-            this.saveFastingSettings();
-        });
+        const saveFastingSettingsBtn = document.getElementById('saveFastingSettingsBtn');
+        if (saveFastingSettingsBtn) {
+            saveFastingSettingsBtn.addEventListener('click', () => {
+                this.saveFastingSettings();
+            });
+        }
 
-        document.getElementById('cancelFastingBtn').addEventListener('click', () => {
-            this.closeModal('fastingSettingsModal');
-        });
+        const cancelFastingBtn = document.getElementById('cancelFastingBtn');
+        if (cancelFastingBtn) {
+            cancelFastingBtn.addEventListener('click', () => {
+                this.closeModal('fastingSettingsModal');
+            });
+        }
 
         document.getElementById('saveMeasurementsBtn').addEventListener('click', () => {
             this.saveMeasurements();
