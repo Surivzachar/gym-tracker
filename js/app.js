@@ -2757,8 +2757,15 @@ class GymTrackerApp {
                 saveBtn.textContent = 'Save Food';
             }
 
-            // Show smart meal suggestions
-            this.renderSmartSuggestions(this.currentMealType);
+            // Show smart meal suggestions (with error handling)
+            try {
+                this.renderSmartSuggestions(this.currentMealType);
+            } catch (error) {
+                console.error('Error rendering smart suggestions:', error);
+                // Hide suggestions container if error occurs
+                const container = document.getElementById('smartSuggestionsContainer');
+                if (container) container.style.display = 'none';
+            }
         }
 
         document.getElementById('foodSuggestions').innerHTML = '';
@@ -6614,9 +6621,10 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     // ===== Smart Meal Suggestions Methods =====
 
     getSmartMealSuggestions(mealType) {
-        const suggestions = [];
-        const foodStats = Storage.getFoodStats();
-        const goals = Storage.getNutritionGoals();
+        try {
+            const suggestions = [];
+            const foodStats = Storage.getFoodStats();
+            const goals = Storage.getNutritionGoals();
 
         // Calculate remaining macros
         const remaining = {
@@ -6742,7 +6750,11 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
                 }
             });
 
-        return uniqueSuggestions.slice(0, 6); // Return top 6 suggestions
+            return uniqueSuggestions.slice(0, 6); // Return top 6 suggestions
+        } catch (error) {
+            console.error('Error in getSmartMealSuggestions:', error);
+            return []; // Return empty array on error
+        }
     }
 
     getFoodsForMealType(mealType, allFoods) {
@@ -6819,62 +6831,93 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     }
 
     renderSmartSuggestions(mealType) {
-        const container = document.getElementById('smartSuggestionsContainer');
-        const content = document.getElementById('smartSuggestionsContent');
+        try {
+            const container = document.getElementById('smartSuggestionsContainer');
+            const content = document.getElementById('smartSuggestionsContent');
 
-        if (!container || !content) return;
+            if (!container || !content) {
+                console.log('Smart suggestions container not found');
+                return;
+            }
 
-        const suggestions = this.getSmartMealSuggestions(mealType);
+            const suggestions = this.getSmartMealSuggestions(mealType);
 
-        if (suggestions.length === 0) {
-            container.style.display = 'none';
-            return;
+            if (!suggestions || suggestions.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'block';
+
+            // Group suggestions by reason
+            const grouped = {
+                favorites: suggestions.filter(s => s && s.reason === '⭐ Favorite'),
+                macro: suggestions.filter(s => s && s.reason && s.reason.includes('High')),
+                recent: suggestions.filter(s => s && s.reason === '🕐 Recent')
+            };
+
+            let html = '';
+
+            // Render macro-based suggestions first
+            if (grouped.macro && grouped.macro.length > 0) {
+                html += '<div class="suggestion-section-title">Based on Your Remaining Macros</div>';
+                grouped.macro.forEach(suggestion => {
+                    try {
+                        html += this.renderSuggestionItem(suggestion);
+                    } catch (err) {
+                        console.error('Error rendering suggestion item:', err);
+                    }
+                });
+            }
+
+            // Then favorites
+            if (grouped.favorites && grouped.favorites.length > 0) {
+                html += '<div class="suggestion-section-title">Your Favorites</div>';
+                grouped.favorites.forEach(suggestion => {
+                    try {
+                        html += this.renderSuggestionItem(suggestion);
+                    } catch (err) {
+                        console.error('Error rendering suggestion item:', err);
+                    }
+                });
+            }
+
+            // Then recent foods
+            if (grouped.recent && grouped.recent.length > 0) {
+                html += '<div class="suggestion-section-title">Recently Added</div>';
+                grouped.recent.forEach(suggestion => {
+                    try {
+                        html += this.renderSuggestionItem(suggestion);
+                    } catch (err) {
+                        console.error('Error rendering suggestion item:', err);
+                    }
+                });
+            }
+
+            content.innerHTML = html;
+
+            // Add click handlers (with null check)
+            const suggestionItems = content.querySelectorAll('.smart-suggestion-item');
+            if (suggestionItems && suggestionItems.length > 0) {
+                suggestionItems.forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        try {
+                            const foodName = e.currentTarget.dataset.foodName;
+                            if (foodName) {
+                                this.selectFoodFromSuggestion(foodName);
+                            }
+                        } catch (err) {
+                            console.error('Error selecting food from suggestion:', err);
+                        }
+                    });
+                });
+            }
+        } catch (error) {
+            console.error('Error in renderSmartSuggestions:', error);
+            // Hide container on error
+            const container = document.getElementById('smartSuggestionsContainer');
+            if (container) container.style.display = 'none';
         }
-
-        container.style.display = 'block';
-
-        // Group suggestions by reason
-        const grouped = {
-            favorites: suggestions.filter(s => s.reason === '⭐ Favorite'),
-            macro: suggestions.filter(s => s.reason.includes('High')),
-            recent: suggestions.filter(s => s.reason === '🕐 Recent')
-        };
-
-        let html = '';
-
-        // Render macro-based suggestions first
-        if (grouped.macro.length > 0) {
-            html += '<div class="suggestion-section-title">Based on Your Remaining Macros</div>';
-            grouped.macro.forEach(suggestion => {
-                html += this.renderSuggestionItem(suggestion);
-            });
-        }
-
-        // Then favorites
-        if (grouped.favorites.length > 0) {
-            html += '<div class="suggestion-section-title">Your Favorites</div>';
-            grouped.favorites.forEach(suggestion => {
-                html += this.renderSuggestionItem(suggestion);
-            });
-        }
-
-        // Then recent foods
-        if (grouped.recent.length > 0) {
-            html += '<div class="suggestion-section-title">Recently Added</div>';
-            grouped.recent.forEach(suggestion => {
-                html += this.renderSuggestionItem(suggestion);
-            });
-        }
-
-        content.innerHTML = html;
-
-        // Add click handlers
-        content.querySelectorAll('.smart-suggestion-item').forEach(item => {
-            item.addEventListener('click', (e) => {
-                const foodName = e.currentTarget.dataset.foodName;
-                this.selectFoodFromSuggestion(foodName);
-            });
-        });
     }
 
     renderSuggestionItem(suggestion) {
