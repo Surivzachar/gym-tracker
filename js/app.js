@@ -120,19 +120,43 @@ class GymTrackerApp {
 
         // Register service worker for PWA
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').then(registration => {
-                // Force check for updates
+            // First, check for any old workers and force update
+            navigator.serviceWorker.getRegistrations().then(registrations => {
+                registrations.forEach(reg => {
+                    reg.update(); // Force update check
+                });
+            });
+
+            navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(registration => {
+                // Force check for updates immediately
                 registration.update();
+
+                // Check for updates periodically (every 60 seconds)
+                setInterval(() => {
+                    registration.update();
+                }, 60000);
 
                 // Listen for updates
                 registration.addEventListener('updatefound', () => {
                     const newWorker = registration.installing;
-                    newWorker.addEventListener('statechange', () => {
-                        if (newWorker.state === 'activated') {
-                            // New service worker activated, reload the page
-                            window.location.reload();
-                        }
-                    });
+                    if (newWorker) {
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'activated' && !navigator.serviceWorker.controller) {
+                                // New service worker activated for the first time
+                                window.location.reload();
+                            }
+                        });
+                    }
+                });
+
+                // If there's a waiting worker, activate it immediately
+                if (registration.waiting) {
+                    registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                }
+
+                // Listen for controller change (new SW activated)
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    window.location.reload();
                 });
             }).catch(err => {
                 console.log('Service worker registration failed:', err);
