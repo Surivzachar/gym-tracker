@@ -115,8 +115,12 @@ class GymTrackerApp {
         this.updateDateBanner();
         this.renderCurrentWorkout();
         this.renderHistory();
-        this.renderRoutines();
-        this.renderFood();
+
+        // Initialize default routines for new users
+        this.initializeDefaultRoutines().then(() => {
+            this.renderRoutines();
+            this.renderFood();
+        });
 
         // Register service worker for PWA
         if ('serviceWorker' in navigator) {
@@ -165,6 +169,57 @@ class GymTrackerApp {
 
         // Monitor online/offline status
         this.initializeConnectionMonitor();
+    }
+
+    async initializeDefaultRoutines() {
+        // Check if user already has routines - if so, don't override
+        const existingWorkoutRoutines = Storage.getAllRoutines();
+        const existingFoodRoutines = Storage.getAllFoodRoutines();
+
+        console.log('Checking for default routines...');
+        console.log('Existing workout routines:', existingWorkoutRoutines.length);
+        console.log('Existing food routines:', existingFoodRoutines.length);
+
+        try {
+            // Load workout routines if user has none
+            if (existingWorkoutRoutines.length === 0) {
+                console.log('Loading default workout routines from my-workout-routines.json...');
+                const response = await fetch('my-workout-routines.json');
+                const data = await response.json();
+
+                if (data.routines && data.routines.length > 0) {
+                    // Save each routine to localStorage
+                    Storage.set(Storage.KEYS.ROUTINES, data.routines);
+                    console.log(`✅ Loaded ${data.routines.length} default workout routines`);
+                } else {
+                    console.warn('No workout routines found in JSON file');
+                }
+            }
+
+            // Load food routines if user has none
+            if (existingFoodRoutines.length === 0) {
+                console.log('Loading default food routines from my-diet-plan.json...');
+                const response = await fetch('my-diet-plan.json');
+                const data = await response.json();
+
+                if (data.foodRoutines && data.foodRoutines.length > 0) {
+                    // Save each routine to localStorage
+                    Storage.set(Storage.KEYS.FOOD_ROUTINES, data.foodRoutines);
+                    console.log(`✅ Loaded ${data.foodRoutines.length} default food routines`);
+                } else {
+                    console.warn('No food routines found in JSON file');
+                }
+            }
+
+            if (existingWorkoutRoutines.length === 0 || existingFoodRoutines.length === 0) {
+                console.log('✅ Default routines initialized successfully!');
+            } else {
+                console.log('User already has routines, skipping default load');
+            }
+        } catch (error) {
+            console.error('Error loading default routines:', error);
+            // Don't throw - app should still work without defaults
+        }
     }
 
     initializeConnectionMonitor() {
