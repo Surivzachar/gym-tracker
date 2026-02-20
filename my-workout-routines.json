@@ -1,333 +1,75 @@
 {
-  "version": "1.0",
-  "exportDate": "2026-01-16T00:00:00.000Z",
+  "version": "2.0",
+  "exportDate": "2026-02-20T00:00:00.000Z",
   "routines": [
     {
-      "id": 1737072000001,
-      "name": "Wednesday AM - Chest + Triceps",
+      "id": 1739980800001,
+      "name": "DAILY - Morning Ab Routine (10 min)",
       "exercises": [
         {
-          "id": 1737072000002,
-          "name": "Flat DB Bench Press",
+          "id": 1739980800002,
+          "name": "Crunches",
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0 },
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
+            { "reps": 25, "weight": 0, "note": "Round 1" },
+            { "reps": 25, "weight": 0, "note": "Round 2" },
+            { "reps": 25, "weight": 0, "note": "Round 3" }
           ]
         },
         {
-          "id": 1737072000003,
-          "name": "Incline Press",
+          "id": 1739980800003,
+          "name": "Leg Raises",
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
+            { "reps": 15, "weight": 0, "note": "Round 1" },
+            { "reps": 15, "weight": 0, "note": "Round 2" },
+            { "reps": 15, "weight": 0, "note": "Round 3" }
           ]
         },
         {
-          "id": 1737072000004,
-          "name": "Pec Fly",
+          "id": 1739980800004,
+          "name": "Russian Twists",
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
+            { "reps": 30, "weight": 0, "note": "Round 1 - 15 each side" },
+            { "reps": 30, "weight": 0, "note": "Round 2 - 15 each side" },
+            { "reps": 30, "weight": 0, "note": "Round 3 - 15 each side" }
           ]
         },
         {
-          "id": 1737072000005,
-          "name": "Overhead Triceps Extension",
+          "id": 1739980800005,
+          "name": "Plank Hold",
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
+            { "reps": 60, "weight": 0, "note": "Round 1 - 60 sec" },
+            { "reps": 60, "weight": 0, "note": "Round 2 - 60 sec" },
+            { "reps": 60, "weight": 0, "note": "Round 3 - 60 sec" }
           ]
         },
         {
-          "id": 1737072000006,
-          "name": "Rope Pushdown",
+          "id": 1739980800006,
+          "name": "Bicycle Crunches",
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0, "note": "DROP SET" }
+            { "reps": 30, "weight": 0, "note": "Round 1" },
+            { "reps": 30, "weight": 0, "note": "Round 2" },
+            { "reps": 30, "weight": 0, "note": "Round 3" }
           ]
         }
       ],
-      "createdAt": "2026-01-16T00:00:00.000Z"
+      "createdAt": "2026-02-20T00:00:00.000Z"
     },
     {
-      "id": 1737072000007,
-      "name": "Thursday - Back + Biceps + Forearms",
+      "id": 1739980800007,
+      "name": "Monday - Cardio Day (Sports)",
       "exercises": [
         {
-          "id": 1737072000008,
-          "name": "Lat Pulldown / Pull-ups",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 15, "weight": 0 },
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000009,
-          "name": "Seated Cable Row",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000010,
-          "name": "Single-arm DB Row",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000011,
-          "name": "Incline DB Curl",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000012,
-          "name": "Hammer Curl",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000013,
-          "name": "Heavy DB Holds",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 40, "weight": 0, "note": "40 sec hold" },
-            { "reps": 35, "weight": 0, "note": "35 sec hold" },
-            { "reps": 30, "weight": 0, "note": "30 sec hold" }
-          ]
-        },
-        {
-          "id": 1737072000014,
-          "name": "Reverse EZ Curl",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 15, "weight": 0 },
-            { "reps": 15, "weight": 0 },
-            { "reps": 12, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000015,
-          "name": "Wrist Curls",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 20, "weight": 0 },
-            { "reps": 18, "weight": 0 },
-            { "reps": 15, "weight": 0 }
-          ]
-        }
-      ],
-      "createdAt": "2026-01-16T00:00:00.000Z"
-    },
-    {
-      "id": 1737072000016,
-      "name": "Friday - Leg Day",
-      "exercises": [
-        {
-          "id": 1737072000017,
-          "name": "Hack Squat",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 15, "weight": 0 },
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000018,
-          "name": "Heel-elevated Split Squat",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000019,
-          "name": "Leg Extension",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0, "note": "DROP SET" }
-          ]
-        },
-        {
-          "id": 1737072000020,
-          "name": "Seated Leg Curl",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 15, "weight": 0 },
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000021,
-          "name": "Romanian Deadlift",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000022,
-          "name": "Standing Calf Raise",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 15, "weight": 0 },
-            { "reps": 15, "weight": 0 },
-            { "reps": 12, "weight": 0 },
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000023,
-          "name": "Seated Calf Raise",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 15, "weight": 0 },
-            { "reps": 15, "weight": 0 },
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 }
-          ]
-        }
-      ],
-      "createdAt": "2026-01-16T00:00:00.000Z"
-    },
-    {
-      "id": 1737072000024,
-      "name": "Sunday - Shoulders + Arms + Forearms",
-      "exercises": [
-        {
-          "id": 1737072000025,
-          "name": "Seated DB Shoulder Press",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000026,
-          "name": "Lateral Raise",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0, "note": "DROP SET" }
-          ]
-        },
-        {
-          "id": 1737072000027,
-          "name": "Rear Delt Fly",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000028,
-          "name": "Cable Curl",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0 },
-            { "reps": 8, "weight": 0 }
-          ]
-        },
-        {
-          "id": 1737072000029,
-          "name": "Concentration Curl",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            { "reps": 12, "weight": 0 },
-            { "reps": 10, "weight": 0, "note": "DROP SET" }
-          ]
-        },
-        {
-          "id": 1737072000030,
-          "name": "Farmer's Walk",
-          "type": "cardio",
-          "videoUrl": null,
-          "duration": 0,
-          "distance": 0,
-          "sets": [
-            { "reps": 1, "weight": 0, "note": "Round 1" },
-            { "reps": 1, "weight": 0, "note": "Round 2" }
-          ]
-        }
-      ],
-      "createdAt": "2026-01-16T00:00:00.000Z"
-    },
-    {
-      "id": 1737072000031,
-      "name": "Monday - Sport/Cardio Day",
-      "exercises": [
-        {
-          "id": 1737072000032,
+          "id": 1739980800008,
           "name": "Cycling (Commute)",
           "type": "cardio",
           "videoUrl": null,
@@ -336,7 +78,7 @@
           "calories": 0
         },
         {
-          "id": 1737072000033,
+          "id": 1739980800009,
           "name": "Ceremony Class",
           "type": "cardio",
           "videoUrl": null,
@@ -345,7 +87,7 @@
           "calories": 0
         },
         {
-          "id": 1737072000034,
+          "id": 1739980800010,
           "name": "Badminton",
           "type": "cardio",
           "videoUrl": null,
@@ -354,64 +96,603 @@
           "calories": 0
         }
       ],
-      "createdAt": "2026-01-16T00:00:00.000Z"
+      "createdAt": "2026-02-20T00:00:00.000Z"
     },
     {
-      "id": 1737072000035,
-      "name": "Tuesday - Dragon Boating",
+      "id": 1739980800011,
+      "name": "Tuesday - Upper Body Power (Chest + Back)",
       "exercises": [
         {
-          "id": 1737072000036,
-          "name": "Dragon Boating",
-          "type": "cardio",
+          "id": 1739980800012,
+          "name": "Incline Dumbbell Press",
+          "type": "strength",
           "videoUrl": null,
-          "duration": 90,
-          "distance": 0,
-          "calories": 0
-        }
-      ],
-      "createdAt": "2026-01-16T00:00:00.000Z"
-    },
-    {
-      "id": 1737072000037,
-      "name": "Wednesday PM - Dragon Boating",
-      "exercises": [
-        {
-          "id": 1737072000038,
-          "name": "Dragon Boating",
-          "type": "cardio",
-          "videoUrl": null,
-          "duration": 90,
-          "distance": 0,
-          "calories": 0
-        }
-      ],
-      "createdAt": "2026-01-16T00:00:00.000Z"
-    },
-    {
-      "id": 1737072000039,
-      "name": "Daily - Cycling Commute",
-      "exercises": [
-        {
-          "id": 1737072000040,
-          "name": "Cycling to Work",
-          "type": "cardio",
-          "videoUrl": null,
-          "duration": 15,
-          "distance": 0,
-          "calories": 0
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "SUPERSET 1A" },
+            { "reps": 12, "weight": 0, "note": "SUPERSET 1A" },
+            { "reps": 10, "weight": 0, "note": "SUPERSET 1A" },
+            { "reps": 10, "weight": 0, "note": "SUPERSET 1A" }
+          ]
         },
         {
-          "id": 1737072000041,
-          "name": "Cycling from Work",
-          "type": "cardio",
+          "id": 1739980800013,
+          "name": "Wide-Grip Pull-ups / Lat Pulldown",
+          "type": "strength",
           "videoUrl": null,
-          "duration": 15,
-          "distance": 0,
-          "calories": 0
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "SUPERSET 1B" },
+            { "reps": 10, "weight": 0, "note": "SUPERSET 1B" },
+            { "reps": 10, "weight": 0, "note": "SUPERSET 1B" },
+            { "reps": 8, "weight": 0, "note": "SUPERSET 1B" }
+          ]
+        },
+        {
+          "id": 1739980800014,
+          "name": "Flat Dumbbell Press",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "SUPERSET 2A" },
+            { "reps": 12, "weight": 0, "note": "SUPERSET 2A" },
+            { "reps": 12, "weight": 0, "note": "SUPERSET 2A" }
+          ]
+        },
+        {
+          "id": 1739980800015,
+          "name": "Cable Seated Row",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "SUPERSET 2B" },
+            { "reps": 12, "weight": 0, "note": "SUPERSET 2B" },
+            { "reps": 12, "weight": 0, "note": "SUPERSET 2B" }
+          ]
+        },
+        {
+          "id": 1739980800016,
+          "name": "Cable Flyes",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "SUPERSET 3A" },
+            { "reps": 15, "weight": 0, "note": "SUPERSET 3A" },
+            { "reps": 12, "weight": 0, "note": "SUPERSET 3A" }
+          ]
+        },
+        {
+          "id": 1739980800017,
+          "name": "Face Pulls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "SUPERSET 3B" },
+            { "reps": 18, "weight": 0, "note": "SUPERSET 3B" },
+            { "reps": 15, "weight": 0, "note": "SUPERSET 3B" }
+          ]
+        },
+        {
+          "id": 1739980800018,
+          "name": "Dumbbell Pullovers",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "FINISHER - light weight" },
+            { "reps": 20, "weight": 0, "note": "FINISHER - light weight" }
+          ]
         }
       ],
-      "createdAt": "2026-01-16T00:00:00.000Z"
+      "createdAt": "2026-02-20T00:00:00.000Z"
+    },
+    {
+      "id": 1739980800019,
+      "name": "Wednesday - Arms + Abs Destruction",
+      "exercises": [
+        {
+          "id": 1739980800020,
+          "name": "Incline Dumbbell Curls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "GIANT SET 1A - Biceps" },
+            { "reps": 12, "weight": 0, "note": "GIANT SET 1A - Biceps" },
+            { "reps": 10, "weight": 0, "note": "GIANT SET 1A - Biceps" }
+          ]
+        },
+        {
+          "id": 1739980800021,
+          "name": "Barbell/EZ-Bar Curls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "GIANT SET 1B - Biceps" },
+            { "reps": 10, "weight": 0, "note": "GIANT SET 1B - Biceps" },
+            { "reps": 10, "weight": 0, "note": "GIANT SET 1B - Biceps" }
+          ]
+        },
+        {
+          "id": 1739980800022,
+          "name": "Hammer Curls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "GIANT SET 1C - Biceps" },
+            { "reps": 15, "weight": 0, "note": "GIANT SET 1C - Biceps" },
+            { "reps": 12, "weight": 0, "note": "GIANT SET 1C - Biceps" }
+          ]
+        },
+        {
+          "id": 1739980800023,
+          "name": "Overhead Rope Extension",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "GIANT SET 2A - Triceps" },
+            { "reps": 12, "weight": 0, "note": "GIANT SET 2A - Triceps" },
+            { "reps": 12, "weight": 0, "note": "GIANT SET 2A - Triceps" }
+          ]
+        },
+        {
+          "id": 1739980800024,
+          "name": "Rope Pushdowns",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "GIANT SET 2B - Triceps" },
+            { "reps": 12, "weight": 0, "note": "GIANT SET 2B - Triceps" },
+            { "reps": 12, "weight": 0, "note": "GIANT SET 2B - DROP SET last" }
+          ]
+        },
+        {
+          "id": 1739980800025,
+          "name": "Close-Grip Bench / Dips",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "GIANT SET 2C - Triceps" },
+            { "reps": 10, "weight": 0, "note": "GIANT SET 2C - Triceps" },
+            { "reps": 10, "weight": 0, "note": "GIANT SET 2C - Triceps" }
+          ]
+        },
+        {
+          "id": 1739980800026,
+          "name": "Reverse EZ-Bar Curls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "Forearms" },
+            { "reps": 15, "weight": 0, "note": "Forearms" }
+          ]
+        },
+        {
+          "id": 1739980800027,
+          "name": "Wrist Curls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "Forearms" },
+            { "reps": 20, "weight": 0, "note": "Forearms" }
+          ]
+        },
+        {
+          "id": 1739980800028,
+          "name": "Heavy DB Holds",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 40, "weight": 0, "note": "Forearms - 40 sec hold" },
+            { "reps": 40, "weight": 0, "note": "Forearms - 40 sec hold" }
+          ]
+        },
+        {
+          "id": 1739980800029,
+          "name": "Hanging Leg Raises",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "AB ASSAULT - Circuit Round 1" },
+            { "reps": 15, "weight": 0, "note": "AB ASSAULT - Circuit Round 2" },
+            { "reps": 15, "weight": 0, "note": "AB ASSAULT - Circuit Round 3" }
+          ]
+        },
+        {
+          "id": 1739980800030,
+          "name": "Cable Crunches",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "AB ASSAULT - Circuit Round 1" },
+            { "reps": 20, "weight": 0, "note": "AB ASSAULT - Circuit Round 2" },
+            { "reps": 20, "weight": 0, "note": "AB ASSAULT - Circuit Round 3" }
+          ]
+        },
+        {
+          "id": 1739980800031,
+          "name": "Russian Twists (weighted)",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 30, "weight": 0, "note": "AB ASSAULT - Circuit Round 1" },
+            { "reps": 30, "weight": 0, "note": "AB ASSAULT - Circuit Round 2" },
+            { "reps": 30, "weight": 0, "note": "AB ASSAULT - Circuit Round 3" }
+          ]
+        },
+        {
+          "id": 1739980800032,
+          "name": "Plank Hold",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 60, "weight": 0, "note": "AB ASSAULT - Circuit Round 1 - 60 sec" },
+            { "reps": 60, "weight": 0, "note": "AB ASSAULT - Circuit Round 2 - 60 sec" },
+            { "reps": 60, "weight": 0, "note": "AB ASSAULT - Circuit Round 3 - 60 sec" }
+          ]
+        },
+        {
+          "id": 1739980800033,
+          "name": "Bicycle Crunches",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 30, "weight": 0, "note": "AB ASSAULT - Circuit Round 1" },
+            { "reps": 30, "weight": 0, "note": "AB ASSAULT - Circuit Round 2" },
+            { "reps": 30, "weight": 0, "note": "AB ASSAULT - Circuit Round 3" }
+          ]
+        }
+      ],
+      "createdAt": "2026-02-20T00:00:00.000Z"
+    },
+    {
+      "id": 1739980800034,
+      "name": "Thursday - Legs + Core",
+      "exercises": [
+        {
+          "id": 1739980800035,
+          "name": "Back Squats / Hack Squats",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "QUADS" },
+            { "reps": 12, "weight": 0, "note": "QUADS" },
+            { "reps": 12, "weight": 0, "note": "QUADS" },
+            { "reps": 10, "weight": 0, "note": "QUADS" }
+          ]
+        },
+        {
+          "id": 1739980800036,
+          "name": "Bulgarian Split Squats",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "QUADS - each leg" },
+            { "reps": 12, "weight": 0, "note": "QUADS - each leg" },
+            { "reps": 12, "weight": 0, "note": "QUADS - each leg" }
+          ]
+        },
+        {
+          "id": 1739980800037,
+          "name": "Leg Extensions",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "QUADS" },
+            { "reps": 12, "weight": 0, "note": "QUADS" },
+            { "reps": 10, "weight": 0, "note": "QUADS - DROP SET last" }
+          ]
+        },
+        {
+          "id": 1739980800038,
+          "name": "Romanian Deadlifts",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "HAMSTRINGS & GLUTES" },
+            { "reps": 12, "weight": 0, "note": "HAMSTRINGS & GLUTES" },
+            { "reps": 10, "weight": 0, "note": "HAMSTRINGS & GLUTES" },
+            { "reps": 10, "weight": 0, "note": "HAMSTRINGS & GLUTES" }
+          ]
+        },
+        {
+          "id": 1739980800039,
+          "name": "Seated/Lying Leg Curls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "HAMSTRINGS & GLUTES" },
+            { "reps": 12, "weight": 0, "note": "HAMSTRINGS & GLUTES" },
+            { "reps": 10, "weight": 0, "note": "HAMSTRINGS & GLUTES" }
+          ]
+        },
+        {
+          "id": 1739980800040,
+          "name": "Standing Calf Raises",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "CALVES" },
+            { "reps": 18, "weight": 0, "note": "CALVES" },
+            { "reps": 15, "weight": 0, "note": "CALVES" },
+            { "reps": 12, "weight": 0, "note": "CALVES" }
+          ]
+        },
+        {
+          "id": 1739980800041,
+          "name": "Seated Calf Raises",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "CALVES" },
+            { "reps": 20, "weight": 0, "note": "CALVES" },
+            { "reps": 20, "weight": 0, "note": "CALVES" }
+          ]
+        },
+        {
+          "id": 1739980800042,
+          "name": "Standard Plank",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 60, "weight": 0, "note": "CORE - Plank Variations Round 1 - 60 sec" },
+            { "reps": 60, "weight": 0, "note": "CORE - Plank Variations Round 2 - 60 sec" }
+          ]
+        },
+        {
+          "id": 1739980800043,
+          "name": "Side Plank (Left)",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 45, "weight": 0, "note": "CORE - Plank Variations Round 1 - 45 sec" },
+            { "reps": 45, "weight": 0, "note": "CORE - Plank Variations Round 2 - 45 sec" }
+          ]
+        },
+        {
+          "id": 1739980800044,
+          "name": "Side Plank (Right)",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 45, "weight": 0, "note": "CORE - Plank Variations Round 1 - 45 sec" },
+            { "reps": 45, "weight": 0, "note": "CORE - Plank Variations Round 2 - 45 sec" }
+          ]
+        },
+        {
+          "id": 1739980800045,
+          "name": "Hip Dips",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "CORE - Plank Variations Round 1" },
+            { "reps": 20, "weight": 0, "note": "CORE - Plank Variations Round 2" }
+          ]
+        }
+      ],
+      "createdAt": "2026-02-20T00:00:00.000Z"
+    },
+    {
+      "id": 1739980800046,
+      "name": "Friday - Shoulders + Upper Back (3D Delts)",
+      "exercises": [
+        {
+          "id": 1739980800047,
+          "name": "Seated DB Shoulder Press",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "SHOULDER COMPOUND" },
+            { "reps": 12, "weight": 0, "note": "SHOULDER COMPOUND" },
+            { "reps": 10, "weight": 0, "note": "SHOULDER COMPOUND" },
+            { "reps": 10, "weight": 0, "note": "SHOULDER COMPOUND" }
+          ]
+        },
+        {
+          "id": 1739980800048,
+          "name": "DB Lateral Raises",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS (WIDTH!)" },
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS (WIDTH!)" },
+            { "reps": 12, "weight": 0, "note": "LATERAL DELTS (WIDTH!)" },
+            { "reps": 12, "weight": 0, "note": "LATERAL DELTS (WIDTH!)" }
+          ]
+        },
+        {
+          "id": 1739980800049,
+          "name": "Cable Lateral Raises (One Arm)",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS - each arm" },
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS - each arm" },
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS - each arm" }
+          ]
+        },
+        {
+          "id": 1739980800050,
+          "name": "Upright Rows",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS" },
+            { "reps": 12, "weight": 0, "note": "LATERAL DELTS" },
+            { "reps": 12, "weight": 0, "note": "LATERAL DELTS" }
+          ]
+        },
+        {
+          "id": 1739980800051,
+          "name": "Reverse Pec Deck / Rear Delt Flyes",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "REAR DELTS" },
+            { "reps": 15, "weight": 0, "note": "REAR DELTS" },
+            { "reps": 12, "weight": 0, "note": "REAR DELTS" }
+          ]
+        },
+        {
+          "id": 1739980800052,
+          "name": "Face Pulls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "REAR DELTS" },
+            { "reps": 18, "weight": 0, "note": "REAR DELTS" },
+            { "reps": 15, "weight": 0, "note": "REAR DELTS" }
+          ]
+        },
+        {
+          "id": 1739980800053,
+          "name": "DB Shrugs",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "TRAPS" },
+            { "reps": 18, "weight": 0, "note": "TRAPS" },
+            { "reps": 15, "weight": 0, "note": "TRAPS" }
+          ]
+        },
+        {
+          "id": 1739980800054,
+          "name": "Bent-Over DB Raises",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "TRAPS - burnout!" },
+            { "reps": 20, "weight": 0, "note": "TRAPS - burnout!" }
+          ]
+        }
+      ],
+      "createdAt": "2026-02-20T00:00:00.000Z"
+    },
+    {
+      "id": 1739980800055,
+      "name": "Sunday - Full Body HIIT Circuit",
+      "exercises": [
+        {
+          "id": 1739980800056,
+          "name": "DB Thrusters",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "Circuit Round 1" },
+            { "reps": 15, "weight": 0, "note": "Circuit Round 2" },
+            { "reps": 15, "weight": 0, "note": "Circuit Round 3" },
+            { "reps": 15, "weight": 0, "note": "Circuit Round 4" }
+          ]
+        },
+        {
+          "id": 1739980800057,
+          "name": "Burpees / Jump Squats",
+          "type": "cardio",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "Circuit Round 1" },
+            { "reps": 12, "weight": 0, "note": "Circuit Round 2" },
+            { "reps": 12, "weight": 0, "note": "Circuit Round 3" },
+            { "reps": 12, "weight": 0, "note": "Circuit Round 4" }
+          ]
+        },
+        {
+          "id": 1739980800058,
+          "name": "DB Renegade Rows",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "Circuit Round 1 - total" },
+            { "reps": 20, "weight": 0, "note": "Circuit Round 2 - total" },
+            { "reps": 20, "weight": 0, "note": "Circuit Round 3 - total" },
+            { "reps": 20, "weight": 0, "note": "Circuit Round 4 - total" }
+          ]
+        },
+        {
+          "id": 1739980800059,
+          "name": "Mountain Climbers",
+          "type": "cardio",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 30, "weight": 0, "note": "Circuit Round 1 - fast!" },
+            { "reps": 30, "weight": 0, "note": "Circuit Round 2 - fast!" },
+            { "reps": 30, "weight": 0, "note": "Circuit Round 3 - fast!" },
+            { "reps": 30, "weight": 0, "note": "Circuit Round 4 - fast!" }
+          ]
+        },
+        {
+          "id": 1739980800060,
+          "name": "DB RDL to Row",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "Circuit Round 1" },
+            { "reps": 12, "weight": 0, "note": "Circuit Round 2" },
+            { "reps": 12, "weight": 0, "note": "Circuit Round 3" },
+            { "reps": 12, "weight": 0, "note": "Circuit Round 4" }
+          ]
+        },
+        {
+          "id": 1739980800061,
+          "name": "Push-ups",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "Circuit Round 1" },
+            { "reps": 15, "weight": 0, "note": "Circuit Round 2" },
+            { "reps": 15, "weight": 0, "note": "Circuit Round 3" },
+            { "reps": 15, "weight": 0, "note": "Circuit Round 4" }
+          ]
+        },
+        {
+          "id": 1739980800062,
+          "name": "DB/KB Swings",
+          "type": "cardio",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "Circuit Round 1" },
+            { "reps": 20, "weight": 0, "note": "Circuit Round 2" },
+            { "reps": 20, "weight": 0, "note": "Circuit Round 3" },
+            { "reps": 20, "weight": 0, "note": "Circuit Round 4" }
+          ]
+        },
+        {
+          "id": 1739980800063,
+          "name": "High Knees / Jumping Jacks",
+          "type": "cardio",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 40, "weight": 0, "note": "Circuit Round 1" },
+            { "reps": 40, "weight": 0, "note": "Circuit Round 2" },
+            { "reps": 40, "weight": 0, "note": "Circuit Round 3" },
+            { "reps": 40, "weight": 0, "note": "Circuit Round 4" }
+          ]
+        },
+        {
+          "id": 1739980800064,
+          "name": "V-Ups",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 10, "weight": 0, "note": "FINISHER - Abs Burnout 5 min AMRAP" }
+          ]
+        },
+        {
+          "id": 1739980800065,
+          "name": "Plank Hold",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 30, "weight": 0, "note": "FINISHER - Abs Burnout 5 min AMRAP - 30 sec" }
+          ]
+        },
+        {
+          "id": 1739980800066,
+          "name": "Bicycle Crunches",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "FINISHER - Abs Burnout 5 min AMRAP" }
+          ]
+        }
+      ],
+      "createdAt": "2026-02-20T00:00:00.000Z"
     }
   ]
 }
