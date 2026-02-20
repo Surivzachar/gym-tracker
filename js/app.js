@@ -2500,6 +2500,26 @@ class GymTrackerApp {
                         }).join('')}
                     </div>
                 `;
+            } else {
+                // Show exercise preview even if routine has never been used
+                const exercisePreview = routine.exercises.slice(0, 4).map(ex => {
+                    if (ex.type === 'strength' || !ex.type) {
+                        const sets = ex.sets ? ex.sets.length : 3;
+                        return `<div class="history-preview-item">• ${ex.name} (${sets} sets)</div>`;
+                    } else if (ex.type === 'cardio') {
+                        return `<div class="history-preview-item">• ${ex.name} (Cardio)</div>`;
+                    } else if (ex.type === 'hiit') {
+                        return `<div class="history-preview-item">• ${ex.name} (HIIT)</div>`;
+                    }
+                }).join('');
+                const moreExercises = routine.exercises.length > 4 ? `<div class="history-preview-item" style="color: #666;">+ ${routine.exercises.length - 4} more exercises...</div>` : '';
+
+                historyPreview = `
+                    <div class="routine-history-preview">
+                        ${exercisePreview}
+                        ${moreExercises}
+                    </div>
+                `;
             }
 
             return `
@@ -4091,12 +4111,20 @@ class GymTrackerApp {
             const totalProtein = routine.meals.reduce((sum, m) => sum + (parseInt(m.protein) || 0), 0);
             const mealTypesCount = [...new Set(routine.meals.map(m => m.mealType))].length;
 
+            // Show preview of first 4 food items
+            const foodPreview = routine.meals.slice(0, 4).map(meal =>
+                `<div class="history-preview-item">• ${meal.name} (${meal.calories} cal)</div>`
+            ).join('');
+            const moreItems = routine.meals.length > 4 ? `<div class="history-preview-item" style="color: #666;">+ ${routine.meals.length - 4} more items...</div>` : '';
+
             return `
                 <div class="load-routine-item" onclick="app.loadFoodRoutineToToday(${routine.id})">
                     <h4>${routine.name}</h4>
                     <p>${routine.meals.length} items • ${mealTypesCount} meals</p>
                     <div class="routine-history-preview">
                         <strong>${totalCalories} cal • P: ${totalProtein}g</strong>
+                        ${foodPreview}
+                        ${moreItems}
                     </div>
                     <button class="btn-icon" onclick="event.stopPropagation(); app.deleteFoodRoutine(${routine.id})" style="position: absolute; top: 0.75rem; right: 0.75rem;">🗑️</button>
                 </div>
