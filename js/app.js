@@ -594,6 +594,14 @@ class GymTrackerApp {
             this.importRoutines(e);
         });
 
+        // Load Transformation Plan (new button)
+        const loadTransformationPlanBtn = document.getElementById('loadTransformationPlanBtn');
+        if (loadTransformationPlanBtn) {
+            loadTransformationPlanBtn.addEventListener('click', () => {
+                this.loadTransformationPlan();
+            });
+        }
+
         // Download Diet Plan
         document.getElementById('downloadDietBtn').addEventListener('click', () => {
             this.downloadDietPlan();
@@ -4976,6 +4984,35 @@ class GymTrackerApp {
                 console.error('Download error:', error);
                 alert('❌ Failed to download diet plan.\n\nPlease check your internet connection and try again.');
             });
+    }
+
+    async loadTransformationPlan() {
+        // Confirm with user
+        const confirmed = confirm('🔥 Load New Transformation Plan?\n\nThis will replace your current workout and meal routines with:\n\n• 7 workout routines (5-day split)\n• 31 meal options (visceral fat loss)\n• All COOKED weights for meal prep\n\nYour workout history will be kept safe!\n\nContinue?');
+
+        if (!confirmed) return;
+
+        try {
+            // Clear existing routines
+            localStorage.removeItem('gym_tracker_routines');
+            localStorage.removeItem('gym_tracker_food_routines');
+
+            console.log('🔥 Cleared old routines, loading transformation plan...');
+
+            // Force reload new routines
+            await this.initializeDefaultRoutines();
+
+            // Refresh UI
+            this.renderRoutines();
+            this.renderFood();
+
+            console.log('✅ Transformation plan loaded successfully!');
+
+            alert('✅ Success!\n\nYour new transformation plan is loaded!\n\n• 7 workout routines\n• 31 meal options\n\nGo to Workout or Food tab to see them!');
+        } catch (error) {
+            console.error('Error loading transformation plan:', error);
+            alert('❌ Error loading plan\n\nPlease check your internet connection and try again.');
+        }
     }
 
     // Date History Methods
