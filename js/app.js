@@ -383,6 +383,10 @@ class GymTrackerApp {
             this.addSetInput();
         });
 
+        document.getElementById('addCoreSetBtn').addEventListener('click', () => {
+            this.addCoreSetInput();
+        });
+
         // Finish Workout
         document.getElementById('finishWorkoutBtn').addEventListener('click', () => {
             this.finishWorkout();
@@ -826,6 +830,15 @@ class GymTrackerApp {
                     </div>
                 `).join('');
                 document.getElementById('strengthCalories').value = exercise.calories || '';
+            } else if (exercise.type === 'core') {
+                // Load core exercise data
+                document.getElementById('coreSetsContainer').innerHTML = exercise.sets.map(set => `
+                    <div class="set-input">
+                        <input type="number" placeholder="Reps (or seconds for planks)" class="input small" data-field="reps" value="${set.reps}">
+                        <button class="btn-icon remove-set">🗑️</button>
+                    </div>
+                `).join('');
+                document.getElementById('coreCalories').value = exercise.calories || '';
             } else if (exercise.type === 'cardio') {
                 document.getElementById('cardioDuration').value = exercise.duration || '';
                 document.getElementById('cardioDistance').value = exercise.distance || '';
@@ -859,6 +872,15 @@ class GymTrackerApp {
 
             // Reset strength calories
             document.getElementById('strengthCalories').value = '';
+
+            // Reset core inputs
+            document.getElementById('coreSetsContainer').innerHTML = `
+                <div class="set-input">
+                    <input type="number" placeholder="Reps (or seconds for planks)" class="input small" data-field="reps">
+                    <button class="btn-icon remove-set">🗑️</button>
+                </div>
+            `;
+            document.getElementById('coreCalories').value = '';
 
             // Reset cardio inputs
             document.getElementById('cardioDuration').value = '';
@@ -1085,6 +1107,7 @@ class GymTrackerApp {
 
     switchExerciseTypeInputs(type) {
         document.getElementById('strengthInputs').style.display = type === 'strength' ? 'block' : 'none';
+        document.getElementById('coreInputs').style.display = type === 'core' ? 'block' : 'none';
         document.getElementById('cardioInputs').style.display = type === 'cardio' ? 'block' : 'none';
         document.getElementById('hiitInputs').style.display = type === 'hiit' ? 'block' : 'none';
     }
@@ -1100,6 +1123,18 @@ class GymTrackerApp {
             </select>
             <input type="number" placeholder="Weight" class="input small" data-field="weight">
             <input type="number" placeholder="Reps" class="input small" data-field="reps">
+            <button class="btn-icon remove-set">🗑️</button>
+        `;
+        container.appendChild(setInput);
+        this.attachSetRemoveListeners();
+    }
+
+    addCoreSetInput() {
+        const container = document.getElementById('coreSetsContainer');
+        const setInput = document.createElement('div');
+        setInput.className = 'set-input';
+        setInput.innerHTML = `
+            <input type="number" placeholder="Reps (or seconds for planks)" class="input small" data-field="reps">
             <button class="btn-icon remove-set">🗑️</button>
         `;
         container.appendChild(setInput);
@@ -1179,6 +1214,29 @@ class GymTrackerApp {
             // Add calories for strength training (optional)
             const strengthCalories = document.getElementById('strengthCalories').value;
             exercise.calories = strengthCalories || null;
+        } else if (type === 'core') {
+            const sets = [];
+            document.querySelectorAll('#coreSetsContainer .set-input').forEach(setDiv => {
+                const reps = setDiv.querySelector('[data-field="reps"]').value;
+
+                if (reps) {
+                    sets.push({
+                        reps: reps,
+                        weight: 0  // Core exercises are bodyweight
+                    });
+                }
+            });
+
+            if (sets.length === 0) {
+                alert('Please add at least one set');
+                return;
+            }
+
+            exercise.sets = sets;
+
+            // Add calories for core training (optional)
+            const coreCalories = document.getElementById('coreCalories').value;
+            exercise.calories = coreCalories || null;
         } else if (type === 'cardio') {
             const duration = document.getElementById('cardioDuration').value;
             const distance = document.getElementById('cardioDistance').value;
@@ -1219,8 +1277,8 @@ class GymTrackerApp {
         this.renderCurrentWorkout();
         this.closeModal('addExerciseModal');
 
-        // Check for new PRs (only for strength exercises and new entries)
-        if (type === 'strength' && !isEditing) {
+        // Check for new PRs (only for strength and core exercises and new entries)
+        if ((type === 'strength' || type === 'core') && !isEditing) {
             this.checkForNewPR(exercise);
 
             // Auto-start rest timer
@@ -1242,7 +1300,7 @@ class GymTrackerApp {
         // Find previous records for this exercise
         workouts.forEach(workout => {
             workout.exercises.forEach(ex => {
-                if (ex.name === exercise.name && ex.type === 'strength') {
+                if (ex.name === exercise.name && (ex.type === 'strength' || ex.type === 'core')) {
                     ex.sets.forEach(set => {
                         const weight = parseFloat(set.weight) || 0;
                         const reps = parseInt(set.reps) || 0;
@@ -1549,6 +1607,7 @@ class GymTrackerApp {
             let exerciseIcon = '💪'; // default strength icon
             if (type === 'cardio') exerciseIcon = '🏃';
             if (type === 'hiit') exerciseIcon = '🔥';
+            if (type === 'core') exerciseIcon = '🧘';
 
             let exerciseDetails = '';
 
@@ -1624,6 +1683,35 @@ class GymTrackerApp {
                         ` : ''}
                     </div>
                 `;
+            } else if (type === 'core') {
+                const activeRestTimer = this.activeRestTimer === exercise.id;
+                exerciseDetails = `
+                    <div class="sets-list">
+                        ${exercise.sets.map((set, index) => `
+                            <div class="set-row">
+                                <span class="set-number">Set ${index + 1}</span>
+                                <span class="set-detail">${set.reps} ${parseInt(set.reps) > 100 ? 'sec' : 'reps'}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="rest-timer-section">
+                        <div class="rest-timer-display ${activeRestTimer ? 'active' : ''}" id="rest-timer-${exercise.id}">
+                            ${activeRestTimer ? `
+                                <div class="timer-countdown">
+                                    <div class="timer-time" id="timer-time-${exercise.id}">0:45</div>
+                                    <div class="timer-label">Rest Time Remaining</div>
+                                </div>
+                                <button class="btn-secondary btn-sm" onclick="app.stopRestTimer(${exercise.id})">⏹ Stop</button>
+                            ` : `
+                                <div class="rest-timer-buttons">
+                                    <button class="btn-secondary btn-sm" onclick="app.startRestTimer(${exercise.id}, 30)">30s</button>
+                                    <button class="btn-secondary btn-sm" onclick="app.startRestTimer(${exercise.id}, 45)">45s</button>
+                                    <button class="btn-secondary btn-sm" onclick="app.startRestTimer(${exercise.id}, 60)">60s</button>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                `;
             }
 
             // Check if exercise has library instructions available
@@ -1637,7 +1725,7 @@ class GymTrackerApp {
                         <div class="exercise-actions">
                             ${hasInstructions ? `<button class="btn-icon-small" onclick="app.showExerciseInstructionsForWorkout('${exercise.name.replace(/'/g, "\\'")}')" title="View Instructions">📋</button>` : ''}
                             ${exercise.videoUrl ? `<button class="btn-icon-small" onclick="window.open('${exercise.videoUrl}', '_blank')" title="Watch Tutorial">🎥</button>` : ''}
-                            ${hasHistory && type === 'strength' ? `<button class="btn-icon-small" onclick="app.toggleExerciseHistory(${exercise.id})" title="View Progress">📊</button>` : ''}
+                            ${hasHistory && (type === 'strength' || type === 'core') ? `<button class="btn-icon-small" onclick="app.toggleExerciseHistory(${exercise.id})" title="View Progress">📊</button>` : ''}
                             <button class="btn-icon-small" onclick="app.openAddExerciseModal(${exercise.id})" title="Edit">✏️</button>
                             <button class="btn-icon" onclick="app.deleteExercise(${exercise.id})">🗑️</button>
                         </div>
@@ -1649,7 +1737,7 @@ class GymTrackerApp {
                             <span class="notes-text">${exercise.notes}</span>
                         </div>
                     ` : ''}
-                    ${hasHistory && type === 'strength' ? `
+                    ${hasHistory && (type === 'strength' || type === 'core') ? `
                         <div class="exercise-history" id="history-${exercise.id}" style="display: none;">
                             <div class="history-divider"></div>
                             <h4>Previous Workouts</h4>
@@ -2097,6 +2185,87 @@ class GymTrackerApp {
                 icon: '/icon-192.png',
                 badge: '/icon-192.png',
                 tag: 'rest-timer'
+            });
+        } else {
+            alert('⏰ Rest Complete! Ready for next set?');
+        }
+    }
+
+    // Core Modal Rest Timer Methods
+    startCoreModalRestTimer(seconds) {
+        // Stop any existing core modal timer first
+        if (this.coreModalRestTimerInterval) {
+            this.stopCoreModalRestTimer();
+        }
+
+        this.coreModalRestTimerSeconds = seconds;
+        this.coreModalRestTimerRunning = true;
+
+        // Show countdown, hide buttons
+        document.getElementById('coreModalTimerCountdown').style.display = 'block';
+        document.getElementById('coreModalTimerButtons').style.display = 'none';
+        document.getElementById('coreModalRestTimer').classList.add('active');
+
+        this.coreModalRestTimerInterval = setInterval(() => {
+            this.coreModalRestTimerSeconds--;
+
+            const minutes = Math.floor(this.coreModalRestTimerSeconds / 60);
+            const secs = this.coreModalRestTimerSeconds % 60;
+            const timeDisplay = `${minutes}:${secs.toString().padStart(2, '0')}`;
+
+            const timeElement = document.getElementById('coreModalTimerTime');
+            if (timeElement) {
+                timeElement.textContent = timeDisplay;
+
+                // Change color as timer gets close to zero
+                if (this.coreModalRestTimerSeconds <= 5) {
+                    timeElement.style.color = '#ef4444';
+                } else if (this.coreModalRestTimerSeconds <= 15) {
+                    timeElement.style.color = '#f59e0b';
+                } else {
+                    timeElement.style.color = 'white';
+                }
+            }
+
+            if (this.coreModalRestTimerSeconds <= 0) {
+                this.coreModalRestTimerComplete();
+            }
+        }, 1000);
+    }
+
+    stopCoreModalRestTimer() {
+        if (this.coreModalRestTimerInterval) {
+            clearInterval(this.coreModalRestTimerInterval);
+            this.coreModalRestTimerInterval = null;
+        }
+        this.coreModalRestTimerRunning = false;
+        this.coreModalRestTimerSeconds = 0;
+
+        // Show buttons, hide countdown
+        const countdown = document.getElementById('coreModalTimerCountdown');
+        const buttons = document.getElementById('coreModalTimerButtons');
+        const timer = document.getElementById('coreModalRestTimer');
+
+        if (countdown) countdown.style.display = 'none';
+        if (buttons) buttons.style.display = 'flex';
+        if (timer) timer.classList.remove('active');
+    }
+
+    coreModalRestTimerComplete() {
+        this.stopCoreModalRestTimer();
+
+        // Play notification sound and vibrate
+        if ('vibrate' in navigator) {
+            navigator.vibrate([200, 100, 200]);
+        }
+
+        // Show notification
+        if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification('Rest Complete!', {
+                body: 'Ready for your next set',
+                icon: '/icon-192.png',
+                badge: '/icon-192.png',
+                tag: 'core-rest-timer'
             });
         } else {
             alert('⏰ Rest Complete! Ready for next set?');
@@ -2748,9 +2917,14 @@ class GymTrackerApp {
     closeModal(modalId) {
         document.getElementById(modalId).classList.remove('active');
 
-        // Stop modal rest timer if closing exercise modal
-        if (modalId === 'addExerciseModal' && this.modalRestTimerRunning) {
-            this.stopModalRestTimer();
+        // Stop modal rest timers if closing exercise modal
+        if (modalId === 'addExerciseModal') {
+            if (this.modalRestTimerRunning) {
+                this.stopModalRestTimer();
+            }
+            if (this.coreModalRestTimerRunning) {
+                this.stopCoreModalRestTimer();
+            }
         }
     }
 
@@ -2807,6 +2981,15 @@ class GymTrackerApp {
             const perServingProtein = Math.round((parseFloat(foodItem.protein) / quantity) * 10) / 10;
             const perServingCarbs = Math.round((parseFloat(foodItem.carbs) / quantity) * 10) / 10;
             const perServingFats = Math.round((parseFloat(foodItem.fats) / quantity) * 10) / 10;
+
+            // Set selectedFood so quantity changes work properly
+            this.selectedFood = {
+                name: name,
+                calories: perServingCalories,
+                protein: perServingProtein,
+                carbs: perServingCarbs,
+                fats: perServingFats
+            };
 
             document.getElementById('foodNameInput').value = name;
             document.getElementById('quantityInput').value = quantity.toString();

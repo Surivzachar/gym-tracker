@@ -9,56 +9,101 @@
         {
           "id": 1739980800002,
           "name": "Crunches",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 25, "weight": 0, "note": "Round 1" },
-            { "reps": 25, "weight": 0, "note": "Round 2" },
-            { "reps": 25, "weight": 0, "note": "Round 3" }
+            {
+              "reps": 25,
+              "note": "Round 1"
+            },
+            {
+              "reps": 25,
+              "note": "Round 2"
+            },
+            {
+              "reps": 25,
+              "note": "Round 3"
+            }
           ]
         },
         {
           "id": 1739980800003,
           "name": "Leg Raises",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "Round 1" },
-            { "reps": 15, "weight": 0, "note": "Round 2" },
-            { "reps": 15, "weight": 0, "note": "Round 3" }
+            {
+              "reps": 15,
+              "note": "Round 1"
+            },
+            {
+              "reps": 15,
+              "note": "Round 2"
+            },
+            {
+              "reps": 15,
+              "note": "Round 3"
+            }
           ]
         },
         {
           "id": 1739980800004,
           "name": "Russian Twists",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 30, "weight": 0, "note": "Round 1 - 15 each side" },
-            { "reps": 30, "weight": 0, "note": "Round 2 - 15 each side" },
-            { "reps": 30, "weight": 0, "note": "Round 3 - 15 each side" }
+            {
+              "reps": 30,
+              "note": "Round 1 - 15 each side"
+            },
+            {
+              "reps": 30,
+              "note": "Round 2 - 15 each side"
+            },
+            {
+              "reps": 30,
+              "note": "Round 3 - 15 each side"
+            }
           ]
         },
         {
           "id": 1739980800005,
           "name": "Plank Hold",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 60, "weight": 0, "note": "Round 1 - 60 sec" },
-            { "reps": 60, "weight": 0, "note": "Round 2 - 60 sec" },
-            { "reps": 60, "weight": 0, "note": "Round 3 - 60 sec" }
+            {
+              "reps": 60,
+              "note": "Round 1 - 60 sec"
+            },
+            {
+              "reps": 60,
+              "note": "Round 2 - 60 sec"
+            },
+            {
+              "reps": 60,
+              "note": "Round 3 - 60 sec"
+            }
           ]
         },
         {
           "id": 1739980800006,
           "name": "Bicycle Crunches",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 30, "weight": 0, "note": "Round 1" },
-            { "reps": 30, "weight": 0, "note": "Round 2" },
-            { "reps": 30, "weight": 0, "note": "Round 3" }
+            {
+              "reps": 30,
+              "note": "Round 1"
+            },
+            {
+              "reps": 30,
+              "note": "Round 2"
+            },
+            {
+              "reps": 30,
+              "note": "Round 3"
+            }
           ]
         }
       ],
@@ -108,10 +153,26 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0, "note": "SUPERSET 1A" },
-            { "reps": 12, "weight": 0, "note": "SUPERSET 1A" },
-            { "reps": 10, "weight": 0, "note": "SUPERSET 1A" },
-            { "reps": 10, "weight": 0, "note": "SUPERSET 1A" }
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "SUPERSET 1A"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "SUPERSET 1A"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "SUPERSET 1A"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "SUPERSET 1A"
+            }
           ]
         },
         {
@@ -120,10 +181,26 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0, "note": "SUPERSET 1B" },
-            { "reps": 10, "weight": 0, "note": "SUPERSET 1B" },
-            { "reps": 10, "weight": 0, "note": "SUPERSET 1B" },
-            { "reps": 8, "weight": 0, "note": "SUPERSET 1B" }
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "SUPERSET 1B"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "SUPERSET 1B"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "SUPERSET 1B"
+            },
+            {
+              "reps": 8,
+              "weight": 0,
+              "note": "SUPERSET 1B"
+            }
           ]
         },
         {
@@ -132,9 +209,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "SUPERSET 2A" },
-            { "reps": 12, "weight": 0, "note": "SUPERSET 2A" },
-            { "reps": 12, "weight": 0, "note": "SUPERSET 2A" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "SUPERSET 2A"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "SUPERSET 2A"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "SUPERSET 2A"
+            }
           ]
         },
         {
@@ -143,9 +232,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "SUPERSET 2B" },
-            { "reps": 12, "weight": 0, "note": "SUPERSET 2B" },
-            { "reps": 12, "weight": 0, "note": "SUPERSET 2B" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "SUPERSET 2B"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "SUPERSET 2B"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "SUPERSET 2B"
+            }
           ]
         },
         {
@@ -154,9 +255,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "SUPERSET 3A" },
-            { "reps": 15, "weight": 0, "note": "SUPERSET 3A" },
-            { "reps": 12, "weight": 0, "note": "SUPERSET 3A" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "SUPERSET 3A"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "SUPERSET 3A"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "SUPERSET 3A"
+            }
           ]
         },
         {
@@ -165,9 +278,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 20, "weight": 0, "note": "SUPERSET 3B" },
-            { "reps": 18, "weight": 0, "note": "SUPERSET 3B" },
-            { "reps": 15, "weight": 0, "note": "SUPERSET 3B" }
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "SUPERSET 3B"
+            },
+            {
+              "reps": 18,
+              "weight": 0,
+              "note": "SUPERSET 3B"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "SUPERSET 3B"
+            }
           ]
         },
         {
@@ -176,8 +301,16 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 20, "weight": 0, "note": "FINISHER - light weight" },
-            { "reps": 20, "weight": 0, "note": "FINISHER - light weight" }
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "FINISHER - light weight"
+            },
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "FINISHER - light weight"
+            }
           ]
         }
       ],
@@ -193,9 +326,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0, "note": "GIANT SET 1A - Biceps" },
-            { "reps": 12, "weight": 0, "note": "GIANT SET 1A - Biceps" },
-            { "reps": 10, "weight": 0, "note": "GIANT SET 1A - Biceps" }
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "GIANT SET 1A - Biceps"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "GIANT SET 1A - Biceps"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "GIANT SET 1A - Biceps"
+            }
           ]
         },
         {
@@ -204,9 +349,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0, "note": "GIANT SET 1B - Biceps" },
-            { "reps": 10, "weight": 0, "note": "GIANT SET 1B - Biceps" },
-            { "reps": 10, "weight": 0, "note": "GIANT SET 1B - Biceps" }
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "GIANT SET 1B - Biceps"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "GIANT SET 1B - Biceps"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "GIANT SET 1B - Biceps"
+            }
           ]
         },
         {
@@ -215,9 +372,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "GIANT SET 1C - Biceps" },
-            { "reps": 15, "weight": 0, "note": "GIANT SET 1C - Biceps" },
-            { "reps": 12, "weight": 0, "note": "GIANT SET 1C - Biceps" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "GIANT SET 1C - Biceps"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "GIANT SET 1C - Biceps"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "GIANT SET 1C - Biceps"
+            }
           ]
         },
         {
@@ -226,9 +395,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "GIANT SET 2A - Triceps" },
-            { "reps": 12, "weight": 0, "note": "GIANT SET 2A - Triceps" },
-            { "reps": 12, "weight": 0, "note": "GIANT SET 2A - Triceps" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "GIANT SET 2A - Triceps"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "GIANT SET 2A - Triceps"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "GIANT SET 2A - Triceps"
+            }
           ]
         },
         {
@@ -237,9 +418,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "GIANT SET 2B - Triceps" },
-            { "reps": 12, "weight": 0, "note": "GIANT SET 2B - Triceps" },
-            { "reps": 12, "weight": 0, "note": "GIANT SET 2B - DROP SET last" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "GIANT SET 2B - Triceps"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "GIANT SET 2B - Triceps"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "GIANT SET 2B - DROP SET last"
+            }
           ]
         },
         {
@@ -248,9 +441,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0, "note": "GIANT SET 2C - Triceps" },
-            { "reps": 10, "weight": 0, "note": "GIANT SET 2C - Triceps" },
-            { "reps": 10, "weight": 0, "note": "GIANT SET 2C - Triceps" }
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "GIANT SET 2C - Triceps"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "GIANT SET 2C - Triceps"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "GIANT SET 2C - Triceps"
+            }
           ]
         },
         {
@@ -259,8 +464,16 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "Forearms" },
-            { "reps": 15, "weight": 0, "note": "Forearms" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "Forearms"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "Forearms"
+            }
           ]
         },
         {
@@ -269,8 +482,16 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 20, "weight": 0, "note": "Forearms" },
-            { "reps": 20, "weight": 0, "note": "Forearms" }
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "Forearms"
+            },
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "Forearms"
+            }
           ]
         },
         {
@@ -279,63 +500,116 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 40, "weight": 0, "note": "Forearms - 40 sec hold" },
-            { "reps": 40, "weight": 0, "note": "Forearms - 40 sec hold" }
+            {
+              "reps": 40,
+              "weight": 0,
+              "note": "Forearms - 40 sec hold"
+            },
+            {
+              "reps": 40,
+              "weight": 0,
+              "note": "Forearms - 40 sec hold"
+            }
           ]
         },
         {
           "id": 1739980800029,
           "name": "Hanging Leg Raises",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "AB ASSAULT - Circuit Round 1" },
-            { "reps": 15, "weight": 0, "note": "AB ASSAULT - Circuit Round 2" },
-            { "reps": 15, "weight": 0, "note": "AB ASSAULT - Circuit Round 3" }
+            {
+              "reps": 15,
+              "note": "AB ASSAULT - Circuit Round 1"
+            },
+            {
+              "reps": 15,
+              "note": "AB ASSAULT - Circuit Round 2"
+            },
+            {
+              "reps": 15,
+              "note": "AB ASSAULT - Circuit Round 3"
+            }
           ]
         },
         {
           "id": 1739980800030,
           "name": "Cable Crunches",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 20, "weight": 0, "note": "AB ASSAULT - Circuit Round 1" },
-            { "reps": 20, "weight": 0, "note": "AB ASSAULT - Circuit Round 2" },
-            { "reps": 20, "weight": 0, "note": "AB ASSAULT - Circuit Round 3" }
+            {
+              "reps": 20,
+              "note": "AB ASSAULT - Circuit Round 1"
+            },
+            {
+              "reps": 20,
+              "note": "AB ASSAULT - Circuit Round 2"
+            },
+            {
+              "reps": 20,
+              "note": "AB ASSAULT - Circuit Round 3"
+            }
           ]
         },
         {
           "id": 1739980800031,
           "name": "Russian Twists (weighted)",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 30, "weight": 0, "note": "AB ASSAULT - Circuit Round 1" },
-            { "reps": 30, "weight": 0, "note": "AB ASSAULT - Circuit Round 2" },
-            { "reps": 30, "weight": 0, "note": "AB ASSAULT - Circuit Round 3" }
+            {
+              "reps": 30,
+              "note": "AB ASSAULT - Circuit Round 1"
+            },
+            {
+              "reps": 30,
+              "note": "AB ASSAULT - Circuit Round 2"
+            },
+            {
+              "reps": 30,
+              "note": "AB ASSAULT - Circuit Round 3"
+            }
           ]
         },
         {
           "id": 1739980800032,
           "name": "Plank Hold",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 60, "weight": 0, "note": "AB ASSAULT - Circuit Round 1 - 60 sec" },
-            { "reps": 60, "weight": 0, "note": "AB ASSAULT - Circuit Round 2 - 60 sec" },
-            { "reps": 60, "weight": 0, "note": "AB ASSAULT - Circuit Round 3 - 60 sec" }
+            {
+              "reps": 60,
+              "note": "AB ASSAULT - Circuit Round 1 - 60 sec"
+            },
+            {
+              "reps": 60,
+              "note": "AB ASSAULT - Circuit Round 2 - 60 sec"
+            },
+            {
+              "reps": 60,
+              "note": "AB ASSAULT - Circuit Round 3 - 60 sec"
+            }
           ]
         },
         {
           "id": 1739980800033,
           "name": "Bicycle Crunches",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 30, "weight": 0, "note": "AB ASSAULT - Circuit Round 1" },
-            { "reps": 30, "weight": 0, "note": "AB ASSAULT - Circuit Round 2" },
-            { "reps": 30, "weight": 0, "note": "AB ASSAULT - Circuit Round 3" }
+            {
+              "reps": 30,
+              "note": "AB ASSAULT - Circuit Round 1"
+            },
+            {
+              "reps": 30,
+              "note": "AB ASSAULT - Circuit Round 2"
+            },
+            {
+              "reps": 30,
+              "note": "AB ASSAULT - Circuit Round 3"
+            }
           ]
         }
       ],
@@ -351,10 +625,26 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "QUADS" },
-            { "reps": 12, "weight": 0, "note": "QUADS" },
-            { "reps": 12, "weight": 0, "note": "QUADS" },
-            { "reps": 10, "weight": 0, "note": "QUADS" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "QUADS"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "QUADS"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "QUADS"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "QUADS"
+            }
           ]
         },
         {
@@ -363,9 +653,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0, "note": "QUADS - each leg" },
-            { "reps": 12, "weight": 0, "note": "QUADS - each leg" },
-            { "reps": 12, "weight": 0, "note": "QUADS - each leg" }
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "QUADS - each leg"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "QUADS - each leg"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "QUADS - each leg"
+            }
           ]
         },
         {
@@ -374,9 +676,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "QUADS" },
-            { "reps": 12, "weight": 0, "note": "QUADS" },
-            { "reps": 10, "weight": 0, "note": "QUADS - DROP SET last" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "QUADS"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "QUADS"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "QUADS - DROP SET last"
+            }
           ]
         },
         {
@@ -385,10 +699,26 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0, "note": "HAMSTRINGS & GLUTES" },
-            { "reps": 12, "weight": 0, "note": "HAMSTRINGS & GLUTES" },
-            { "reps": 10, "weight": 0, "note": "HAMSTRINGS & GLUTES" },
-            { "reps": 10, "weight": 0, "note": "HAMSTRINGS & GLUTES" }
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "HAMSTRINGS & GLUTES"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "HAMSTRINGS & GLUTES"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "HAMSTRINGS & GLUTES"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "HAMSTRINGS & GLUTES"
+            }
           ]
         },
         {
@@ -397,9 +727,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "HAMSTRINGS & GLUTES" },
-            { "reps": 12, "weight": 0, "note": "HAMSTRINGS & GLUTES" },
-            { "reps": 10, "weight": 0, "note": "HAMSTRINGS & GLUTES" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "HAMSTRINGS & GLUTES"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "HAMSTRINGS & GLUTES"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "HAMSTRINGS & GLUTES"
+            }
           ]
         },
         {
@@ -408,10 +750,26 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 20, "weight": 0, "note": "CALVES" },
-            { "reps": 18, "weight": 0, "note": "CALVES" },
-            { "reps": 15, "weight": 0, "note": "CALVES" },
-            { "reps": 12, "weight": 0, "note": "CALVES" }
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "CALVES"
+            },
+            {
+              "reps": 18,
+              "weight": 0,
+              "note": "CALVES"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "CALVES"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "CALVES"
+            }
           ]
         },
         {
@@ -420,49 +778,85 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 20, "weight": 0, "note": "CALVES" },
-            { "reps": 20, "weight": 0, "note": "CALVES" },
-            { "reps": 20, "weight": 0, "note": "CALVES" }
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "CALVES"
+            },
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "CALVES"
+            },
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "CALVES"
+            }
           ]
         },
         {
           "id": 1739980800042,
           "name": "Standard Plank",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 60, "weight": 0, "note": "CORE - Plank Variations Round 1 - 60 sec" },
-            { "reps": 60, "weight": 0, "note": "CORE - Plank Variations Round 2 - 60 sec" }
+            {
+              "reps": 60,
+              "note": "CORE - Plank Variations Round 1 - 60 sec"
+            },
+            {
+              "reps": 60,
+              "note": "CORE - Plank Variations Round 2 - 60 sec"
+            }
           ]
         },
         {
           "id": 1739980800043,
           "name": "Side Plank (Left)",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 45, "weight": 0, "note": "CORE - Plank Variations Round 1 - 45 sec" },
-            { "reps": 45, "weight": 0, "note": "CORE - Plank Variations Round 2 - 45 sec" }
+            {
+              "reps": 45,
+              "note": "CORE - Plank Variations Round 1 - 45 sec"
+            },
+            {
+              "reps": 45,
+              "note": "CORE - Plank Variations Round 2 - 45 sec"
+            }
           ]
         },
         {
           "id": 1739980800044,
           "name": "Side Plank (Right)",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 45, "weight": 0, "note": "CORE - Plank Variations Round 1 - 45 sec" },
-            { "reps": 45, "weight": 0, "note": "CORE - Plank Variations Round 2 - 45 sec" }
+            {
+              "reps": 45,
+              "note": "CORE - Plank Variations Round 1 - 45 sec"
+            },
+            {
+              "reps": 45,
+              "note": "CORE - Plank Variations Round 2 - 45 sec"
+            }
           ]
         },
         {
           "id": 1739980800045,
           "name": "Hip Dips",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 20, "weight": 0, "note": "CORE - Plank Variations Round 1" },
-            { "reps": 20, "weight": 0, "note": "CORE - Plank Variations Round 2" }
+            {
+              "reps": 20,
+              "note": "CORE - Plank Variations Round 1"
+            },
+            {
+              "reps": 20,
+              "note": "CORE - Plank Variations Round 2"
+            }
           ]
         }
       ],
@@ -478,10 +872,26 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0, "note": "SHOULDER COMPOUND" },
-            { "reps": 12, "weight": 0, "note": "SHOULDER COMPOUND" },
-            { "reps": 10, "weight": 0, "note": "SHOULDER COMPOUND" },
-            { "reps": 10, "weight": 0, "note": "SHOULDER COMPOUND" }
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "SHOULDER COMPOUND"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "SHOULDER COMPOUND"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "SHOULDER COMPOUND"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "SHOULDER COMPOUND"
+            }
           ]
         },
         {
@@ -490,10 +900,26 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "LATERAL DELTS (WIDTH!)" },
-            { "reps": 15, "weight": 0, "note": "LATERAL DELTS (WIDTH!)" },
-            { "reps": 12, "weight": 0, "note": "LATERAL DELTS (WIDTH!)" },
-            { "reps": 12, "weight": 0, "note": "LATERAL DELTS (WIDTH!)" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "LATERAL DELTS (WIDTH!)"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "LATERAL DELTS (WIDTH!)"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "LATERAL DELTS (WIDTH!)"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "LATERAL DELTS (WIDTH!)"
+            }
           ]
         },
         {
@@ -502,9 +928,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "LATERAL DELTS - each arm" },
-            { "reps": 15, "weight": 0, "note": "LATERAL DELTS - each arm" },
-            { "reps": 15, "weight": 0, "note": "LATERAL DELTS - each arm" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "LATERAL DELTS - each arm"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "LATERAL DELTS - each arm"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "LATERAL DELTS - each arm"
+            }
           ]
         },
         {
@@ -513,9 +951,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "LATERAL DELTS" },
-            { "reps": 12, "weight": 0, "note": "LATERAL DELTS" },
-            { "reps": 12, "weight": 0, "note": "LATERAL DELTS" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "LATERAL DELTS"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "LATERAL DELTS"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "LATERAL DELTS"
+            }
           ]
         },
         {
@@ -524,9 +974,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "REAR DELTS" },
-            { "reps": 15, "weight": 0, "note": "REAR DELTS" },
-            { "reps": 12, "weight": 0, "note": "REAR DELTS" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "REAR DELTS"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "REAR DELTS"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "REAR DELTS"
+            }
           ]
         },
         {
@@ -535,9 +997,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 20, "weight": 0, "note": "REAR DELTS" },
-            { "reps": 18, "weight": 0, "note": "REAR DELTS" },
-            { "reps": 15, "weight": 0, "note": "REAR DELTS" }
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "REAR DELTS"
+            },
+            {
+              "reps": 18,
+              "weight": 0,
+              "note": "REAR DELTS"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "REAR DELTS"
+            }
           ]
         },
         {
@@ -546,9 +1020,21 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 20, "weight": 0, "note": "TRAPS" },
-            { "reps": 18, "weight": 0, "note": "TRAPS" },
-            { "reps": 15, "weight": 0, "note": "TRAPS" }
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "TRAPS"
+            },
+            {
+              "reps": 18,
+              "weight": 0,
+              "note": "TRAPS"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "TRAPS"
+            }
           ]
         },
         {
@@ -557,8 +1043,16 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 20, "weight": 0, "note": "TRAPS - burnout!" },
-            { "reps": 20, "weight": 0, "note": "TRAPS - burnout!" }
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "TRAPS - burnout!"
+            },
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "TRAPS - burnout!"
+            }
           ]
         }
       ],
@@ -574,10 +1068,26 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "Circuit Round 1" },
-            { "reps": 15, "weight": 0, "note": "Circuit Round 2" },
-            { "reps": 15, "weight": 0, "note": "Circuit Round 3" },
-            { "reps": 15, "weight": 0, "note": "Circuit Round 4" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "Circuit Round 1"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "Circuit Round 2"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "Circuit Round 3"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "Circuit Round 4"
+            }
           ]
         },
         {
@@ -586,10 +1096,26 @@
           "type": "cardio",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0, "note": "Circuit Round 1" },
-            { "reps": 12, "weight": 0, "note": "Circuit Round 2" },
-            { "reps": 12, "weight": 0, "note": "Circuit Round 3" },
-            { "reps": 12, "weight": 0, "note": "Circuit Round 4" }
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "Circuit Round 1"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "Circuit Round 2"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "Circuit Round 3"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "Circuit Round 4"
+            }
           ]
         },
         {
@@ -598,10 +1124,26 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 20, "weight": 0, "note": "Circuit Round 1 - total" },
-            { "reps": 20, "weight": 0, "note": "Circuit Round 2 - total" },
-            { "reps": 20, "weight": 0, "note": "Circuit Round 3 - total" },
-            { "reps": 20, "weight": 0, "note": "Circuit Round 4 - total" }
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "Circuit Round 1 - total"
+            },
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "Circuit Round 2 - total"
+            },
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "Circuit Round 3 - total"
+            },
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "Circuit Round 4 - total"
+            }
           ]
         },
         {
@@ -610,10 +1152,26 @@
           "type": "cardio",
           "videoUrl": null,
           "sets": [
-            { "reps": 30, "weight": 0, "note": "Circuit Round 1 - fast!" },
-            { "reps": 30, "weight": 0, "note": "Circuit Round 2 - fast!" },
-            { "reps": 30, "weight": 0, "note": "Circuit Round 3 - fast!" },
-            { "reps": 30, "weight": 0, "note": "Circuit Round 4 - fast!" }
+            {
+              "reps": 30,
+              "weight": 0,
+              "note": "Circuit Round 1 - fast!"
+            },
+            {
+              "reps": 30,
+              "weight": 0,
+              "note": "Circuit Round 2 - fast!"
+            },
+            {
+              "reps": 30,
+              "weight": 0,
+              "note": "Circuit Round 3 - fast!"
+            },
+            {
+              "reps": 30,
+              "weight": 0,
+              "note": "Circuit Round 4 - fast!"
+            }
           ]
         },
         {
@@ -622,10 +1180,26 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 12, "weight": 0, "note": "Circuit Round 1" },
-            { "reps": 12, "weight": 0, "note": "Circuit Round 2" },
-            { "reps": 12, "weight": 0, "note": "Circuit Round 3" },
-            { "reps": 12, "weight": 0, "note": "Circuit Round 4" }
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "Circuit Round 1"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "Circuit Round 2"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "Circuit Round 3"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "Circuit Round 4"
+            }
           ]
         },
         {
@@ -634,10 +1208,26 @@
           "type": "strength",
           "videoUrl": null,
           "sets": [
-            { "reps": 15, "weight": 0, "note": "Circuit Round 1" },
-            { "reps": 15, "weight": 0, "note": "Circuit Round 2" },
-            { "reps": 15, "weight": 0, "note": "Circuit Round 3" },
-            { "reps": 15, "weight": 0, "note": "Circuit Round 4" }
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "Circuit Round 1"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "Circuit Round 2"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "Circuit Round 3"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "Circuit Round 4"
+            }
           ]
         },
         {
@@ -646,10 +1236,26 @@
           "type": "cardio",
           "videoUrl": null,
           "sets": [
-            { "reps": 20, "weight": 0, "note": "Circuit Round 1" },
-            { "reps": 20, "weight": 0, "note": "Circuit Round 2" },
-            { "reps": 20, "weight": 0, "note": "Circuit Round 3" },
-            { "reps": 20, "weight": 0, "note": "Circuit Round 4" }
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "Circuit Round 1"
+            },
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "Circuit Round 2"
+            },
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "Circuit Round 3"
+            },
+            {
+              "reps": 20,
+              "weight": 0,
+              "note": "Circuit Round 4"
+            }
           ]
         },
         {
@@ -658,37 +1264,62 @@
           "type": "cardio",
           "videoUrl": null,
           "sets": [
-            { "reps": 40, "weight": 0, "note": "Circuit Round 1" },
-            { "reps": 40, "weight": 0, "note": "Circuit Round 2" },
-            { "reps": 40, "weight": 0, "note": "Circuit Round 3" },
-            { "reps": 40, "weight": 0, "note": "Circuit Round 4" }
+            {
+              "reps": 40,
+              "weight": 0,
+              "note": "Circuit Round 1"
+            },
+            {
+              "reps": 40,
+              "weight": 0,
+              "note": "Circuit Round 2"
+            },
+            {
+              "reps": 40,
+              "weight": 0,
+              "note": "Circuit Round 3"
+            },
+            {
+              "reps": 40,
+              "weight": 0,
+              "note": "Circuit Round 4"
+            }
           ]
         },
         {
           "id": 1739980800064,
           "name": "V-Ups",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 10, "weight": 0, "note": "FINISHER - Abs Burnout 5 min AMRAP" }
+            {
+              "reps": 10,
+              "note": "FINISHER - Abs Burnout 5 min AMRAP"
+            }
           ]
         },
         {
           "id": 1739980800065,
           "name": "Plank Hold",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 30, "weight": 0, "note": "FINISHER - Abs Burnout 5 min AMRAP - 30 sec" }
+            {
+              "reps": 30,
+              "note": "FINISHER - Abs Burnout 5 min AMRAP - 30 sec"
+            }
           ]
         },
         {
           "id": 1739980800066,
           "name": "Bicycle Crunches",
-          "type": "strength",
+          "type": "core",
           "videoUrl": null,
           "sets": [
-            { "reps": 20, "weight": 0, "note": "FINISHER - Abs Burnout 5 min AMRAP" }
+            {
+              "reps": 20,
+              "note": "FINISHER - Abs Burnout 5 min AMRAP"
+            }
           ]
         }
       ],

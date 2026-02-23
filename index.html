@@ -1004,6 +1004,7 @@
                         <label class="input-label">Exercise Type</label>
                         <select id="exerciseTypeSelect" class="input">
                             <option value="strength">Strength Training</option>
+                            <option value="core">Core / Abs</option>
                             <option value="cardio">Cardio</option>
                             <option value="hiit">HIIT</option>
                         </select>
@@ -1087,6 +1088,40 @@
                         <div class="input-group">
                             <label class="input-label">Calories Burned - Optional</label>
                             <input type="number" id="hiitCalories" placeholder="300" class="input">
+                        </div>
+                    </div>
+
+                    <!-- Core / Abs Inputs -->
+                    <div id="coreInputs" class="exercise-type-inputs" style="display: none;">
+                        <div class="sets-container" id="coreSetsContainer">
+                            <div class="set-input">
+                                <input type="number" placeholder="Reps (or seconds for planks)" class="input small" data-field="reps">
+                                <button class="btn-icon remove-set">🗑️</button>
+                            </div>
+                        </div>
+                        <button id="addCoreSetBtn" class="btn-secondary full-width">+ Add Set</button>
+
+                        <!-- Rest Timer for Core -->
+                        <div class="rest-timer-section" style="margin-top: 1rem;">
+                            <div class="rest-timer-display" id="coreModalRestTimer">
+                                <div class="timer-countdown" id="coreModalTimerCountdown" style="display: none;">
+                                    <div class="timer-time" id="coreModalTimerTime">0:45</div>
+                                    <div class="timer-label">Rest Time Remaining</div>
+                                    <button class="btn-secondary btn-sm" onclick="app.stopCoreModalRestTimer()">⏹ Stop</button>
+                                </div>
+                                <div class="rest-timer-buttons" id="coreModalTimerButtons">
+                                    <button class="btn-secondary btn-sm" onclick="app.startCoreModalRestTimer(30)">30s</button>
+                                    <button class="btn-secondary btn-sm" onclick="app.startCoreModalRestTimer(45)">45s</button>
+                                    <button class="btn-secondary btn-sm" onclick="app.startCoreModalRestTimer(60)">60s</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calories for Core Training -->
+                        <div class="input-group" style="margin-top: 1rem;">
+                            <label class="input-label">Calories Burned (Optional)</label>
+                            <input type="number" id="coreCalories" placeholder="e.g., 50" class="input">
+                            <p class="helper-text" style="font-size: 0.75rem; margin-top: 0.25rem;">Track calories from your fitness tracker for this exercise</p>
                         </div>
                     </div>
 
