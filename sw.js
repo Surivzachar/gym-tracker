@@ -1,6 +1,6 @@
 // Service Worker for offline functionality
 
-const CACHE_NAME = 'gym-tracker-v116';
+const CACHE_NAME = 'gym-tracker-v121';
 const urlsToCache = [
     './',
     './index.html',
@@ -39,6 +39,27 @@ self.addEventListener('install', event => {
 
 // Fetch event - serve from cache when offline, but update cache from network
 self.addEventListener('fetch', event => {
+    const url = new URL(event.request.url);
+
+    // Don't intercept external API requests (FatSecret, Nutritionix, OpenFoodFacts, etc.)
+    const externalAPIs = [
+        'platform.fatsecret.com',
+        'oauth.fatsecret.com',
+        'trackapi.nutritionix.com',
+        'world.openfoodfacts.org',
+        'api.nutritionix.com'
+    ];
+
+    if (externalAPIs.some(api => url.hostname.includes(api))) {
+        // Let external API requests pass through without service worker interference
+        return;
+    }
+
+    // Don't cache POST requests or requests with authentication
+    if (event.request.method !== 'GET') {
+        return;
+    }
+
     event.respondWith(
         fetch(event.request)
             .then(response => {
