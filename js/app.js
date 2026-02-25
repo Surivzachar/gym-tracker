@@ -548,6 +548,10 @@ class GymTrackerApp {
             this.clearFatSecretKeys();
         });
 
+        document.getElementById('testFatSecretApiBtn').addEventListener('click', () => {
+            this.testFatSecretApi();
+        });
+
         document.getElementById('clearOldPhotosBtn').addEventListener('click', () => {
             this.clearOldPhotos();
         });
@@ -4519,6 +4523,60 @@ class GymTrackerApp {
             alert('✅ API keys cleared from your device.\n\nYou can still search 500+ local foods offline.');
         } else {
             alert('Error: FatSecret API not loaded. Please refresh the app and try again.');
+        }
+    }
+
+    async testFatSecretApi() {
+        if (typeof FatSecretAPI === 'undefined') {
+            alert('❌ Error: FatSecret API not loaded.\n\nPlease refresh the app and try again.');
+            return;
+        }
+
+        // Show loading message
+        const testBtn = document.getElementById('testFatSecretApiBtn');
+        const originalText = testBtn.textContent;
+        testBtn.textContent = '⏳ Testing...';
+        testBtn.disabled = true;
+
+        try {
+            // Step 1: Check if configured
+            if (!FatSecretAPI.isConfigured()) {
+                alert('❌ API Not Configured\n\nPlease enter your Client ID and Client Secret, then click "Save Keys" before testing.');
+                return;
+            }
+
+            const savedKeys = localStorage.getItem('fatsecret_api_keys');
+            const keys = JSON.parse(savedKeys);
+
+            // Step 2: Test authentication
+            let token;
+            try {
+                token = await FatSecretAPI.getAccessToken();
+                console.log('✅ Authentication successful');
+            } catch (authError) {
+                alert(`❌ Authentication Failed\n\n${authError.message}\n\nPossible issues:\n• Client ID or Secret is incorrect\n• Network connection problem\n• FatSecret service is down\n\nPlease verify your credentials at:\nhttps://platform.fatsecret.com/api/`);
+                return;
+            }
+
+            // Step 3: Test a search
+            try {
+                const results = await FatSecretAPI.searchAPI('chicken');
+
+                if (results.length > 0) {
+                    alert(`✅ API Test Successful!\n\nAuthentication: ✅ Passed\nSearch Test: ✅ Passed\nResults Found: ${results.length} foods\n\nYour FatSecret API is working correctly!\nYou now have access to 1,000,000+ foods.`);
+                } else {
+                    alert(`⚠️ Partial Success\n\nAuthentication: ✅ Passed\nSearch Test: ⚠️ No results returned\n\nThe API is authenticated but returned no results for "chicken".\nThis might be temporary. Try searching for foods in the app.`);
+                }
+            } catch (searchError) {
+                alert(`❌ Search Failed\n\nAuthentication: ✅ Passed\nSearch Test: ❌ Failed\n\nError: ${searchError.message}\n\nThe API authenticated successfully but the search failed.\nThis could be a temporary issue with FatSecret.`);
+            }
+
+        } catch (error) {
+            alert(`❌ Test Failed\n\n${error.message}\n\nPlease check:\n• Your internet connection\n• API credentials are correct\n• Try refreshing the app`);
+        } finally {
+            // Restore button
+            testBtn.textContent = originalText;
+            testBtn.disabled = false;
         }
     }
 
