@@ -1190,7 +1190,7 @@ class GymTrackerApp {
 
         if (type === 'strength') {
             const sets = [];
-            document.querySelectorAll('.set-input').forEach(setDiv => {
+            document.querySelectorAll('#setsContainer .set-input').forEach(setDiv => {
                 const unit = setDiv.querySelector('[data-field="unit"]').value;
                 const weight = setDiv.querySelector('[data-field="weight"]').value;
                 const reps = setDiv.querySelector('[data-field="reps"]').value;
