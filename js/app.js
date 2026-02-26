@@ -4023,65 +4023,87 @@ class GymTrackerApp {
     }
 
     async useBarcodeCamera() {
-        // Check if browser supports Barcode Detection API
-        if ('BarcodeDetector' in window) {
-            try {
-                // Request camera access
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: 'environment' } // Use back camera on mobile
+        // Check if html5-qrcode library is loaded
+        if (typeof Html5Qrcode === 'undefined') {
+            alert('❌ Barcode scanner library not loaded.\n\nPlease refresh the page and try again.');
+            return;
+        }
+
+        const resultDiv = document.getElementById('barcodeResult');
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = `
+            <div id="barcodeScannerReader" style="width: 100%; border-radius: 8px; overflow: hidden;"></div>
+            <button type="button" id="stopScannerBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">⏹️ Stop Scanner</button>
+        `;
+
+        try {
+            const html5QrCode = new Html5Qrcode("barcodeScannerReader");
+
+            // Configuration for barcode scanning
+            const config = {
+                fps: 10,
+                qrbox: { width: 250, height: 150 },
+                formatsToSupport: [
+                    Html5QrcodeSupportedFormats.EAN_13,
+                    Html5QrcodeSupportedFormats.EAN_8,
+                    Html5QrcodeSupportedFormats.UPC_A,
+                    Html5QrcodeSupportedFormats.UPC_E,
+                    Html5QrcodeSupportedFormats.CODE_128,
+                    Html5QrcodeSupportedFormats.CODE_39
+                ]
+            };
+
+            // Start scanning
+            await html5QrCode.start(
+                { facingMode: "environment" }, // Use back camera
+                config,
+                (decodedText, decodedResult) => {
+                    // Barcode detected!
+                    console.log(`Barcode detected: ${decodedText}`);
+
+                    // Stop scanning
+                    html5QrCode.stop().then(() => {
+                        // Fill barcode input and search
+                        document.getElementById('barcodeInput').value = decodedText;
+                        this.searchBarcode();
+
+                        // Hide scanner
+                        resultDiv.style.display = 'none';
+                        resultDiv.innerHTML = '';
+                    }).catch(err => {
+                        console.error('Error stopping scanner:', err);
+                    });
+                },
+                (errorMessage) => {
+                    // Scanning error (usually just "no barcode found")
+                    // Don't show these to user, just keep scanning
+                }
+            );
+
+            // Add stop button functionality
+            document.getElementById('stopScannerBtn').addEventListener('click', () => {
+                html5QrCode.stop().then(() => {
+                    resultDiv.style.display = 'none';
+                    resultDiv.innerHTML = '';
+                }).catch(err => {
+                    console.error('Error stopping scanner:', err);
                 });
+            });
 
-                // Create video element for camera preview
-                const video = document.createElement('video');
-                video.srcObject = stream;
-                video.autoplay = true;
-                video.style.cssText = 'width: 100%; border-radius: 8px; margin-top: 0.5rem;';
-
-                // Add video to barcode result div
-                const resultDiv = document.getElementById('barcodeResult');
-                resultDiv.style.display = 'block';
-                resultDiv.innerHTML = '<div style="background: var(--bg-tertiary); padding: 0.75rem; border-radius: 6px;"><p style="margin-bottom: 0.5rem; text-align: center;">📷 Point camera at barcode</p></div>';
-                resultDiv.appendChild(video);
-
-                // Create barcode detector
-                const barcodeDetector = new BarcodeDetector();
-
-                // Scan for barcodes continuously
-                const scanBarcodes = async () => {
-                    try {
-                        const barcodes = await barcodeDetector.detect(video);
-
-                        if (barcodes.length > 0) {
-                            const barcode = barcodes[0].rawValue;
-
-                            // Stop camera
-                            stream.getTracks().forEach(track => track.stop());
-
-                            // Fill barcode input and search
-                            document.getElementById('barcodeInput').value = barcode;
-                            this.searchBarcode();
-                        } else {
-                            // Keep scanning
-                            requestAnimationFrame(scanBarcodes);
-                        }
-                    } catch (error) {
-                        console.error('Barcode detection error:', error);
-                        requestAnimationFrame(scanBarcodes);
-                    }
-                };
-
-                // Start scanning
-                video.onloadedmetadata = () => {
-                    scanBarcodes();
-                };
-
-            } catch (error) {
-                console.error('Camera access error:', error);
-                alert('❌ Camera access denied or not available.\n\nPlease enter the barcode manually or grant camera permissions in your browser settings.');
-            }
-        } else {
-            // Barcode Detection API not supported
-            alert('📷 Camera barcode scanning not supported on this device.\n\nPlease manually type the barcode number from the product package.');
+        } catch (error) {
+            console.error('Camera access error:', error);
+            resultDiv.innerHTML = `
+                <div style="background: #fee2e2; padding: 0.75rem; border-radius: 6px; border-left: 3px solid #ef4444;">
+                    <p style="color: #7f1d1d; margin: 0;"><strong>❌ Camera Error</strong></p>
+                    <p style="color: #7f1d1d; margin-top: 0.5rem; font-size: 0.9rem;">
+                        ${error.message || 'Could not access camera'}<br><br>
+                        Please:<br>
+                        • Grant camera permissions<br>
+                        • Check if another app is using the camera<br>
+                        • Or type the barcode manually above
+                    </p>
+                </div>
+            `;
         }
     }
 
