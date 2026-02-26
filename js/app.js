@@ -540,18 +540,6 @@ class GymTrackerApp {
             this.closeModal('settingsModal');
         });
 
-        document.getElementById('saveFatSecretKeysBtn').addEventListener('click', () => {
-            this.saveFatSecretKeys();
-        });
-
-        document.getElementById('clearFatSecretKeysBtn').addEventListener('click', () => {
-            this.clearFatSecretKeys();
-        });
-
-        document.getElementById('testFatSecretApiBtn').addEventListener('click', () => {
-            this.testFatSecretApi();
-        });
-
         document.getElementById('clearOldPhotosBtn').addEventListener('click', () => {
             this.clearOldPhotos();
         });
@@ -4429,9 +4417,6 @@ class GymTrackerApp {
 
         // Calculate and display storage used
         this.calculateStorageUsed();
-
-        // Display FatSecret API status
-        this.displayFatSecretApiStatus();
 
         document.getElementById('settingsModal').classList.add('active');
         startDateInput.focus();

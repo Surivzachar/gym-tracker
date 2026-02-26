@@ -1519,34 +1519,35 @@
                     <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #e5e7eb;">
 
                     <div class="input-group">
-                        <label class="input-label">🔑 FatSecret API Configuration</label>
-                        <p class="helper-text">Add your FatSecret API keys to access 1,000,000+ foods. Keys are stored on your device only and never uploaded.</p>
+                        <label class="input-label">🍽️ Food Database</label>
 
-                        <div id="fatSecretApiStatus" class="settings-info" style="margin: 0.75rem 0;">
-                            <!-- Status will be shown here -->
+                        <div class="settings-info" style="background: #0f172a; border-left: 3px solid #10b981;">
+                            <p style="color: #cbd5e1;"><strong>✅ 500+ Foods Available</strong></p>
+                            <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 0.5rem;">
+                                Your app includes 500+ foods with complete nutrition data:<br>
+                                • Indian foods (dal, roti, biryani, etc.)<br>
+                                • International foods (chicken, pasta, eggs, etc.)<br>
+                                • Restaurant items (Subway, Domino's, etc.)<br>
+                                • Works completely offline!
+                            </p>
                         </div>
 
-                        <div style="margin-top: 0.75rem;">
-                            <label class="input-label" style="font-size: 0.85rem;">Client ID</label>
-                            <input type="text" id="fatSecretClientIdInput" placeholder="Your FatSecret Client ID" class="input">
+                        <div class="settings-info" style="background: #fef3c7; border-left-color: #f59e0b; margin-top: 0.75rem;">
+                            <p style="color: #92400e;"><strong>📱 Barcode Scanner Available</strong></p>
+                            <p style="color: #92400e; font-size: 0.9rem; margin-top: 0.5rem;">
+                                Scan product barcodes to instantly add foods from OpenFoodFacts database (2M+ products worldwide). No setup required!
+                            </p>
                         </div>
 
-                        <div style="margin-top: 0.75rem;">
-                            <label class="input-label" style="font-size: 0.85rem;">Client Secret</label>
-                            <input type="password" id="fatSecretClientSecretInput" placeholder="Your FatSecret Client Secret" class="input">
+                        <div class="settings-info" style="background: #fee; border-left-color: #dc2626; margin-top: 0.75rem;">
+                            <p style="color: #7f1d1d;"><strong>⚠️ FatSecret API Not Supported</strong></p>
+                            <p style="color: #7f1d1d; font-size: 0.9rem; margin-top: 0.5rem;">
+                                FatSecret API requires a backend server and cannot work with GitHub Pages static hosting. The app is designed to work perfectly with the built-in 500+ food database.
+                            </p>
+                            <p style="color: #7f1d1d; font-size: 0.85rem; margin-top: 0.5rem;">
+                                <strong>Alternative:</strong> Use the barcode scanner for packaged foods or add custom foods manually.
+                            </p>
                         </div>
-
-                        <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
-                            <button id="saveFatSecretKeysBtn" class="btn-primary" style="flex: 1;">💾 Save Keys</button>
-                            <button id="clearFatSecretKeysBtn" class="btn-secondary" style="flex: 1;">🗑️ Clear Keys</button>
-                        </div>
-
-                        <button id="testFatSecretApiBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🧪 Test API Connection</button>
-
-                        <p class="helper-text" style="margin-top: 0.75rem; font-size: 0.85rem;">
-                            📖 <strong>Don't have API keys?</strong> <a href="API_SETUP.md" target="_blank" style="color: var(--accent-primary); text-decoration: underline;">View setup guide</a><br>
-                            🔒 <strong>Privacy:</strong> Your keys stay on your device only - never uploaded to GitHub or any server
-                        </p>
                     </div>
 
                     <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #e5e7eb;">
@@ -1569,7 +1570,7 @@
                     <div class="input-group">
                         <label class="input-label">🔧 App Version & Cache</label>
                         <div class="settings-info" style="background: #0f172a; border-left: 3px solid #10b981;">
-                            <p style="color: #cbd5e1;"><strong>Version:</strong> v122 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
+                            <p style="color: #cbd5e1;"><strong>Version:</strong> v123 (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
                         </div>
                         <p class="helper-text">If app features aren't working, clear the cache to reload the latest version.</p>
                         <button id="clearCacheBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🔄 Clear Cache & Reload</button>
