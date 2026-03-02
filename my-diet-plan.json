@@ -1,61 +1,39 @@
 {
-  "version": "2.0",
-  "exportDate": "2026-02-23T00:00:00.000Z",
+  "version": "3.0",
+  "exportDate": "2026-03-02T00:00:00.000Z",
+  "note": "12-Week Vegetarian Fat Loss Plan - Optimized for 70kg @ 173cm, Age 34, Training 6x/week",
+  "dailyTargets": {
+    "weekdays": {
+      "calories": 2100,
+      "protein": 155,
+      "carbs": 230,
+      "fats": 68
+    },
+    "saturday": {
+      "calories": 2550,
+      "protein": 150,
+      "carbs": 350,
+      "fats": 65
+    }
+  },
   "foodRoutines": [
     {
-      "id": 1740000001,
-      "name": "BREAKFAST Option 1 - High Protein Eggs (BEST!)",
+      "id": 1740800001,
+      "name": "BREAKFAST - 4 Eggs + Masala Oats (Every Day)",
       "meals": [
         {
-          "id": 1740000002,
-          "name": "Whole Eggs (2, scrambled with turmeric & pepper)",
+          "id": 1740800002,
+          "name": "Whole Eggs (4, cooked any style)",
           "quantity": 1,
-          "calories": 140,
-          "protein": 12,
-          "carbs": 1,
-          "fats": 10,
+          "calories": 280,
+          "protein": 24,
+          "carbs": 2,
+          "fats": 20,
           "mealType": "breakfast"
         },
         {
-          "id": 1740000003,
-          "name": "Egg Whites (3, scrambled)",
-          "quantity": 1,
-          "calories": 51,
-          "protein": 10.5,
-          "carbs": 0.75,
-          "fats": 0,
-          "mealType": "breakfast"
-        },
-        {
-          "id": 1740000004,
-          "name": "Multigrain Bread (2 thin slices)",
-          "quantity": 1,
-          "calories": 217,
-          "protein": 12.5,
-          "carbs": 32.25,
-          "fats": 3,
-          "mealType": "breakfast"
-        },
-        {
-          "id": 1740000005,
-          "name": "Green Tea with Ginger",
-          "quantity": 1,
-          "calories": 2,
-          "protein": 0,
-          "carbs": 0,
-          "fats": 0,
-          "mealType": "breakfast"
-        }
-      ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
-    },
-    {
-      "id": 1740000010,
-      "name": "BREAKFAST Option 2 - Oats Power Bowl",
-      "meals": [
-        {
-          "id": 1740000011,
-          "name": "Oats (50g dry)",
+          "id": 1740800003,
+          "name": "Oats (50g dry, cooked masala/upma style)",
           "quantity": 1,
           "calories": 190,
           "protein": 7,
@@ -64,612 +42,431 @@
           "mealType": "breakfast"
         },
         {
-          "id": 1740000012,
-          "name": "Whey Protein (1 scoop)",
-          "quantity": 1,
-          "calories": 120,
-          "protein": 25,
-          "carbs": 3,
-          "fats": 1.5,
-          "mealType": "breakfast"
-        },
-        {
-          "id": 1740000013,
+          "id": 1740800004,
           "name": "Flaxseeds (1 tbsp)",
           "quantity": 1,
           "calories": 55,
           "protein": 2,
           "carbs": 3,
-          "fats": 4.5,
-          "mealType": "breakfast"
-        },
-        {
-          "id": 1740000014,
-          "name": "Almonds (5 whole)",
-          "quantity": 1,
-          "calories": 35,
-          "protein": 1.5,
-          "carbs": 1.5,
-          "fats": 3,
-          "mealType": "breakfast"
-        },
-        {
-          "id": 1740000015,
-          "name": "Cinnamon + Green Tea",
-          "quantity": 1,
-          "calories": 20,
-          "protein": 2,
-          "carbs": 2.5,
-          "fats": 0,
-          "mealType": "breakfast"
-        }
-      ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
-    },
-    {
-      "id": 1740000020,
-      "name": "BREAKFAST Option 3 - Indian Breakfast",
-      "meals": [
-        {
-          "id": 1740000021,
-          "name": "Moong Dal Chilla with Vegetables (2 pieces)",
-          "quantity": 1,
-          "calories": 240,
-          "protein": 18,
-          "carbs": 36,
           "fats": 4,
           "mealType": "breakfast"
         },
         {
-          "id": 1740000022,
-          "name": "Low-Fat Curd (100g)",
+          "id": 1740800005,
+          "name": "Ghee (1 tsp for cooking)",
           "quantity": 1,
-          "calories": 60,
-          "protein": 10,
-          "carbs": 4,
-          "fats": 1,
-          "mealType": "breakfast"
-        },
-        {
-          "id": 1740000023,
-          "name": "Green Tea with Ginger",
-          "quantity": 1,
-          "calories": 100,
-          "protein": 4,
-          "carbs": 8,
+          "calories": 45,
+          "protein": 0,
+          "carbs": 0,
           "fats": 5,
           "mealType": "breakfast"
         }
       ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
+      "totalMacros": {
+        "calories": 570,
+        "protein": 33,
+        "carbs": 37,
+        "fats": 33
+      },
+      "instructions": "Cook eggs bhurji/scrambled/boiled. For masala oats: heat oil, add mustard seeds, curry leaves, green chili, onions. Add oats, turmeric, salt, water. Cook 3-4 min.",
+      "createdAt": "2026-03-02T00:00:00.000Z"
     },
     {
-      "id": 1740000030,
-      "name": "MID-MORNING Option 1 - Grilled Chicken (BEST)",
+      "id": 1740800010,
+      "name": "MID-MORNING SNACK - Greek Yogurt (Use Mon, Wed, Fri, Sat)",
       "meals": [
         {
-          "id": 1740000031,
-          "name": "Chicken Breast (grilled, 130g cooked)",
-          "quantity": 1,
-          "calories": 218,
-          "protein": 40,
-          "carbs": 0,
-          "fats": 4,
-          "mealType": "midmorning"
-        },
-        {
-          "id": 1740000032,
-          "name": "Green Tea",
-          "quantity": 1,
-          "calories": 2,
-          "protein": 0,
-          "carbs": 0,
-          "fats": 0,
-          "mealType": "midmorning"
-        }
-      ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
-    },
-    {
-      "id": 1740000040,
-      "name": "MID-MORNING Option 2 - Protein + Fiber Shake",
-      "meals": [
-        {
-          "id": 1740000041,
-          "name": "ISO Whey Protein (1 scoop)",
-          "quantity": 1,
-          "calories": 100,
-          "protein": 25,
-          "carbs": 1,
-          "fats": 0,
-          "mealType": "midmorning"
-        },
-        {
-          "id": 1740000042,
-          "name": "Psyllium Husk (1 tbsp)",
-          "quantity": 1,
-          "calories": 20,
-          "protein": 5,
-          "carbs": 2,
-          "fats": 0.5,
-          "mealType": "midmorning"
-        }
-      ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
-    },
-    {
-      "id": 1740000050,
-      "name": "MID-MORNING Option 3 - Boiled Eggs",
-      "meals": [
-        {
-          "id": 1740000051,
-          "name": "Whole Eggs (3 boiled)",
-          "quantity": 1,
-          "calories": 210,
-          "protein": 18,
-          "carbs": 3,
-          "fats": 15,
-          "mealType": "midmorning"
-        }
-      ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
-    },
-    {
-      "id": 1740000060,
-      "name": "LUNCH Option 1 - Chicken + Dal Power Combo (BEST!)",
-      "meals": [
-        {
-          "id": 1740000061,
-          "name": "White Rice (cooked, 150g)",
-          "quantity": 1,
-          "calories": 195,
-          "protein": 3.75,
-          "carbs": 42,
-          "fats": 0.75,
-          "mealType": "lunch"
-        },
-        {
-          "id": 1740000062,
-          "name": "Chicken Breast (grilled, 160g cooked)",
-          "quantity": 1,
-          "calories": 270,
-          "protein": 49,
-          "carbs": 0,
-          "fats": 5,
-          "mealType": "lunch"
-        },
-        {
-          "id": 1740000063,
-          "name": "Mixed Dal (moong + masoor, 1 cup)",
-          "quantity": 1,
-          "calories": 115,
-          "protein": 7,
-          "carbs": 20,
-          "fats": 0.4,
-          "mealType": "lunch"
-        },
-        {
-          "id": 1740000064,
-          "name": "Mixed Vegetables (broccoli, spinach, beans)",
-          "quantity": 1,
-          "calories": 15,
-          "protein": 0.75,
-          "carbs": 3,
-          "fats": 0,
-          "mealType": "lunch"
-        },
-        {
-          "id": 1740000065,
-          "name": "Salad with Lemon (no oil)",
-          "quantity": 1,
-          "calories": 10,
-          "protein": 0.5,
-          "carbs": 2,
-          "fats": 0,
-          "mealType": "lunch"
-        }
-      ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
-    },
-    {
-      "id": 1740000070,
-      "name": "LUNCH Option 2 - Fish + Roti + Sabzi",
-      "meals": [
-        {
-          "id": 1740000071,
-          "name": "Wheat Roti (3 medium pieces)",
-          "quantity": 1,
-          "calories": 240,
-          "protein": 9,
-          "carbs": 48,
-          "fats": 3,
-          "mealType": "lunch"
-        },
-        {
-          "id": 1740000072,
-          "name": "Fish (rohu/tilapia grilled, 180g cooked)",
-          "quantity": 1,
-          "calories": 220,
-          "protein": 42,
-          "carbs": 0,
-          "fats": 6,
-          "mealType": "lunch"
-        },
-        {
-          "id": 1740000073,
-          "name": "Palak Sabzi (minimal oil, large)",
-          "quantity": 1,
-          "calories": 80,
-          "protein": 4,
-          "carbs": 8,
-          "fats": 3,
-          "mealType": "lunch"
-        },
-        {
-          "id": 1740000074,
-          "name": "Cucumber Raita (low-fat curd)",
-          "quantity": 1,
-          "calories": 40,
-          "protein": 1,
-          "carbs": 2,
-          "fats": 0,
-          "mealType": "lunch"
-        }
-      ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
-    },
-    {
-      "id": 1740000080,
-      "name": "LUNCH Option 3 - Rajma Power Bowl",
-      "meals": [
-        {
-          "id": 1740000081,
-          "name": "Chicken Breast (grilled, 200g cooked)",
-          "quantity": 1,
-          "calories": 340,
-          "protein": 62,
-          "carbs": 0,
-          "fats": 6,
-          "mealType": "lunch"
-        },
-        {
-          "id": 1740000082,
-          "name": "Rajma (kidney beans, 1 cup cooked)",
-          "quantity": 1,
-          "calories": 120,
-          "protein": 8,
-          "carbs": 22,
-          "fats": 0.5,
-          "mealType": "lunch"
-        },
-        {
-          "id": 1740000083,
-          "name": "White Rice (cooked, 100g)",
-          "quantity": 1,
-          "calories": 130,
-          "protein": 2.5,
-          "carbs": 28,
-          "fats": 0.5,
-          "mealType": "lunch"
-        },
-        {
-          "id": 1740000084,
-          "name": "Steamed Broccoli and Beans",
-          "quantity": 1,
-          "calories": 5,
-          "protein": 0.5,
-          "carbs": 1,
-          "fats": 0,
-          "mealType": "lunch"
-        }
-      ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
-    },
-    {
-      "id": 1740000090,
-      "name": "PRE-WORKOUT Option 1 - Quick Energy",
-      "meals": [
-        {
-          "id": 1740000091,
-          "name": "Rice Cakes (2 pieces)",
-          "quantity": 1,
-          "calories": 70,
-          "protein": 1.5,
-          "carbs": 15,
-          "fats": 0.5,
-          "mealType": "preworkout"
-        },
-        {
-          "id": 1740000092,
-          "name": "Honey (1 tsp)",
-          "quantity": 1,
-          "calories": 21,
-          "protein": 0,
-          "carbs": 6,
-          "fats": 0,
-          "mealType": "preworkout"
-        },
-        {
-          "id": 1740000093,
-          "name": "Almonds (5 whole)",
-          "quantity": 1,
-          "calories": 35,
-          "protein": 1.5,
-          "carbs": 1.5,
-          "fats": 3,
-          "mealType": "preworkout"
-        },
-        {
-          "id": 1740000094,
-          "name": "Energy Buffer",
-          "quantity": 1,
-          "calories": 44,
-          "protein": 0,
-          "carbs": 5.5,
-          "fats": 2.5,
-          "mealType": "preworkout"
-        }
-      ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
-    },
-    {
-      "id": 1740000100,
-      "name": "PRE-WORKOUT Option 2 - Bread + Protein",
-      "meals": [
-        {
-          "id": 1740000101,
-          "name": "Multigrain Bread (2 thin slices)",
+          "id": 1740800011,
+          "name": "Greek Yogurt (150g, plain unsweetened)",
           "quantity": 1,
           "calories": 150,
-          "protein": 6,
-          "carbs": 26,
-          "fats": 2,
-          "mealType": "preworkout"
+          "protein": 15,
+          "carbs": 11,
+          "fats": 10,
+          "mealType": "snack"
         },
         {
-          "id": 1740000102,
-          "name": "Peanut Butter (1 tsp)",
+          "id": 1740800012,
+          "name": "Almonds (5 pieces)",
           "quantity": 1,
-          "calories": 30,
-          "protein": 2,
-          "carbs": 2,
-          "fats": 4,
-          "mealType": "preworkout"
-        }
-      ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
-    },
-    {
-      "id": 1740000110,
-      "name": "PRE-WORKOUT Option 3 - Banana + Nuts",
-      "meals": [
-        {
-          "id": 1740000111,
-          "name": "Banana (1 medium)",
-          "quantity": 1,
-          "calories": 105,
-          "protein": 1.3,
-          "carbs": 27,
-          "fats": 0.4,
-          "mealType": "preworkout"
-        },
-        {
-          "id": 1740000112,
-          "name": "Almonds (6 whole)",
-          "quantity": 1,
-          "calories": 42,
-          "protein": 1.7,
-          "carbs": 1.5,
-          "fats": 3.6,
-          "mealType": "preworkout"
-        },
-        {
-          "id": 1740000113,
-          "name": "Energy Buffer",
-          "quantity": 1,
-          "calories": 18,
-          "protein": 0,
-          "carbs": 1.5,
-          "fats": 1,
-          "mealType": "preworkout"
-        }
-      ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
-    },
-    {
-      "id": 1740000120,
-      "name": "POST-WORKOUT - Standard Recovery",
-      "meals": [
-        {
-          "id": 1740000121,
-          "name": "ISO Whey Protein (1 scoop)",
-          "quantity": 1,
-          "calories": 100,
-          "protein": 25,
-          "carbs": 1,
-          "fats": 0,
-          "mealType": "postworkout"
-        },
-        {
-          "id": 1740000122,
-          "name": "Whole Egg (1 boiled)",
-          "quantity": 1,
-          "calories": 70,
-          "protein": 6,
-          "carbs": 1,
-          "fats": 5,
-          "mealType": "postworkout"
-        },
-        {
-          "id": 1740000123,
-          "name": "Recovery Buffer",
-          "quantity": 1,
-          "calories": 10,
-          "protein": 5,
-          "carbs": 0,
-          "fats": 0.5,
-          "mealType": "postworkout"
-        }
-      ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
-    },
-    {
-      "id": 1740000130,
-      "name": "POST-WORKOUT - Thursday Leg Day (Add Banana)",
-      "meals": [
-        {
-          "id": 1740000131,
-          "name": "ISO Whey Protein (1 scoop)",
-          "quantity": 1,
-          "calories": 100,
-          "protein": 25,
-          "carbs": 1,
-          "fats": 0,
-          "mealType": "postworkout"
-        },
-        {
-          "id": 1740000132,
-          "name": "Whole Egg (1 boiled)",
-          "quantity": 1,
-          "calories": 70,
-          "protein": 6,
-          "carbs": 1,
-          "fats": 5,
-          "mealType": "postworkout"
-        },
-        {
-          "id": 1740000133,
-          "name": "Banana (1 medium)",
-          "quantity": 1,
-          "calories": 105,
-          "protein": 1.3,
-          "carbs": 22.5,
-          "fats": 0.4,
-          "mealType": "postworkout"
-        }
-      ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
-    },
-    {
-      "id": 1740000140,
-      "name": "DINNER Option 1 - Grilled Chicken + Vegetables (BEST!)",
-      "meals": [
-        {
-          "id": 1740000141,
-          "name": "Chicken Breast (grilled, 220g cooked)",
-          "quantity": 1,
-          "calories": 350,
-          "protein": 68,
-          "carbs": 0,
-          "fats": 5,
-          "mealType": "dinner"
-        },
-        {
-          "id": 1740000142,
-          "name": "Mixed Vegetables (200g)",
-          "quantity": 1,
-          "calories": 50,
-          "protein": 2.5,
-          "carbs": 10,
-          "fats": 0,
-          "mealType": "dinner"
-        },
-        {
-          "id": 1740000143,
-          "name": "Olive Oil (1 tsp)",
-          "quantity": 1,
-          "calories": 40,
-          "protein": 0,
-          "carbs": 0,
-          "fats": 4.5,
-          "mealType": "dinner"
-        },
-        {
-          "id": 1740000144,
-          "name": "Salad with Lemon",
-          "quantity": 1,
-          "calories": 20,
+          "calories": 35,
           "protein": 1,
-          "carbs": 4,
-          "fats": 0,
-          "mealType": "dinner"
+          "carbs": 1,
+          "fats": 3,
+          "mealType": "snack"
         }
       ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
+      "totalMacros": {
+        "calories": 185,
+        "protein": 16,
+        "carbs": 12,
+        "fats": 13
+      },
+      "instructions": "Skip this snack on Tue, Thu, Sun to reduce calories. Have it Mon, Wed, Fri, Sat (4 days/week).",
+      "createdAt": "2026-03-02T00:00:00.000Z"
     },
     {
-      "id": 1740000150,
-      "name": "DINNER Option 2 - Fish + Greens",
+      "id": 1740800020,
+      "name": "LUNCH - Soy Chunks + Rice + Dal (Every Day)",
       "meals": [
         {
-          "id": 1740000151,
-          "name": "White Fish (grilled, 220g cooked)",
+          "id": 1740800021,
+          "name": "Soy Chunks (105g cooked, from 35g dry - curry style)",
           "quantity": 1,
-          "calories": 270,
-          "protein": 52,
-          "carbs": 0,
-          "fats": 7,
-          "mealType": "dinner"
+          "calories": 185,
+          "protein": 36,
+          "carbs": 12,
+          "fats": 1,
+          "mealType": "lunch"
         },
         {
-          "id": 1740000152,
-          "name": "Palak Sabzi + Steamed Broccoli",
+          "id": 1740800022,
+          "name": "Rice (120g cooked, from ~42g dry)",
           "quantity": 1,
-          "calories": 100,
-          "protein": 6,
+          "calories": 150,
+          "protein": 3,
+          "carbs": 33,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1740800023,
+          "name": "Dal - Mixed (50g cooked, from ~20g dry)",
+          "quantity": 1,
+          "calories": 70,
+          "protein": 5,
           "carbs": 12,
           "fats": 0,
-          "mealType": "dinner"
+          "mealType": "lunch"
         },
         {
-          "id": 1740000153,
-          "name": "Olive Oil (1 tsp)",
+          "id": 1740800024,
+          "name": "Mixed Vegetables (200g cooked)",
           "quantity": 1,
-          "calories": 40,
+          "calories": 80,
+          "protein": 3,
+          "carbs": 16,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1740800025,
+          "name": "Cooking Oil (1 tbsp)",
+          "quantity": 1,
+          "calories": 120,
           "protein": 0,
           "carbs": 0,
-          "fats": 4.5,
-          "mealType": "dinner"
+          "fats": 14,
+          "mealType": "lunch"
         }
       ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
+      "totalMacros": {
+        "calories": 605,
+        "protein": 47,
+        "carbs": 73,
+        "fats": 15
+      },
+      "instructions": "Soak 35g dry soy chunks in hot water 15 min, squeeze out water completely. Cook curry style with spices. Serve with rice, dal, vegetables. On random chicken days, replace soy with 200g chicken breast.",
+      "createdAt": "2026-03-02T00:00:00.000Z"
     },
     {
-      "id": 1740000160,
-      "name": "DINNER Option 3 - Chicken Tikka Style",
+      "id": 1740800030,
+      "name": "PRE-WORKOUT - Banana (4 PM, Every Day)",
       "meals": [
         {
-          "id": 1740000161,
-          "name": "Chicken Tikka (homemade, 220g cooked)",
+          "id": 1740800031,
+          "name": "Banana (1 medium, 120g)",
           "quantity": 1,
-          "calories": 380,
-          "protein": 70,
+          "calories": 105,
+          "protein": 1,
+          "carbs": 27,
+          "fats": 0,
+          "mealType": "snack"
+        },
+        {
+          "id": 1740800032,
+          "name": "Green Tea (optional)",
+          "quantity": 1,
+          "calories": 0,
+          "protein": 0,
           "carbs": 0,
-          "fats": 8,
+          "fats": 0,
+          "mealType": "snack"
+        }
+      ],
+      "totalMacros": {
+        "calories": 105,
+        "protein": 1,
+        "carbs": 27,
+        "fats": 0
+      },
+      "instructions": "Eat 1 hour before gym (around 4 PM). Provides quick energy for workout.",
+      "createdAt": "2026-03-02T00:00:00.000Z"
+    },
+    {
+      "id": 1740800040,
+      "name": "POST-WORKOUT - Whey Protein Shake (6:30 PM)",
+      "meals": [
+        {
+          "id": 1740800041,
+          "name": "Whey Protein (1 scoop, 30g)",
+          "quantity": 1,
+          "calories": 120,
+          "protein": 25,
+          "carbs": 3,
+          "fats": 1,
+          "mealType": "snack"
+        },
+        {
+          "id": 1740800042,
+          "name": "Water or Milk (200ml)",
+          "quantity": 1,
+          "calories": 0,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 0,
+          "mealType": "snack"
+        }
+      ],
+      "totalMacros": {
+        "calories": 120,
+        "protein": 25,
+        "carbs": 3,
+        "fats": 1
+      },
+      "instructions": "Immediately after workout. Mix 1 scoop whey with 200ml water. Can add 1 tsp honey if needed.",
+      "createdAt": "2026-03-02T00:00:00.000Z"
+    },
+    {
+      "id": 1740800050,
+      "name": "DINNER - Soy Chunks + Vegetables LOW CARB (Every Day)",
+      "meals": [
+        {
+          "id": 1740800051,
+          "name": "Soy Chunks (75g cooked, from 25g dry - curry)",
+          "quantity": 1,
+          "calories": 130,
+          "protein": 26,
+          "carbs": 8,
+          "fats": 1,
           "mealType": "dinner"
         },
         {
-          "id": 1740000162,
-          "name": "Large Mixed Salad + Vegetables",
+          "id": 1740800052,
+          "name": "Mixed Vegetables (300g cooked - unlimited!)",
           "quantity": 1,
-          "calories": 50,
+          "calories": 120,
+          "protein": 4,
+          "carbs": 24,
+          "fats": 0,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1740800053,
+          "name": "Cooking Oil (1 tbsp)",
+          "quantity": 1,
+          "calories": 120,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 14,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1740800054,
+          "name": "Curd (100g, plain)",
+          "quantity": 1,
+          "calories": 60,
           "protein": 3,
-          "carbs": 10,
-          "fats": 0,
-          "mealType": "dinner"
-        },
-        {
-          "id": 1740000163,
-          "name": "Mint Chutney (no oil)",
-          "quantity": 1,
-          "calories": 10,
-          "protein": 0.5,
-          "carbs": 2,
-          "fats": 0,
+          "carbs": 5,
+          "fats": 3,
           "mealType": "dinner"
         }
       ],
-      "createdAt": "2026-02-23T00:00:00.000Z"
+      "totalMacros": {
+        "calories": 430,
+        "protein": 33,
+        "carbs": 37,
+        "fats": 18
+      },
+      "instructions": "LOW CARB dinner for fat burning overnight! Cook soy chunks curry style. Serve with unlimited vegetables. NO rice, NO roti, NO dal at night!",
+      "createdAt": "2026-03-02T00:00:00.000Z"
+    },
+    {
+      "id": 1740800060,
+      "name": "SATURDAY REFEED - Dal Khichdi (Optional)",
+      "meals": [
+        {
+          "id": 1740800061,
+          "name": "Dal Khichdi (60g rice + 40g dal cooked together)",
+          "quantity": 1,
+          "calories": 350,
+          "protein": 15,
+          "carbs": 65,
+          "fats": 3,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1740800062,
+          "name": "Paneer Sabzi (150g paneer)",
+          "quantity": 1,
+          "calories": 400,
+          "protein": 27,
+          "carbs": 3,
+          "fats": 33,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1740800063,
+          "name": "Raita (150g)",
+          "quantity": 1,
+          "calories": 90,
+          "protein": 5,
+          "carbs": 8,
+          "fats": 5,
+          "mealType": "dinner"
+        }
+      ],
+      "totalMacros": {
+        "calories": 840,
+        "protein": 47,
+        "carbs": 76,
+        "fats": 41
+      },
+      "instructions": "Saturday is REFEED day (2,550 cal). You can have higher carbs, sweets, dal khichdi at night. Enjoy it!",
+      "createdAt": "2026-03-02T00:00:00.000Z"
     }
+  ],
+  "weeklySchedule": {
+    "monday": {
+      "breakfast": "4 Eggs + Masala Oats",
+      "snack": "Greek Yogurt + Almonds",
+      "lunch": "Soy Chunks + Rice + Dal",
+      "preWorkout": "Banana",
+      "postWorkout": "Whey Shake",
+      "dinner": "Soy Chunks + Vegetables (LOW CARB)",
+      "totalCalories": 2095,
+      "totalProtein": 155
+    },
+    "tuesday": {
+      "breakfast": "4 Eggs + Masala Oats",
+      "snack": "SKIP (No yogurt)",
+      "lunch": "Soy Chunks + Rice + Dal",
+      "preWorkout": "Banana",
+      "postWorkout": "Whey Shake",
+      "dinner": "Soy Chunks + Vegetables (LOW CARB)",
+      "totalCalories": 1910,
+      "totalProtein": 139
+    },
+    "wednesday": {
+      "breakfast": "4 Eggs + Masala Oats",
+      "snack": "Greek Yogurt + Almonds",
+      "lunch": "Soy Chunks + Rice + Dal",
+      "preWorkout": "Banana",
+      "postWorkout": "Whey Shake",
+      "dinner": "Soy Chunks + Vegetables (LOW CARB)",
+      "totalCalories": 2095,
+      "totalProtein": 155
+    },
+    "thursday": {
+      "breakfast": "4 Eggs + Masala Oats",
+      "snack": "SKIP (No yogurt)",
+      "lunch": "Soy Chunks + Rice + Dal",
+      "preWorkout": "Banana",
+      "postWorkout": "Whey Shake",
+      "dinner": "Soy Chunks + Vegetables (LOW CARB)",
+      "totalCalories": 1910,
+      "totalProtein": 139
+    },
+    "friday": {
+      "breakfast": "4 Eggs + Masala Oats",
+      "snack": "Greek Yogurt + Almonds",
+      "lunch": "Soy Chunks + Rice + Dal",
+      "preWorkout": "Banana",
+      "postWorkout": "Whey Shake",
+      "dinner": "Soy Chunks + Vegetables (LOW CARB)",
+      "totalCalories": 2095,
+      "totalProtein": 155
+    },
+    "saturday": {
+      "breakfast": "4 Eggs + Masala Oats",
+      "snack": "Greek Yogurt + Almonds",
+      "lunch": "Soy Chunks + Rice + Dal",
+      "preWorkout": "Banana",
+      "postWorkout": "Whey Shake",
+      "dinner": "Dal Khichdi + Paneer (REFEED - 2550 cal)",
+      "totalCalories": 2550,
+      "totalProtein": 150
+    },
+    "sunday": {
+      "breakfast": "4 Eggs + Masala Oats",
+      "snack": "SKIP (No yogurt)",
+      "lunch": "Soy Chunks + Rice + Dal",
+      "preWorkout": "Banana",
+      "postWorkout": "Whey Shake",
+      "dinner": "Soy Chunks + Vegetables (LOW CARB)",
+      "totalCalories": 1910,
+      "totalProtein": 139
+    }
+  },
+  "weeklyAverages": {
+    "calories": 2016,
+    "protein": 147,
+    "carbs": 180,
+    "fats": 77,
+    "note": "Target: 2,100 cal | 155g P | 230g C | 68g F - Very close to target!"
+  },
+  "shoppingList": {
+    "weekly": {
+      "proteins": [
+        "28 eggs (4/day × 7 days)",
+        "420g dry soy chunks (35g lunch + 25g dinner × 7 days)",
+        "600g Greek yogurt (150g × 4 days)",
+        "Whey protein powder"
+      ],
+      "staples": [
+        "350g oats (50g × 7 days)",
+        "Rice (300g dry for week)",
+        "Mixed dal (150g dry for week)",
+        "Flaxseeds (100g bag)",
+        "Almonds (35g for week)",
+        "Ghee/cooking oil",
+        "Vegetables (3kg mixed)",
+        "Curd (700g for week)",
+        "Bananas (7 pieces)"
+      ],
+      "spices": [
+        "Mustard seeds",
+        "Curry leaves",
+        "Green chilies",
+        "Turmeric",
+        "Garam masala",
+        "Coriander powder",
+        "Cumin"
+      ]
+    },
+    "estimatedWeeklyCost": "$60-70 NZD"
+  },
+  "mealPrepInstructions": {
+    "sunday": [
+      "1. Boil 28 eggs (for whole week) - store in fridge",
+      "2. Soak 420g dry soy chunks in hot water, squeeze, cook large batch curry",
+      "3. Portion soy chunks: 7 containers with 105g (lunch) + 7 containers with 75g (dinner)",
+      "4. Cook 2kg rice, portion into 120g servings, refrigerate",
+      "5. Cook 500g dal, portion into containers",
+      "6. Chop vegetables for 2-3 days"
+    ],
+    "dailyTime": "10 minutes to assemble meals (everything pre-cooked!)"
+  },
+  "importantNotes": [
+    "✅ 4 WHOLE EGGS at breakfast (yolk + white, all of it!)",
+    "✅ Greek yogurt ONLY 4 days/week (Mon, Wed, Fri, Sat) - Skip Tue, Thu, Sun",
+    "✅ LOW CARB dinner (no rice/roti/dal at night) for fat burning overnight",
+    "✅ Masala oats = cooked upma style (savory with spices)",
+    "✅ Soy chunks: Soak 15 min, squeeze water completely before cooking",
+    "✅ Random chicken days: Replace lunch soy with 200g chicken breast, track manually",
+    "✅ Saturday refeed: Can have dal khichdi, sweets, higher carbs - enjoy!",
+    "✅ Deload weeks: Week 4, 8, 12 (reduce workout volume by 50%)",
+    "✅ Weekly average: 2,016 cal | 147g P | 180g C | 77g F",
+    "✅ Expected result: 70kg → 66kg @ 13% body fat in 12 weeks"
   ]
 }
