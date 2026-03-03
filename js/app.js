@@ -199,7 +199,7 @@ class GymTrackerApp {
             // Load food routines if user has none
             if (existingFoodRoutines.length === 0) {
                 console.log('Loading default food routines from my-diet-plan.json...');
-                const response = await fetch('my-diet-plan.json');
+                const response = await fetch('my-diet-plan.json?v=3.0');
                 const data = await response.json();
 
                 if (data.foodRoutines && data.foodRoutines.length > 0) {
@@ -5238,7 +5238,7 @@ class GymTrackerApp {
 
     downloadDietPlan() {
         // Fetch the diet plan JSON file from the server
-        fetch('my-diet-plan.json')
+        fetch('my-diet-plan.json?v=3.0')
             .then(response => {
                 if (!response.ok) throw new Error('Failed to fetch file');
                 return response.blob();
