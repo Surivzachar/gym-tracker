@@ -2918,6 +2918,20 @@ class GymTrackerApp {
                 this.stopCoreModalRestTimer();
             }
         }
+
+        // Reset food modal state when closing
+        if (modalId === 'addFoodModal') {
+            // Clear selected food state
+            this.selectedFood = null;
+            // Hide serving dropdown
+            document.getElementById('servingTypeGroup').style.display = 'none';
+            document.getElementById('servingTypeSelect').innerHTML = '<option value="">Select serving size...</option>';
+            // Hide portion buttons
+            document.getElementById('portionSizeButtons').style.display = 'none';
+            // Clear search suggestions
+            document.getElementById('foodSuggestions').innerHTML = '';
+            document.getElementById('foodSuggestions').classList.remove('active');
+        }
     }
 
     // Food tracking methods
@@ -3008,6 +3022,15 @@ class GymTrackerApp {
             document.getElementById('proteinInput').value = '';
             document.getElementById('carbsInput').value = '';
             document.getElementById('fatsInput').value = '';
+
+            // Reset serving dropdown and show legacy inputs by default
+            document.getElementById('servingTypeGroup').style.display = 'none';
+            document.getElementById('servingTypeSelect').innerHTML = '<option value="">Select serving size...</option>';
+            document.getElementById('legacyQuantityGroup').style.display = 'block';
+            document.getElementById('portionSizeButtons').style.display = 'none';
+
+            // Clear selected food state
+            this.selectedFood = null;
 
             // Update save button text
             const saveBtn = document.getElementById('saveFoodBtn');
