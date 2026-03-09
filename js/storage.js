@@ -26,7 +26,8 @@ const Storage = {
         NUTRITION_GOALS: 'gym_tracker_nutrition_goals',
         RECENT_FOODS: 'gym_tracker_recent_foods',
         FAVORITE_FOODS: 'gym_tracker_favorite_foods',
-        CACHED_API_FOODS: 'gym_tracker_cached_api_foods'
+        CACHED_API_FOODS: 'gym_tracker_cached_api_foods',
+        CUSTOM_FOODS: 'gym_tracker_custom_foods'
     },
 
     // Get data from localStorage
@@ -1255,5 +1256,85 @@ const Storage = {
 
     clearCachedAPIFoods() {
         return this.set(this.KEYS.CACHED_API_FOODS, []);
+    },
+
+    // Custom Foods Methods (user-created foods saved permanently)
+    getCustomFoods() {
+        return this.get(this.KEYS.CUSTOM_FOODS) || [];
+    },
+
+    addCustomFood(foodItem) {
+        let customFoods = this.getCustomFoods();
+
+        // Check if already exists (by exact name match)
+        const existingIndex = customFoods.findIndex(f => f.name.toLowerCase() === foodItem.name.toLowerCase());
+
+        if (existingIndex >= 0) {
+            // Update existing custom food
+            customFoods[existingIndex] = {
+                name: foodItem.name,
+                calories: foodItem.calories,
+                protein: foodItem.protein,
+                carbs: foodItem.carbs,
+                fats: foodItem.fats,
+                category: foodItem.category || 'Custom',
+                serving: foodItem.serving || '1 serving',
+                source: 'custom',
+                fiber: foodItem.fiber || null,
+                sugar: foodItem.sugar || null,
+                sodium: foodItem.sodium || null,
+                createdAt: customFoods[existingIndex].createdAt, // Keep original creation date
+                updatedAt: new Date().toISOString()
+            };
+        } else {
+            // Add new custom food
+            customFoods.push({
+                name: foodItem.name,
+                calories: foodItem.calories,
+                protein: foodItem.protein,
+                carbs: foodItem.carbs,
+                fats: foodItem.fats,
+                category: foodItem.category || 'Custom',
+                serving: foodItem.serving || '1 serving',
+                source: 'custom',
+                fiber: foodItem.fiber || null,
+                sugar: foodItem.sugar || null,
+                sodium: foodItem.sodium || null,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            });
+        }
+
+        // Sort alphabetically for easy browsing
+        customFoods.sort((a, b) => a.name.localeCompare(b.name));
+
+        return this.set(this.KEYS.CUSTOM_FOODS, customFoods);
+    },
+
+    removeCustomFood(foodName) {
+        const customFoods = this.getCustomFoods();
+        const filtered = customFoods.filter(f => f.name.toLowerCase() !== foodName.toLowerCase());
+        return this.set(this.KEYS.CUSTOM_FOODS, filtered);
+    },
+
+    searchCustomFoods(query) {
+        const customFoods = this.getCustomFoods();
+        const lowercaseQuery = query.toLowerCase();
+        return customFoods.filter(food =>
+            food.name.toLowerCase().includes(lowercaseQuery) ||
+            (food.category && food.category.toLowerCase().includes(lowercaseQuery))
+        );
+    },
+
+    isCustomFood(foodName) {
+        const customFoods = this.getCustomFoods();
+        return customFoods.some(f => f.name.toLowerCase() === foodName.toLowerCase());
+    },
+
+    clearCustomFoods() {
+        if (confirm('Are you sure you want to delete ALL custom foods? This cannot be undone.')) {
+            return this.set(this.KEYS.CUSTOM_FOODS, []);
+        }
+        return false;
     }
 };

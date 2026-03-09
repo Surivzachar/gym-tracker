@@ -185,39 +185,44 @@ const NutritionixAPI = {
 };
 
 // Enhanced food search with smart fallback
-// Priority: 1. Local Database -> 2. Cached API Foods -> 3. FatSecret API -> 4. Nutritionix API (optional)
+// Priority: 1. Custom Foods -> 2. Local Database -> 3. Cached API Foods -> 4. FatSecret API -> 5. Nutritionix API (optional)
 async function smartFoodSearch(query) {
     if (!query || query.length < 2) {
         return [];
     }
 
     const results = {
+        custom: [],
         local: [],
         cached: [],
         fatsecret: [],
         nutritionix: []
     };
 
-    // 1. Search local database first (instant, offline)
+    // 1. Search custom foods first (user's saved foods - highest priority)
+    results.custom = Storage.searchCustomFoods(query);
+
+    // 2. Search local database (instant, offline)
     results.local = searchFoods(query);
 
-    // 2. Search cached API foods (instant, offline)
+    // 3. Search cached API foods (instant, offline)
     results.cached = Storage.searchCachedAPIFoods(query);
 
-    // 3. If we have good results from local/cached, return them
-    if (results.local.length >= 10) {
-        return results.local.slice(0, 15);
+    // 4. If we have good results from custom/local/cached, return them
+    if (results.custom.length + results.local.length >= 10) {
+        const combined = [...results.custom, ...results.local, ...results.cached];
+        return combined.slice(0, 15);
     }
 
-    // 4. Combine local and cached
-    const combined = [...results.local, ...results.cached];
+    // 5. Combine custom, local and cached
+    const combined = [...results.custom, ...results.local, ...results.cached];
 
     // Remove duplicates by name
     const uniqueCombined = combined.filter((food, index, self) =>
         index === self.findIndex(f => f.name === food.name)
     );
 
-    // 5. If online, fetch from APIs (FatSecret prioritized as it's free for personal use)
+    // 6. If online, fetch from APIs (FatSecret prioritized as it's free for personal use)
     if (navigator.onLine) {
         try {
             // Query FatSecret API first (free for personal use)
@@ -240,7 +245,7 @@ async function smartFoodSearch(query) {
                 });
             }
 
-            // Combine all results (FatSecret results appear first)
+            // Combine all results (Custom foods appear first, then local, then APIs)
             const allResults = [...uniqueCombined, ...results.fatsecret, ...results.nutritionix];
 
             // Remove duplicates by name
@@ -255,6 +260,6 @@ async function smartFoodSearch(query) {
         }
     }
 
-    // 6. Return local + cached results when offline
+    // 7. Return custom + local + cached results when offline
     return uniqueCombined.slice(0, 15);
 }

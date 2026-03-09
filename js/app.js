@@ -3059,6 +3059,9 @@ class GymTrackerApp {
         // Setup grams mode toggle
         this.setupGramsModeToggle();
 
+        // Setup custom food save detection
+        this.setupCustomFoodDetection();
+
         document.getElementById('foodNameInput').focus();
     }
 
@@ -3094,7 +3097,7 @@ class GymTrackerApp {
 
                 suggestionsContainer.innerHTML = results.map(food => `
                     <div class="food-suggestion-item" data-food='${JSON.stringify(food)}'>
-                        <span class="food-suggestion-category">${food.category}${food.source === 'api' ? ' 🌐' : ''}${food.brand ? ` - ${food.brand}` : ''}</span>
+                        <span class="food-suggestion-category">${food.category}${food.source === 'custom' ? ' 💾' : food.source === 'api' ? ' 🌐' : ''}${food.brand ? ` - ${food.brand}` : ''}</span>
                         <span class="food-suggestion-name">${food.name}${food.recipe ? ' 📖' : ''}</span>
                         <div class="food-suggestion-info">
                             ${food.calories} cal • P: ${food.protein}g • C: ${food.carbs}g • F: ${food.fats}g
@@ -3127,6 +3130,14 @@ class GymTrackerApp {
     }
 
     selectFood(food) {
+        // Hide "Save as Custom Food" checkbox when selecting from database
+        // (since it's already in a database, no need to save again)
+        const saveCustomContainer = document.getElementById('saveAsCustomFoodContainer');
+        if (saveCustomContainer) {
+            saveCustomContainer.style.display = 'none';
+            document.getElementById('saveAsCustomFoodCheckbox').checked = false;
+        }
+
         // Check if food has multiple servings (advanced serving system)
         const hasMultipleServings = food.servings && Array.isArray(food.servings) && food.servings.length > 0;
 
@@ -3401,6 +3412,47 @@ class GymTrackerApp {
         this.isGramsMode = () => isGramsMode;
     }
 
+    setupCustomFoodDetection() {
+        // Show "Save as Custom Food" checkbox when user manually enters food data
+        const foodNameInput = document.getElementById('foodNameInput');
+        const caloriesInput = document.getElementById('caloriesInput');
+        const proteinInput = document.getElementById('proteinInput');
+        const carbsInput = document.getElementById('carbsInput');
+        const fatsInput = document.getElementById('fatsInput');
+        const saveCustomContainer = document.getElementById('saveAsCustomFoodContainer');
+
+        const checkShowCustomOption = () => {
+            // Show checkbox if:
+            // 1. User has entered a food name
+            // 2. User has entered at least one macro value
+            // 3. No food is currently selected from database (manual entry)
+            const hasName = foodNameInput.value.trim().length > 0;
+            const hasManualMacros = (
+                caloriesInput.value ||
+                proteinInput.value ||
+                carbsInput.value ||
+                fatsInput.value
+            );
+            const isManualEntry = !this.selectedFood || this.selectedFood.source === 'custom';
+
+            if (hasName && hasManualMacros && isManualEntry) {
+                saveCustomContainer.style.display = 'block';
+            }
+        };
+
+        // Listen for manual macro entry
+        [caloriesInput, proteinInput, carbsInput, fatsInput].forEach(input => {
+            input.addEventListener('input', checkShowCustomOption);
+        });
+
+        // Listen for food name entry (with debounce to avoid showing during search)
+        let nameInputTimer;
+        foodNameInput.addEventListener('input', () => {
+            clearTimeout(nameInputTimer);
+            nameInputTimer = setTimeout(checkShowCustomOption, 500);
+        });
+    }
+
     updateMacrosForGrams(grams) {
         if (!this.selectedFood) return;
 
@@ -3546,6 +3598,30 @@ class GymTrackerApp {
             }
         }
 
+        // Save as custom food if checkbox is checked
+        const saveAsCustomCheckbox = document.getElementById('saveAsCustomFoodCheckbox');
+        if (saveAsCustomCheckbox && saveAsCustomCheckbox.checked && !isEditing) {
+            try {
+                // Save the base food data (without quantity multipliers) to custom foods
+                const customFoodData = {
+                    name: name, // Original name without quantity prefix
+                    calories: this.selectedFood ? this.selectedFood.calories : totalCalories,
+                    protein: this.selectedFood ? this.selectedFood.protein : totalProtein,
+                    carbs: this.selectedFood ? this.selectedFood.carbs : totalCarbs,
+                    fats: this.selectedFood ? this.selectedFood.fats : totalFats,
+                    category: this.selectedFood?.category || 'Custom',
+                    serving: this.selectedFood?.serving || '1 serving',
+                    source: 'custom'
+                };
+
+                Storage.addCustomFood(customFoodData);
+                console.log('✅ Saved as custom food:', customFoodData.name);
+            } catch (error) {
+                console.error('Error saving custom food:', error);
+                // Don't block the main save, just log the error
+            }
+        }
+
         // Clear food photo
         this.currentFoodPhoto = null;
         document.getElementById('foodPhotoInput').value = '';
@@ -3553,6 +3629,12 @@ class GymTrackerApp {
 
         // Clear selected food data
         this.selectedFood = null;
+
+        // Clear and hide custom food checkbox
+        if (saveAsCustomCheckbox) {
+            saveAsCustomCheckbox.checked = false;
+            document.getElementById('saveAsCustomFoodContainer').style.display = 'none';
+        }
 
         // Hide portion buttons
         document.getElementById('portionSizeButtons').style.display = 'none';
