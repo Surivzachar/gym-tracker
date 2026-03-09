@@ -166,8 +166,72 @@
         "carbs": 73,
         "fats": 15
       },
-      "instructions": "Soak 35g dry soy chunks in hot water 15 min, squeeze out water completely. Cook curry style with spices. Serve with rice, dal, vegetables. On random chicken days, replace soy with 200g chicken breast.",
+      "instructions": "Soak 35g dry soy chunks in hot water 15 min, squeeze out water completely. Cook curry style with spices. Serve with rice, dal, vegetables.",
       "createdAt": "2026-03-02T00:00:00.000Z"
+    },
+    {
+      "id": 1740800026,
+      "name": "LUNCH - Paneer + Rice + Dal (Alternative)",
+      "meals": [
+        {
+          "id": 1740800027,
+          "name": "Paneer (150g cooked - curry style)",
+          "quantity": 1,
+          "calories": 398,
+          "protein": 27,
+          "carbs": 4.5,
+          "fats": 30,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1740800028,
+          "name": "Rice (120g cooked, from ~42g dry)",
+          "quantity": 1,
+          "calories": 150,
+          "protein": 3,
+          "carbs": 33,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1740800029,
+          "name": "Dal - Mixed (50g cooked, from ~20g dry)",
+          "quantity": 1,
+          "calories": 70,
+          "protein": 5,
+          "carbs": 12,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1740800030,
+          "name": "Mixed Vegetables (200g cooked)",
+          "quantity": 1,
+          "calories": 80,
+          "protein": 3,
+          "carbs": 16,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1740800031,
+          "name": "Cooking Oil (1 tsp)",
+          "quantity": 1,
+          "calories": 40,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 5,
+          "mealType": "lunch"
+        }
+      ],
+      "totalMacros": {
+        "calories": 738,
+        "protein": 38,
+        "carbs": 65.5,
+        "fats": 35
+      },
+      "instructions": "Cook paneer curry style with spices. Serve with rice, dal, vegetables. Paneer is higher in calories/fat than soy, so use less oil.",
+      "createdAt": "2026-03-10T00:00:00.000Z"
     },
     {
       "id": 1740800030,
@@ -290,6 +354,60 @@
       },
       "instructions": "LOW CARB dinner for fat burning overnight! Cook soy chunks curry style. Serve with unlimited vegetables. NO rice, NO roti, NO dal at night!",
       "createdAt": "2026-03-02T00:00:00.000Z"
+    },
+    {
+      "id": 1740800055,
+      "name": "DINNER - Paneer + Vegetables LOW CARB (Alternative)",
+      "meals": [
+        {
+          "id": 1740800056,
+          "name": "Paneer (100g cooked - curry style)",
+          "quantity": 1,
+          "calories": 265,
+          "protein": 18,
+          "carbs": 3,
+          "fats": 20,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1740800057,
+          "name": "Mixed Vegetables (300g cooked - unlimited!)",
+          "quantity": 1,
+          "calories": 120,
+          "protein": 4,
+          "carbs": 24,
+          "fats": 0,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1740800058,
+          "name": "Cooking Oil (1 tsp)",
+          "quantity": 1,
+          "calories": 40,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 5,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1740800059,
+          "name": "Curd (100g, plain)",
+          "quantity": 1,
+          "calories": 60,
+          "protein": 3,
+          "carbs": 5,
+          "fats": 3,
+          "mealType": "dinner"
+        }
+      ],
+      "totalMacros": {
+        "calories": 485,
+        "protein": 25,
+        "carbs": 32,
+        "fats": 28
+      },
+      "instructions": "LOW CARB dinner! Cook paneer curry style (less oil than lunch). Serve with unlimited vegetables. NO rice, NO roti, NO dal at night!",
+      "createdAt": "2026-03-10T00:00:00.000Z"
     },
     {
       "id": 1740800060,
