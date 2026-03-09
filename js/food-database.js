@@ -1364,6 +1364,74 @@ const FoodDatabase = [
     { name: "Kellogg's Corn Flakes", calories: 357, protein: 7, carbs: 84, fats: 0.9, fiber: 3, sugar: 8, sodium: 660, iron: 28, category: "Carbs", serving: "100g", brand: "Kellogg's" },
     { name: "Kellogg's Chocos", calories: 390, protein: 6, carbs: 83, fats: 4, fiber: 5, sugar: 36, sodium: 340, iron: 14, category: "Carbs", serving: "100g", brand: "Kellogg's" },
     { name: "Quaker Oats", calories: 389, protein: 17, carbs: 66, fats: 7, fiber: 10, sugar: 1, sodium: 5, iron: 4.5, category: "Carbs", serving: "100g (dry)", brand: "Quaker" },
+
+    // ========== SINGLE-SERVING SNACKS (Easy Tracking!) ==========
+
+    // Tim Tams (NZ/Australia favorite)
+    { name: "Tim Tam (Original, 1 biscuit)", calories: 95, protein: 1, carbs: 12, fats: 5, fiber: 0.5, sugar: 8, sodium: 45, category: "Snacks", serving: "1 biscuit (19g)", brand: "Arnott's" },
+    { name: "Tim Tam (Original, 2 biscuits)", calories: 190, protein: 2, carbs: 24, fats: 10, fiber: 1, sugar: 16, sodium: 90, category: "Snacks", serving: "2 biscuits (38g)", brand: "Arnott's" },
+    { name: "Tim Tam (Double Coat, 1 biscuit)", calories: 100, protein: 1, carbs: 12, fats: 5.5, fiber: 0.5, sugar: 9, sodium: 40, category: "Snacks", serving: "1 biscuit (20g)", brand: "Arnott's" },
+    { name: "Tim Tam (Chewy Caramel, 1 biscuit)", calories: 98, protein: 1, carbs: 13, fats: 5, fiber: 0.5, sugar: 9, sodium: 50, category: "Snacks", serving: "1 biscuit (19g)", brand: "Arnott's" },
+
+    // Individual Cookies & Biscuits
+    { name: "Chocolate Chip Cookie (1 medium)", calories: 140, protein: 2, carbs: 19, fats: 7, fiber: 1, sugar: 12, sodium: 110, category: "Snacks", serving: "1 cookie (30g)" },
+    { name: "Chocolate Chip Cookie (2 medium)", calories: 280, protein: 4, carbs: 38, fats: 14, fiber: 2, sugar: 24, sodium: 220, category: "Snacks", serving: "2 cookies (60g)" },
+    { name: "Anzac Biscuit (1 biscuit)", calories: 85, protein: 1, carbs: 12, fats: 4, fiber: 0.5, sugar: 6, sodium: 65, category: "Snacks", serving: "1 biscuit (18g)" },
+    { name: "Shortbread Biscuit (1 biscuit)", calories: 65, protein: 1, carbs: 8, fats: 3, fiber: 0.3, sugar: 3, sodium: 45, category: "Snacks", serving: "1 biscuit (14g)" },
+    { name: "Ginger Nut Biscuit (1 biscuit)", calories: 45, protein: 0.6, carbs: 7, fats: 1.5, fiber: 0.3, sugar: 3.5, sodium: 55, category: "Snacks", serving: "1 biscuit (10g)" },
+    { name: "Oreo Cookie (1 cookie)", calories: 53, protein: 0.5, carbs: 8, fats: 2, fiber: 0.4, sugar: 5, sodium: 45, category: "Snacks", serving: "1 cookie (11g)", brand: "Cadbury" },
+    { name: "Oreo Cookie (2 cookies)", calories: 106, protein: 1, carbs: 16, fats: 4, fiber: 0.8, sugar: 10, sodium: 90, category: "Snacks", serving: "2 cookies (22g)", brand: "Cadbury" },
+
+    // NZ Chocolate Bars (Individual servings)
+    { name: "Whittaker's Peanut Slab (1 bar)", calories: 530, protein: 11, carbs: 47, fats: 33, fiber: 4, sugar: 43, sodium: 95, category: "Snacks", serving: "1 bar (100g)", brand: "Whittaker's" },
+    { name: "Whittaker's Creamy Milk (1 block)", calories: 560, protein: 8, carbs: 52, fats: 35, fiber: 2, sugar: 50, sodium: 120, category: "Snacks", serving: "1 block (100g)", brand: "Whittaker's" },
+    { name: "Whittaker's Dark Ghana (1 block)", calories: 540, protein: 7, carbs: 48, fats: 36, fiber: 5, sugar: 42, sodium: 20, category: "Snacks", serving: "1 block (100g)", brand: "Whittaker's" },
+    { name: "Cadbury Dairy Milk (1 bar, 50g)", calories: 265, protein: 4, carbs: 29, fats: 15, fiber: 1, sugar: 28, sodium: 75, category: "Snacks", serving: "1 bar (50g)", brand: "Cadbury" },
+    { name: "Cadbury Caramilk (1 bar, 55g)", calories: 300, protein: 4, carbs: 34, fats: 16, fiber: 0.5, sugar: 33, sodium: 95, category: "Snacks", serving: "1 bar (55g)", brand: "Cadbury" },
+    { name: "Lindt Lindor Ball (1 ball)", calories: 77, protein: 0.8, carbs: 6, fats: 6, fiber: 0.5, sugar: 5.5, sodium: 5, category: "Snacks", serving: "1 ball (12g)", brand: "Lindt" },
+    { name: "Lindt Lindor Ball (3 balls)", calories: 231, protein: 2.4, carbs: 18, fats: 18, fiber: 1.5, sugar: 16.5, sodium: 15, category: "Snacks", serving: "3 balls (36g)", brand: "Lindt" },
+    { name: "Snickers Bar (1 bar, 50g)", calories: 245, protein: 4, carbs: 31, fats: 12, fiber: 1.5, sugar: 26, sodium: 150, category: "Snacks", serving: "1 bar (50g)", brand: "Mars" },
+    { name: "Mars Bar (1 bar, 51g)", calories: 228, protein: 2, carbs: 36, fats: 9, fiber: 0.5, sugar: 33, sodium: 110, category: "Snacks", serving: "1 bar (51g)", brand: "Mars" },
+    { name: "Kit Kat (2 fingers)", calories: 106, protein: 1.4, carbs: 13, fats: 5.5, fiber: 0.5, sugar: 11, sodium: 25, category: "Snacks", serving: "2 fingers (21g)", brand: "Nestlé" },
+    { name: "Kit Kat (4 fingers)", calories: 212, protein: 2.8, carbs: 26, fats: 11, fiber: 1, sugar: 22, sodium: 50, category: "Snacks", serving: "4 fingers (42g)", brand: "Nestlé" },
+
+    // Cakes & Brownies (Individual servings)
+    { name: "Chocolate Brownie (1 square)", calories: 195, protein: 2.5, carbs: 25, fats: 10, fiber: 1.5, sugar: 18, sodium: 145, category: "Desserts", serving: "1 square (55g)" },
+    { name: "Carrot Cake (1 slice)", calories: 310, protein: 4, carbs: 42, fats: 15, fiber: 2, sugar: 28, sodium: 290, category: "Desserts", serving: "1 slice (90g)" },
+    { name: "Chocolate Cake (1 slice)", calories: 352, protein: 5, carbs: 51, fats: 15, fiber: 2, sugar: 35, sodium: 290, category: "Desserts", serving: "1 slice (95g)" },
+    { name: "Vanilla Cake (1 slice)", calories: 290, protein: 3, carbs: 42, fats: 13, fiber: 0.8, sugar: 28, sodium: 260, category: "Desserts", serving: "1 slice (80g)" },
+    { name: "Muffin (Chocolate Chip, 1 medium)", calories: 425, protein: 6, carbs: 55, fats: 20, fiber: 2, sugar: 32, sodium: 380, category: "Desserts", serving: "1 muffin (120g)" },
+    { name: "Muffin (Blueberry, 1 medium)", calories: 380, protein: 5, carbs: 52, fats: 17, fiber: 2.5, sugar: 28, sodium: 350, category: "Desserts", serving: "1 muffin (115g)" },
+    { name: "Donut (Glazed, 1 donut)", calories: 260, protein: 3, carbs: 31, fats: 14, fiber: 0.8, sugar: 12, sodium: 250, category: "Desserts", serving: "1 donut (60g)" },
+    { name: "Donut (Chocolate Iced, 1 donut)", calories: 290, protein: 3.5, carbs: 35, fats: 16, fiber: 1.2, sugar: 18, sodium: 270, category: "Desserts", serving: "1 donut (65g)" },
+    { name: "Lamington (1 piece)", calories: 220, protein: 2.5, carbs: 32, fats: 10, fiber: 1.5, sugar: 22, sodium: 140, category: "Desserts", serving: "1 piece (65g)" },
+    { name: "Pavlova (1 slice)", calories: 285, protein: 3, carbs: 45, fats: 10, fiber: 0.5, sugar: 38, sodium: 75, category: "Desserts", serving: "1 slice (100g)" },
+
+    // Potato Chips/Crisps (Individual servings)
+    { name: "Potato Chips (Small bag)", calories: 152, protein: 2, carbs: 15, fats: 10, fiber: 1.3, sugar: 0.5, sodium: 180, category: "Snacks", serving: "1 small bag (28g)" },
+    { name: "Potato Chips (Regular bag)", calories: 304, protein: 4, carbs: 30, fats: 20, fiber: 2.6, sugar: 1, sodium: 360, category: "Snacks", serving: "1 bag (56g)" },
+    { name: "Bluebird Original Cut Chips (Small)", calories: 155, protein: 2, carbs: 14, fats: 10, fiber: 1.5, sugar: 0.5, sodium: 200, category: "Snacks", serving: "1 small bag (30g)", brand: "Bluebird" },
+    { name: "Bluebird Chicken Chips (Small)", calories: 160, protein: 2.2, carbs: 15, fats: 10, fiber: 1.5, sugar: 1, sodium: 250, category: "Snacks", serving: "1 small bag (30g)", brand: "Bluebird" },
+    { name: "Doritos Nacho Cheese (Small)", calories: 145, protein: 2, carbs: 18, fats: 7.5, fiber: 1.2, sugar: 0.8, sodium: 200, category: "Snacks", serving: "1 small bag (28g)", brand: "Doritos" },
+    { name: "Doritos Nacho Cheese (Regular)", calories: 290, protein: 4, carbs: 36, fats: 15, fiber: 2.4, sugar: 1.6, sodium: 400, category: "Snacks", serving: "1 bag (56g)", brand: "Doritos" },
+    { name: "Pringles (Original, Small can)", calories: 315, protein: 3.5, carbs: 36, fats: 18, fiber: 2, sugar: 1, sodium: 420, category: "Snacks", serving: "1 small can (53g)", brand: "Pringles" },
+
+    // Other Common Office Snacks
+    { name: "Granola Bar (1 bar)", calories: 120, protein: 2, carbs: 20, fats: 4, fiber: 2, sugar: 9, sodium: 90, category: "Snacks", serving: "1 bar (28g)" },
+    { name: "Muesli Bar (1 bar)", calories: 110, protein: 2.5, carbs: 18, fats: 3.5, fiber: 2, sugar: 8, sodium: 75, category: "Snacks", serving: "1 bar (25g)" },
+    { name: "Rice Crackers (10 crackers)", calories: 90, protein: 2, carbs: 18, fats: 1.5, fiber: 0.5, sugar: 0.3, sodium: 140, category: "Snacks", serving: "10 crackers (25g)" },
+    { name: "Popcorn (1 cup popped, plain)", calories: 31, protein: 1, carbs: 6, fats: 0.4, fiber: 1.2, sugar: 0.1, sodium: 1, category: "Snacks", serving: "1 cup (8g)" },
+    { name: "Popcorn (1 cup popped, buttered)", calories: 78, protein: 1, carbs: 6, fats: 6, fiber: 1.2, sugar: 0.1, sodium: 115, category: "Snacks", serving: "1 cup (11g)" },
+    { name: "Trail Mix (1 handful)", calories: 140, protein: 4, carbs: 13, fats: 9, fiber: 2, sugar: 8, sodium: 45, category: "Snacks", serving: "1 handful (30g)" },
+    { name: "Mixed Nuts (Salted, 1 handful)", calories: 170, protein: 5, carbs: 6, fats: 15, fiber: 2.5, sugar: 1, sodium: 190, category: "Snacks", serving: "1 handful (30g)" },
+    { name: "Peanut M&Ms (Small bag)", calories: 240, protein: 5, carbs: 28, fats: 12, fiber: 2, sugar: 25, sodium: 25, category: "Snacks", serving: "1 bag (49g)", brand: "Mars" },
+    { name: "Skittles (Small bag)", calories: 230, protein: 0, carbs: 54, fats: 2.5, fiber: 0, sugar: 47, sodium: 15, category: "Snacks", serving: "1 bag (55g)", brand: "Mars" },
+    { name: "Cookie Time Cookie (1 cookie)", calories: 280, protein: 3, carbs: 38, fats: 13, fiber: 1.5, sugar: 24, sodium: 180, category: "Snacks", serving: "1 cookie (68g)", brand: "Cookie Time" },
+
+    // Ice Cream (Individual servings)
+    { name: "Tip Top Trumpet (1 cone)", calories: 230, protein: 3, carbs: 28, fats: 12, fiber: 0.5, sugar: 22, sodium: 75, category: "Desserts", serving: "1 cone (100ml)", brand: "Tip Top" },
+    { name: "Tip Top Hokey Pokey Ice Cream (1 scoop)", calories: 150, protein: 2.5, carbs: 20, fats: 7, fiber: 0, sugar: 18, sodium: 60, category: "Desserts", serving: "1 scoop (75g)", brand: "Tip Top" },
+    { name: "Kapiti Ice Cream (1 scoop)", calories: 180, protein: 3, carbs: 18, fats: 11, fiber: 0, sugar: 17, sodium: 55, category: "Desserts", serving: "1 scoop (75g)", brand: "Kapiti" },
 ];
 
 // Search function for food database
