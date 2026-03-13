@@ -3,7 +3,7 @@
 const GoogleDriveSync = {
     // Configuration
     CLIENT_ID: '181401543852-0alv6dsg5ie3pke4d99g9ec8b2skgnrc.apps.googleusercontent.com',
-    CLIENT_SECRET: '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', // Get this from Google Cloud Console - same page as Client ID
+    // CLIENT_SECRET removed for security - using PKCE-only OAuth flow for public clients
     REDIRECT_URI: window.location.origin, // Use just the origin to match Google Cloud Console
     SCOPES: ['https://www.googleapis.com/auth/drive.file'], // Only access files created by this app
     AUTH_ENDPOINT: 'https://accounts.google.com/o/oauth2/v2/auth',
@@ -164,11 +164,11 @@ const GoogleDriveSync = {
         }
     },
 
-    // Exchange authorization code for access token
+    // Exchange authorization code for access token (PKCE-only, no client_secret)
     async exchangeCodeForToken(code, verifier) {
         const params = new URLSearchParams({
             client_id: this.CLIENT_ID,
-            client_secret: this.CLIENT_SECRET,
+            // client_secret intentionally omitted - using PKCE for public clients
             grant_type: 'authorization_code',
             code: code,
             redirect_uri: this.REDIRECT_URI,
@@ -200,7 +200,7 @@ const GoogleDriveSync = {
 
         const params = new URLSearchParams({
             client_id: this.CLIENT_ID,
-            client_secret: this.CLIENT_SECRET,
+            // client_secret intentionally omitted - public clients don't need it for refresh
             grant_type: 'refresh_token',
             refresh_token: refreshToken
         });

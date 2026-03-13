@@ -1,191 +1,15 @@
-// Nutritionix API Integration for comprehensive food database
-// Get your free API keys at: https://developer.nutritionix.com/
+// Food Search Module
+// Handles searching across multiple food sources:
+// - Custom foods (user-saved)
+// - Local database (570+ foods)
+// - Cached API results (offline access)
+// - FatSecret API (1M+ foods when configured)
 //
-// SETUP INSTRUCTIONS:
-// 1. Go to https://developer.nutritionix.com/
-// 2. Sign up for a free account (500 requests/day free tier)
-// 3. Create a new application
-// 4. Copy your App ID and API Key
-// 5. Replace 'YOUR_APP_ID_HERE' and 'YOUR_API_KEY_HERE' below with your actual keys
-// 6. Save this file and refresh the app
-//
-// Once configured, you'll have access to:
-// - 800,000+ common foods with full nutrition data
-// - 1,000,000+ branded foods (e.g., Subway, Chicken Katsu from specific restaurants)
-// - Automatic portion calculations
-// - Restaurant menu items
-//
-// Currently using local database only (380+ foods)
-
-const NutritionixAPI = {
-    // API Configuration
-    // IMPORTANT: Sign up at https://developer.nutritionix.com/ to get your keys
-    config: {
-        appId: 'YOUR_APP_ID_HERE',  // Replace with your Nutritionix App ID
-        apiKey: 'YOUR_API_KEY_HERE',  // Replace with your Nutritionix API Key
-        endpoint: 'https://trackapi.nutritionix.com/v2/search/instant'
-    },
-
-    // Check if API is configured
-    isConfigured() {
-        return this.config.appId !== 'YOUR_APP_ID_HERE' &&
-               this.config.apiKey !== 'YOUR_API_KEY_HERE';
-    },
-
-    // Search foods using Nutritionix API
-    async searchAPI(query) {
-        if (!this.isConfigured()) {
-            console.log('Nutritionix API not configured. Using local database only.');
-            return [];
-        }
-
-        if (!query || query.length < 2) {
-            return [];
-        }
-
-        try {
-            const response = await fetch(`${this.config.endpoint}?query=${encodeURIComponent(query)}`, {
-                method: 'GET',
-                headers: {
-                    'x-app-id': this.config.appId,
-                    'x-app-key': this.config.apiKey,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`API error: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            // Process common foods (branded foods are in data.branded)
-            const commonFoods = (data.common || []).slice(0, 10).map(item => ({
-                name: this.capitalizeWords(item.food_name),
-                calories: Math.round(item.serving_qty * (item.nf_calories || 0)),
-                protein: Math.round(item.serving_qty * (item.nf_protein || 0)),
-                carbs: Math.round(item.serving_qty * (item.nf_total_carbohydrate || 0)),
-                fats: Math.round(item.serving_qty * (item.nf_total_fat || 0)),
-                category: this.categorizeFood(item),
-                serving: `${item.serving_qty} ${item.serving_unit}`,
-                source: 'api'
-            }));
-
-            // Process branded foods
-            const brandedFoods = (data.branded || []).slice(0, 5).map(item => ({
-                name: item.brand_name ? `${item.food_name} (${item.brand_name})` : item.food_name,
-                calories: Math.round(item.nf_calories || 0),
-                protein: Math.round(item.nf_protein || 0),
-                carbs: Math.round(item.nf_total_carbohydrate || 0),
-                fats: Math.round(item.nf_total_fat || 0),
-                category: 'Branded',
-                serving: item.serving_qty ? `${item.serving_qty} ${item.serving_unit}` : item.serving_size || '1 serving',
-                source: 'api'
-            }));
-
-            return [...commonFoods, ...brandedFoods];
-
-        } catch (error) {
-            console.error('Nutritionix API error:', error);
-            return [];
-        }
-    },
-
-    // Categorize food based on macros
-    categorizeFood(item) {
-        const protein = item.nf_protein || 0;
-        const carbs = item.nf_total_carbohydrate || 0;
-        const fats = item.nf_total_fat || 0;
-
-        if (protein > carbs && protein > fats) {
-            return 'Protein';
-        } else if (carbs > protein && carbs > fats) {
-            return 'Carbs';
-        } else if (fats > protein && fats > carbs) {
-            return 'Fats';
-        } else {
-            return 'Mixed';
-        }
-    },
-
-    // Capitalize words in food name
-    capitalizeWords(str) {
-        return str.replace(/\b\w/g, char => char.toUpperCase());
-    },
-
-    // Analyze food photo using Nutritionix Photo Recognition
-    async analyzePhoto(base64Image) {
-        if (!this.isConfigured()) {
-            throw new Error('Nutritionix API not configured. Please add your API keys in js/nutritionix-api.js');
-        }
-
-        try {
-            // Remove data URL prefix if present
-            const base64Data = base64Image.replace(/^data:image\/[a-z]+;base64,/, '');
-
-            const response = await fetch('https://trackapi.nutritionix.com/v2/natural/nutrients', {
-                method: 'POST',
-                headers: {
-                    'x-app-id': this.config.appId,
-                    'x-app-key': this.config.apiKey,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    query: '',  // Empty query for photo-only analysis
-                    photo: base64Data
-                })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || `API error: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            // Parse the response and return food data
-            if (data.foods && data.foods.length > 0) {
-                const food = data.foods[0]; // Take the first (most likely) food item
-
-                return {
-                    success: true,
-                    food: {
-                        name: this.capitalizeWords(food.food_name),
-                        calories: Math.round(food.nf_calories || 0),
-                        protein: Math.round((food.nf_protein || 0) * 10) / 10,
-                        carbs: Math.round((food.nf_total_carbohydrate || 0) * 10) / 10,
-                        fats: Math.round((food.nf_total_fat || 0) * 10) / 10,
-                        category: this.categorizeFood(food),
-                        serving: `${food.serving_qty} ${food.serving_unit}`,
-                        weight_grams: food.serving_weight_grams || null,
-                        source: 'photo-ai',
-                        confidence: food.photo?.photo_confidence || 'unknown'
-                    },
-                    allFoods: data.foods.map(f => ({
-                        name: this.capitalizeWords(f.food_name),
-                        calories: Math.round(f.nf_calories || 0),
-                        serving: `${f.serving_qty} ${f.serving_unit}`
-                    }))
-                };
-            } else {
-                return {
-                    success: false,
-                    error: 'No food detected in image. Try a clearer photo.'
-                };
-            }
-
-        } catch (error) {
-            console.error('Nutritionix photo analysis error:', error);
-            return {
-                success: false,
-                error: error.message || 'Failed to analyze image'
-            };
-        }
-    }
-};
+// Nutritionix API integration removed - not configured and not needed
+// FatSecret provides similar functionality for free
 
 // Enhanced food search with smart fallback
-// Priority: 1. Custom Foods -> 2. Local Database -> 3. Cached API Foods -> 4. FatSecret API -> 5. Nutritionix API (optional)
+// Priority: 1. Custom Foods -> 2. Local Database -> 3. Cached API Foods -> 4. FatSecret API
 async function smartFoodSearch(query) {
     if (!query || query.length < 2) {
         return [];
@@ -195,8 +19,7 @@ async function smartFoodSearch(query) {
         custom: [],
         local: [],
         cached: [],
-        fatsecret: [],
-        nutritionix: []
+        fatsecret: []
     };
 
     // 1. Search custom foods first (user's saved foods - highest priority)
@@ -222,7 +45,7 @@ async function smartFoodSearch(query) {
         index === self.findIndex(f => f.name === food.name)
     );
 
-    // 6. If online, fetch from APIs (FatSecret prioritized as it's free for personal use)
+    // 6. If online, fetch from FatSecret API (free for personal use)
     if (navigator.onLine) {
         try {
             // Query FatSecret API first (free for personal use)
@@ -235,18 +58,8 @@ async function smartFoodSearch(query) {
                 });
             }
 
-            // Query Nutritionix API if configured (optional - requires commercial trial)
-            if (NutritionixAPI.isConfigured()) {
-                results.nutritionix = await NutritionixAPI.searchAPI(query);
-
-                // Cache API results for offline use
-                results.nutritionix.forEach(food => {
-                    Storage.addToCachedAPIFoods(food);
-                });
-            }
-
-            // Combine all results (Custom foods appear first, then local, then APIs)
-            const allResults = [...uniqueCombined, ...results.fatsecret, ...results.nutritionix];
+            // Combine all results (Custom foods appear first, then local, then FatSecret)
+            const allResults = [...uniqueCombined, ...results.fatsecret];
 
             // Remove duplicates by name
             const uniqueResults = allResults.filter((food, index, self) =>
