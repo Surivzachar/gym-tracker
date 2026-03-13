@@ -1,4 +1,4 @@
-/* Theme Variables - Midnight Emerald */
+/* Theme Variables - Midnight Emerald (Dark) & Pale Violet (Light) */
 :root {
     /* Dark Theme (Default) - Midnight Emerald */
     --bg-primary: #0f172a;
@@ -25,28 +25,46 @@
 }
 
 [data-theme="light"] {
-    /* Light Theme (Optional) */
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
-    --bg-tertiary: #e2e8f0;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-tertiary: #64748b;
-    --border-color: #e2e8f0;
-    --border-color-light: #f1f5f9;
-    --shadow-sm: rgba(0, 0, 0, 0.08);
-    --shadow-md: rgba(0, 0, 0, 0.1);
-    --shadow-lg: rgba(0, 0, 0, 0.15);
-    --accent-primary: #10b981;
-    --accent-secondary: #14b8a6;
-    --accent-hover: #059669;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --card-bg: #ffffff;
-    --input-bg: #ffffff;
-    --modal-overlay: rgba(0, 0, 0, 0.5);
-    --logo-opacity: 0.05;
+    /* Light Theme - Pale Violet & White (Calm & Zen) */
+
+    /* Backgrounds - White & Soft Lavender */
+    --bg-primary: #ffffff;           /* Pure white main background */
+    --bg-secondary: #f5f3ff;         /* Pale lavender background */
+    --bg-tertiary: #ede9fe;          /* Light violet for cards */
+
+    /* Text Colors - Dark Gray for High Contrast */
+    --text-primary: #1f2937;         /* Dark charcoal (WCAG AAA compliant on white) */
+    --text-secondary: #4b5563;       /* Medium-dark gray (high contrast) */
+    --text-tertiary: #6b7280;        /* Medium gray (still readable) */
+
+    /* Borders - Soft Lavender */
+    --border-color: #e9d5ff;         /* Light lavender border */
+    --border-color-light: #f3e8ff;   /* Very light lavender */
+
+    /* Shadows - Subtle */
+    --shadow-sm: rgba(139, 92, 246, 0.08);   /* Soft violet shadow */
+    --shadow-md: rgba(139, 92, 246, 0.12);
+    --shadow-lg: rgba(139, 92, 246, 0.16);
+
+    /* Accent Colors - Beautiful Violets */
+    --accent-primary: #a78bfa;       /* Soft violet (primary buttons) */
+    --accent-secondary: #c4b5fd;     /* Lighter violet (secondary elements) */
+    --accent-hover: #8b5cf6;         /* Medium violet (hover state) */
+
+    /* Status Colors */
+    --success: #10b981;              /* Keep green for success */
+    --warning: #f59e0b;              /* Keep amber for warnings */
+    --danger: #ef4444;               /* Keep red for danger */
+
+    /* Component Backgrounds */
+    --card-bg: #faf5ff;              /* Very pale violet for cards */
+    --input-bg: #ffffff;             /* White input backgrounds */
+
+    /* Modal */
+    --modal-overlay: rgba(139, 92, 246, 0.2);  /* Soft violet overlay */
+
+    /* Logo */
+    --logo-opacity: 0.04;
 }
 
 /* Reset and Base Styles */
@@ -186,9 +204,9 @@ img {
 }
 
 .icon-btn {
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
-    color: #1e3a8a;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--accent-primary);
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -201,17 +219,17 @@ img {
 }
 
 .icon-btn:hover {
-    background: #e5e7eb;
-    border-color: #1e3a8a;
+    background: var(--accent-secondary);
+    border-color: var(--accent-primary);
     transform: scale(1.05);
 }
 
 /* Date Banner */
 .date-banner {
-    background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-hover) 100%);
     color: white;
     padding: 1rem 1.5rem;
-    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);
+    box-shadow: 0 2px 8px var(--shadow-md);
     position: relative;
     z-index: 9;
     display: flex;
@@ -223,7 +241,7 @@ img {
 }
 
 .date-banner:hover {
-    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent-hover) 100%);
 }
 
 .date-info {
@@ -456,20 +474,20 @@ img {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-hover) 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent-hover) 100%);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
     transform: translateY(-2px);
 }
 
 .btn-primary:active {
     transform: translateY(0) scale(0.98);
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
 }
 
 .btn-secondary {
@@ -479,8 +497,8 @@ img {
 }
 
 .btn-secondary:hover {
-    background: #334155;
-    border-color: #475569;
+    background: var(--accent-secondary);
+    border-color: var(--accent-primary);
     transform: translateY(-1px);
 }
 
