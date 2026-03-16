@@ -4903,6 +4903,8 @@ class GymTrackerApp {
             const darkMode = localStorage.getItem('darkMode') === 'true';
             if (darkMode) {
                 document.body.setAttribute('data-theme', 'dark');
+            } else {
+                document.body.setAttribute('data-theme', 'light');
             }
         }
 
@@ -4916,7 +4918,7 @@ class GymTrackerApp {
         if (shouldBeDark) {
             document.body.setAttribute('data-theme', 'dark');
         } else {
-            document.body.removeAttribute('data-theme');
+            document.body.setAttribute('data-theme', 'light');
         }
 
         // Update the manual toggle to reflect current state
@@ -4943,7 +4945,7 @@ class GymTrackerApp {
             document.body.setAttribute('data-theme', 'dark');
             localStorage.setItem('darkMode', 'true');
         } else {
-            document.body.removeAttribute('data-theme');
+            document.body.setAttribute('data-theme', 'light');
             localStorage.setItem('darkMode', 'false');
         }
 
