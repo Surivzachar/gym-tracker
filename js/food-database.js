@@ -1432,6 +1432,49 @@ const FoodDatabase = [
     { name: "Tip Top Trumpet (1 cone)", calories: 230, protein: 3, carbs: 28, fats: 12, fiber: 0.5, sugar: 22, sodium: 75, category: "Desserts", serving: "1 cone (100ml)", brand: "Tip Top" },
     { name: "Tip Top Hokey Pokey Ice Cream (1 scoop)", calories: 150, protein: 2.5, carbs: 20, fats: 7, fiber: 0, sugar: 18, sodium: 60, category: "Desserts", serving: "1 scoop (75g)", brand: "Tip Top" },
     { name: "Kapiti Ice Cream (1 scoop)", calories: 180, protein: 3, carbs: 18, fats: 11, fiber: 0, sugar: 17, sodium: 55, category: "Desserts", serving: "1 scoop (75g)", brand: "Kapiti" },
+
+    // ========== SUPPLEMENTS & VITAMINS ==========
+
+    // Fish Oil & Omega-3
+    { name: "Fish Oil (1 capsule, 1000mg)", calories: 10, protein: 0, carbs: 0, fats: 1, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 capsule (1000mg)" },
+    { name: "Fish Oil (2 capsules, 1000mg each)", calories: 20, protein: 0, carbs: 0, fats: 2, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "2 capsules (2000mg)" },
+    { name: "Omega-3 Fish Oil (1 softgel, 1200mg)", calories: 12, protein: 0, carbs: 0, fats: 1.2, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 softgel (1200mg)" },
+    { name: "Omega-3 Fish Oil (2 softgels, 1200mg each)", calories: 24, protein: 0, carbs: 0, fats: 2.4, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "2 softgels (2400mg)" },
+    { name: "Cod Liver Oil (1 capsule, 1000mg)", calories: 10, protein: 0, carbs: 0, fats: 1, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 capsule (1000mg)" },
+
+    // Multivitamins
+    { name: "Multivitamin Tablet (1 tablet)", calories: 5, protein: 0, carbs: 1, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 tablet" },
+    { name: "Multivitamin Gummy (1 gummy)", calories: 10, protein: 0, carbs: 3, fats: 0, fiber: 0, sugar: 2, sodium: 5, category: "Supplements", serving: "1 gummy" },
+    { name: "Multivitamin Gummy (2 gummies)", calories: 20, protein: 0, carbs: 6, fats: 0, fiber: 0, sugar: 4, sodium: 10, category: "Supplements", serving: "2 gummies" },
+    { name: "Men's Multivitamin (1 tablet)", calories: 5, protein: 0, carbs: 1, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 tablet" },
+    { name: "Women's Multivitamin (1 tablet)", calories: 5, protein: 0, carbs: 1, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 tablet" },
+
+    // Individual Vitamins & Minerals
+    { name: "Vitamin D3 (1 tablet, 1000 IU)", calories: 0, protein: 0, carbs: 0, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 tablet" },
+    { name: "Vitamin C (1 tablet, 500mg)", calories: 5, protein: 0, carbs: 1, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 tablet (500mg)" },
+    { name: "Vitamin C (1 tablet, 1000mg)", calories: 5, protein: 0, carbs: 1, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 tablet (1000mg)" },
+    { name: "Calcium Tablet (1 tablet, 500mg)", calories: 5, protein: 0, carbs: 1, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 tablet (500mg)" },
+    { name: "Iron Supplement (1 tablet, 18mg)", calories: 0, protein: 0, carbs: 0, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 tablet" },
+    { name: "Zinc Tablet (1 tablet, 25mg)", calories: 0, protein: 0, carbs: 0, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 tablet" },
+    { name: "Magnesium Supplement (1 tablet, 250mg)", calories: 5, protein: 0, carbs: 1, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 tablet" },
+    { name: "B-Complex Vitamin (1 tablet)", calories: 5, protein: 0, carbs: 1, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 tablet" },
+
+    // Protein Supplements
+    { name: "Whey Protein Powder (1 scoop, 30g)", calories: 120, protein: 24, carbs: 3, fats: 1.5, fiber: 0, sugar: 2, sodium: 50, category: "Supplements", serving: "1 scoop (30g)" },
+    { name: "Whey Protein Powder (2 scoops, 60g)", calories: 240, protein: 48, carbs: 6, fats: 3, fiber: 0, sugar: 4, sodium: 100, category: "Supplements", serving: "2 scoops (60g)" },
+    { name: "Plant Protein Powder (1 scoop, 30g)", calories: 110, protein: 20, carbs: 5, fats: 2, fiber: 3, sugar: 1, sodium: 40, category: "Supplements", serving: "1 scoop (30g)" },
+    { name: "Casein Protein (1 scoop, 30g)", calories: 115, protein: 24, carbs: 3, fats: 1, fiber: 0, sugar: 1, sodium: 60, category: "Supplements", serving: "1 scoop (30g)" },
+
+    // Performance Supplements
+    { name: "Creatine Monohydrate (1 scoop, 5g)", calories: 0, protein: 0, carbs: 0, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 scoop (5g)" },
+    { name: "BCAA Powder (1 scoop, 5g)", calories: 0, protein: 5, carbs: 0, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 scoop (5g)" },
+    { name: "Pre-Workout (1 scoop)", calories: 15, protein: 0, carbs: 4, fats: 0, fiber: 0, sugar: 0, sodium: 100, category: "Supplements", serving: "1 scoop" },
+    { name: "Electrolyte Tablet (1 tablet)", calories: 10, protein: 0, carbs: 2, fats: 0, fiber: 0, sugar: 2, sodium: 250, category: "Supplements", serving: "1 tablet" },
+
+    // Digestive Supplements
+    { name: "Probiotic Capsule (1 capsule)", calories: 5, protein: 0, carbs: 1, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 capsule" },
+    { name: "Digestive Enzyme (1 capsule)", calories: 0, protein: 0, carbs: 0, fats: 0, fiber: 0, sugar: 0, sodium: 0, category: "Supplements", serving: "1 capsule" },
+    { name: "Fiber Supplement (1 tablespoon)", calories: 30, protein: 0, carbs: 8, fats: 0, fiber: 7, sugar: 0, sodium: 5, category: "Supplements", serving: "1 tablespoon (5g)" },
 ];
 
 // Search function for food database
