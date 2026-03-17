@@ -4113,6 +4113,17 @@ class GymTrackerApp {
                 setTimeout(() => {
                     this.closeBarcodeScanner();
                     this.selectFood(product);
+
+                    // Auto-select first serving option for barcode products
+                    setTimeout(() => {
+                        const servingSelect = document.getElementById('servingTypeSelect');
+                        if (servingSelect && servingSelect.options.length > 1) {
+                            // Select first actual serving (index 1, since 0 is placeholder)
+                            servingSelect.selectedIndex = 1;
+                            // Trigger change event to populate macros
+                            servingSelect.dispatchEvent(new Event('change'));
+                        }
+                    }, 100);
                 }, 1500);
 
             } else {
@@ -4149,17 +4160,22 @@ class GymTrackerApp {
         const resultDiv = document.getElementById('barcodeResult');
         resultDiv.style.display = 'block';
         resultDiv.innerHTML = `
-            <div id="barcodeScannerReader" style="width: 100%; border-radius: 8px; overflow: hidden;"></div>
+            <div id="barcodeScannerReader" style="width: 100%; border-radius: 8px; overflow: hidden; background: #000;"></div>
+            <div style="text-align: center; padding: 0.5rem; color: var(--text-secondary); font-size: 0.85rem;">
+                📷 Point camera at barcode and hold steady
+            </div>
             <button type="button" id="stopScannerBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">⏹️ Stop Scanner</button>
         `;
 
         try {
             const html5QrCode = new Html5Qrcode("barcodeScannerReader");
 
-            // Configuration for barcode scanning
+            // Configuration for barcode scanning - optimized for mobile
             const config = {
                 fps: 10,
                 qrbox: { width: 250, height: 150 },
+                aspectRatio: 1.777778, // 16:9 aspect ratio
+                disableFlip: false, // Allow camera flip on iOS
                 formatsToSupport: [
                     Html5QrcodeSupportedFormats.EAN_13,
                     Html5QrcodeSupportedFormats.EAN_8,
@@ -4167,7 +4183,8 @@ class GymTrackerApp {
                     Html5QrcodeSupportedFormats.UPC_E,
                     Html5QrcodeSupportedFormats.CODE_128,
                     Html5QrcodeSupportedFormats.CODE_39
-                ]
+                ],
+                showTorchButtonIfSupported: true // Show flashlight on mobile
             };
 
             // Start scanning
@@ -4209,15 +4226,22 @@ class GymTrackerApp {
 
         } catch (error) {
             console.error('Camera access error:', error);
+
+            // Detect iOS for specific instructions
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const iOSInstructions = isIOS ?
+                '<br>• On iOS Safari: Go to Settings > Safari > Camera and allow access' : '';
+
             resultDiv.innerHTML = `
                 <div style="background: #fee2e2; padding: 0.75rem; border-radius: 6px; border-left: 3px solid #ef4444;">
-                    <p style="color: #7f1d1d; margin: 0;"><strong>❌ Camera Error</strong></p>
+                    <p style="color: #7f1d1d; margin: 0;"><strong>❌ Camera Access Denied</strong></p>
                     <p style="color: #7f1d1d; margin-top: 0.5rem; font-size: 0.9rem;">
                         ${error.message || 'Could not access camera'}<br><br>
-                        Please:<br>
-                        • Grant camera permissions<br>
-                        • Check if another app is using the camera<br>
-                        • Or type the barcode manually above
+                        <strong>To fix this:</strong><br>
+                        • Allow camera permissions when prompted${iOSInstructions}<br>
+                        • Close other apps using the camera<br>
+                        • Refresh the page and try again<br><br>
+                        <strong>Or:</strong> Type the barcode manually above 👆
                     </p>
                 </div>
             `;
