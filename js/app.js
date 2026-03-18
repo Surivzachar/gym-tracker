@@ -3088,6 +3088,12 @@ class GymTrackerApp {
         input.addEventListener('input', async (e) => {
             const query = e.target.value.trim();
 
+            // Skip autocomplete if we just selected a food programmatically
+            if (this.skipNextAutocomplete) {
+                this.skipNextAutocomplete = false;
+                return;
+            }
+
             if (query.length < 2) {
                 suggestionsContainer.classList.remove('active');
                 suggestionsContainer.innerHTML = '';
@@ -3142,6 +3148,13 @@ class GymTrackerApp {
     }
 
     selectFood(food) {
+        // Close autocomplete suggestions when selecting a food programmatically
+        const suggestionsContainer = document.getElementById('foodSuggestions');
+        if (suggestionsContainer) {
+            suggestionsContainer.classList.remove('active');
+            suggestionsContainer.innerHTML = '';
+        }
+
         // Hide "Save as Custom Food" checkbox when selecting from database
         // (since it's already in a database, no need to save again)
         const saveCustomContainer = document.getElementById('saveAsCustomFoodContainer');
@@ -3196,6 +3209,8 @@ class GymTrackerApp {
             };
 
             // Clear form initially
+            // Set flag to skip autocomplete when we set the food name programmatically
+            this.skipNextAutocomplete = true;
             document.getElementById('foodNameInput').value = food.name;
             document.getElementById('caloriesInput').value = '';
             document.getElementById('proteinInput').value = '';
@@ -3204,6 +3219,16 @@ class GymTrackerApp {
 
             // Hide serving size display for advanced system
             document.getElementById('currentServingSize').textContent = '';
+
+            // Auto-select first serving for barcode products (from OpenFoodFacts)
+            if (food.source === 'openfoodfacts' && food.servings.length > 0) {
+                setTimeout(() => {
+                    servingSelect.selectedIndex = 1; // Select first actual serving (index 0 is placeholder)
+                    // Trigger change event to populate macros
+                    const changeEvent = new Event('change');
+                    servingSelect.dispatchEvent(changeEvent);
+                }, 50);
+            }
 
         } else {
             // ===== LEGACY SERVING SYSTEM =====
@@ -3226,6 +3251,8 @@ class GymTrackerApp {
             document.getElementById('legacyQuantityGroup').style.display = 'block';
 
             // Fill form with original values
+            // Set flag to skip autocomplete when we set the food name programmatically
+            this.skipNextAutocomplete = true;
             document.getElementById('foodNameInput').value = food.name;
             document.getElementById('caloriesInput').value = food.calories;
             document.getElementById('proteinInput').value = food.protein;
@@ -4110,20 +4137,10 @@ class GymTrackerApp {
                 `;
 
                 // Close scanner and auto-fill food form
+                // (selectFood will auto-select first serving for barcode products)
                 setTimeout(() => {
                     this.closeBarcodeScanner();
                     this.selectFood(product);
-
-                    // Auto-select first serving option for barcode products
-                    setTimeout(() => {
-                        const servingSelect = document.getElementById('servingTypeSelect');
-                        if (servingSelect && servingSelect.options.length > 1) {
-                            // Select first actual serving (index 1, since 0 is placeholder)
-                            servingSelect.selectedIndex = 1;
-                            // Trigger change event to populate macros
-                            servingSelect.dispatchEvent(new Event('change'));
-                        }
-                    }, 100);
                 }, 1500);
 
             } else {
