@@ -815,7 +815,8 @@ class GymTrackerApp {
 
             const typeSelect = document.getElementById('exerciseTypeSelect');
             typeSelect.value = exercise.type || 'strength';
-            typeSelect.disabled = true; // Disable type change when editing
+            // Allow type change when editing (user can fix incorrectly categorized exercises)
+            typeSelect.disabled = false;
             document.getElementById('exerciseNameInput').value = exercise.name;
             document.getElementById('exerciseVideoUrl').value = exercise.videoUrl || '';
             document.getElementById('exerciseNotes').value = exercise.notes || '';

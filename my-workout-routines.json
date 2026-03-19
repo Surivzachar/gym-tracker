@@ -1093,7 +1093,7 @@
         {
           "id": 1739980800057,
           "name": "Burpees / Jump Squats",
-          "type": "cardio",
+          "type": "core",
           "videoUrl": null,
           "sets": [
             {
@@ -1149,7 +1149,7 @@
         {
           "id": 1739980800059,
           "name": "Mountain Climbers",
-          "type": "cardio",
+          "type": "core",
           "videoUrl": null,
           "sets": [
             {
@@ -1233,7 +1233,7 @@
         {
           "id": 1739980800062,
           "name": "DB/KB Swings",
-          "type": "cardio",
+          "type": "core",
           "videoUrl": null,
           "sets": [
             {
@@ -1261,7 +1261,7 @@
         {
           "id": 1739980800063,
           "name": "High Knees / Jumping Jacks",
-          "type": "cardio",
+          "type": "core",
           "videoUrl": null,
           "sets": [
             {
