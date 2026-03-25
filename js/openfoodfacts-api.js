@@ -112,6 +112,7 @@ const OpenFoodFactsAPI = {
                 const grams = parseInt(gramsMatch[1]);
                 const multiplier = grams / 100;
 
+                // Add 1 serving
                 servings.unshift({
                     type: `1 serving (${defaultServing})`,
                     calories: Math.round(calories * multiplier),
@@ -124,6 +125,36 @@ const OpenFoodFactsAPI = {
                     calcium: Math.round(calcium * multiplier),
                     iron: parseFloat((iron * multiplier).toFixed(1)),
                     vitaminC: Math.round(vitaminC * multiplier)
+                });
+
+                // Add 2 servings
+                servings.push({
+                    type: `2 servings (${grams * 2}g)`,
+                    calories: Math.round(calories * multiplier * 2),
+                    protein: parseFloat((protein * multiplier * 2).toFixed(1)),
+                    carbs: parseFloat((carbs * multiplier * 2).toFixed(1)),
+                    fats: parseFloat((fats * multiplier * 2).toFixed(1)),
+                    fiber: parseFloat((fiber * multiplier * 2).toFixed(1)),
+                    sugar: parseFloat((sugar * multiplier * 2).toFixed(1)),
+                    sodium: Math.round(sodium * multiplier * 2),
+                    calcium: Math.round(calcium * multiplier * 2),
+                    iron: parseFloat((iron * multiplier * 2).toFixed(1)),
+                    vitaminC: Math.round(vitaminC * multiplier * 2)
+                });
+
+                // Add 3 servings
+                servings.push({
+                    type: `3 servings (${grams * 3}g)`,
+                    calories: Math.round(calories * multiplier * 3),
+                    protein: parseFloat((protein * multiplier * 3).toFixed(1)),
+                    carbs: parseFloat((carbs * multiplier * 3).toFixed(1)),
+                    fats: parseFloat((fats * multiplier * 3).toFixed(1)),
+                    fiber: parseFloat((fiber * multiplier * 3).toFixed(1)),
+                    sugar: parseFloat((sugar * multiplier * 3).toFixed(1)),
+                    sodium: Math.round(sodium * multiplier * 3),
+                    calcium: Math.round(calcium * multiplier * 3),
+                    iron: parseFloat((iron * multiplier * 3).toFixed(1)),
+                    vitaminC: Math.round(vitaminC * multiplier * 3)
                 });
             }
         }
