@@ -275,6 +275,33 @@ img {
     transform: scale(1.1);
 }
 
+.date-nav-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+}
+
+.date-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.date-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
 .current-date {
     font-size: 1.125rem;
     font-weight: 600;

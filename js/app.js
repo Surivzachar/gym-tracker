@@ -366,6 +366,17 @@ class GymTrackerApp {
             }
         });
 
+        // Date Navigation Buttons
+        document.getElementById('prevDayBtn').addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent date banner click
+            this.navigateToDay(-1);
+        });
+
+        document.getElementById('nextDayBtn').addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent date banner click
+            this.navigateToDay(1);
+        });
+
         // Add Exercise
         document.getElementById('addExerciseBtn').addEventListener('click', () => {
             this.openAddExerciseModal();
@@ -4640,6 +4651,13 @@ class GymTrackerApp {
         } else {
             journeyDisplay.textContent = 'Set your start date';
         }
+
+        // Update next button state (disable if we're at today)
+        const nextBtn = document.getElementById('nextDayBtn');
+        if (nextBtn) {
+            const displayDate = this.workingDate ? new Date(this.workingDate) : getCurrentDateNZ();
+            nextBtn.disabled = (displayDate.toDateString() === today.toDateString());
+        }
     }
 
     returnToToday() {
@@ -5740,6 +5758,43 @@ class GymTrackerApp {
 
         // Refresh dashboard to show data for this date
         this.renderDashboard();
+    }
+
+    navigateToDay(offset) {
+        // Get current working date or today
+        const currentDate = this.workingDate ? new Date(this.workingDate) : getCurrentDateNZ();
+
+        // Calculate new date
+        const newDate = new Date(currentDate);
+        newDate.setDate(newDate.getDate() + offset);
+
+        // Don't allow navigating to future dates
+        const today = getCurrentDateNZ();
+        if (newDate > today) {
+            // If trying to go forward from a past date, just return to today
+            if (offset > 0) {
+                this.returnToToday();
+            }
+            return;
+        }
+
+        // Set new working date
+        const newDateString = newDate.toISOString().split('T')[0];
+        this.workingDate = newDateString;
+
+        // Update UI
+        this.updateDateBanner();
+        this.renderDashboard();
+        this.renderFood();
+        this.renderWorkout();
+
+        // Update next button state (disable if we're at today)
+        const nextBtn = document.getElementById('nextDayBtn');
+        if (newDate.toDateString() === today.toDateString()) {
+            nextBtn.disabled = true;
+        } else {
+            nextBtn.disabled = false;
+        }
     }
 
     // Google Drive Sync Methods
