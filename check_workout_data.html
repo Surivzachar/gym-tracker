@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Workout Data Recovery</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        pre { background: #f5f5f5; padding: 10px; overflow: auto; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Workout Data Recovery Tool</h1>
+    <button onclick="checkData()">Check All Workout Data</button>
+    <button onclick="checkToday()">Check Today's Workouts</button>
+    <button onclick="checkYesterday()">Check Yesterday's Workouts</button>
+    <button onclick="checkCurrentWorkout()">Check Current (Unsaved) Workout</button>
+    <div id="output"></div>
+
+    <script>
+        function checkData() {
+            const allWorkouts = JSON.parse(localStorage.getItem('gym_tracker_workouts') || '[]');
+            document.getElementById('output').innerHTML = '<h2>All Workouts:</h2><pre>' + JSON.stringify(allWorkouts, null, 2) + '</pre>';
+        }
+
+        function checkToday() {
+            const today = new Date().toISOString().split('T')[0];
+            const allWorkouts = JSON.parse(localStorage.getItem('gym_tracker_workouts') || '[]');
+            const todayWorkouts = allWorkouts.filter(w => w.date === today);
+            document.getElementById('output').innerHTML = '<h2>Today (' + today + '):</h2><pre>' + JSON.stringify(todayWorkouts, null, 2) + '</pre>';
+        }
+
+        function checkYesterday() {
+            const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+            const allWorkouts = JSON.parse(localStorage.getItem('gym_tracker_workouts') || '[]');
+            const yesterdayWorkouts = allWorkouts.filter(w => w.date === yesterday);
+            document.getElementById('output').innerHTML = '<h2>Yesterday (' + yesterday + '):</h2><pre>' + JSON.stringify(yesterdayWorkouts, null, 2) + '</pre>';
+        }
+
+        function checkCurrentWorkout() {
+            const currentWorkout = JSON.parse(localStorage.getItem('gym_tracker_current_workout') || 'null');
+            document.getElementById('output').innerHTML = '<h2>Current (Unsaved) Workout:</h2><pre>' + JSON.stringify(currentWorkout, null, 2) + '</pre>';
+        }
+    </script>
+</body>
+</html>
