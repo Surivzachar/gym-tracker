@@ -3156,12 +3156,19 @@ class GymTrackerApp {
             suggestionsContainer.innerHTML = '';
         }
 
-        // Hide "Save as Custom Food" checkbox when selecting from database
-        // (since it's already in a database, no need to save again)
+        // Show "Save as Custom Food" checkbox for barcode products
+        // (so user can save them for quick access without scanning again)
+        // Hide for foods already in local/custom database
         const saveCustomContainer = document.getElementById('saveAsCustomFoodContainer');
         if (saveCustomContainer) {
-            saveCustomContainer.style.display = 'none';
-            document.getElementById('saveAsCustomFoodCheckbox').checked = false;
+            // Show checkbox for barcode products from OpenFoodFacts
+            if (food.source === 'openfoodfacts') {
+                saveCustomContainer.style.display = 'block';
+                document.getElementById('saveAsCustomFoodCheckbox').checked = true;
+            } else {
+                saveCustomContainer.style.display = 'none';
+                document.getElementById('saveAsCustomFoodCheckbox').checked = false;
+            }
         }
 
         // Check if food has multiple servings (advanced serving system)
@@ -3642,17 +3649,42 @@ class GymTrackerApp {
         const saveAsCustomCheckbox = document.getElementById('saveAsCustomFoodCheckbox');
         if (saveAsCustomCheckbox && saveAsCustomCheckbox.checked && !isEditing) {
             try {
-                // Save the base food data (without quantity multipliers) to custom foods
-                const customFoodData = {
-                    name: name, // Original name without quantity prefix
-                    calories: this.selectedFood ? this.selectedFood.calories : totalCalories,
-                    protein: this.selectedFood ? this.selectedFood.protein : totalProtein,
-                    carbs: this.selectedFood ? this.selectedFood.carbs : totalCarbs,
-                    fats: this.selectedFood ? this.selectedFood.fats : totalFats,
-                    category: this.selectedFood?.category || 'Custom',
-                    serving: this.selectedFood?.serving || '1 serving',
-                    source: 'custom'
-                };
+                let customFoodData;
+
+                if (isAdvancedServing && this.selectedFood.selectedServing) {
+                    // For barcode products: save the SELECTED serving as a custom food
+                    const serving = this.selectedFood.selectedServing;
+                    customFoodData = {
+                        name: `${name} (${this.selectedFood.selectedServingType})`,
+                        calories: serving.calories,
+                        protein: serving.protein,
+                        carbs: serving.carbs,
+                        fats: serving.fats,
+                        category: this.selectedFood?.category || 'Custom',
+                        serving: this.selectedFood.selectedServingType,
+                        source: 'custom'
+                    };
+
+                    // Add micronutrients if present
+                    if (serving.fiber !== undefined) customFoodData.fiber = serving.fiber;
+                    if (serving.sugar !== undefined) customFoodData.sugar = serving.sugar;
+                    if (serving.sodium !== undefined) customFoodData.sodium = serving.sodium;
+                    if (serving.calcium !== undefined) customFoodData.calcium = serving.calcium;
+                    if (serving.iron !== undefined) customFoodData.iron = serving.iron;
+                    if (serving.vitaminC !== undefined) customFoodData.vitaminC = serving.vitaminC;
+                } else {
+                    // For regular foods: save the base food data (without quantity multipliers)
+                    customFoodData = {
+                        name: name, // Original name without quantity prefix
+                        calories: this.selectedFood ? this.selectedFood.calories : totalCalories,
+                        protein: this.selectedFood ? this.selectedFood.protein : totalProtein,
+                        carbs: this.selectedFood ? this.selectedFood.carbs : totalCarbs,
+                        fats: this.selectedFood ? this.selectedFood.fats : totalFats,
+                        category: this.selectedFood?.category || 'Custom',
+                        serving: this.selectedFood?.serving || '1 serving',
+                        source: 'custom'
+                    };
+                }
 
                 Storage.addCustomFood(customFoodData);
                 console.log('✅ Saved as custom food:', customFoodData.name);
