@@ -1280,7 +1280,12 @@
                         <select id="servingTypeSelect" class="input">
                             <option value="">Select serving size...</option>
                         </select>
-                        <p class="helper-text">Choose how you want to measure this food</p>
+                        <div id="customGramsInputGroup" style="display: none; margin-top: 0.75rem;">
+                            <label class="input-label">Enter Grams</label>
+                            <input type="number" id="customGramsInput" class="input" placeholder="e.g., 120" min="1" step="1">
+                            <p class="helper-text">Macros will be calculated automatically</p>
+                        </div>
+                        <p class="helper-text" id="servingHelperText">Choose how you want to measure this food</p>
                     </div>
 
                     <!-- Legacy Quantity Input (for foods without servings array) -->

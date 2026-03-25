@@ -2939,6 +2939,7 @@ class GymTrackerApp {
             // Hide serving dropdown
             document.getElementById('servingTypeGroup').style.display = 'none';
             document.getElementById('servingTypeSelect').innerHTML = '<option value="">Select serving size...</option>';
+            document.getElementById('customGramsInputGroup').style.display = 'none';
             // Hide portion buttons
             document.getElementById('portionSizeButtons').style.display = 'none';
             // Clear search suggestions
@@ -3039,6 +3040,7 @@ class GymTrackerApp {
             // Reset serving dropdown and show legacy inputs by default
             document.getElementById('servingTypeGroup').style.display = 'none';
             document.getElementById('servingTypeSelect').innerHTML = '<option value="">Select serving size...</option>';
+            document.getElementById('customGramsInputGroup').style.display = 'none';
             document.getElementById('legacyQuantityGroup').style.display = 'block';
             document.getElementById('portionSizeButtons').style.display = 'none';
 
@@ -3204,15 +3206,69 @@ class GymTrackerApp {
                 if (servingIndex >= 0 && servingIndex < food.servings.length) {
                     const selectedServing = food.servings[servingIndex];
 
-                    // Auto-fill nutrition values
-                    document.getElementById('caloriesInput').value = selectedServing.calories;
-                    document.getElementById('proteinInput').value = selectedServing.protein;
-                    document.getElementById('carbsInput').value = selectedServing.carbs;
-                    document.getElementById('fatsInput').value = selectedServing.fats;
+                    // Check if this is the custom grams option
+                    if (selectedServing.isCustom && selectedServing.per100g) {
+                        // Show custom grams input
+                        document.getElementById('customGramsInputGroup').style.display = 'block';
+                        document.getElementById('servingHelperText').style.display = 'none';
 
-                    // Store selected serving in selectedFood for saving later
-                    this.selectedFood.selectedServing = selectedServing;
-                    this.selectedFood.selectedServingType = selectedServing.type;
+                        // Clear macro fields initially
+                        document.getElementById('caloriesInput').value = '';
+                        document.getElementById('proteinInput').value = '';
+                        document.getElementById('carbsInput').value = '';
+                        document.getElementById('fatsInput').value = '';
+
+                        // Store per-100g data for calculation
+                        this.selectedFood.per100g = selectedServing.per100g;
+                        this.selectedFood.isCustomGrams = true;
+
+                        // Set up custom grams input handler
+                        const customGramsInput = document.getElementById('customGramsInput');
+                        customGramsInput.value = '';
+                        customGramsInput.oninput = () => {
+                            const grams = parseFloat(customGramsInput.value);
+                            if (grams > 0) {
+                                const multiplier = grams / 100;
+                                const per100g = this.selectedFood.per100g;
+
+                                // Calculate and populate macros
+                                document.getElementById('caloriesInput').value = Math.round(per100g.calories * multiplier);
+                                document.getElementById('proteinInput').value = (per100g.protein * multiplier).toFixed(1);
+                                document.getElementById('carbsInput').value = (per100g.carbs * multiplier).toFixed(1);
+                                document.getElementById('fatsInput').value = (per100g.fats * multiplier).toFixed(1);
+
+                                // Store calculated serving for saving
+                                this.selectedFood.selectedServing = {
+                                    calories: Math.round(per100g.calories * multiplier),
+                                    protein: parseFloat((per100g.protein * multiplier).toFixed(1)),
+                                    carbs: parseFloat((per100g.carbs * multiplier).toFixed(1)),
+                                    fats: parseFloat((per100g.fats * multiplier).toFixed(1)),
+                                    fiber: parseFloat((per100g.fiber * multiplier).toFixed(1)),
+                                    sugar: parseFloat((per100g.sugar * multiplier).toFixed(1)),
+                                    sodium: Math.round(per100g.sodium * multiplier),
+                                    calcium: Math.round(per100g.calcium * multiplier),
+                                    iron: parseFloat((per100g.iron * multiplier).toFixed(1)),
+                                    vitaminC: Math.round(per100g.vitaminC * multiplier)
+                                };
+                                this.selectedFood.selectedServingType = `${grams}g`;
+                            }
+                        };
+                    } else {
+                        // Hide custom grams input for preset servings
+                        document.getElementById('customGramsInputGroup').style.display = 'none';
+                        document.getElementById('servingHelperText').style.display = 'block';
+                        this.selectedFood.isCustomGrams = false;
+
+                        // Auto-fill nutrition values from preset serving
+                        document.getElementById('caloriesInput').value = selectedServing.calories;
+                        document.getElementById('proteinInput').value = selectedServing.protein;
+                        document.getElementById('carbsInput').value = selectedServing.carbs;
+                        document.getElementById('fatsInput').value = selectedServing.fats;
+
+                        // Store selected serving in selectedFood for saving later
+                        this.selectedFood.selectedServing = selectedServing;
+                        this.selectedFood.selectedServingType = selectedServing.type;
+                    }
                 }
             };
 

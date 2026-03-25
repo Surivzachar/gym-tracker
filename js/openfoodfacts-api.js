@@ -174,6 +174,24 @@ const OpenFoodFactsAPI = {
             vitaminC: Math.round(vitaminC * 0.28)
         });
 
+        // Add custom grams option (stores per-100g values for calculation)
+        servings.push({
+            type: 'Custom (enter grams)',
+            isCustom: true,
+            per100g: {
+                calories: calories,
+                protein: protein,
+                carbs: carbs,
+                fats: fats,
+                fiber: fiber,
+                sugar: sugar,
+                sodium: sodium,
+                calcium: calcium,
+                iron: iron,
+                vitaminC: vitaminC
+            }
+        });
+
         return servings;
     },
 
