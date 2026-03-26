@@ -2744,7 +2744,13 @@ class GymTrackerApp {
             // Show success message
             const routine = Storage.getAllRoutines().find(r => r.id === routineId);
             if (routine) {
-                alert(`✅ Added ${routine.exercises.length} exercises from "${routine.name}"!`);
+                // If editing a past date, remind user to finish workout
+                if (this.workingDate) {
+                    const dateStr = formatDateNZ(new Date(this.workingDate), { weekday: 'short', month: 'short', day: 'numeric' });
+                    alert(`✅ Added ${routine.exercises.length} exercises from "${routine.name}"!\n\n⚠️ IMPORTANT:\nClick "Finish Workout" to save this to ${dateStr}.\n\n(Exercises are loaded but not saved until you finish the workout)`);
+                } else {
+                    alert(`✅ Added ${routine.exercises.length} exercises from "${routine.name}"!`);
+                }
             }
         } else {
             console.error('Failed to load routine');
