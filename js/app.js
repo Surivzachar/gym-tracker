@@ -571,6 +571,10 @@ class GymTrackerApp {
             this.clearCacheAndReload();
         });
 
+        document.getElementById('debugWorkoutDatesBtn').addEventListener('click', () => {
+            this.debugWorkoutDates();
+        });
+
         // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         if (darkModeToggle) {
@@ -4906,6 +4910,75 @@ class GymTrackerApp {
             console.error('Error clearing cache:', error);
             alert('Error clearing cache. Try manually refreshing the page (Ctrl+Shift+R or Cmd+Shift+R).');
         }
+    }
+
+    debugWorkoutDates() {
+        const workouts = Storage.getAllWorkouts();
+
+        if (workouts.length === 0) {
+            alert('No workouts found in storage.');
+            return;
+        }
+
+        // Get the last 5 workouts
+        const recentWorkouts = workouts.slice(0, 5);
+
+        let debugInfo = `🔍 WORKOUT DATE DEBUG\n`;
+        debugInfo += `Total workouts: ${workouts.length}\n\n`;
+        debugInfo += `Last 5 workouts:\n`;
+        debugInfo += `${'='.repeat(40)}\n\n`;
+
+        recentWorkouts.forEach((workout, index) => {
+            const dateObj = new Date(workout.date);
+            const isoDate = dateObj.toISOString().split('T')[0];
+            const dateString = dateObj.toDateString();
+
+            debugInfo += `Workout #${index + 1}\n`;
+            debugInfo += `ID: ${workout.id}\n`;
+            debugInfo += `Stored: ${workout.date}\n`;
+            debugInfo += `ISO: ${isoDate}\n`;
+            debugInfo += `toDateString(): ${dateString}\n`;
+            debugInfo += `Exercises: ${workout.exercises.length}\n`;
+            debugInfo += `\n`;
+        });
+
+        // Check which workouts match today
+        const today = getCurrentDateNZ();
+        const todayStr = today.toDateString();
+        const todayMatches = workouts.filter(w => new Date(w.date).toDateString() === todayStr);
+
+        debugInfo += `\n${'='.repeat(40)}\n`;
+        debugInfo += `TODAY (${todayStr}):\n`;
+        debugInfo += `${todayMatches.length} workout(s) match\n`;
+        todayMatches.forEach(w => {
+            debugInfo += `  - ID: ${w.id}, ${w.exercises.length} exercises\n`;
+        });
+
+        // Check yesterday
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = yesterday.toDateString();
+        const yesterdayMatches = workouts.filter(w => new Date(w.date).toDateString() === yesterdayStr);
+
+        debugInfo += `\nYESTERDAY (${yesterdayStr}):\n`;
+        debugInfo += `${yesterdayMatches.length} workout(s) match\n`;
+        yesterdayMatches.forEach(w => {
+            debugInfo += `  - ID: ${w.id}, ${w.exercises.length} exercises\n`;
+        });
+
+        // Check Wednesday
+        const wed = new Date('2026-03-25');
+        const wedStr = wed.toDateString();
+        const wedMatches = workouts.filter(w => new Date(w.date).toDateString() === wedStr);
+
+        debugInfo += `\nWEDNESDAY 3/25 (${wedStr}):\n`;
+        debugInfo += `${wedMatches.length} workout(s) match\n`;
+        wedMatches.forEach(w => {
+            debugInfo += `  - ID: ${w.id}, ${w.exercises.length} exercises\n`;
+        });
+
+        alert(debugInfo);
+        console.log(debugInfo);
     }
 
     calculateStorageUsed() {
