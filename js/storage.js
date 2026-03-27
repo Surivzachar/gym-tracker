@@ -690,16 +690,20 @@ const Storage = {
         return todayMetrics;
     },
 
-    updateTodayMetrics(updates) {
+    updateTodayMetrics(updates, customDate = null) {
         const allMetrics = this.getAllDailyMetrics();
-        const today = new Date().toDateString();
-        const index = allMetrics.findIndex(m => new Date(m.date).toDateString() === today);
+
+        // Use custom date if provided, otherwise use today
+        const targetDate = customDate ? new Date(customDate) : new Date();
+        const targetDateStr = targetDate.toDateString();
+
+        const index = allMetrics.findIndex(m => new Date(m.date).toDateString() === targetDateStr);
 
         if (index !== -1) {
             allMetrics[index] = { ...allMetrics[index], ...updates };
         } else {
             allMetrics.push({
-                date: new Date().toISOString(),
+                date: targetDate.toISOString(),
                 steps: 0,
                 waterGlasses: 0,
                 sleepHours: 0,

@@ -7111,48 +7111,49 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     }
 
     openCaloriesModal() {
-        const metrics = Storage.getTodayMetrics();
+        const metrics = Storage.getTodayMetrics(this.workingDate);
         document.getElementById('caloriesInput').value = metrics.workoutCalories || '';
         this.openModal('caloriesModal');
     }
 
     saveCalories() {
         const calories = parseInt(document.getElementById('caloriesInput').value) || 0;
-        Storage.updateTodayMetrics({ workoutCalories: calories });
+        Storage.updateTodayMetrics({ workoutCalories: calories }, this.workingDate);
         this.closeModal('caloriesModal');
         this.renderDashboard();
         this.syncAfterChange();
     }
 
     openStepsModal() {
-        const metrics = Storage.getTodayMetrics();
+        const metrics = Storage.getTodayMetrics(this.workingDate);
         document.getElementById('stepsInput').value = metrics.steps || '';
         this.openModal('stepsModal');
     }
 
     saveSteps() {
         const steps = parseInt(document.getElementById('stepsInput').value) || 0;
-        Storage.updateTodayMetrics({ steps: steps });
+        Storage.updateTodayMetrics({ steps: steps }, this.workingDate);
         this.closeModal('stepsModal');
         this.renderDashboard();
         this.syncAfterChange();
     }
 
     openWaterModal() {
-        const metrics = Storage.getTodayMetrics();
+        const metrics = Storage.getTodayMetrics(this.workingDate);
         document.getElementById('waterInput').value = metrics.waterGlasses || '';
         this.openModal('waterModal');
     }
 
     addWaterGlass() {
-        const metrics = Storage.getTodayMetrics();
+        const metrics = Storage.getTodayMetrics(this.workingDate);
         const current = metrics.waterGlasses || 0;
 
         // Save to both storages for backward compatibility
-        Storage.updateTodayMetrics({ waterGlasses: current + 1 });
+        Storage.updateTodayMetrics({ waterGlasses: current + 1 }, this.workingDate);
 
         // Also save to WATER_INTAKE for consistency with Progress tab
-        Storage.addWaterGlass();
+        const targetDate = this.workingDate ? new Date(this.workingDate) : getCurrentDateNZ();
+        Storage.setWaterIntakeForDate(targetDate, { glasses: current + 1, goal: 8 });
 
         this.closeModal('waterModal');
         this.renderDashboard();
@@ -7163,11 +7164,11 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         const glasses = parseInt(document.getElementById('waterInput').value) || 0;
 
         // Save to both storages for backward compatibility
-        Storage.updateTodayMetrics({ waterGlasses: glasses });
+        Storage.updateTodayMetrics({ waterGlasses: glasses }, this.workingDate);
 
         // Also save to WATER_INTAKE for consistency with Progress tab
-        const today = getCurrentDateNZ();
-        Storage.setWaterIntakeForDate(today, { glasses: glasses, goal: 8 });
+        const targetDate = this.workingDate ? new Date(this.workingDate) : getCurrentDateNZ();
+        Storage.setWaterIntakeForDate(targetDate, { glasses: glasses, goal: 8 });
 
         this.closeModal('waterModal');
         this.renderDashboard();
@@ -7175,7 +7176,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     }
 
     openSleepModal() {
-        const metrics = Storage.getTodayMetrics();
+        const metrics = Storage.getTodayMetrics(this.workingDate);
         document.getElementById('sleepInput').value = metrics.sleepHours || '';
         this.openModal('sleepModal');
     }
@@ -7184,13 +7185,13 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         const hours = parseFloat(document.getElementById('sleepInput').value) || 0;
 
         // Save to both storages for backward compatibility
-        Storage.updateTodayMetrics({ sleepHours: hours });
+        Storage.updateTodayMetrics({ sleepHours: hours }, this.workingDate);
 
         // Also save to SLEEP_LOG for consistency with Progress tab
         if (hours > 0) {
-            const today = getCurrentDateNZ();
+            const targetDate = this.workingDate ? new Date(this.workingDate) : getCurrentDateNZ();
             Storage.addSleepLog({
-                date: today.toISOString().split('T')[0],
+                date: targetDate.toISOString().split('T')[0],
                 hours: hours,
                 quality: 'good',
                 notes: ''
