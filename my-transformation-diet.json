@@ -116,7 +116,7 @@
     },
     {
       "id": 1741800020,
-      "name": "PLAN A: Meal 2 - Lunch",
+      "name": "PLAN A: Meal 2 - Lunch (Paneer)",
       "meals": [
         {
           "id": 1741800021,
@@ -175,7 +175,71 @@
         "carbs": 62,
         "fats": 16
       },
-      "instructions": "12:30 PM - High protein, moderate carbs. Can swap paneer for 80g dry soya chunks (105g cooked).",
+      "instructions": "12:30 PM - High protein, moderate carbs. Paneer version.",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800121,
+      "name": "PLAN A: Meal 2 - Lunch (Soya Chunks)",
+      "meals": [
+        {
+          "id": 1741800122,
+          "name": "Soya Chunks Curry (80g dry = 105g cooked)",
+          "quantity": 1,
+          "calories": 222,
+          "protein": 37,
+          "carbs": 13,
+          "fats": 6,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800123,
+          "name": "Brown Rice (1 cup cooked = 150g)",
+          "quantity": 1,
+          "calories": 170,
+          "protein": 4,
+          "carbs": 35,
+          "fats": 1,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800124,
+          "name": "Mixed Dal (3/4 cup = 150ml)",
+          "quantity": 1,
+          "calories": 75,
+          "protein": 5,
+          "carbs": 13,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800125,
+          "name": "Steamed Vegetables (200g)",
+          "quantity": 1,
+          "calories": 80,
+          "protein": 3,
+          "carbs": 16,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800126,
+          "name": "Side Salad (no dressing)",
+          "quantity": 1,
+          "calories": 25,
+          "protein": 1,
+          "carbs": 5,
+          "fats": 0,
+          "mealType": "lunch"
+        }
+      ],
+      "totalMacros": {
+        "calories": 572,
+        "protein": 50,
+        "carbs": 82,
+        "fats": 7
+      },
+      "instructions": "12:30 PM - High protein, moderate carbs. Soya chunks version (80g dry = 105g cooked).",
       "createdAt": "2026-03-31T00:00:00.000Z"
     },
     {
@@ -224,7 +288,7 @@
     },
     {
       "id": 1741800040,
-      "name": "PLAN A: Meal 4 - Light Dinner",
+      "name": "PLAN A: Meal 4 - Light Dinner (Paneer)",
       "meals": [
         {
           "id": 1741800041,
@@ -283,7 +347,71 @@
         "carbs": 38,
         "fats": 15
       },
-      "instructions": "7:30 PM - Light dinner for better sleep. Can swap paneer for 3-egg omelette + 2 egg whites (no oil).",
+      "instructions": "7:30 PM - Light dinner for better sleep. Paneer version.",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800141,
+      "name": "PLAN A: Meal 4 - Light Dinner (Egg Omelette)",
+      "meals": [
+        {
+          "id": 1741800142,
+          "name": "Egg Omelette (3 whole eggs + 2 egg whites, no oil)",
+          "quantity": 1,
+          "calories": 244,
+          "protein": 26,
+          "carbs": 1,
+          "fats": 15,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800143,
+          "name": "Large Mixed Salad (cucumber, tomato, lettuce, onion)",
+          "quantity": 1,
+          "calories": 40,
+          "protein": 2,
+          "carbs": 8,
+          "fats": 0,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800144,
+          "name": "Olive Oil (1 tsp on salad)",
+          "quantity": 1,
+          "calories": 40,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 5,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800145,
+          "name": "Steamed Vegetables (unlimited)",
+          "quantity": 1,
+          "calories": 60,
+          "protein": 2,
+          "carbs": 12,
+          "fats": 0,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800146,
+          "name": "Small Sweet Potato (100g boiled)",
+          "quantity": 1,
+          "calories": 90,
+          "protein": 2,
+          "carbs": 20,
+          "fats": 0,
+          "mealType": "dinner"
+        }
+      ],
+      "totalMacros": {
+        "calories": 474,
+        "protein": 32,
+        "carbs": 41,
+        "fats": 20
+      },
+      "instructions": "7:30 PM - Light dinner for better sleep. Egg omelette version (3 whole eggs + 2 egg whites).",
       "createdAt": "2026-03-31T00:00:00.000Z"
     },
     {
@@ -386,7 +514,7 @@
     },
     {
       "id": 1741800070,
-      "name": "PLAN B: Meal 3 - Lunch (BIGGEST MEAL)",
+      "name": "PLAN B: Meal 3 - Lunch (Paneer - BIGGEST MEAL)",
       "meals": [
         {
           "id": 1741800071,
@@ -445,7 +573,71 @@
         "carbs": 78,
         "fats": 17
       },
-      "instructions": "12:00 PM - BIG lunch 3.5 hours before workout. Enough time to digest. Can swap paneer for 80g dry soya chunks.",
+      "instructions": "12:00 PM - BIG lunch 3.5 hours before workout. Enough time to digest. Paneer version.",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800171,
+      "name": "PLAN B: Meal 3 - Lunch (Soya Chunks - BIGGEST MEAL)",
+      "meals": [
+        {
+          "id": 1741800172,
+          "name": "Soya Chunks Curry (80g dry = 105g cooked)",
+          "quantity": 1,
+          "calories": 222,
+          "protein": 37,
+          "carbs": 13,
+          "fats": 6,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800173,
+          "name": "Brown Rice (1.25 cups cooked = 190g)",
+          "quantity": 1,
+          "calories": 215,
+          "protein": 5,
+          "carbs": 45,
+          "fats": 2,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800174,
+          "name": "Mixed Dal (1 cup = 200ml)",
+          "quantity": 1,
+          "calories": 100,
+          "protein": 7,
+          "carbs": 18,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800175,
+          "name": "Vegetables",
+          "quantity": 1,
+          "calories": 60,
+          "protein": 2,
+          "carbs": 12,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800176,
+          "name": "Side Salad",
+          "quantity": 1,
+          "calories": 25,
+          "protein": 1,
+          "carbs": 5,
+          "fats": 0,
+          "mealType": "lunch"
+        }
+      ],
+      "totalMacros": {
+        "calories": 622,
+        "protein": 52,
+        "carbs": 93,
+        "fats": 8
+      },
+      "instructions": "12:00 PM - BIG lunch 3.5 hours before workout. Enough time to digest. Soya chunks version (80g dry = 105g cooked).",
       "createdAt": "2026-03-31T00:00:00.000Z"
     },
     {
