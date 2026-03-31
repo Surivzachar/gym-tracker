@@ -1,0 +1,779 @@
+{
+  "version": "4.0",
+  "exportDate": "2026-03-31T00:00:00.000Z",
+  "note": "12-Week Realistic Transformation Diet - Optimized for getting to 10-12% body fat with visible six-pack",
+  "dailyTargets": {
+    "planA": {
+      "name": "Morning Workout Days (Tue, Wed, Thu, Fri, Sun)",
+      "calories": 1965,
+      "protein": 149,
+      "carbs": 203,
+      "fats": 66
+    },
+    "planB": {
+      "name": "Afternoon Workout Days (Saturday)",
+      "calories": 2080,
+      "protein": 168,
+      "carbs": 226,
+      "fats": 61
+    },
+    "planC": {
+      "name": "Monday (Badminton Day)",
+      "calories": 1950,
+      "protein": 164,
+      "carbs": 201,
+      "fats": 56
+    }
+  },
+  "foodRoutines": [
+    {
+      "id": 1741800001,
+      "name": "PLAN A: Pre-Workout (Morning) - Banana",
+      "meals": [
+        {
+          "id": 1741800002,
+          "name": "Banana (small, 90g)",
+          "quantity": 1,
+          "calories": 90,
+          "protein": 1,
+          "carbs": 23,
+          "fats": 0,
+          "mealType": "breakfast"
+        },
+        {
+          "id": 1741800003,
+          "name": "Warm water (500ml)",
+          "quantity": 1,
+          "calories": 0,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 0,
+          "mealType": "breakfast"
+        }
+      ],
+      "totalMacros": {
+        "calories": 90,
+        "protein": 1,
+        "carbs": 23,
+        "fats": 0
+      },
+      "instructions": "6:45 AM - Eat 15 min before workout. Quick-digesting carbs for energy.",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800010,
+      "name": "PLAN A: Meal 1 - Post-Workout Breakfast (BIGGEST)",
+      "meals": [
+        {
+          "id": 1741800011,
+          "name": "Whole Eggs (4 eggs, boiled or scrambled)",
+          "quantity": 1,
+          "calories": 280,
+          "protein": 24,
+          "carbs": 2,
+          "fats": 20,
+          "mealType": "breakfast"
+        },
+        {
+          "id": 1741800012,
+          "name": "Whole Wheat Toast (2 slices)",
+          "quantity": 1,
+          "calories": 160,
+          "protein": 8,
+          "carbs": 28,
+          "fats": 2,
+          "mealType": "breakfast"
+        },
+        {
+          "id": 1741800013,
+          "name": "Peanut Butter (1 tbsp)",
+          "quantity": 1,
+          "calories": 95,
+          "protein": 4,
+          "carbs": 3,
+          "fats": 8,
+          "mealType": "breakfast"
+        },
+        {
+          "id": 1741800014,
+          "name": "Black Coffee",
+          "quantity": 1,
+          "calories": 0,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 0,
+          "mealType": "breakfast"
+        }
+      ],
+      "totalMacros": {
+        "calories": 575,
+        "protein": 36,
+        "carbs": 48,
+        "fats": 26
+      },
+      "instructions": "8:30 AM - Post-workout meal. Biggest meal after morning training. Peanut butter on toast, eggs on the side.",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800020,
+      "name": "PLAN A: Meal 2 - Lunch",
+      "meals": [
+        {
+          "id": 1741800021,
+          "name": "Paneer Bhurji (150g paneer)",
+          "quantity": 1,
+          "calories": 300,
+          "protein": 27,
+          "carbs": 3,
+          "fats": 20,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800022,
+          "name": "Brown Rice (1 cup cooked = 150g)",
+          "quantity": 1,
+          "calories": 170,
+          "protein": 4,
+          "carbs": 35,
+          "fats": 1,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800023,
+          "name": "Mixed Dal (3/4 cup = 150ml)",
+          "quantity": 1,
+          "calories": 75,
+          "protein": 5,
+          "carbs": 13,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800024,
+          "name": "Steamed Vegetables (200g)",
+          "quantity": 1,
+          "calories": 80,
+          "protein": 3,
+          "carbs": 16,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800025,
+          "name": "Side Salad (no dressing)",
+          "quantity": 1,
+          "calories": 25,
+          "protein": 1,
+          "carbs": 5,
+          "fats": 0,
+          "mealType": "lunch"
+        }
+      ],
+      "totalMacros": {
+        "calories": 580,
+        "protein": 48,
+        "carbs": 62,
+        "fats": 16
+      },
+      "instructions": "12:30 PM - High protein, moderate carbs. Can swap paneer for 80g dry soya chunks (105g cooked).",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800030,
+      "name": "PLAN A: Meal 3 - Afternoon Snack",
+      "meals": [
+        {
+          "id": 1741800031,
+          "name": "Whey Protein (1 scoop with 300ml water)",
+          "quantity": 1,
+          "calories": 120,
+          "protein": 24,
+          "carbs": 3,
+          "fats": 1,
+          "mealType": "snack"
+        },
+        {
+          "id": 1741800032,
+          "name": "Apple (medium, 150g)",
+          "quantity": 1,
+          "calories": 80,
+          "protein": 0,
+          "carbs": 21,
+          "fats": 0,
+          "mealType": "snack"
+        },
+        {
+          "id": 1741800033,
+          "name": "Almonds (exactly 12 pieces)",
+          "quantity": 1,
+          "calories": 84,
+          "protein": 3,
+          "carbs": 3,
+          "fats": 7,
+          "mealType": "snack"
+        }
+      ],
+      "totalMacros": {
+        "calories": 300,
+        "protein": 28,
+        "carbs": 32,
+        "fats": 9
+      },
+      "instructions": "3:30 PM - Protein between meals. Only whey shake of the day.",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800040,
+      "name": "PLAN A: Meal 4 - Light Dinner",
+      "meals": [
+        {
+          "id": 1741800041,
+          "name": "Grilled Paneer Tikka (120g paneer)",
+          "quantity": 1,
+          "calories": 240,
+          "protein": 18,
+          "carbs": 2,
+          "fats": 18,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800042,
+          "name": "Large Mixed Salad (cucumber, tomato, lettuce, onion)",
+          "quantity": 1,
+          "calories": 40,
+          "protein": 2,
+          "carbs": 8,
+          "fats": 0,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800043,
+          "name": "Olive Oil (1 tsp on salad)",
+          "quantity": 1,
+          "calories": 40,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 5,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800044,
+          "name": "Steamed Vegetables (unlimited)",
+          "quantity": 1,
+          "calories": 60,
+          "protein": 2,
+          "carbs": 12,
+          "fats": 0,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800045,
+          "name": "Small Sweet Potato (100g boiled)",
+          "quantity": 1,
+          "calories": 90,
+          "protein": 2,
+          "carbs": 20,
+          "fats": 0,
+          "mealType": "dinner"
+        }
+      ],
+      "totalMacros": {
+        "calories": 420,
+        "protein": 36,
+        "carbs": 38,
+        "fats": 15
+      },
+      "instructions": "7:30 PM - Light dinner for better sleep. Can swap paneer for 3-egg omelette + 2 egg whites (no oil).",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800050,
+      "name": "PLAN B: Meal 1 - Normal Breakfast",
+      "meals": [
+        {
+          "id": 1741800051,
+          "name": "Whole Eggs (3) + Egg Whites (2)",
+          "quantity": 1,
+          "calories": 255,
+          "protein": 26,
+          "carbs": 1,
+          "fats": 16,
+          "mealType": "breakfast"
+        },
+        {
+          "id": 1741800052,
+          "name": "Whole Wheat Toast (2 slices)",
+          "quantity": 1,
+          "calories": 160,
+          "protein": 8,
+          "carbs": 28,
+          "fats": 2,
+          "mealType": "breakfast"
+        },
+        {
+          "id": 1741800053,
+          "name": "Peanut Butter (1 tbsp)",
+          "quantity": 1,
+          "calories": 95,
+          "protein": 4,
+          "carbs": 3,
+          "fats": 8,
+          "mealType": "breakfast"
+        },
+        {
+          "id": 1741800054,
+          "name": "Black Coffee",
+          "quantity": 1,
+          "calories": 0,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 0,
+          "mealType": "breakfast"
+        }
+      ],
+      "totalMacros": {
+        "calories": 495,
+        "protein": 34,
+        "carbs": 42,
+        "fats": 20
+      },
+      "instructions": "7:00 AM - Normal breakfast (not post-workout sized). For Saturday afternoon workout days.",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800060,
+      "name": "PLAN B: Meal 2 - Mid-Morning Snack",
+      "meals": [
+        {
+          "id": 1741800061,
+          "name": "Greek Yogurt (200g, plain unsweetened)",
+          "quantity": 1,
+          "calories": 140,
+          "protein": 20,
+          "carbs": 8,
+          "fats": 4,
+          "mealType": "snack"
+        },
+        {
+          "id": 1741800062,
+          "name": "Almonds (10 pieces)",
+          "quantity": 1,
+          "calories": 70,
+          "protein": 3,
+          "carbs": 2,
+          "fats": 6,
+          "mealType": "snack"
+        },
+        {
+          "id": 1741800063,
+          "name": "Small Apple (120g)",
+          "quantity": 1,
+          "calories": 60,
+          "protein": 0,
+          "carbs": 16,
+          "fats": 0,
+          "mealType": "snack"
+        }
+      ],
+      "totalMacros": {
+        "calories": 270,
+        "protein": 22,
+        "carbs": 28,
+        "fats": 8
+      },
+      "instructions": "10:30 AM - Protein + fruit to hold you till lunch.",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800070,
+      "name": "PLAN B: Meal 3 - Lunch (BIGGEST MEAL)",
+      "meals": [
+        {
+          "id": 1741800071,
+          "name": "Paneer Curry (150g paneer)",
+          "quantity": 1,
+          "calories": 320,
+          "protein": 27,
+          "carbs": 4,
+          "fats": 22,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800072,
+          "name": "Brown Rice (1.25 cups cooked = 190g)",
+          "quantity": 1,
+          "calories": 215,
+          "protein": 5,
+          "carbs": 45,
+          "fats": 2,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800073,
+          "name": "Mixed Dal (1 cup = 200ml)",
+          "quantity": 1,
+          "calories": 100,
+          "protein": 7,
+          "carbs": 18,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800074,
+          "name": "Vegetables",
+          "quantity": 1,
+          "calories": 60,
+          "protein": 2,
+          "carbs": 12,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1741800075,
+          "name": "Side Salad",
+          "quantity": 1,
+          "calories": 25,
+          "protein": 1,
+          "carbs": 5,
+          "fats": 0,
+          "mealType": "lunch"
+        }
+      ],
+      "totalMacros": {
+        "calories": 650,
+        "protein": 50,
+        "carbs": 78,
+        "fats": 17
+      },
+      "instructions": "12:00 PM - BIG lunch 3.5 hours before workout. Enough time to digest. Can swap paneer for 80g dry soya chunks.",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800080,
+      "name": "PLAN B: Meal 4 - Pre-Workout Snack",
+      "meals": [
+        {
+          "id": 1741800081,
+          "name": "Whey Protein (1 scoop with water)",
+          "quantity": 1,
+          "calories": 120,
+          "protein": 24,
+          "carbs": 3,
+          "fats": 1,
+          "mealType": "snack"
+        },
+        {
+          "id": 1741800082,
+          "name": "Dates (4-5 pieces, 30g)",
+          "quantity": 1,
+          "calories": 82,
+          "protein": 0,
+          "carbs": 22,
+          "fats": 0,
+          "mealType": "snack"
+        },
+        {
+          "id": 1741800083,
+          "name": "Warm Water (500ml)",
+          "quantity": 1,
+          "calories": 0,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 0,
+          "mealType": "snack"
+        }
+      ],
+      "totalMacros": {
+        "calories": 235,
+        "protein": 24,
+        "carbs": 36,
+        "fats": 2
+      },
+      "instructions": "2:45 PM - 45 min before gym (3:30 PM workout). Fast-digesting. No banana = no stomach issues. Dates = instant energy.",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800090,
+      "name": "PLAN B: Meal 5 - Post-Workout Dinner",
+      "meals": [
+        {
+          "id": 1741800091,
+          "name": "Grilled Chicken Breast (120g) OR Paneer Tikka (150g)",
+          "quantity": 1,
+          "calories": 200,
+          "protein": 36,
+          "carbs": 0,
+          "fats": 6,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800092,
+          "name": "Steamed Vegetables (broccoli, beans, peppers)",
+          "quantity": 1,
+          "calories": 80,
+          "protein": 4,
+          "carbs": 16,
+          "fats": 0,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800093,
+          "name": "Medium Sweet Potato (120g)",
+          "quantity": 1,
+          "calories": 108,
+          "protein": 2,
+          "carbs": 25,
+          "fats": 0,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800094,
+          "name": "Small Salad with 1 tsp olive oil",
+          "quantity": 1,
+          "calories": 60,
+          "protein": 1,
+          "carbs": 5,
+          "fats": 4,
+          "mealType": "dinner"
+        }
+      ],
+      "totalMacros": {
+        "calories": 430,
+        "protein": 38,
+        "carbs": 42,
+        "fats": 14
+      },
+      "instructions": "5:15 PM - Post-workout dinner right after gym. Protein + carbs for recovery. Early dinner = good sleep.",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800100,
+      "name": "PLAN C: Meal 4 - Early Dinner (Before Badminton)",
+      "meals": [
+        {
+          "id": 1741800101,
+          "name": "Grilled Chicken (100g) OR Paneer (120g)",
+          "quantity": 1,
+          "calories": 180,
+          "protein": 26,
+          "carbs": 0,
+          "fats": 8,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800102,
+          "name": "Brown Rice (1 cup cooked)",
+          "quantity": 1,
+          "calories": 170,
+          "protein": 4,
+          "carbs": 35,
+          "fats": 1,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800103,
+          "name": "Steamed Vegetables",
+          "quantity": 1,
+          "calories": 60,
+          "protein": 2,
+          "carbs": 12,
+          "fats": 0,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1741800104,
+          "name": "Side Salad",
+          "quantity": 1,
+          "calories": 25,
+          "protein": 1,
+          "carbs": 5,
+          "fats": 0,
+          "mealType": "dinner"
+        }
+      ],
+      "totalMacros": {
+        "calories": 400,
+        "protein": 32,
+        "carbs": 48,
+        "fats": 10
+      },
+      "instructions": "5:45 PM - 'Early Dinner' 2 hours before badminton (7:30 PM). Enough energy for 2.5 hours of play. Not too heavy.",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1741800110,
+      "name": "PLAN C: Meal 5 - Post-Badminton (LIGHT)",
+      "meals": [
+        {
+          "id": 1741800111,
+          "name": "Whey Protein Shake (1 scoop with water) OR 4 Boiled Egg Whites OR 1 cup Greek Yogurt",
+          "quantity": 1,
+          "calories": 135,
+          "protein": 26,
+          "carbs": 5,
+          "fats": 1,
+          "mealType": "snack"
+        }
+      ],
+      "totalMacros": {
+        "calories": 135,
+        "protein": 26,
+        "carbs": 5,
+        "fats": 1
+      },
+      "instructions": "10:15 PM - Light protein before bed after badminton (7:30-10 PM). Muscle recovery. Won't affect sleep.",
+      "createdAt": "2026-03-31T00:00:00.000Z"
+    }
+  ],
+  "weeklySchedule": {
+    "monday": {
+      "plan": "PLAN C",
+      "breakfast": "Normal Breakfast (Plan B style)",
+      "snack": "Mid-morning snack",
+      "lunch": "Big Lunch",
+      "earlyDinner": "Early Dinner (5:45 PM before badminton)",
+      "badminton": "7:30-10:00 PM (2.5 hours)",
+      "postBadminton": "Light protein (10:15 PM)",
+      "totalCalories": 1950,
+      "totalProtein": 164,
+      "note": "Special timing for late badminton"
+    },
+    "tuesday": {
+      "plan": "PLAN A",
+      "preWorkout": "Banana + warm water (6:45 AM)",
+      "workout": "7:00 AM - Chest + Triceps + Abs",
+      "breakfast": "Post-workout breakfast BIGGEST (8:30 AM)",
+      "lunch": "Lunch",
+      "snack": "Whey + apple + almonds",
+      "dinner": "Light dinner",
+      "totalCalories": 1965,
+      "totalProtein": 149
+    },
+    "wednesday": {
+      "plan": "PLAN A",
+      "preWorkout": "Banana + warm water (6:45 AM)",
+      "workout": "7:00 AM - Back + Biceps + Abs",
+      "breakfast": "Post-workout breakfast BIGGEST (8:30 AM)",
+      "lunch": "Lunch",
+      "snack": "Whey + apple + almonds",
+      "dinner": "Light dinner",
+      "totalCalories": 1965,
+      "totalProtein": 149
+    },
+    "thursday": {
+      "plan": "PLAN A",
+      "preWorkout": "Banana + warm water (6:45 AM)",
+      "workout": "7:00 AM - Shoulders + Abs",
+      "breakfast": "Post-workout breakfast BIGGEST (8:30 AM)",
+      "lunch": "Lunch",
+      "snack": "Whey + apple + almonds",
+      "dinner": "Light dinner",
+      "totalCalories": 1965,
+      "totalProtein": 149
+    },
+    "friday": {
+      "plan": "PLAN A",
+      "preWorkout": "Banana + warm water (6:45 AM)",
+      "workout": "7:00 AM - Legs + Abs",
+      "breakfast": "Post-workout breakfast BIGGEST (8:30 AM)",
+      "lunch": "Lunch",
+      "snack": "Whey + apple + almonds",
+      "dinner": "Light dinner",
+      "totalCalories": 1965,
+      "totalProtein": 149
+    },
+    "saturday": {
+      "plan": "PLAN B",
+      "breakfast": "Normal breakfast (7:00 AM)",
+      "snack": "Greek yogurt + almonds + apple (10:30 AM)",
+      "lunch": "BIG lunch (12:00 PM)",
+      "preWorkout": "Whey + dates (2:45 PM)",
+      "workout": "3:30 PM - Full Body + Core",
+      "dinner": "Post-workout dinner (5:15 PM)",
+      "totalCalories": 2080,
+      "totalProtein": 168
+    },
+    "sunday": {
+      "plan": "PLAN A",
+      "preWorkout": "Banana + warm water (6:45 AM)",
+      "workout": "7:00 AM - Cardio + Abs",
+      "breakfast": "Post-workout breakfast BIGGEST (8:30 AM)",
+      "lunch": "Lunch",
+      "snack": "Whey + apple + almonds",
+      "dinner": "Light dinner",
+      "totalCalories": 1965,
+      "totalProtein": 149
+    }
+  },
+  "weeklyAverages": {
+    "calories": 1990,
+    "protein": 153,
+    "carbs": 207,
+    "fats": 62,
+    "note": "Target: 2,000-2,100 kcal | 160-170g P | 200-220g C | 55-65g F - Perfect for fat loss!"
+  },
+  "shoppingList": {
+    "weekly": {
+      "proteins": [
+        "3 dozen eggs (36 eggs)",
+        "Paneer (1.2 kg)",
+        "Soya chunks (dry, 400g) - optional",
+        "Greek yogurt (600g)",
+        "Whey protein powder (1 tub)",
+        "Chicken breast (300g, optional)"
+      ],
+      "carbs": [
+        "Brown rice (dry, 1.5 kg)",
+        "Whole wheat bread (2 loaves, 14 slices per loaf)",
+        "Sweet potatoes (1 kg)",
+        "Bananas (5-6 small to medium)",
+        "Apples (7 medium)",
+        "Dates (200g)",
+        "Mixed dal (500g)"
+      ],
+      "fats": [
+        "Almonds (raw, 200g)",
+        "Peanut butter (natural, no sugar, 1 jar)",
+        "Olive oil (1 small bottle)"
+      ],
+      "vegetables": [
+        "Broccoli (500g)",
+        "Green beans (500g)",
+        "Carrots (500g)",
+        "Bell peppers (4-5)",
+        "Cucumber (4-5)",
+        "Tomatoes (1 kg)",
+        "Lettuce/salad greens (2 bags)",
+        "Onions (500g)"
+      ]
+    },
+    "estimatedWeeklyCost": "$70-85 NZD"
+  },
+  "importantNotes": [
+    "✅ PLAN A (Morning Workout): Tue, Wed, Thu, Fri, Sun - 1,965 kcal | 149g P",
+    "✅ PLAN B (Afternoon Workout): Saturday only - 2,080 kcal | 168g P",
+    "✅ PLAN C (Monday Badminton): Special timing - 1,950 kcal | 164g P",
+    "✅ Only 1 banana per day (and only when needed pre-workout)",
+    "✅ Only 1 whey shake per day (ONE per day maximum!)",
+    "✅ Biggest meal = Post-workout (Plan A) or Lunch (Plan B)",
+    "✅ Light dinner always for better sleep",
+    "✅ Can swap paneer for soya chunks: 150g paneer = 80g dry soya (105g cooked)",
+    "✅ Can swap chicken for paneer (same amounts)",
+    "✅ Track everything in app immediately after eating",
+    "✅ Hit 160g+ protein EVERY DAY (non-negotiable)",
+    "✅ Weekly average: 1,990 kcal | 153g P - Perfect 400-500 kcal deficit",
+    "✅ Expected result: 6-8kg pure fat loss in 12 weeks = 10-12% body fat = VISIBLE SIX-PACK"
+  ],
+  "howToUse": [
+    "1. Go to Food tab → Import Food Routines",
+    "2. Select this file (my-transformation-diet.json)",
+    "3. All meal routines will be imported",
+    "4. Each day, load the appropriate meals:",
+    "   - Monday: Use PLAN C meals",
+    "   - Tue-Fri, Sun: Use PLAN A meals",
+    "   - Saturday: Use PLAN B meals",
+    "5. Log each meal after eating",
+    "6. Check daily totals match your plan",
+    "7. Adjust portions slightly if needed (but keep protein 160g+)"
+  ]
+}

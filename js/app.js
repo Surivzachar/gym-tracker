@@ -408,6 +408,11 @@ class GymTrackerApp {
             this.saveFinishWorkout();
         });
 
+        // Workout Guide
+        document.getElementById('workoutGuideBtn').addEventListener('click', () => {
+            this.openWorkoutGuideModal();
+        });
+
         // Timer
         document.getElementById('timerBtn').addEventListener('click', () => {
             this.openTimerModal();
@@ -431,6 +436,10 @@ class GymTrackerApp {
         // Routines
         document.getElementById('createRoutineBtn').addEventListener('click', () => {
             this.openCreateRoutineModal();
+        });
+
+        document.getElementById('importDefaultRoutinesBtn').addEventListener('click', () => {
+            this.importDefaultWorkoutRoutines();
         });
 
         document.getElementById('saveRoutineBtn').addEventListener('click', () => {
@@ -536,6 +545,10 @@ class GymTrackerApp {
 
         document.getElementById('loadFoodRoutineBtn').addEventListener('click', () => {
             this.openLoadFoodRoutineModal();
+        });
+
+        document.getElementById('importTransformationDietBtn').addEventListener('click', () => {
+            this.importTransformationDiet();
         });
 
         // Settings
@@ -2648,6 +2661,67 @@ class GymTrackerApp {
         alert('Routine saved!');
     }
 
+    async importDefaultWorkoutRoutines() {
+        if (!confirm('Import your workout routines?\n\nThis will add:\n- DAILY Morning Ab Routine\n- Monday Cardio Day\n- Tuesday Upper Body Power\n- Wednesday Arms + Abs\n- Thursday Legs + Core\n- Friday Shoulders 3D Delts\n- Sunday Full Body HIIT\n\nExisting routines will NOT be deleted.')) {
+            return;
+        }
+
+        try {
+            // Fetch the JSON file
+            const response = await fetch('my-workout-routines.json');
+            if (!response.ok) {
+                throw new Error('Could not load workout routines file');
+            }
+
+            const data = await response.json();
+
+            if (!data.routines || !Array.isArray(data.routines)) {
+                throw new Error('Invalid routines file format');
+            }
+
+            // Get existing routines
+            const existingRoutines = Storage.getAllRoutines();
+            const existingNames = existingRoutines.map(r => r.name.toLowerCase());
+
+            // Import each routine if it doesn't already exist
+            let importedCount = 0;
+            let skippedCount = 0;
+
+            data.routines.forEach(routine => {
+                const routineName = routine.name;
+
+                // Check if routine already exists (case-insensitive)
+                if (existingNames.includes(routineName.toLowerCase())) {
+                    console.log(`Skipping "${routineName}" - already exists`);
+                    skippedCount++;
+                    return;
+                }
+
+                // Import the routine
+                Storage.saveRoutine(routineName, routine.exercises);
+                importedCount++;
+                console.log(`Imported: ${routineName}`);
+            });
+
+            // Refresh the routines list
+            this.renderRoutines();
+
+            // Show success message
+            let message = `✅ Import Complete!\n\n`;
+            message += `Imported: ${importedCount} routine(s)\n`;
+            if (skippedCount > 0) {
+                message += `Skipped: ${skippedCount} routine(s) (already exist)\n`;
+            }
+            message += `\nYour workout routines are ready to use!`;
+
+            alert(message);
+
+        } catch (error) {
+            console.error('Error importing routines:', error);
+            alert(`❌ Import Failed\n\n${error.message}\n\nPlease make sure the my-workout-routines.json file exists in your app folder.`);
+        }
+    }
+
     deleteRoutine(routineId) {
         if (confirm('Delete this routine?')) {
             Storage.deleteRoutine(routineId);
@@ -4621,6 +4695,69 @@ class GymTrackerApp {
         }
     }
 
+    async importTransformationDiet() {
+        if (!confirm('Import Transformation Diet Plans?\n\nThis will add:\n- PLAN A meals (Morning Workout Days)\n- PLAN B meals (Afternoon Workout Days)\n- PLAN C meals (Monday Badminton)\n\nExisting food routines will NOT be deleted.')) {
+            return;
+        }
+
+        try {
+            // Fetch the JSON file
+            const response = await fetch('my-transformation-diet.json');
+            if (!response.ok) {
+                throw new Error('Could not load diet plan file');
+            }
+
+            const data = await response.json();
+
+            if (!data.foodRoutines || !Array.isArray(data.foodRoutines)) {
+                throw new Error('Invalid diet plan file format');
+            }
+
+            // Get existing food routines
+            const existingRoutines = Storage.getAllFoodRoutines();
+            const existingNames = existingRoutines.map(r => r.name.toLowerCase());
+
+            // Import each routine if it doesn't already exist
+            let importedCount = 0;
+            let skippedCount = 0;
+
+            data.foodRoutines.forEach(routine => {
+                const routineName = routine.name;
+
+                // Check if routine already exists (case-insensitive)
+                if (existingNames.includes(routineName.toLowerCase())) {
+                    console.log(`Skipping "${routineName}" - already exists`);
+                    skippedCount++;
+                    return;
+                }
+
+                // Import the routine
+                Storage.saveFoodRoutine(routineName, routine.meals);
+                importedCount++;
+                console.log(`Imported: ${routineName}`);
+            });
+
+            // Show success message
+            let message = `✅ Diet Plans Imported!\n\n`;
+            message += `Imported: ${importedCount} meal plan(s)\n`;
+            if (skippedCount > 0) {
+                message += `Skipped: ${skippedCount} meal plan(s) (already exist)\n`;
+            }
+            message += `\nYour transformation diet is ready!\n\n`;
+            message += `How to use:\n`;
+            message += `• Tue-Fri, Sun: Use PLAN A meals\n`;
+            message += `• Saturday: Use PLAN B meals\n`;
+            message += `• Monday: Use PLAN C meals\n\n`;
+            message += `Click "Load Routine" to add meals to your diary.`;
+
+            alert(message);
+
+        } catch (error) {
+            console.error('Error importing diet plans:', error);
+            alert(`❌ Import Failed\n\n${error.message}\n\nPlease make sure the my-transformation-diet.json file exists in your app folder.`);
+        }
+    }
+
     // Settings and Date Banner
     updateDateBanner() {
         // Check if we're editing a past date
@@ -4720,6 +4857,10 @@ class GymTrackerApp {
 
         document.getElementById('settingsModal').classList.add('active');
         startDateInput.focus();
+    }
+
+    openWorkoutGuideModal() {
+        document.getElementById('workoutGuideModal').classList.add('active');
     }
 
     displayFatSecretApiStatus() {

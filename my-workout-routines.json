@@ -115,30 +115,30 @@
       "exercises": [
         {
           "id": 1739980800008,
-          "name": "Cycling (Commute)",
+          "name": "Incline Treadmill Walk OR Stair Climber",
           "type": "cardio",
           "videoUrl": null,
           "duration": 30,
           "distance": 0,
-          "calories": 0
+          "calories": 250
         },
         {
           "id": 1739980800009,
-          "name": "Ceremony Class",
+          "name": "Ceremony Class (HIIT - Lesmills)",
           "type": "cardio",
           "videoUrl": null,
           "duration": 60,
           "distance": 0,
-          "calories": 0
+          "calories": 400
         },
         {
           "id": 1739980800010,
           "name": "Badminton",
           "type": "cardio",
           "videoUrl": null,
-          "duration": 60,
+          "duration": 120,
           "distance": 0,
-          "calories": 0
+          "calories": 500
         }
       ],
       "createdAt": "2026-02-20T00:00:00.000Z"
