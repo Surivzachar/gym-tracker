@@ -581,6 +581,71 @@ img {
     border-radius: 12px;
     padding: 1rem;
     box-shadow: 0 1px 3px var(--shadow-sm);
+    position: relative;
+}
+
+/* Technique Badge Styles */
+.technique-badge {
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.superset-badge {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.giantset-badge {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    color: white;
+}
+
+.dropset-badge {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+}
+
+.circuit-badge {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+/* Color-coded borders for technique types */
+.exercise-card.superset {
+    border-left: 4px solid #3b82f6;
+}
+
+.exercise-card.giantset {
+    border-left: 4px solid #8b5cf6;
+}
+
+.exercise-card.dropset {
+    border-left: 4px solid #f59e0b;
+}
+
+.exercise-card.circuit {
+    border-left: 4px solid #10b981;
+}
+
+/* Set note styling */
+.set-note {
+    font-size: 0.7rem;
+    color: var(--accent-primary);
+    font-weight: 600;
+    margin-left: 8px;
+    padding: 2px 6px;
+    background: var(--accent-bg);
+    border-radius: 4px;
+    text-transform: uppercase;
 }
 
 /* Completed Workouts Section */

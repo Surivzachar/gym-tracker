@@ -1642,6 +1642,29 @@ class GymTrackerApp {
             if (type === 'hiit') exerciseIcon = '🔥';
             if (type === 'core') exerciseIcon = '🧘';
 
+            // Extract technique type from first set note
+            let techniqueType = '';
+            let techniqueBadge = '';
+            if (exercise.sets && exercise.sets.length > 0 && exercise.sets[0].note) {
+                const note = exercise.sets[0].note.toUpperCase();
+                if (note.includes('SUPERSET')) {
+                    techniqueType = 'superset';
+                    const match = note.match(/SUPERSET\s+(\d+[A-Z])/);
+                    techniqueBadge = match ? match[0] : 'SUPERSET';
+                } else if (note.includes('GIANT SET')) {
+                    techniqueType = 'giantset';
+                    const match = note.match(/GIANT SET\s+(\d+[A-Z])/);
+                    techniqueBadge = match ? match[0] : 'GIANT SET';
+                } else if (note.includes('DROP SET')) {
+                    techniqueType = 'dropset';
+                    techniqueBadge = 'DROP SET';
+                } else if (note.includes('CIRCUIT') || note.includes('ROUND')) {
+                    techniqueType = 'circuit';
+                    const match = note.match(/ROUND\s+\d+/i) || note.match(/CIRCUIT\s+ROUND\s+\d+/i);
+                    techniqueBadge = match ? match[0].toUpperCase() : 'CIRCUIT';
+                }
+            }
+
             let exerciseDetails = '';
 
             if (type === 'strength') {
@@ -1652,6 +1675,7 @@ class GymTrackerApp {
                             <div class="set-row">
                                 <span class="set-number">Set ${index + 1}</span>
                                 <span class="set-detail">${set.weight} ${set.unit || 'kg'} × ${set.reps} reps</span>
+                                ${set.note ? `<span class="set-note">${set.note}</span>` : ''}
                             </div>
                         `).join('')}
                     </div>
@@ -1724,6 +1748,7 @@ class GymTrackerApp {
                             <div class="set-row">
                                 <span class="set-number">Set ${index + 1}</span>
                                 <span class="set-detail">${set.reps} ${parseInt(set.reps) > 100 ? 'sec' : 'reps'}</span>
+                                ${set.note ? `<span class="set-note">${set.note}</span>` : ''}
                             </div>
                         `).join('')}
                     </div>
@@ -1752,7 +1777,8 @@ class GymTrackerApp {
             const hasInstructions = libraryMatch !== null;
 
             return `
-                <div class="exercise-card ${type}-exercise">
+                <div class="exercise-card ${type}-exercise ${techniqueType}">
+                    ${techniqueBadge ? `<div class="technique-badge ${techniqueType}-badge">${techniqueBadge}</div>` : ''}
                     <div class="exercise-header">
                         <h3>${exerciseIcon} ${exercise.name}${hasInstructions ? ' <span style="color: var(--accent-primary); font-size: 0.8rem;" title="Instructions available">📋</span>' : ''}</h3>
                         <div class="exercise-actions">
