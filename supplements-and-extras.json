@@ -1,0 +1,214 @@
+{
+  "version": "1.0",
+  "exportDate": "2026-04-02T00:00:00.000Z",
+  "note": "Supplements, individual ingredients, and fruit variety for customization",
+  "foodRoutines": [
+    {
+      "id": 1741900001,
+      "name": "Daily Supplements (Fish Oil Only)",
+      "meals": [
+        {
+          "id": 1741900002,
+          "name": "Fish Oil (3 capsules)",
+          "quantity": 1,
+          "calories": 45,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 5,
+          "mealType": "snack"
+        },
+        {
+          "id": 1741900003,
+          "name": "Creatine Monohydrate (5g)",
+          "quantity": 1,
+          "calories": 0,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 0,
+          "mealType": "snack"
+        },
+        {
+          "id": 1741900004,
+          "name": "L-Carnitine (2g)",
+          "quantity": 1,
+          "calories": 0,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 0,
+          "mealType": "snack"
+        }
+      ],
+      "totalMacros": {
+        "calories": 45,
+        "protein": 0,
+        "carbs": 0,
+        "fats": 5
+      },
+      "instructions": "Load this once per day. Fish Oil adds 45 cal, 5g fat to your daily total. Creatine and L-Carnitine have no calories.",
+      "createdAt": "2026-04-02T00:00:00.000Z"
+    }
+  ],
+  "individualItems": {
+    "supplements": [
+      {
+        "name": "Fish Oil (3 capsules)",
+        "serving": "3 capsules",
+        "calories": 45,
+        "protein": 0,
+        "carbs": 0,
+        "fats": 5,
+        "instructions": "Take with biggest meal (lunch) for better absorption. MUST track the fat!"
+      },
+      {
+        "name": "Creatine Monohydrate (5g)",
+        "serving": "1 scoop (5g)",
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "fats": 0,
+        "instructions": "Mix in water, take post-workout with breakfast/meal. Daily consistency matters more than timing."
+      },
+      {
+        "name": "L-Carnitine (2g)",
+        "serving": "2g",
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "fats": 0,
+        "instructions": "Take 30-45 min before workout. Helps fat burning during training."
+      }
+    ],
+    "eggs": [
+      {
+        "name": "Whole Egg (1 large, 50g)",
+        "serving": "1 egg",
+        "calories": 70,
+        "protein": 6,
+        "carbs": 0.5,
+        "fats": 5,
+        "instructions": "Use quantity multiplier: 3x for 3 eggs, 4x for 4 eggs"
+      },
+      {
+        "name": "Egg White (1 large, 33g)",
+        "serving": "1 white",
+        "calories": 17,
+        "protein": 4,
+        "carbs": 0.2,
+        "fats": 0,
+        "instructions": "Pure protein, no fat. Use quantity multiplier: 2x for 2 whites"
+      }
+    ],
+    "fruits": [
+      {
+        "name": "Kiwi (2 medium, 150g)",
+        "serving": "2 kiwis",
+        "calories": 84,
+        "protein": 1,
+        "carbs": 20,
+        "fats": 0,
+        "instructions": "Can swap with apple in afternoon snack (Plan A) for variety"
+      },
+      {
+        "name": "Mandarin (2 medium, 150g)",
+        "serving": "2 mandarins",
+        "calories": 80,
+        "protein": 1,
+        "carbs": 20,
+        "fats": 0,
+        "instructions": "Can swap with apple in afternoon snack (Plan A) for variety"
+      },
+      {
+        "name": "Seedless Grapes (1 cup, 150g)",
+        "serving": "1 cup",
+        "calories": 104,
+        "protein": 1,
+        "carbs": 27,
+        "fats": 0,
+        "instructions": "Slightly higher carbs than apple/kiwi/mandarin. Good for workout days."
+      },
+      {
+        "name": "Apple (1 medium, 150g)",
+        "serving": "1 medium",
+        "calories": 80,
+        "protein": 0,
+        "carbs": 21,
+        "fats": 0,
+        "instructions": "Current afternoon snack fruit in Plan A"
+      },
+      {
+        "name": "Banana (1 small, 90g)",
+        "serving": "1 small",
+        "calories": 90,
+        "protein": 1,
+        "carbs": 23,
+        "fats": 0,
+        "instructions": "Pre-workout only! Best for quick energy before training."
+      }
+    ]
+  },
+  "howToUse": [
+    "OPTION 1: Load the 'Daily Supplements' routine once per day",
+    "OPTION 2: Manually add individual items:",
+    "",
+    "FOR SUPPLEMENTS:",
+    "1. Go to Food tab → Click + Add Food",
+    "2. Type 'Fish Oil (3 capsules)' → 45 cal, 0p, 0c, 5f",
+    "3. Add to your biggest meal (lunch)",
+    "4. Creatine and L-Carnitine have 0 calories (optional to track)",
+    "",
+    "FOR EGGS (to customize your breakfast):",
+    "1. Delete the loaded '4 Whole Eggs' from routine",
+    "2. Click + Add Food → Type 'Whole Egg'",
+    "3. Change quantity to 3 (app auto-calculates: 210 cal, 18p)",
+    "4. Click + Add Food again → Type 'Egg White'",
+    "5. Change quantity to 2 (app auto-calculates: 34 cal, 8p)",
+    "Total: 244 cal, 26p, 1c, 15f (vs 4 whole eggs: 280 cal, 24p, 2c, 20f)",
+    "",
+    "FOR FRUITS:",
+    "1. Delete the 'Apple' from your afternoon snack",
+    "2. Add whichever fruit you bought this week:",
+    "   - Kiwi (2 medium) = 84 cal, 20g carbs",
+    "   - Mandarin (2 medium) = 80 cal, 20g carbs",
+    "   - Grapes (1 cup) = 104 cal, 27g carbs",
+    "   - Apple (1 medium) = 80 cal, 21g carbs",
+    "3. Rotate for variety!"
+  ],
+  "supplementSchedule": {
+    "planA_morningWorkout": {
+      "630am": "L-Carnitine (2g) with water",
+      "645am": "Banana + warm water",
+      "700am": "WORKOUT",
+      "830am": "Post-workout breakfast + Creatine (5g) mixed in water",
+      "1230pm": "Lunch + Fish Oil (3 caps)",
+      "330pm": "Whey shake + YOUR CHOICE FRUIT + 12 almonds",
+      "730pm": "Light dinner"
+    },
+    "planB_afternoonWorkout": {
+      "700am": "Breakfast",
+      "1000am": "L-Carnitine (2g) with water (optional timing)",
+      "1200pm": "BIG lunch + Fish Oil (3 caps)",
+      "245pm": "Whey + dates + L-Carnitine (if not taken earlier)",
+      "330pm": "WORKOUT",
+      "515pm": "Post-workout dinner + Creatine (5g) mixed in water"
+    },
+    "mondayBadminton": {
+      "700am": "Normal breakfast",
+      "1200pm": "Big lunch + Fish Oil (3 caps) + Creatine (5g)",
+      "545pm": "Early dinner (before badminton)",
+      "730pm": "Badminton (2.5 hours)",
+      "1015pm": "Light protein shake"
+    }
+  },
+  "importantNotes": [
+    "✅ Fish Oil adds 45 cal + 5g fat daily (MUST track this!)",
+    "✅ Creatine: 5g daily post-workout, 0 calories",
+    "✅ L-Carnitine: 2g pre-workout, 0 calories",
+    "✅ Rotate fruits for variety - all ~80-100 cal except grapes (104)",
+    "✅ Use individual egg items to customize breakfast portions",
+    "✅ Quantity multiplier works: 3x Whole Egg = 210 cal, 18p",
+    "✅ With fish oil, your daily totals become:",
+    "   - Plan A: 2,010 cal (still 390 cal deficit) ✅",
+    "   - Plan B: 2,125 cal (still 275 cal deficit) ✅",
+    "   - Plan C: 1,995 cal (still 405 cal deficit) ✅"
+  ]
+}

@@ -1,6 +1,6 @@
 // Service Worker for offline functionality
 
-const CACHE_NAME = 'gym-tracker-v163';
+const CACHE_NAME = 'gym-tracker-v164';
 const urlsToCache = [
     './',
     './index.html',
@@ -17,7 +17,10 @@ const urlsToCache = [
     './manifest.json',
     './logo.png',
     './icon-192.png',
-    './icon-512.png'
+    './icon-512.png',
+    './my-workout-routines.json',
+    './my-transformation-diet.json',
+    './supplements-and-extras.json'
 ];
 
 // Install event - cache files

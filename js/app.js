@@ -551,6 +551,10 @@ class GymTrackerApp {
             this.importTransformationDiet();
         });
 
+        document.getElementById('importSupplementsBtn').addEventListener('click', () => {
+            this.importSupplements();
+        });
+
         // Settings
         document.getElementById('settingsBtn').addEventListener('click', () => {
             this.openSettingsModal();
@@ -4883,6 +4887,69 @@ class GymTrackerApp {
 
         document.getElementById('settingsModal').classList.add('active');
         startDateInput.focus();
+    }
+
+    async importSupplements() {
+        if (!confirm('Import Supplements & Extras?\n\nThis will add:\n- Daily Supplements routine (Fish Oil, Creatine, L-Carnitine)\n- Individual egg items (for customizing breakfast)\n- Fruit variety (Kiwi, Mandarin, Grapes)\n\nExisting food routines will NOT be deleted.')) {
+            return;
+        }
+
+        try {
+            // Fetch the JSON file
+            const response = await fetch('supplements-and-extras.json');
+            if (!response.ok) {
+                throw new Error('Could not load supplements file');
+            }
+
+            const data = await response.json();
+
+            if (!data.foodRoutines || !Array.isArray(data.foodRoutines)) {
+                throw new Error('Invalid supplements file format');
+            }
+
+            // Get existing food routines
+            const existingRoutines = Storage.getAllFoodRoutines();
+            const existingNames = existingRoutines.map(r => r.name.toLowerCase());
+
+            // Import each routine if it doesn't already exist
+            let importedCount = 0;
+            let skippedCount = 0;
+
+            data.foodRoutines.forEach(routine => {
+                const routineName = routine.name;
+
+                // Check if routine already exists (case-insensitive)
+                if (existingNames.includes(routineName.toLowerCase())) {
+                    console.log(`Skipping duplicate: ${routineName}`);
+                    skippedCount++;
+                    return;
+                }
+
+                // Save the routine
+                Storage.saveFoodRoutine(routineName, routine.meals);
+                console.log(`Imported: ${routineName}`);
+                importedCount++;
+            });
+
+            // Show success message
+            alert(`✅ Supplements Imported!\n\n` +
+                `Imported: ${importedCount} routine(s)\n` +
+                (skippedCount > 0 ? `Skipped (already exists): ${skippedCount}\n\n` : '\n') +
+                `Now you can:\n` +
+                `1. Load "Daily Supplements" routine\n` +
+                `2. Or manually add:\n` +
+                `   - Fish Oil (3 caps) = 45 cal, 5g fat\n` +
+                `   - Creatine (5g) = 0 cal\n` +
+                `   - L-Carnitine (2g) = 0 cal\n\n` +
+                `3. For eggs: Delete "4 eggs" and add:\n` +
+                `   - 3x Whole Egg + 2x Egg White\n\n` +
+                `4. For fruits: Swap apple with:\n` +
+                `   - Kiwi, Mandarin, or Grapes`);
+
+        } catch (error) {
+            console.error('Import failed:', error);
+            alert(`❌ Import Failed\n\n${error.message}\n\nMake sure supplements-and-extras.json exists in the app folder.`);
+        }
     }
 
     openWorkoutGuideModal() {
