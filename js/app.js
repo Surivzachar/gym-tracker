@@ -2692,13 +2692,13 @@ class GymTrackerApp {
     }
 
     async importDefaultWorkoutRoutines() {
-        if (!confirm('Import your workout routines?\n\nThis will add:\n- DAILY Morning Ab Routine\n- Monday Cardio Day\n- Tuesday Upper Body Power\n- Wednesday Arms + Abs\n- Thursday Legs + Core\n- Friday Shoulders 3D Delts\n- Sunday Full Body HIIT\n\nExisting routines will NOT be deleted.')) {
+        if (!confirm('Import your workout routines?\n\nThis will add:\n- DAILY Morning Ab Routine\n- Monday Cardio Day\n- Tuesday Upper Body Power\n- Wednesday Arms + Abs\n- Thursday Legs + Core\n- Friday Shoulders 3D Delts\n- Sunday Full Body HIIT\n- SHRED: Fasted Morning Cardio\n- SHRED: HIIT Fat Burner Finisher\n\nExisting routines will NOT be deleted.')) {
             return;
         }
 
         try {
-            // Fetch the JSON file
-            const response = await fetch('my-workout-routines.json');
+            // Fetch the JSON file (cache:reload ensures fresh data after updates)
+            const response = await fetch('my-workout-routines.json', { cache: 'reload' });
             if (!response.ok) {
                 throw new Error('Could not load workout routines file');
             }
