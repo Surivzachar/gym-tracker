@@ -1,7 +1,7 @@
 {
-  "version": "4.0",
-  "exportDate": "2026-03-31T00:00:00.000Z",
-  "note": "12-Week Realistic Transformation Diet - Optimized for getting to 10-12% body fat with visible six-pack",
+  "version": "5.0",
+  "exportDate": "2026-04-28T00:00:00.000Z",
+  "note": "12-Week Transformation Diet + 60-Day India Shred (Apr 28 - Jun 27, 2026). SHRED variants save ~270-300 cal/day to push from 20.6% → ~16% BF before India trip.",
   "dailyTargets": {
     "planA": {
       "name": "Morning Workout Days (Tue, Wed, Thu, Fri, Sun)",
@@ -23,6 +23,27 @@
       "protein": 164,
       "carbs": 201,
       "fats": 56
+    },
+    "shredWeekday": {
+      "name": "SHRED — Tue/Wed/Thu/Fri/Sun (3 PM gym)",
+      "calories": 1787,
+      "protein": 168,
+      "carbs": 178,
+      "fats": 52
+    },
+    "shredMonday": {
+      "name": "SHRED — Monday (HIIT 12:30 PM + Badminton 7:30 PM)",
+      "calories": 1897,
+      "protein": 182,
+      "carbs": 183,
+      "fats": 56
+    },
+    "shredSaturday": {
+      "name": "SHRED — Saturday (Rest Day, no rice)",
+      "calories": 1412,
+      "protein": 144,
+      "carbs": 113,
+      "fats": 52
     }
   },
   "foodRoutines": [
@@ -815,6 +836,308 @@
       },
       "instructions": "10:15 PM - Light protein before bed after badminton (7:30-10 PM). Muscle recovery. Won't affect sleep.",
       "createdAt": "2026-03-31T00:00:00.000Z"
+    },
+    {
+      "id": 1746300001,
+      "name": "SHRED: Breakfast (All Days)",
+      "meals": [
+        {
+          "id": 1746300002,
+          "name": "Whole Eggs (3)",
+          "quantity": 1,
+          "calories": 210,
+          "protein": 18,
+          "carbs": 2,
+          "fats": 15,
+          "mealType": "breakfast"
+        },
+        {
+          "id": 1746300003,
+          "name": "Egg Whites (2)",
+          "quantity": 1,
+          "calories": 34,
+          "protein": 8,
+          "carbs": 0,
+          "fats": 0,
+          "mealType": "breakfast"
+        },
+        {
+          "id": 1746300004,
+          "name": "Vogel Multigrain Toast (2 slices)",
+          "quantity": 1,
+          "calories": 220,
+          "protein": 9,
+          "carbs": 38,
+          "fats": 3,
+          "mealType": "breakfast"
+        },
+        {
+          "id": 1746300005,
+          "name": "Peanut Butter (1 tbsp, natural)",
+          "quantity": 1,
+          "calories": 95,
+          "protein": 4,
+          "carbs": 3,
+          "fats": 8,
+          "mealType": "breakfast"
+        },
+        {
+          "id": 1746300006,
+          "name": "Fish Oil (2 capsules)",
+          "quantity": 1,
+          "calories": 20,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 2,
+          "mealType": "breakfast"
+        },
+        {
+          "id": 1746300007,
+          "name": "Multivitamin (1 tablet)",
+          "quantity": 1,
+          "calories": 5,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 0,
+          "mealType": "breakfast"
+        },
+        {
+          "id": 1746300008,
+          "name": "No-Caffeine Tea",
+          "quantity": 1,
+          "calories": 0,
+          "protein": 0,
+          "carbs": 0,
+          "fats": 0,
+          "mealType": "breakfast"
+        }
+      ],
+      "totalMacros": {
+        "calories": 584,
+        "protein": 39,
+        "carbs": 43,
+        "fats": 28
+      },
+      "instructions": "7:00 AM — Same every day (Mon-Sun). Take fish oil + multivitamin with this meal — fat from eggs and PB helps absorb both.",
+      "createdAt": "2026-04-29T00:00:00.000Z"
+    },
+    {
+      "id": 1746300010,
+      "name": "SHRED: Mid-Morning Snack (10 AM)",
+      "meals": [
+        {
+          "id": 1746300011,
+          "name": "Greek Yogurt plain (120g)",
+          "quantity": 1,
+          "calories": 110,
+          "protein": 12,
+          "carbs": 6,
+          "fats": 4,
+          "mealType": "snack"
+        },
+        {
+          "id": 1746300012,
+          "name": "Natural Almonds (10 pieces)",
+          "quantity": 1,
+          "calories": 70,
+          "protein": 3,
+          "carbs": 2,
+          "fats": 6,
+          "mealType": "snack"
+        }
+      ],
+      "totalMacros": {
+        "calories": 180,
+        "protein": 15,
+        "carbs": 8,
+        "fats": 10
+      },
+      "instructions": "10:00 AM — Every day. Prep in a container the night before. Take to office Fri so you don't reach for junk. 5 almonds also fine if preferred.",
+      "createdAt": "2026-04-29T00:00:00.000Z"
+    },
+    {
+      "id": 1746300020,
+      "name": "SHRED: Lunch - Soya + Rice + Veg (Mon, Tue-Fri, Sun)",
+      "meals": [
+        {
+          "id": 1746300021,
+          "name": "Soya Chunks cooked (110g)",
+          "quantity": 1,
+          "calories": 233,
+          "protein": 39,
+          "carbs": 14,
+          "fats": 6,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1746300022,
+          "name": "White Rice cooked (120g)",
+          "quantity": 1,
+          "calories": 156,
+          "protein": 3,
+          "carbs": 34,
+          "fats": 0,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1746300023,
+          "name": "Steamed Mixed Vegetables (200g)",
+          "quantity": 1,
+          "calories": 80,
+          "protein": 3,
+          "carbs": 16,
+          "fats": 0,
+          "mealType": "lunch"
+        }
+      ],
+      "totalMacros": {
+        "calories": 469,
+        "protein": 45,
+        "carbs": 64,
+        "fats": 6
+      },
+      "instructions": "12:30 PM (Tue-Fri, Sun) | 2:00 PM (Monday — after HIIT). Rice fuels afternoon training. Cook soya in bulk for the week to save time.",
+      "createdAt": "2026-04-29T00:00:00.000Z"
+    },
+    {
+      "id": 1746300030,
+      "name": "SHRED: Dinner - Soya + Veg (Tue-Fri, Sun + Mon early dinner)",
+      "meals": [
+        {
+          "id": 1746300031,
+          "name": "Soya Chunks cooked (120g)",
+          "quantity": 1,
+          "calories": 254,
+          "protein": 42,
+          "carbs": 15,
+          "fats": 7,
+          "mealType": "dinner"
+        },
+        {
+          "id": 1746300032,
+          "name": "Steamed Mixed Vegetables (200g)",
+          "quantity": 1,
+          "calories": 80,
+          "protein": 3,
+          "carbs": 16,
+          "fats": 0,
+          "mealType": "dinner"
+        }
+      ],
+      "totalMacros": {
+        "calories": 334,
+        "protein": 45,
+        "carbs": 31,
+        "fats": 7
+      },
+      "instructions": "7:00 PM (Tue-Fri, Sun) | 5:30 PM Monday (before badminton — no rice so stomach stays light for 7:30 PM play). High protein, low carb end to the day.",
+      "createdAt": "2026-04-29T00:00:00.000Z"
+    },
+    {
+      "id": 1746300040,
+      "name": "SHRED: Saturday Lunch - Soya + Veg Only (Rest Day, No Rice)",
+      "meals": [
+        {
+          "id": 1746300041,
+          "name": "Soya Chunks cooked (120g)",
+          "quantity": 1,
+          "calories": 254,
+          "protein": 42,
+          "carbs": 15,
+          "fats": 7,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1746300042,
+          "name": "Steamed Mixed Vegetables (200g)",
+          "quantity": 1,
+          "calories": 80,
+          "protein": 3,
+          "carbs": 16,
+          "fats": 0,
+          "mealType": "lunch"
+        }
+      ],
+      "totalMacros": {
+        "calories": 334,
+        "protein": 45,
+        "carbs": 31,
+        "fats": 7
+      },
+      "instructions": "1:00 PM Saturday — REST DAY: No rice since no training. Lower carb day. EAT THIS BEFORE going grocery shopping — never shop hungry.",
+      "createdAt": "2026-04-29T00:00:00.000Z"
+    },
+    {
+      "id": 1746300050,
+      "name": "SHRED: Pre-Workout Banana (Tue-Fri, Sun + Mon pre-HIIT)",
+      "meals": [
+        {
+          "id": 1746300051,
+          "name": "Banana (1 medium)",
+          "quantity": 1,
+          "calories": 100,
+          "protein": 1,
+          "carbs": 25,
+          "fats": 0,
+          "mealType": "snack"
+        }
+      ],
+      "totalMacros": {
+        "calories": 100,
+        "protein": 1,
+        "carbs": 25,
+        "fats": 0
+      },
+      "instructions": "2:30 PM (Tue-Fri, Sun) — 30 min before 3 PM gym. | 11:45 AM Monday — before 12:30 PM HIIT class.",
+      "createdAt": "2026-04-29T00:00:00.000Z"
+    },
+    {
+      "id": 1746300060,
+      "name": "SHRED: Post-Workout PVL Iso Whey (Tue-Fri, Sun + Mon post-HIIT)",
+      "meals": [
+        {
+          "id": 1746300061,
+          "name": "PVL Iso Gold Whey (1 scoop with water)",
+          "quantity": 1,
+          "calories": 120,
+          "protein": 25,
+          "carbs": 3,
+          "fats": 1,
+          "mealType": "snack"
+        }
+      ],
+      "totalMacros": {
+        "calories": 120,
+        "protein": 25,
+        "carbs": 3,
+        "fats": 1
+      },
+      "instructions": "4:30 PM (Tue-Fri, Sun) — right after gym. | 1:30 PM Monday — right after HIIT class. Don't skip — muscle recovery window.",
+      "createdAt": "2026-04-29T00:00:00.000Z"
+    },
+    {
+      "id": 1746300070,
+      "name": "SHRED: Post-Badminton Greek Yogurt (Monday night only)",
+      "meals": [
+        {
+          "id": 1746300071,
+          "name": "Greek Yogurt plain (120g)",
+          "quantity": 1,
+          "calories": 110,
+          "protein": 12,
+          "carbs": 6,
+          "fats": 4,
+          "mealType": "snack"
+        }
+      ],
+      "totalMacros": {
+        "calories": 110,
+        "protein": 12,
+        "carbs": 6,
+        "fats": 4
+      },
+      "instructions": "10:00 PM Monday — after badminton (7:30-10 PM). Light protein before bed. Yogurt over whey — easier on sleep. Keep it small.",
+      "createdAt": "2026-04-29T00:00:00.000Z"
     }
   ],
   "weeklySchedule": {
@@ -942,6 +1265,21 @@
     "estimatedWeeklyCost": "$70-85 NZD"
   },
   "importantNotes": [
+    "🇮🇳 ====== 60-DAY INDIA SHRED: Apr 28 - Jun 27, 2026 ====== 🇮🇳",
+    "📋 YOUR ACTUAL FOOD — import these 8 SHRED routines, load daily:",
+    "🍳 BREAKFAST (all days 7 AM): 'SHRED: Breakfast' — 3 eggs + 2 whites + 2 Vogel toast + PB + fish oil + multivitamin",
+    "🥛 SNACK (10 AM): 'SHRED: Mid-Morning Snack' — 120g Greek yogurt + 10 almonds. Prep night before for office Fridays.",
+    "🍚 LUNCH (Tue-Fri, Sun 12:30 PM | Mon 2 PM): 'SHRED: Lunch - Soya + Rice + Veg' — 110g soya + 120g rice + 200g veg",
+    "🍽 DINNER (Tue-Fri, Sun 7 PM | Mon 5:30 PM): 'SHRED: Dinner - Soya + Veg' — 120g soya + 200g veg. No rice.",
+    "🟡 SAT LUNCH (1 PM, rest day): 'SHRED: Saturday Lunch' — soya + veg only. EAT BEFORE GROCERY SHOPPING.",
+    "🍌 PRE-WORKOUT: 'SHRED: Pre-Workout Banana' — 2:30 PM (Tue-Fri, Sun) | 11:45 AM (Mon before HIIT)",
+    "🥤 POST-WORKOUT: 'SHRED: Post-Workout PVL Iso Whey' — 4:30 PM (Tue-Fri, Sun) | 1:30 PM (Mon after HIIT)",
+    "🌙 MON NIGHT: 'SHRED: Post-Badminton Greek Yogurt' — 10 PM after badminton. Yogurt not whey (better sleep).",
+    "📊 Weekday: ~1,787 cal | Monday: ~1,897 cal | Saturday: ~1,412 cal | Weekly avg: ~1,750 cal",
+    "📊 Deficit ~650 cal/day → ~0.6 kg fat/week → ~5 kg fat in 8 weeks",
+    "📊 Current: 69.5 kg / 20.6% BF → Target by Jun 27: ~65 kg / ~14-16% BF",
+    "⚠ JUNK TRIGGERS: Friday office (prep snack night before) | Sat/Sun shopping (eat lunch FIRST, always)",
+    "====== ORIGINAL PLAN (keep using if not on shred) ======",
     "✅ PLAN A (Morning Workout): Tue, Wed, Thu, Fri, Sun - 1,965 kcal | 149g P",
     "✅ PLAN B (Afternoon Workout): Saturday only - 2,080 kcal | 168g P",
     "✅ PLAN C (Monday Badminton): Special timing - 1,950 kcal | 164g P",

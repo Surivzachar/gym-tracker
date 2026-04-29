@@ -114,15 +114,6 @@
       "name": "Monday - Cardio Day (Sports)",
       "exercises": [
         {
-          "id": 1739980800008,
-          "name": "Incline Treadmill Walk OR Stair Climber",
-          "type": "cardio",
-          "videoUrl": null,
-          "duration": 30,
-          "distance": 0,
-          "calories": 250
-        },
-        {
           "id": 1739980800009,
           "name": "Ceremony Class (HIIT - Lesmills)",
           "type": "cardio",
@@ -455,60 +446,6 @@
               "reps": 10,
               "weight": 0,
               "note": "GIANT SET 2C - Triceps"
-            }
-          ]
-        },
-        {
-          "id": 1739980800026,
-          "name": "Reverse EZ-Bar Curls",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            {
-              "reps": 15,
-              "weight": 0,
-              "note": "Forearms"
-            },
-            {
-              "reps": 15,
-              "weight": 0,
-              "note": "Forearms"
-            }
-          ]
-        },
-        {
-          "id": 1739980800027,
-          "name": "Wrist Curls",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            {
-              "reps": 20,
-              "weight": 0,
-              "note": "Forearms"
-            },
-            {
-              "reps": 20,
-              "weight": 0,
-              "note": "Forearms"
-            }
-          ]
-        },
-        {
-          "id": 1739980800028,
-          "name": "Heavy DB Holds",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            {
-              "reps": 40,
-              "weight": 0,
-              "note": "Forearms - 40 sec hold"
-            },
-            {
-              "reps": 40,
-              "weight": 0,
-              "note": "Forearms - 40 sec hold"
             }
           ]
         },
@@ -1324,6 +1261,125 @@
         }
       ],
       "createdAt": "2026-02-20T00:00:00.000Z"
+    },
+    {
+      "id": 1746200001,
+      "name": "SHRED: Fasted Morning Cardio (20 min)",
+      "exercises": [
+        {
+          "id": 1746200002,
+          "name": "Incline Treadmill Walk OR Outdoor Jog (Fasted - before breakfast)",
+          "type": "cardio",
+          "videoUrl": null,
+          "duration": 20,
+          "distance": 0,
+          "calories": 200
+        }
+      ],
+      "createdAt": "2026-04-28T00:00:00.000Z"
+    },
+    {
+      "id": 1746200010,
+      "name": "SHRED: HIIT Fat Burner Finisher (15 min)",
+      "exercises": [
+        {
+          "id": 1746200011,
+          "name": "Burpees",
+          "type": "hiit",
+          "videoUrl": null,
+          "sets": [
+            {
+              "reps": 10,
+              "note": "HIIT Round 1 - max speed, 40s on / 20s rest"
+            },
+            {
+              "reps": 10,
+              "note": "HIIT Round 2 - max speed"
+            },
+            {
+              "reps": 10,
+              "note": "HIIT Round 3 - max speed"
+            },
+            {
+              "reps": 10,
+              "note": "HIIT Round 4 - max speed"
+            }
+          ]
+        },
+        {
+          "id": 1746200012,
+          "name": "Jump Squats",
+          "type": "hiit",
+          "videoUrl": null,
+          "sets": [
+            {
+              "reps": 15,
+              "note": "HIIT Round 1 - explode up!"
+            },
+            {
+              "reps": 15,
+              "note": "HIIT Round 2"
+            },
+            {
+              "reps": 15,
+              "note": "HIIT Round 3"
+            },
+            {
+              "reps": 15,
+              "note": "HIIT Round 4"
+            }
+          ]
+        },
+        {
+          "id": 1746200013,
+          "name": "Mountain Climbers",
+          "type": "hiit",
+          "videoUrl": null,
+          "sets": [
+            {
+              "reps": 30,
+              "note": "HIIT Round 1 - fast as possible"
+            },
+            {
+              "reps": 30,
+              "note": "HIIT Round 2"
+            },
+            {
+              "reps": 30,
+              "note": "HIIT Round 3"
+            },
+            {
+              "reps": 30,
+              "note": "HIIT Round 4"
+            }
+          ]
+        },
+        {
+          "id": 1746200014,
+          "name": "High Knees",
+          "type": "hiit",
+          "videoUrl": null,
+          "sets": [
+            {
+              "reps": 40,
+              "note": "HIIT Round 1 - 20 sec sprint"
+            },
+            {
+              "reps": 40,
+              "note": "HIIT Round 2"
+            },
+            {
+              "reps": 40,
+              "note": "HIIT Round 3"
+            },
+            {
+              "reps": 40,
+              "note": "HIIT Round 4"
+            }
+          ]
+        }
+      ],
+      "createdAt": "2026-04-28T00:00:00.000Z"
     }
   ]
 }
