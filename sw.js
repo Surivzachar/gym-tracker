@@ -1,6 +1,6 @@
 // Service Worker for offline functionality
 
-const CACHE_NAME = 'gym-tracker-v168';
+const CACHE_NAME = 'gym-tracker-v169';
 const urlsToCache = [
     './',
     './index.html',

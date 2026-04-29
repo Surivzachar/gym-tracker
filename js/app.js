@@ -1793,6 +1793,12 @@ class GymTrackerApp {
                             <button class="btn-icon" onclick="app.deleteExercise(${exercise.id})">🗑️</button>
                         </div>
                     </div>
+                    ${hasHistory && type === 'strength' && history[0] ? (() => {
+                        const last = history[0];
+                        const lastDate = formatDateNZ(new Date(last.date), { month: 'short', day: 'numeric' });
+                        const setsStr = last.sets.map(s => `${s.weight || 0}${s.unit || 'kg'}×${s.reps || 0}`).join(' | ');
+                        return `<div class="last-session-bar"><span class="last-session-label">Last (${lastDate}):</span><span class="last-session-sets">${setsStr}</span></div>`;
+                    })() : ''}
                     ${exerciseDetails}
                     ${exercise.notes ? `
                         <div class="exercise-notes">

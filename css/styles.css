@@ -814,6 +814,34 @@ img {
     color: var(--text-secondary);
 }
 
+/* Last session reference bar */
+.last-session-bar {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    background: rgba(16, 185, 129, 0.08);
+    border-left: 3px solid rgba(16, 185, 129, 0.4);
+    border-radius: 0 6px 6px 0;
+    padding: 0.35rem 0.6rem;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.last-session-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--accent-primary);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.last-session-sets {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
 /* Cardio/HIIT Exercise Styling */
 .cardio-exercise {
     border-left: 4px solid #10b981;
