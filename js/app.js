@@ -122,6 +122,11 @@ class GymTrackerApp {
             this.renderFood();
         });
 
+        // Migrate photos from localStorage to IndexedDB (one-time, frees up localStorage)
+        PhotoStorage.migrateFromLocalStorage().then(count => {
+            if (count > 0) console.log(`Migrated ${count} photo(s) to IndexedDB`);
+        });
+
         // Register service worker for PWA
         if ('serviceWorker' in navigator) {
             // First, check for any old workers and force update
@@ -5595,7 +5600,7 @@ class GymTrackerApp {
     }
 
     // Data Export/Import
-    exportData() {
+    async exportData() {
         const data = {
             version: '1.0',
             exportDate: new Date().toISOString(),
@@ -5604,7 +5609,7 @@ class GymTrackerApp {
             currentWorkout: Storage.getCurrentWorkout(),
             foodDiary: Storage.getAllFoodDays(),
             foodRoutines: Storage.getAllFoodRoutines(),
-            progressPhotos: Storage.getAllProgressPhotos(),
+            progressPhotos: await PhotoStorage.getAllPhotos(),
             dailyMetrics: Storage.getAllDailyMetrics(),
             startDate: Storage.getStartDate()
         };
@@ -5629,7 +5634,7 @@ class GymTrackerApp {
         if (!file) return;
 
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = async (e) => {
             try {
                 const data = JSON.parse(e.target.result);
 
@@ -5650,9 +5655,20 @@ class GymTrackerApp {
                 if (data.currentWorkout) localStorage.setItem(Storage.KEYS.CURRENT_WORKOUT, JSON.stringify(data.currentWorkout));
                 if (data.foodDiary) localStorage.setItem(Storage.KEYS.FOOD_DIARY, JSON.stringify(data.foodDiary));
                 if (data.foodRoutines) localStorage.setItem(Storage.KEYS.FOOD_ROUTINES, JSON.stringify(data.foodRoutines));
-                if (data.progressPhotos) localStorage.setItem(Storage.KEYS.PROGRESS_PHOTOS, JSON.stringify(data.progressPhotos));
                 if (data.dailyMetrics) localStorage.setItem(Storage.KEYS.DAILY_METRICS, JSON.stringify(data.dailyMetrics));
                 if (data.startDate) localStorage.setItem(Storage.KEYS.START_DATE, JSON.stringify(data.startDate));
+
+                // Import photos into IndexedDB (not localStorage)
+                if (data.progressPhotos && data.progressPhotos.length > 0) {
+                    await PhotoStorage.clearAll();
+                    for (const photo of data.progressPhotos) {
+                        const db = await PhotoStorage.openDB();
+                        await new Promise((res, rej) => {
+                            const req = db.transaction('photos', 'readwrite').objectStore('photos').put(photo);
+                            req.onsuccess = res; req.onerror = () => rej(req.error);
+                        });
+                    }
+                }
 
                 alert('Data imported successfully! Refreshing the app...');
                 window.location.reload();
@@ -6464,7 +6480,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.openModal('photoDetailsModal');
     }
 
-    savePhoto() {
+    async savePhoto() {
         const label = document.getElementById('photoLabel').value.trim();
         const weight = document.getElementById('photoWeight').value;
         const notes = document.getElementById('photoNotes').value;
@@ -6489,21 +6505,20 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
         console.log('Saving photo, image data length:', this.currentPhotoData.length);
 
-        const success = Storage.addProgressPhoto(photoData);
-
-        if (success) {
+        try {
+            await PhotoStorage.addPhoto(photoData);
             this.closeModal('photoDetailsModal');
             this.renderProgressPhotos();
             this.syncAfterChange();
             alert('Progress photo saved successfully!');
-        } else {
-            // Error was already shown by Storage.set function
-            console.error('Failed to save photo');
+        } catch (e) {
+            console.error('Failed to save photo:', e);
+            alert('Failed to save photo. Please try again.');
         }
     }
 
-    renderProgressPhotos() {
-        const photos = Storage.getAllProgressPhotos();
+    async renderProgressPhotos() {
+        const photos = await PhotoStorage.getAllPhotos();
         console.log('Rendering progress photos, count:', photos.length);
         const gallery = document.getElementById('photosGallery');
 
@@ -6659,7 +6674,7 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         }
     }
 
-    updateComparison() {
+    async updateComparison() {
         const beforeId = parseInt(document.getElementById('beforePhotoSelect').value);
         const afterId = parseInt(document.getElementById('afterPhotoSelect').value);
         const display = document.getElementById('comparisonDisplay');
@@ -6674,8 +6689,8 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             return;
         }
 
-        const beforePhoto = Storage.getProgressPhoto(beforeId);
-        const afterPhoto = Storage.getProgressPhoto(afterId);
+        const beforePhoto = await PhotoStorage.getPhoto(beforeId);
+        const afterPhoto = await PhotoStorage.getPhoto(afterId);
 
         if (!beforePhoto || !afterPhoto) return;
 
@@ -6716,8 +6731,8 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         document.getElementById('beforePhotoSlider').style.clipPath = 'inset(0 50% 0 0)';
     }
 
-    viewPhoto(photoId) {
-        const photo = Storage.getProgressPhoto(photoId);
+    async viewPhoto(photoId) {
+        const photo = await PhotoStorage.getPhoto(photoId);
         if (!photo) return;
 
         this.currentViewPhotoId = photoId;
@@ -6779,12 +6794,12 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         this.openModal('viewPhotoModal');
     }
 
-    deleteCurrentPhoto() {
+    async deleteCurrentPhoto() {
         if (!confirm('Are you sure you want to delete this progress photo? This cannot be undone.')) {
             return;
         }
 
-        Storage.deleteProgressPhoto(this.currentViewPhotoId);
+        await PhotoStorage.deletePhoto(this.currentViewPhotoId);
         this.closeModal('viewPhotoModal');
         this.renderProgressPhotos();
         this.syncAfterChange();
@@ -9709,8 +9724,8 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         `;
     }
 
-    renderAchievements() {
-        const achievements = this.calculateAchievements();
+    async renderAchievements() {
+        const achievements = await this.calculateAchievements();
         const container = document.getElementById('achievementsContainer');
 
         container.innerHTML = `
@@ -9736,11 +9751,11 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
         `;
     }
 
-    calculateAchievements() {
+    async calculateAchievements() {
         const workouts = Storage.getAllWorkouts();
         const foodDays = Storage.getAllFoodDays();
         const daysSinceStart = Storage.getDaysSinceStart() || 0;
-        const photos = Storage.getAllProgressPhotos();
+        const photos = await PhotoStorage.getAllPhotos();
 
         // Get stored achievements to check for new ones
         const storedAchievements = JSON.parse(localStorage.getItem('unlockedAchievements') || '{}');

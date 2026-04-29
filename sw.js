@@ -1,6 +1,6 @@
 // Service Worker for offline functionality
 
-const CACHE_NAME = 'gym-tracker-v170';
+const CACHE_NAME = 'gym-tracker-v171';
 const urlsToCache = [
     './',
     './index.html',
@@ -13,6 +13,7 @@ const urlsToCache = [
     './js/openfoodfacts-api.js',
     './js/exercise-library.js',
     './js/workout-templates.js',
+    './js/photo-storage.js',
     './js/app.js',
     './manifest.json',
     './logo.png',
