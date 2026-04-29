@@ -592,6 +592,10 @@ class GymTrackerApp {
             this.debugWorkoutDates();
         });
 
+        document.getElementById('clearWorkoutHistoryBtn').addEventListener('click', () => {
+            this.clearWorkoutHistory();
+        });
+
         // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         if (darkModeToggle) {
@@ -5150,6 +5154,20 @@ class GymTrackerApp {
             console.error('Error clearing cache:', error);
             alert('Error clearing cache. Try manually refreshing the page (Ctrl+Shift+R or Cmd+Shift+R).');
         }
+    }
+
+    clearWorkoutHistory() {
+        const workouts = Storage.getAllWorkouts();
+        if (workouts.length === 0) {
+            alert('No workout history to clear.');
+            return;
+        }
+        if (!confirm(`Delete all ${workouts.length} saved workout session(s)?\n\nYour routines and diet data will NOT be affected.\nThe "Last session" weights on exercises will reset.\n\nThis cannot be undone.`)) {
+            return;
+        }
+        Storage.set(Storage.KEYS.WORKOUTS, []);
+        this.renderCurrentWorkout();
+        alert('✅ Workout history cleared. Starting fresh!');
     }
 
     debugWorkoutDates() {
