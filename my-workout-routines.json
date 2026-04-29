@@ -659,6 +659,34 @@
           ]
         },
         {
+          "id": 1777426158007,
+          "name": "Barbell Hip Thrusts",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "GLUTES - warm-up"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "GLUTES"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "GLUTES"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "GLUTES - heavy"
+            }
+          ]
+        },
+        {
           "id": 1739980800039,
           "name": "Seated/Lying Leg Curls",
           "type": "strength",
