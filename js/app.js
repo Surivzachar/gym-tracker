@@ -1660,6 +1660,21 @@ class GymTrackerApp {
             return;
         }
 
+        // Show stale workout warning banner if exercises are from a previous day
+        const staleWarning = document.getElementById('staleWorkoutWarning');
+        if (staleWarning) staleWarning.remove();
+        if (this.currentWorkout.startedDate && this.currentWorkout.startedDate !== new Date().toDateString()) {
+            const dayName = new Date(this.currentWorkout.startedDate).toLocaleDateString('en-AU', { weekday: 'long', month: 'short', day: 'numeric' });
+            const warning = document.createElement('div');
+            warning.id = 'staleWorkoutWarning';
+            warning.style.cssText = 'background:#7c3aed;color:#fff;padding:0.75rem 1rem;border-radius:10px;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;';
+            warning.innerHTML = `
+                <span style="font-size:0.875rem;">⚠️ These are leftover exercises from <strong>${dayName}</strong>. Load today's routine or discard.</span>
+                <button onclick="app.discardStaleWorkout()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:0.3rem 0.6rem;border-radius:6px;font-size:0.8rem;cursor:pointer;white-space:nowrap;">🗑️ Discard</button>
+            `;
+            container.parentElement.insertBefore(warning, container);
+        }
+
         container.innerHTML = this.currentWorkout.exercises.map(exercise => {
             const type = exercise.type || 'strength'; // default to strength for backward compatibility
             const history = Storage.getExerciseHistory(exercise.name);
@@ -2869,7 +2884,24 @@ class GymTrackerApp {
     loadRoutineToWorkout(routineId) {
         console.log('Loading routine with ID:', routineId);
 
-        // No confirmation needed - loadRoutine now appends instead of replacing
+        // Check for stale exercises from a previous day
+        const existing = Storage.getCurrentWorkout();
+        if (existing.exercises.length > 0 && existing.startedDate) {
+            const today = new Date().toDateString();
+            if (existing.startedDate !== today) {
+                const dayName = new Date(existing.startedDate).toLocaleDateString('en-AU', { weekday: 'long', month: 'short', day: 'numeric' });
+                const discard = confirm(
+                    `You have ${existing.exercises.length} unfinished exercise(s) left over from ${dayName}.\n\nDiscard them and load today's routine fresh?`
+                );
+                if (discard) {
+                    Storage.clearCurrentWorkout();
+                    this.currentWorkout = { exercises: [], startTime: null };
+                } else {
+                    return; // keep the stale exercises, do nothing
+                }
+            }
+        }
+
         const workout = Storage.loadRoutine(routineId);
         console.log('Loaded workout:', workout);
 
@@ -5190,6 +5222,14 @@ class GymTrackerApp {
         Storage.set(Storage.KEYS.WORKOUTS, []);
         this.renderCurrentWorkout();
         alert('✅ Workout history cleared. Starting fresh!');
+    }
+
+    discardStaleWorkout() {
+        Storage.clearCurrentWorkout();
+        this.currentWorkout = { exercises: [], startTime: null };
+        const w = document.getElementById('staleWorkoutWarning');
+        if (w) w.remove();
+        this.renderCurrentWorkout();
     }
 
     debugWorkoutDates() {

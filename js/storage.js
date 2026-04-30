@@ -175,6 +175,10 @@ const Storage = {
             // Get current workout and append to it instead of replacing
             const currentWorkout = this.getCurrentWorkout();
             currentWorkout.exercises = [...currentWorkout.exercises, ...newExercises];
+            // Stamp the date exercises were first added so we can detect stale workouts
+            if (!currentWorkout.startedDate) {
+                currentWorkout.startedDate = new Date().toDateString();
+            }
             this.saveCurrentWorkout(currentWorkout);
 
             // Track which routine is being used (append to list if needed)
