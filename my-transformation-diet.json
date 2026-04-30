@@ -1138,6 +1138,210 @@
       },
       "instructions": "10:00 PM Monday — after badminton (7:30-10 PM). Light protein before bed. Yogurt over whey — easier on sleep. Keep it small.",
       "createdAt": "2026-04-29T00:00:00.000Z"
+    },
+    {
+      "id": 1746500001,
+      "name": "CARB SWAP: Idli (3 pieces)",
+      "meals": [
+        {
+          "id": 1746500002,
+          "name": "Plain Idli (3 pieces = 150g)",
+          "quantity": 1,
+          "calories": 174,
+          "protein": 6,
+          "carbs": 36,
+          "fats": 1,
+          "mealType": "lunch"
+        }
+      ],
+      "totalMacros": {
+        "calories": 174,
+        "protein": 6,
+        "carbs": 36,
+        "fats": 1
+      },
+      "instructions": "Rice swap: ~174 cal vs rice 156 cal. Closest calorie match to rice. Use with sambar or coconut chutney (add those calories separately). Works for any meal.",
+      "createdAt": "2026-04-30T00:00:00.000Z"
+    },
+    {
+      "id": 1746500003,
+      "name": "CARB SWAP: Plain Dosa (2 pieces)",
+      "meals": [
+        {
+          "id": 1746500004,
+          "name": "Plain Dosa (2 medium = 120g)",
+          "quantity": 1,
+          "calories": 220,
+          "protein": 5,
+          "carbs": 38,
+          "fats": 4,
+          "mealType": "lunch"
+        }
+      ],
+      "totalMacros": {
+        "calories": 220,
+        "protein": 5,
+        "carbs": 38,
+        "fats": 4
+      },
+      "instructions": "Rice swap: ~220 cal vs rice 156 cal. Slightly more carbs + fat. Keep it plain (no butter/ghee) to stay lean. Works for any meal.",
+      "createdAt": "2026-04-30T00:00:00.000Z"
+    },
+    {
+      "id": 1746500005,
+      "name": "CARB SWAP: Chapati / Roti (2 pieces)",
+      "meals": [
+        {
+          "id": 1746500006,
+          "name": "Whole Wheat Chapati (2 medium = 80g)",
+          "quantity": 1,
+          "calories": 202,
+          "protein": 6,
+          "carbs": 32,
+          "fats": 5,
+          "mealType": "lunch"
+        }
+      ],
+      "totalMacros": {
+        "calories": 202,
+        "protein": 6,
+        "carbs": 32,
+        "fats": 5
+      },
+      "instructions": "Rice swap: ~202 cal vs rice 156 cal. Fewer carbs than rice, slightly more fat. Pairs well with dal or soya curry. Use dry (no ghee) to save ~45 cal.",
+      "createdAt": "2026-04-30T00:00:00.000Z"
+    },
+    {
+      "id": 1746500007,
+      "name": "SHRED: Lunch - Soya + Idli + Veg",
+      "meals": [
+        {
+          "id": 1746500008,
+          "name": "Soya Chunks cooked (110g)",
+          "quantity": 1,
+          "calories": 233,
+          "protein": 39,
+          "carbs": 14,
+          "fats": 6,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1746500009,
+          "name": "Plain Idli (3 pieces = 150g)",
+          "quantity": 1,
+          "calories": 174,
+          "protein": 6,
+          "carbs": 36,
+          "fats": 1,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1746500010,
+          "name": "Steamed Mixed Vegetables (200g)",
+          "quantity": 1,
+          "calories": 80,
+          "protein": 3,
+          "carbs": 16,
+          "fats": 0,
+          "mealType": "lunch"
+        }
+      ],
+      "totalMacros": {
+        "calories": 487,
+        "protein": 48,
+        "carbs": 66,
+        "fats": 7
+      },
+      "instructions": "SHRED lunch swap — 487 cal vs 469 cal (rice version). +18 cal, virtually identical. Best rice alternative for shred days.",
+      "createdAt": "2026-04-30T00:00:00.000Z"
+    },
+    {
+      "id": 1746500011,
+      "name": "SHRED: Lunch - Soya + Dosa + Veg",
+      "meals": [
+        {
+          "id": 1746500012,
+          "name": "Soya Chunks cooked (110g)",
+          "quantity": 1,
+          "calories": 233,
+          "protein": 39,
+          "carbs": 14,
+          "fats": 6,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1746500013,
+          "name": "Plain Dosa (2 medium = 120g)",
+          "quantity": 1,
+          "calories": 220,
+          "protein": 5,
+          "carbs": 38,
+          "fats": 4,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1746500014,
+          "name": "Steamed Mixed Vegetables (200g)",
+          "quantity": 1,
+          "calories": 80,
+          "protein": 3,
+          "carbs": 16,
+          "fats": 0,
+          "mealType": "lunch"
+        }
+      ],
+      "totalMacros": {
+        "calories": 533,
+        "protein": 47,
+        "carbs": 68,
+        "fats": 10
+      },
+      "instructions": "SHRED lunch swap — 533 cal vs 469 cal (rice version). +64 cal. Keep dosa plain, no coconut chutney or butter on shred days.",
+      "createdAt": "2026-04-30T00:00:00.000Z"
+    },
+    {
+      "id": 1746500015,
+      "name": "SHRED: Lunch - Soya + Chapati + Veg",
+      "meals": [
+        {
+          "id": 1746500016,
+          "name": "Soya Chunks cooked (110g)",
+          "quantity": 1,
+          "calories": 233,
+          "protein": 39,
+          "carbs": 14,
+          "fats": 6,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1746500017,
+          "name": "Whole Wheat Chapati (2 medium = 80g)",
+          "quantity": 1,
+          "calories": 202,
+          "protein": 6,
+          "carbs": 32,
+          "fats": 5,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1746500018,
+          "name": "Steamed Mixed Vegetables (200g)",
+          "quantity": 1,
+          "calories": 80,
+          "protein": 3,
+          "carbs": 16,
+          "fats": 0,
+          "mealType": "lunch"
+        }
+      ],
+      "totalMacros": {
+        "calories": 515,
+        "protein": 48,
+        "carbs": 62,
+        "fats": 11
+      },
+      "instructions": "SHRED lunch swap — 515 cal vs 469 cal (rice version). +46 cal, slightly fewer carbs. Best when you want something lighter on carbs.",
+      "createdAt": "2026-04-30T00:00:00.000Z"
     }
   ],
   "weeklySchedule": {
