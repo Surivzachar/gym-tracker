@@ -863,14 +863,29 @@ class GymTrackerApp {
             document.getElementById('exerciseNotes').value = exercise.notes || '';
 
             if (exercise.type === 'strength' || !exercise.type) {
-                // Load strength exercise data
-                document.getElementById('setsContainer').innerHTML = exercise.sets.map(set => `
+                // If all sets have 0 weight (template), auto-fill from last session
+                const allZero = exercise.sets.every(s => !s.weight || s.weight === 0);
+                const lastSets = allZero ? Storage.getLastWorkoutSets(exercise.name) : null;
+                const setsToLoad = lastSets || exercise.sets;
+
+                // Show last session banner in modal if we auto-filled
+                const existingBanner = document.getElementById('modalLastSessionBanner');
+                if (existingBanner) existingBanner.remove();
+                if (lastSets) {
+                    const banner = document.createElement('div');
+                    banner.id = 'modalLastSessionBanner';
+                    banner.style.cssText = 'background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.4);border-radius:8px;padding:0.5rem 0.75rem;margin-bottom:0.75rem;font-size:0.8rem;color:#10b981;';
+                    banner.textContent = '✅ Pre-filled from your last session — adjust up to progress!';
+                    document.getElementById('setsContainer').parentElement.insertBefore(banner, document.getElementById('setsContainer'));
+                }
+
+                document.getElementById('setsContainer').innerHTML = setsToLoad.map(set => `
                     <div class="set-input">
                         <select class="input small" data-field="unit">
                             <option value="kg" ${(!set.unit || set.unit === 'kg') ? 'selected' : ''}>kg</option>
                             <option value="lbs" ${set.unit === 'lbs' ? 'selected' : ''}>lbs</option>
                         </select>
-                        <input type="number" placeholder="Weight" class="input small" data-field="weight" value="${set.weight}">
+                        <input type="number" placeholder="Weight" class="input small" data-field="weight" value="${set.weight || ''}">
                         <input type="number" placeholder="Reps" class="input small" data-field="reps" value="${set.reps}">
                         <button class="btn-icon remove-set">🗑️</button>
                     </div>
@@ -3070,6 +3085,8 @@ class GymTrackerApp {
             if (this.coreModalRestTimerRunning) {
                 this.stopCoreModalRestTimer();
             }
+            const b = document.getElementById('modalLastSessionBanner');
+            if (b) b.remove();
         }
 
         // Reset food modal state when closing
