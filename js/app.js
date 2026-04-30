@@ -1667,10 +1667,13 @@ class GymTrackerApp {
             const dayName = new Date(this.currentWorkout.startedDate).toLocaleDateString('en-AU', { weekday: 'long', month: 'short', day: 'numeric' });
             const warning = document.createElement('div');
             warning.id = 'staleWorkoutWarning';
-            warning.style.cssText = 'background:#7c3aed;color:#fff;padding:0.75rem 1rem;border-radius:10px;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;';
+            warning.style.cssText = 'background:#7c3aed;color:#fff;padding:0.75rem 1rem;border-radius:10px;margin-bottom:1rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.5rem;';
             warning.innerHTML = `
-                <span style="font-size:0.875rem;">⚠️ These are leftover exercises from <strong>${dayName}</strong>. Load today's routine or discard.</span>
-                <button onclick="app.discardStaleWorkout()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:0.3rem 0.6rem;border-radius:6px;font-size:0.8rem;cursor:pointer;white-space:nowrap;">🗑️ Discard</button>
+                <span style="font-size:0.875rem;">⚠️ Leftover from <strong>${dayName}</strong> — save or discard?</span>
+                <div style="display:flex;gap:0.5rem;">
+                    <button onclick="app.saveStaleWorkout()" style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.5);color:#fff;padding:0.3rem 0.7rem;border-radius:6px;font-size:0.8rem;cursor:pointer;white-space:nowrap;">💾 Save to ${dayName}</button>
+                    <button onclick="app.discardStaleWorkout()" style="background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:0.3rem 0.6rem;border-radius:6px;font-size:0.8rem;cursor:pointer;white-space:nowrap;">🗑️ Discard</button>
+                </div>
             `;
             container.parentElement.insertBefore(warning, container);
         }
@@ -2890,15 +2893,15 @@ class GymTrackerApp {
             const today = new Date().toDateString();
             if (existing.startedDate !== today) {
                 const dayName = new Date(existing.startedDate).toLocaleDateString('en-AU', { weekday: 'long', month: 'short', day: 'numeric' });
-                const discard = confirm(
-                    `You have ${existing.exercises.length} unfinished exercise(s) left over from ${dayName}.\n\nDiscard them and load today's routine fresh?`
+                const save = confirm(
+                    `You have ${existing.exercises.length} unfinished exercise(s) from ${dayName}.\n\nSave them to ${dayName}'s history before loading today's routine?\n\nOK = Save to ${dayName}\nCancel = Discard them`
                 );
-                if (discard) {
-                    Storage.clearCurrentWorkout();
-                    this.currentWorkout = { exercises: [], startTime: null };
+                if (save) {
+                    Storage.finishWorkout(new Date(existing.startedDate).toISOString());
                 } else {
-                    return; // keep the stale exercises, do nothing
+                    Storage.clearCurrentWorkout();
                 }
+                this.currentWorkout = { exercises: [], startTime: null };
             }
         }
 
@@ -5222,6 +5225,17 @@ class GymTrackerApp {
         Storage.set(Storage.KEYS.WORKOUTS, []);
         this.renderCurrentWorkout();
         alert('✅ Workout history cleared. Starting fresh!');
+    }
+
+    saveStaleWorkout() {
+        const staleDate = this.currentWorkout.startedDate;
+        Storage.finishWorkout(new Date(staleDate).toISOString());
+        this.currentWorkout = { exercises: [], startTime: null };
+        const w = document.getElementById('staleWorkoutWarning');
+        if (w) w.remove();
+        this.renderCurrentWorkout();
+        const dayName = new Date(staleDate).toLocaleDateString('en-AU', { weekday: 'long', month: 'short', day: 'numeric' });
+        alert(`✅ Workout saved to ${dayName}! You can now load today's routine.`);
     }
 
     discardStaleWorkout() {
