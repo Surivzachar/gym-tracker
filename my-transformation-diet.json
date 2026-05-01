@@ -1,5 +1,5 @@
 {
-  "version": "5.0",
+  "version": "5.1",
   "exportDate": "2026-04-28T00:00:00.000Z",
   "note": "12-Week Transformation Diet + 60-Day India Shred (Apr 28 - Jun 27, 2026). SHRED variants save ~270-300 cal/day to push from 20.6% → ~16% BF before India trip.",
   "dailyTargets": {
@@ -39,11 +39,11 @@
       "fats": 56
     },
     "shredSaturday": {
-      "name": "SHRED — Saturday (Rest Day, no rice)",
-      "calories": 1412,
-      "protein": 144,
-      "carbs": 113,
-      "fats": 52
+      "name": "SHRED — Saturday (Morning Workout, rice included)",
+      "calories": 1787,
+      "protein": 149,
+      "carbs": 184,
+      "fats": 55
     }
   },
   "foodRoutines": [
@@ -1035,20 +1035,30 @@
     },
     {
       "id": 1746300040,
-      "name": "SHRED: Saturday Lunch - Soya + Veg Only (Rest Day, No Rice)",
+      "name": "SHRED: Saturday Lunch - Soya + Rice + Veg (Morning Workout Day)",
       "meals": [
         {
           "id": 1746300041,
-          "name": "Soya Chunks cooked (120g)",
+          "name": "Soya Chunks cooked (110g)",
           "quantity": 1,
-          "calories": 254,
-          "protein": 42,
-          "carbs": 15,
-          "fats": 7,
+          "calories": 233,
+          "protein": 38,
+          "carbs": 14,
+          "fats": 6,
           "mealType": "lunch"
         },
         {
           "id": 1746300042,
+          "name": "Brown Rice cooked (120g)",
+          "quantity": 1,
+          "calories": 156,
+          "protein": 3,
+          "carbs": 34,
+          "fats": 1,
+          "mealType": "lunch"
+        },
+        {
+          "id": 1746300043,
           "name": "Steamed Mixed Vegetables (200g)",
           "quantity": 1,
           "calories": 80,
@@ -1059,12 +1069,12 @@
         }
       ],
       "totalMacros": {
-        "calories": 334,
-        "protein": 45,
-        "carbs": 31,
+        "calories": 469,
+        "protein": 44,
+        "carbs": 64,
         "fats": 7
       },
-      "instructions": "1:00 PM Saturday — REST DAY: No rice since no training. Lower carb day. EAT THIS BEFORE going grocery shopping — never shop hungry.",
+      "instructions": "1:30 PM Saturday — MORNING WORKOUT DAY: Rice included — you trained 6:30-8:00 AM so carbs are earned. Same as weekday lunch. If grocery shopping today, eat this FIRST before you go.",
       "createdAt": "2026-04-29T00:00:00.000Z"
     },
     {
@@ -1402,26 +1412,30 @@
       "totalProtein": 149
     },
     "saturday": {
-      "plan": "PLAN B",
-      "breakfast": "Normal breakfast (7:00 AM)",
-      "snack": "Greek yogurt + almonds + apple (10:30 AM)",
-      "lunch": "BIG lunch (12:00 PM)",
-      "preWorkout": "Whey + dates (2:45 PM)",
-      "workout": "3:30 PM - Full Body + Core",
-      "dinner": "Post-workout dinner (5:15 PM)",
-      "totalCalories": 2080,
-      "totalProtein": 168
+      "plan": "PLAN A (Morning)",
+      "preWorkout": "Banana + warm water (6:10 AM)",
+      "workout": "6:30 AM - Full Body + Core (Morning)",
+      "postWorkoutWhey": "Whey shake (8:00 AM)",
+      "breakfast": "Post-workout SHRED Breakfast (8:30 AM)",
+      "snack": "Greek yogurt + almonds (11:30 AM)",
+      "lunch": "Soya + Rice + Veg (1:30 PM) — workout day, rice included",
+      "dinner": "Soya + Veg (6:30 PM)",
+      "totalCalories": 1787,
+      "totalProtein": 149,
+      "note": "Morning workout 6:30-8:00 AM. Rice at lunch because you trained."
     },
     "sunday": {
-      "plan": "PLAN A",
-      "preWorkout": "Banana + warm water (6:45 AM)",
-      "workout": "7:00 AM - Cardio + Abs",
-      "breakfast": "Post-workout breakfast BIGGEST (8:30 AM)",
-      "lunch": "Lunch",
-      "snack": "Whey + apple + almonds",
-      "dinner": "Light dinner",
-      "totalCalories": 1965,
-      "totalProtein": 149
+      "plan": "PLAN A (Morning)",
+      "preWorkout": "Banana + warm water (6:10 AM)",
+      "workout": "6:30 AM - Full Body HIIT Circuit (Morning)",
+      "postWorkoutWhey": "Whey shake (8:00 AM)",
+      "breakfast": "Post-workout SHRED Breakfast (8:30 AM)",
+      "snack": "Greek yogurt + almonds (11:30 AM)",
+      "lunch": "Soya + Rice + Veg (1:30 PM)",
+      "dinner": "Soya + Veg (6:30 PM)",
+      "totalCalories": 1787,
+      "totalProtein": 149,
+      "note": "Morning workout 6:30-8:00 AM."
     }
   },
   "weeklyAverages": {
@@ -1475,17 +1489,17 @@
     "🥛 SNACK (10 AM): 'SHRED: Mid-Morning Snack' — 120g Greek yogurt + 10 almonds. Prep night before for office Fridays.",
     "🍚 LUNCH (Tue-Fri, Sun 12:30 PM | Mon 2 PM): 'SHRED: Lunch - Soya + Rice + Veg' — 110g soya + 120g rice + 200g veg",
     "🍽 DINNER (Tue-Fri, Sun 7 PM | Mon 5:30 PM): 'SHRED: Dinner - Soya + Veg' — 120g soya + 200g veg. No rice.",
-    "🟡 SAT LUNCH (1 PM, rest day): 'SHRED: Saturday Lunch' — soya + veg only. EAT BEFORE GROCERY SHOPPING.",
-    "🍌 PRE-WORKOUT: 'SHRED: Pre-Workout Banana' — 2:30 PM (Tue-Fri, Sun) | 11:45 AM (Mon before HIIT)",
-    "🥤 POST-WORKOUT: 'SHRED: Post-Workout PVL Iso Whey' — 4:30 PM (Tue-Fri, Sun) | 1:30 PM (Mon after HIIT)",
+    "🟡 SAT LUNCH (1:30 PM, workout day): 'SHRED: Saturday Lunch - Soya + Rice + Veg' — rice included since you trained AM. Eat BEFORE grocery shopping.",
+    "🍌 PRE-WORKOUT: 'SHRED: Pre-Workout Banana' — 6:10 AM (Sat/Sun) | 2:30 PM (Tue-Fri) | 11:45 AM (Mon before HIIT)",
+    "🥤 POST-WORKOUT: 'SHRED: Post-Workout PVL Iso Whey' — 8:00 AM (Sat/Sun) | 4:30 PM (Tue-Fri) | 1:30 PM (Mon after HIIT)",
     "🌙 MON NIGHT: 'SHRED: Post-Badminton Greek Yogurt' — 10 PM after badminton. Yogurt not whey (better sleep).",
-    "📊 Weekday: ~1,787 cal | Monday: ~1,897 cal | Saturday: ~1,412 cal | Weekly avg: ~1,750 cal",
-    "📊 Deficit ~650 cal/day → ~0.6 kg fat/week → ~5 kg fat in 8 weeks",
+    "📊 Weekday (Tue-Fri, Sat, Sun): ~1,787 cal | Monday: ~1,897 cal | Weekly avg: ~1,800 cal",
+    "📊 Deficit ~600-650 cal/day → ~0.6 kg fat/week → ~5 kg fat in 8 weeks",
     "📊 Current: 69.5 kg / 20.6% BF → Target by Jun 27: ~65 kg / ~14-16% BF",
     "⚠ JUNK TRIGGERS: Friday office (prep snack night before) | Sat/Sun shopping (eat lunch FIRST, always)",
     "====== ORIGINAL PLAN (keep using if not on shred) ======",
     "✅ PLAN A (Morning Workout): Tue, Wed, Thu, Fri, Sun - 1,965 kcal | 149g P",
-    "✅ PLAN B (Afternoon Workout): Saturday only - 2,080 kcal | 168g P",
+    "✅ PLAN A (Morning Workout): Tue, Wed, Thu, Fri, Sat, Sun - 1,787 kcal | 149g P (SHRED version)",
     "✅ PLAN C (Monday Badminton): Special timing - 1,950 kcal | 164g P",
     "✅ Only 1 banana per day (and only when needed pre-workout)",
     "✅ Only 1 whey shake per day (ONE per day maximum!)",
