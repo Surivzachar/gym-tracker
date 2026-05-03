@@ -4741,13 +4741,30 @@ class GymTrackerApp {
             return;
         }
 
+        this._allFoodRoutines = routines;
+
+        // Reset search and default to SHRED filter
+        const searchEl = document.getElementById('foodRoutineSearch');
+        if (searchEl) searchEl.value = '';
+        document.querySelectorAll('.routine-filter-chip').forEach(c => c.classList.remove('active'));
+        const shredChip = document.getElementById('chip-shred');
+        if (shredChip) shredChip.classList.add('active');
+
+        this._renderFoodRoutineList(routines.filter(r => r.name.toUpperCase().includes('SHRED')));
+        document.getElementById('loadFoodRoutineModal').classList.add('active');
+    }
+
+    _renderFoodRoutineList(routines) {
         const container = document.getElementById('loadFoodRoutineList');
+        if (routines.length === 0) {
+            container.innerHTML = '<p style="color:#94a3b8; text-align:center; padding:1rem;">No routines match.</p>';
+            return;
+        }
         container.innerHTML = routines.map(routine => {
             const totalCalories = routine.meals.reduce((sum, m) => sum + (parseInt(m.calories) || 0), 0);
             const totalProtein = routine.meals.reduce((sum, m) => sum + (parseInt(m.protein) || 0), 0);
             const mealTypesCount = [...new Set(routine.meals.map(m => m.mealType))].length;
 
-            // Show preview of first 4 food items
             const foodPreview = routine.meals.slice(0, 4).map(meal =>
                 `<div class="history-preview-item">• ${meal.name} (${meal.calories} cal)</div>`
             ).join('');
@@ -4766,8 +4783,23 @@ class GymTrackerApp {
                 </div>
             `;
         }).join('');
+    }
 
-        document.getElementById('loadFoodRoutineModal').classList.add('active');
+    filterFoodRoutines(type, el) {
+        document.querySelectorAll('.routine-filter-chip').forEach(c => c.classList.remove('active'));
+        if (el) el.classList.add('active');
+        const search = (document.getElementById('foodRoutineSearch')?.value || '').toLowerCase();
+        let filtered = this._allFoodRoutines || [];
+        if (type === 'shred') filtered = filtered.filter(r => r.name.toUpperCase().includes('SHRED'));
+        else if (type === 'carb') filtered = filtered.filter(r => r.name.toUpperCase().includes('CARB'));
+        if (search) filtered = filtered.filter(r => r.name.toLowerCase().includes(search));
+        this._renderFoodRoutineList(filtered);
+    }
+
+    filterFoodRoutinesBySearch(query) {
+        const activeChip = document.querySelector('.routine-filter-chip.active');
+        const type = activeChip?.id?.replace('chip-', '') || 'all';
+        this.filterFoodRoutines(type, activeChip);
     }
 
     loadFoodRoutineToToday(routineId) {

@@ -842,6 +842,30 @@ img {
     line-height: 1.4;
 }
 
+/* Food Routine Filter Chips */
+.routine-filter-chip {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.routine-filter-chip:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.routine-filter-chip.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #fff;
+}
+
 /* Cardio/HIIT Exercise Styling */
 .cardio-exercise {
     border-left: 4px solid #10b981;

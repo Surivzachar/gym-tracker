@@ -1398,6 +1398,14 @@
                     <button class="close-btn">&times;</button>
                 </div>
                 <div class="modal-body">
+                    <div style="margin-bottom: 0.75rem;">
+                        <input type="text" id="foodRoutineSearch" class="input" placeholder="Search routines..." style="margin-bottom: 0.5rem;" oninput="app.filterFoodRoutinesBySearch(this.value)">
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button id="chip-shred" class="routine-filter-chip active" onclick="app.filterFoodRoutines('shred', this)">SHRED</button>
+                            <button id="chip-carb" class="routine-filter-chip" onclick="app.filterFoodRoutines('carb', this)">CARB SWAP</button>
+                            <button id="chip-all" class="routine-filter-chip" onclick="app.filterFoodRoutines('all', this)">ALL</button>
+                        </div>
+                    </div>
                     <div id="loadFoodRoutineList" class="load-routine-list"></div>
                 </div>
             </div>
@@ -1639,7 +1647,7 @@
                     <div class="input-group">
                         <label class="input-label">🔧 App Version & Cache</label>
                         <div class="settings-info" style="background: #0f172a; border-left: 3px solid #10b981;">
-                            <p style="color: #cbd5e1;"><strong>Version:</strong> v176 - 60-Day India Shred (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
+                            <p style="color: #cbd5e1;"><strong>Version:</strong> v177 - 60-Day India Shred (Cache: <span id="cacheVersionDisplay">checking...</span>)</p>
                         </div>
                         <p class="helper-text">If app features aren't working, clear the cache to reload the latest version.</p>
                         <button id="clearCacheBtn" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">🔄 Clear Cache & Reload</button>
