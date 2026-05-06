@@ -6962,8 +6962,9 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
             return sum + exerciseCaloriesTotal;
         }, 0);
 
-        // Calculate total calories burnt (cardio sessions + workouts + legacy metrics)
-        const totalCaloriesBurnt = totalCardioCalories + totalWorkoutCalories + (metrics.workoutCalories || 0);
+        // If user manually set calories (from watch), use that instead of auto-calculated workout calories
+        const burnedFromWorkouts = (metrics.workoutCalories > 0) ? metrics.workoutCalories : totalWorkoutCalories;
+        const totalCaloriesBurnt = totalCardioCalories + burnedFromWorkouts;
 
         // Update metrics - prioritize new storage over legacy DAILY_METRICS
         document.getElementById('dashSteps').textContent = metrics.steps || 0;
@@ -7488,7 +7489,25 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
 
     openCaloriesModal() {
         const metrics = Storage.getTodayMetrics(this.workingDate);
-        document.getElementById('caloriesInput').value = metrics.workoutCalories || '';
+        const actualDate = this.workingDate ? new Date(this.workingDate) : getCurrentDateNZ();
+
+        // Calculate auto-workout calories for this date so we can pre-fill the current total
+        const allWorkouts = Storage.getAllWorkouts();
+        const dateWorkouts = allWorkouts.filter(w => new Date(w.date).toDateString() === actualDate.toDateString());
+        const autoWorkoutCal = dateWorkouts.reduce((sum, w) => {
+            if (w.calories && w.calories > 0) return sum + parseInt(w.calories);
+            return sum + (w.exercises || []).reduce((s, ex) => s + (parseInt(ex.calories) || 0), 0);
+        }, 0);
+
+        // Pre-fill with manual override if set, otherwise show auto-calculated total
+        const current = metrics.workoutCalories > 0 ? metrics.workoutCalories : autoWorkoutCal;
+        document.getElementById('caloriesInput').value = current || '';
+
+        // Update modal label to show which date is being edited
+        const dateLabel = this.workingDate ? formatDateNZ(actualDate, { weekday: 'short', month: 'short', day: 'numeric' }) : 'Today';
+        const labelEl = document.querySelector('#caloriesModal .input-label');
+        if (labelEl) labelEl.textContent = `Calories Burnt — ${dateLabel}`;
+
         this.openModal('caloriesModal');
     }
 
@@ -7503,6 +7522,9 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     openStepsModal() {
         const metrics = Storage.getTodayMetrics(this.workingDate);
         document.getElementById('stepsInput').value = metrics.steps || '';
+        const dateLabel = this.workingDate ? formatDateNZ(new Date(this.workingDate), { weekday: 'short', month: 'short', day: 'numeric' }) : 'Today';
+        const labelEl = document.querySelector('#stepsModal .input-label');
+        if (labelEl) labelEl.textContent = `Steps — ${dateLabel}`;
         this.openModal('stepsModal');
     }
 
@@ -7554,6 +7576,9 @@ Detailed guide: GOOGLEDRIVE_SETUP.md
     openSleepModal() {
         const metrics = Storage.getTodayMetrics(this.workingDate);
         document.getElementById('sleepInput').value = metrics.sleepHours || '';
+        const dateLabel = this.workingDate ? formatDateNZ(new Date(this.workingDate), { weekday: 'short', month: 'short', day: 'numeric' }) : 'Today';
+        const labelEl = document.querySelector('#sleepModal .input-label');
+        if (labelEl) labelEl.textContent = `Hours of Sleep — ${dateLabel}`;
         this.openModal('sleepModal');
     }
 
