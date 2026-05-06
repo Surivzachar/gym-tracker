@@ -3170,14 +3170,15 @@ class GymTrackerApp {
         };
 
         if (isEditing) {
-            // Get the food item from storage
-            const todayFood = Storage.getTodayFood();
+            // Get the food item from storage — use workingDate so past-date edits work
+            const todayFood = Storage.getTodayFood(this.workingDate);
             const foodItem = todayFood.meals.find(m => m.id === foodId);
 
             if (!foodItem) return;
 
             this.currentMealType = foodItem.mealType;
-            document.getElementById('foodModalTitle').textContent = `Edit ${mealNames[foodItem.mealType] || foodItem.mealType}`;
+            const editDateSuffix = this.workingDate ? ` · ${formatDateNZ(new Date(this.workingDate), { weekday: 'short', month: 'short', day: 'numeric' })}` : '';
+            document.getElementById('foodModalTitle').textContent = `Edit ${mealNames[foodItem.mealType] || foodItem.mealType}${editDateSuffix}`;
 
             // Parse quantity from name if it exists (e.g., "2x Egg Whole")
             let name = foodItem.name;
@@ -3221,7 +3222,8 @@ class GymTrackerApp {
             const displayMealType = mealNames[this.currentMealType] || this.currentMealType;
             const isSuggested = !mealType; // Was it auto-suggested?
 
-            document.getElementById('foodModalTitle').textContent = `Add ${displayMealType}${isSuggested ? ' (Suggested)' : ''}`;
+            const foodDateSuffix = this.workingDate ? ` · ${formatDateNZ(new Date(this.workingDate), { weekday: 'short', month: 'short', day: 'numeric' })}` : '';
+            document.getElementById('foodModalTitle').textContent = `Add ${displayMealType}${isSuggested ? ' (Suggested)' : ''}${foodDateSuffix}`;
             document.getElementById('foodNameInput').value = '';
             document.getElementById('quantityInput').value = '1';
             document.getElementById('caloriesInput').value = '';
@@ -4329,8 +4331,8 @@ class GymTrackerApp {
     }
 
     deleteFood(foodId) {
-        // Get the food item before deleting (for undo)
-        const todayFood = Storage.getTodayFood();
+        // Get the food item before deleting (for undo) — use workingDate so past-date deletes work
+        const todayFood = Storage.getTodayFood(this.workingDate);
         const foodItem = todayFood.meals.find(m => m.id === foodId);
 
         if (!foodItem) return;
