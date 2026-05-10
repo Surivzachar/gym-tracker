@@ -147,22 +147,22 @@
             {
               "reps": 12,
               "weight": 0,
-              "note": "SUPERSET 1A"
+              "note": "SS 1 - Chest | then do Pull-ups/Lat Pulldown, rest 60s, repeat"
             },
             {
               "reps": 12,
               "weight": 0,
-              "note": "SUPERSET 1A"
+              "note": "SS 1 - Chest"
             },
             {
               "reps": 10,
               "weight": 0,
-              "note": "SUPERSET 1A"
+              "note": "SS 1 - Chest"
             },
             {
               "reps": 10,
               "weight": 0,
-              "note": "SUPERSET 1A"
+              "note": "SS 1 - Chest (heavier)"
             }
           ]
         },
@@ -175,22 +175,22 @@
             {
               "reps": 12,
               "weight": 0,
-              "note": "SUPERSET 1B"
+              "note": "SS 1 - Back | pair with Incline DB Press above"
             },
             {
               "reps": 10,
               "weight": 0,
-              "note": "SUPERSET 1B"
+              "note": "SS 1 - Back"
             },
             {
               "reps": 10,
               "weight": 0,
-              "note": "SUPERSET 1B"
+              "note": "SS 1 - Back"
             },
             {
               "reps": 8,
               "weight": 0,
-              "note": "SUPERSET 1B"
+              "note": "SS 1 - Back (heavier)"
             }
           ]
         },
@@ -203,17 +203,17 @@
             {
               "reps": 15,
               "weight": 0,
-              "note": "SUPERSET 2A"
+              "note": "SS 2 - Chest | then do Cable Row, rest 60s, repeat"
             },
             {
               "reps": 12,
               "weight": 0,
-              "note": "SUPERSET 2A"
+              "note": "SS 2 - Chest"
             },
             {
               "reps": 12,
               "weight": 0,
-              "note": "SUPERSET 2A"
+              "note": "SS 2 - Chest"
             }
           ]
         },
@@ -226,17 +226,17 @@
             {
               "reps": 15,
               "weight": 0,
-              "note": "SUPERSET 2B"
+              "note": "SS 2 - Back | pair with Flat DB Press above"
             },
             {
               "reps": 12,
               "weight": 0,
-              "note": "SUPERSET 2B"
+              "note": "SS 2 - Back"
             },
             {
               "reps": 12,
               "weight": 0,
-              "note": "SUPERSET 2B"
+              "note": "SS 2 - Back"
             }
           ]
         },
@@ -249,17 +249,17 @@
             {
               "reps": 15,
               "weight": 0,
-              "note": "SUPERSET 3A"
+              "note": "SS 3 - Chest | then do Face Pulls, rest 60s, repeat"
             },
             {
               "reps": 15,
               "weight": 0,
-              "note": "SUPERSET 3A"
+              "note": "SS 3 - Chest"
             },
             {
               "reps": 12,
               "weight": 0,
-              "note": "SUPERSET 3A"
+              "note": "SS 3 - Chest (squeeze hard)"
             }
           ]
         },
@@ -272,17 +272,17 @@
             {
               "reps": 20,
               "weight": 0,
-              "note": "SUPERSET 3B"
+              "note": "SS 3 - Back | pair with Cable Flyes above"
             },
             {
               "reps": 18,
               "weight": 0,
-              "note": "SUPERSET 3B"
+              "note": "SS 3 - Back"
             },
             {
               "reps": 15,
               "weight": 0,
-              "note": "SUPERSET 3B"
+              "note": "SS 3 - Back"
             }
           ]
         },
