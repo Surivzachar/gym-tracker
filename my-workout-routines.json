@@ -312,29 +312,6 @@
       "name": "Wednesday - Arms + Abs Destruction",
       "exercises": [
         {
-          "id": 1739980800020,
-          "name": "Incline Dumbbell Curls",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            {
-              "reps": 12,
-              "weight": 0,
-              "note": "GIANT SET 1A - Biceps"
-            },
-            {
-              "reps": 12,
-              "weight": 0,
-              "note": "GIANT SET 1A - Biceps"
-            },
-            {
-              "reps": 10,
-              "weight": 0,
-              "note": "GIANT SET 1A - Biceps"
-            }
-          ]
-        },
-        {
           "id": 1739980800021,
           "name": "Barbell/EZ-Bar Curls",
           "type": "strength",
@@ -343,40 +320,22 @@
             {
               "reps": 12,
               "weight": 0,
-              "note": "GIANT SET 1B - Biceps"
+              "note": "SS A - Biceps | then do Overhead Extension, rest 60s, repeat"
             },
             {
               "reps": 10,
               "weight": 0,
-              "note": "GIANT SET 1B - Biceps"
+              "note": "SS A - Biceps"
             },
             {
               "reps": 10,
               "weight": 0,
-              "note": "GIANT SET 1B - Biceps"
-            }
-          ]
-        },
-        {
-          "id": 1739980800022,
-          "name": "Hammer Curls",
-          "type": "strength",
-          "videoUrl": null,
-          "sets": [
-            {
-              "reps": 15,
-              "weight": 0,
-              "note": "GIANT SET 1C - Biceps"
+              "note": "SS A - Biceps"
             },
             {
-              "reps": 15,
+              "reps": 8,
               "weight": 0,
-              "note": "GIANT SET 1C - Biceps"
-            },
-            {
-              "reps": 12,
-              "weight": 0,
-              "note": "GIANT SET 1C - Biceps"
+              "note": "SS A - Biceps (heavier)"
             }
           ]
         },
@@ -389,17 +348,45 @@
             {
               "reps": 15,
               "weight": 0,
-              "note": "GIANT SET 2A - Triceps"
+              "note": "SS A - Triceps | pair with EZ-Bar Curls above"
             },
             {
               "reps": 12,
               "weight": 0,
-              "note": "GIANT SET 2A - Triceps"
+              "note": "SS A - Triceps"
             },
             {
               "reps": 12,
               "weight": 0,
-              "note": "GIANT SET 2A - Triceps"
+              "note": "SS A - Triceps"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "SS A - Triceps"
+            }
+          ]
+        },
+        {
+          "id": 1739980800020,
+          "name": "Incline Dumbbell Curls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "SS B - Biceps | then do Rope Pushdowns, rest 60s, repeat"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "SS B - Biceps"
+            },
+            {
+              "reps": 10,
+              "weight": 0,
+              "note": "SS B - Biceps"
             }
           ]
         },
@@ -412,17 +399,40 @@
             {
               "reps": 15,
               "weight": 0,
-              "note": "GIANT SET 2B - Triceps"
+              "note": "SS B - Triceps | pair with Incline DB Curls above"
             },
             {
               "reps": 12,
               "weight": 0,
-              "note": "GIANT SET 2B - Triceps"
+              "note": "SS B - Triceps"
             },
             {
               "reps": 12,
               "weight": 0,
-              "note": "GIANT SET 2B - DROP SET last"
+              "note": "SS B - Triceps DROP SET on last set"
+            }
+          ]
+        },
+        {
+          "id": 1739980800022,
+          "name": "Hammer Curls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "SS C - Biceps | then do Close-Grip/Dips, rest 60s, repeat"
+            },
+            {
+              "reps": 15,
+              "weight": 0,
+              "note": "SS C - Biceps"
+            },
+            {
+              "reps": 12,
+              "weight": 0,
+              "note": "SS C - Biceps"
             }
           ]
         },
@@ -435,17 +445,17 @@
             {
               "reps": 12,
               "weight": 0,
-              "note": "GIANT SET 2C - Triceps"
+              "note": "SS C - Triceps | pair with Hammer Curls above"
             },
             {
               "reps": 10,
               "weight": 0,
-              "note": "GIANT SET 2C - Triceps"
+              "note": "SS C - Triceps"
             },
             {
               "reps": 10,
               "weight": 0,
-              "note": "GIANT SET 2C - Triceps"
+              "note": "SS C - Triceps"
             }
           ]
         },
