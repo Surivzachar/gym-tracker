@@ -27,6 +27,26 @@
           ]
         },
         {
+          "id": 1739980800007,
+          "name": "Dead Bug",
+          "type": "core",
+          "videoUrl": null,
+          "sets": [
+            {
+              "reps": 10,
+              "note": "Round 1 - 10 each side, slow & controlled, lower back flat on floor"
+            },
+            {
+              "reps": 10,
+              "note": "Round 2 - 10 each side"
+            },
+            {
+              "reps": 10,
+              "note": "Round 3 - 10 each side"
+            }
+          ]
+        },
+        {
           "id": 1739980800003,
           "name": "Leg Raises",
           "type": "core",
