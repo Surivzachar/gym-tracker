@@ -12,18 +12,9 @@
           "type": "core",
           "videoUrl": null,
           "sets": [
-            {
-              "reps": 25,
-              "note": "Round 1"
-            },
-            {
-              "reps": 25,
-              "note": "Round 2"
-            },
-            {
-              "reps": 25,
-              "note": "Round 3"
-            }
+            { "reps": 30, "note": "Round 1" },
+            { "reps": 30, "note": "Round 2" },
+            { "reps": 30, "note": "Round 3" }
           ]
         },
         {
@@ -32,18 +23,9 @@
           "type": "core",
           "videoUrl": null,
           "sets": [
-            {
-              "reps": 10,
-              "note": "Round 1 - 10 each side, slow & controlled, lower back flat on floor"
-            },
-            {
-              "reps": 10,
-              "note": "Round 2 - 10 each side"
-            },
-            {
-              "reps": 10,
-              "note": "Round 3 - 10 each side"
-            }
+            { "reps": 30, "note": "Round 1 - 15 each side, slow & controlled, lower back flat on floor" },
+            { "reps": 30, "note": "Round 2 - 15 each side" },
+            { "reps": 30, "note": "Round 3 - 15 each side" }
           ]
         },
         {
@@ -52,18 +34,9 @@
           "type": "core",
           "videoUrl": null,
           "sets": [
-            {
-              "reps": 15,
-              "note": "Round 1"
-            },
-            {
-              "reps": 15,
-              "note": "Round 2"
-            },
-            {
-              "reps": 15,
-              "note": "Round 3"
-            }
+            { "reps": 30, "note": "Round 1" },
+            { "reps": 30, "note": "Round 2" },
+            { "reps": 30, "note": "Round 3" }
           ]
         },
         {
@@ -72,18 +45,9 @@
           "type": "core",
           "videoUrl": null,
           "sets": [
-            {
-              "reps": 30,
-              "note": "Round 1 - 15 each side"
-            },
-            {
-              "reps": 30,
-              "note": "Round 2 - 15 each side"
-            },
-            {
-              "reps": 30,
-              "note": "Round 3 - 15 each side"
-            }
+            { "reps": 30, "note": "Round 1 - 15 each side" },
+            { "reps": 30, "note": "Round 2 - 15 each side" },
+            { "reps": 30, "note": "Round 3 - 15 each side" }
           ]
         },
         {
@@ -92,18 +56,9 @@
           "type": "core",
           "videoUrl": null,
           "sets": [
-            {
-              "reps": 60,
-              "note": "Round 1 - 60 sec"
-            },
-            {
-              "reps": 60,
-              "note": "Round 2 - 60 sec"
-            },
-            {
-              "reps": 60,
-              "note": "Round 3 - 60 sec"
-            }
+            { "reps": 60, "note": "Round 1 - 60 sec" },
+            { "reps": 60, "note": "Round 2 - 60 sec" },
+            { "reps": 60, "note": "Round 3 - 60 sec" }
           ]
         },
         {
@@ -112,18 +67,20 @@
           "type": "core",
           "videoUrl": null,
           "sets": [
-            {
-              "reps": 30,
-              "note": "Round 1"
-            },
-            {
-              "reps": 30,
-              "note": "Round 2"
-            },
-            {
-              "reps": 30,
-              "note": "Round 3"
-            }
+            { "reps": 30, "note": "Round 1 - 15 each side" },
+            { "reps": 30, "note": "Round 2 - 15 each side" },
+            { "reps": 30, "note": "Round 3 - 15 each side" }
+          ]
+        },
+        {
+          "id": 1739980800008,
+          "name": "Alternate Heel Touches",
+          "type": "core",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 30, "note": "Round 1 - 15 each side, crunch up slightly, reach side to side" },
+            { "reps": 30, "note": "Round 2 - 15 each side" },
+            { "reps": 30, "note": "Round 3 - 15 each side" }
           ]
         }
       ],
