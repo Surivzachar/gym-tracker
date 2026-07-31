@@ -1395,6 +1395,460 @@
         }
       ],
       "createdAt": "2026-04-28T00:00:00.000Z"
+    },
+    {
+      "id": 1780000000001,
+      "name": "PPL: Push A — Tue (Chest, Shoulders, Triceps)",
+      "exercises": [
+        {
+          "id": 1780000001001,
+          "name": "Incline DB Press",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 10, "weight": 0, "note": "CHEST | Wk1-2: 3 sets only, not to failure" },
+            { "reps": 10, "weight": 0, "note": "CHEST" },
+            { "reps": 8, "weight": 0, "note": "CHEST - heavier" },
+            { "reps": 8, "weight": 0, "note": "CHEST - push hard, progressive overload" }
+          ]
+        },
+        {
+          "id": 1780000001002,
+          "name": "Flat DB Press",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "CHEST" },
+            { "reps": 10, "weight": 0, "note": "CHEST" },
+            { "reps": 10, "weight": 0, "note": "CHEST - squeeze hard at top" }
+          ]
+        },
+        {
+          "id": 1780000001003,
+          "name": "Seated DB Shoulder Press",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "SHOULDERS compound" },
+            { "reps": 10, "weight": 0, "note": "SHOULDERS compound" },
+            { "reps": 10, "weight": 0, "note": "SHOULDERS compound - heavier" }
+          ]
+        },
+        {
+          "id": 1780000001004,
+          "name": "Cable Flyes",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "CHEST isolation - squeeze hard at centre" },
+            { "reps": 15, "weight": 0, "note": "CHEST isolation" },
+            { "reps": 12, "weight": 0, "note": "CHEST isolation - slightly heavier" }
+          ]
+        },
+        {
+          "id": 1780000001005,
+          "name": "DB Lateral Raises",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS - WIDTH! Lead with elbows, slight bend" },
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS" },
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS - slow descent, keep tension" }
+          ]
+        },
+        {
+          "id": 1780000001006,
+          "name": "Overhead Rope Extension",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "TRICEPS long head - full stretch at top" },
+            { "reps": 12, "weight": 0, "note": "TRICEPS long head" },
+            { "reps": 12, "weight": 0, "note": "TRICEPS long head - heavier" }
+          ]
+        },
+        {
+          "id": 1780000001007,
+          "name": "Rope Pushdowns",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "TRICEPS - spread rope at bottom, squeeze hard" },
+            { "reps": 15, "weight": 0, "note": "TRICEPS" },
+            { "reps": 15, "weight": 0, "note": "TRICEPS FINISHER - burn it out!" }
+          ]
+        },
+        {
+          "id": 1780000001008,
+          "name": "Incline Treadmill Walk (Post-Workout)",
+          "type": "cardio",
+          "videoUrl": null,
+          "duration": 22,
+          "distance": 0,
+          "calories": 240
+        }
+      ],
+      "createdAt": "2026-07-29T00:00:00.000Z"
+    },
+    {
+      "id": 1780000000002,
+      "name": "PPL: Legs A — Wed (Heavy | Squat + RDL)",
+      "exercises": [
+        {
+          "id": 1780000002001,
+          "name": "Barbell Back Squat",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 10, "weight": 75, "note": "QUADS | Wk1-2: 75kg x 3 sets | Wk3+: 80kg x 4 sets. Drive through heels, chest up" },
+            { "reps": 10, "weight": 75, "note": "QUADS - full depth, knees track over toes" },
+            { "reps": 8, "weight": 80, "note": "QUADS - heavier from Wk3 onwards" },
+            { "reps": 8, "weight": 80, "note": "QUADS - add 2.5kg every 2 weeks" }
+          ]
+        },
+        {
+          "id": 1780000002002,
+          "name": "Romanian Deadlifts",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "HAMSTRINGS & GLUTES - hinge at hips, soft knee, feel the stretch" },
+            { "reps": 10, "weight": 0, "note": "HAMSTRINGS & GLUTES" },
+            { "reps": 10, "weight": 0, "note": "HAMSTRINGS & GLUTES" },
+            { "reps": 8, "weight": 0, "note": "HAMSTRINGS & GLUTES - heavier" }
+          ]
+        },
+        {
+          "id": 1780000002003,
+          "name": "Leg Press",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "QUADS - feet shoulder-width, press through heels, don't lock knees" },
+            { "reps": 12, "weight": 0, "note": "QUADS" },
+            { "reps": 12, "weight": 0, "note": "QUADS" }
+          ]
+        },
+        {
+          "id": 1780000002004,
+          "name": "Leg Extensions",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "QUADS isolation - hold 1 sec at top" },
+            { "reps": 12, "weight": 0, "note": "QUADS isolation" },
+            { "reps": 12, "weight": 0, "note": "QUADS isolation - DROP SET on last set" }
+          ]
+        },
+        {
+          "id": 1780000002005,
+          "name": "Seated/Lying Leg Curls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "HAMSTRINGS - full range, curl through completely" },
+            { "reps": 12, "weight": 0, "note": "HAMSTRINGS" },
+            { "reps": 12, "weight": 0, "note": "HAMSTRINGS" }
+          ]
+        },
+        {
+          "id": 1780000002006,
+          "name": "Standing Calf Raises",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "CALVES - slow controlled, full stretch at bottom, pause at top" },
+            { "reps": 20, "weight": 0, "note": "CALVES" },
+            { "reps": 20, "weight": 0, "note": "CALVES" },
+            { "reps": 20, "weight": 0, "note": "CALVES - burn it out!" }
+          ]
+        },
+        {
+          "id": 1780000002007,
+          "name": "Incline Treadmill Walk (Post-Workout)",
+          "type": "cardio",
+          "videoUrl": null,
+          "duration": 22,
+          "distance": 0,
+          "calories": 240
+        }
+      ],
+      "createdAt": "2026-07-29T00:00:00.000Z"
+    },
+    {
+      "id": 1780000000003,
+      "name": "PPL: Pull A — Thu (Back, Biceps)",
+      "exercises": [
+        {
+          "id": 1780000003001,
+          "name": "Wide-Grip Pull-ups / Lat Pulldown",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 10, "weight": 0, "note": "BACK WIDTH - full hang, squeeze lats at bottom" },
+            { "reps": 10, "weight": 0, "note": "BACK WIDTH" },
+            { "reps": 8, "weight": 0, "note": "BACK WIDTH - heavier" },
+            { "reps": 8, "weight": 0, "note": "BACK WIDTH - controlled descent" }
+          ]
+        },
+        {
+          "id": 1780000003002,
+          "name": "Cable Seated Row",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "BACK THICKNESS - pull to lower chest, hold 1 sec, slow return" },
+            { "reps": 10, "weight": 0, "note": "BACK THICKNESS" },
+            { "reps": 10, "weight": 0, "note": "BACK THICKNESS" },
+            { "reps": 10, "weight": 0, "note": "BACK THICKNESS - heavy" }
+          ]
+        },
+        {
+          "id": 1780000003003,
+          "name": "Single-Arm DB Row",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "BACK - each arm | elbow close to body, pull to hip" },
+            { "reps": 10, "weight": 0, "note": "BACK - each arm" },
+            { "reps": 10, "weight": 0, "note": "BACK - each arm, heavier" }
+          ]
+        },
+        {
+          "id": 1780000003004,
+          "name": "Face Pulls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "REAR DELTS - pull to face, elbows high and wide" },
+            { "reps": 18, "weight": 0, "note": "REAR DELTS" },
+            { "reps": 15, "weight": 0, "note": "REAR DELTS" }
+          ]
+        },
+        {
+          "id": 1780000003005,
+          "name": "EZ-Bar Curls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "BICEPS - elbows pinned to sides, full range of motion" },
+            { "reps": 10, "weight": 0, "note": "BICEPS" },
+            { "reps": 10, "weight": 0, "note": "BICEPS" },
+            { "reps": 8, "weight": 0, "note": "BICEPS - heavy, VEINS POPPING!" }
+          ]
+        },
+        {
+          "id": 1780000003006,
+          "name": "Incline DB Curls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "BICEPS long head - full hang at bottom, maximum stretch" },
+            { "reps": 12, "weight": 0, "note": "BICEPS long head" },
+            { "reps": 12, "weight": 0, "note": "BICEPS long head" }
+          ]
+        },
+        {
+          "id": 1780000003007,
+          "name": "Hammer Curls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "BRACHIALIS + FOREARMS - arm thickness & vein pump!" },
+            { "reps": 15, "weight": 0, "note": "BRACHIALIS + FOREARMS" },
+            { "reps": 15, "weight": 0, "note": "BRACHIALIS + FOREARMS - squeeze hard at top" }
+          ]
+        },
+        {
+          "id": 1780000003008,
+          "name": "Incline Treadmill Walk (Post-Workout)",
+          "type": "cardio",
+          "videoUrl": null,
+          "duration": 22,
+          "distance": 0,
+          "calories": 240
+        }
+      ],
+      "createdAt": "2026-07-29T00:00:00.000Z"
+    },
+    {
+      "id": 1780000000004,
+      "name": "PPL: Push B — Fri (Shoulders, Chest, Triceps)",
+      "exercises": [
+        {
+          "id": 1780000004001,
+          "name": "Arnold Press",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "SHOULDERS - rotate palms as you press, hits all 3 delt heads" },
+            { "reps": 10, "weight": 0, "note": "SHOULDERS compound" },
+            { "reps": 10, "weight": 0, "note": "SHOULDERS compound" },
+            { "reps": 8, "weight": 0, "note": "SHOULDERS compound - heavy" }
+          ]
+        },
+        {
+          "id": 1780000004002,
+          "name": "DB Lateral Raises",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS - WIDTH! Slow & controlled" },
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS" },
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS" },
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS BURNOUT - lighter, squeeze!" }
+          ]
+        },
+        {
+          "id": 1780000004003,
+          "name": "Flat Barbell Bench Press",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 10, "weight": 0, "note": "CHEST compound - different stimulus from Push A DB work" },
+            { "reps": 8, "weight": 0, "note": "CHEST compound - heavier" },
+            { "reps": 8, "weight": 0, "note": "CHEST compound - push hard" }
+          ]
+        },
+        {
+          "id": 1780000004004,
+          "name": "Skull Crushers (EZ-Bar)",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "TRICEPS long head - lower to forehead, elbows in tight" },
+            { "reps": 10, "weight": 0, "note": "TRICEPS long head" },
+            { "reps": 10, "weight": 0, "note": "TRICEPS long head" }
+          ]
+        },
+        {
+          "id": 1780000004005,
+          "name": "Cable Lateral Raises (One Arm)",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS - each arm, constant cable tension beats DBs" },
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS - each arm" },
+            { "reps": 15, "weight": 0, "note": "LATERAL DELTS - each arm" }
+          ]
+        },
+        {
+          "id": 1780000004006,
+          "name": "Close-Grip Bench / Dips",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "TRICEPS compound - elbows tucked, press through triceps" },
+            { "reps": 10, "weight": 0, "note": "TRICEPS compound" },
+            { "reps": 10, "weight": 0, "note": "TRICEPS compound - push to near failure" }
+          ]
+        },
+        {
+          "id": 1780000004007,
+          "name": "Face Pulls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "REAR DELTS + shoulder health - don't skip, keeps shoulders healthy" },
+            { "reps": 18, "weight": 0, "note": "REAR DELTS" },
+            { "reps": 15, "weight": 0, "note": "REAR DELTS" }
+          ]
+        },
+        {
+          "id": 1780000004008,
+          "name": "Incline Treadmill Walk (Post-Workout)",
+          "type": "cardio",
+          "videoUrl": null,
+          "duration": 22,
+          "distance": 0,
+          "calories": 240
+        }
+      ],
+      "createdAt": "2026-07-29T00:00:00.000Z"
+    },
+    {
+      "id": 1780000000005,
+      "name": "PPL: Legs B — Sat (Hypertrophy | Hack + BSS)",
+      "exercises": [
+        {
+          "id": 1780000005001,
+          "name": "Hack Squat",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 10, "weight": 55, "note": "QUADS | Wk1-2: 55kg x 3 sets | Wk3+: 60kg x 4 sets. Full depth!" },
+            { "reps": 10, "weight": 55, "note": "QUADS - deep as possible, knees tracking toes" },
+            { "reps": 8, "weight": 60, "note": "QUADS - heavier from Wk3" },
+            { "reps": 8, "weight": 60, "note": "QUADS - add 5kg every 2 weeks" }
+          ]
+        },
+        {
+          "id": 1780000005002,
+          "name": "Bulgarian Split Squats",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 12, "weight": 0, "note": "QUADS + GLUTES - each leg | rear foot elevated, deep knee bend" },
+            { "reps": 10, "weight": 0, "note": "QUADS + GLUTES - each leg" },
+            { "reps": 10, "weight": 0, "note": "QUADS + GLUTES - add DBs when bodyweight feels easy" }
+          ]
+        },
+        {
+          "id": 1780000005003,
+          "name": "Seated/Lying Leg Curls",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "HAMSTRINGS - full range, squeeze at top" },
+            { "reps": 12, "weight": 0, "note": "HAMSTRINGS" },
+            { "reps": 12, "weight": 0, "note": "HAMSTRINGS - heavier" }
+          ]
+        },
+        {
+          "id": 1780000005004,
+          "name": "Barbell Hip Thrusts",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "GLUTES - squeeze hard at top, hold 1 sec, drive hips high" },
+            { "reps": 12, "weight": 0, "note": "GLUTES" },
+            { "reps": 12, "weight": 0, "note": "GLUTES" },
+            { "reps": 10, "weight": 0, "note": "GLUTES - heavy, full contraction" }
+          ]
+        },
+        {
+          "id": 1780000005005,
+          "name": "Seated Calf Raises",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 20, "weight": 0, "note": "CALVES - slow, full stretch at bottom, pause at top" },
+            { "reps": 20, "weight": 0, "note": "CALVES" },
+            { "reps": 20, "weight": 0, "note": "CALVES" },
+            { "reps": 20, "weight": 0, "note": "CALVES - burn it out!" }
+          ]
+        },
+        {
+          "id": 1780000005006,
+          "name": "Leg Extensions (DROP SET Finisher)",
+          "type": "strength",
+          "videoUrl": null,
+          "sets": [
+            { "reps": 15, "weight": 0, "note": "QUADS FINISHER - go to failure, drop weight immediately, go again!" },
+            { "reps": 15, "weight": 0, "note": "QUADS FINISHER - squeeze and burn, finish strong!" }
+          ]
+        },
+        {
+          "id": 1780000005007,
+          "name": "Incline Treadmill Walk (Post-Workout)",
+          "type": "cardio",
+          "videoUrl": null,
+          "duration": 22,
+          "distance": 0,
+          "calories": 240
+        }
+      ],
+      "createdAt": "2026-07-29T00:00:00.000Z"
     }
   ]
 }
