@@ -1,55 +1,69 @@
 {
-  "version": "5.1",
-  "exportDate": "2026-04-28T00:00:00.000Z",
-  "note": "12-Week Transformation Diet + 60-Day India Shred (Apr 28 - Jun 27, 2026). SHRED variants save ~270-300 cal/day to push from 20.6% → ~16% BF before India trip.",
+  "version": "6.0",
+  "exportDate": "2026-07-29T00:00:00.000Z",
+  "note": "Pre-Baby Shred Plan (Jul 28 - Oct 1, 2026). PPL split + Simple SHRED diet. Goal: 70kg → 65kg in 9 weeks. Snack kept on Mon/Wed/Fri/Sat (high burn), skipped Tue/Thu. Sunday rest day ~1,500 cal.",
   "dailyTargets": {
-    "planA": {
-      "name": "Morning Workout Days (Tue, Wed, Thu, Fri, Sun)",
-      "calories": 1965,
-      "protein": 149,
-      "carbs": 203,
-      "fats": 66
-    },
-    "planB": {
-      "name": "Afternoon Workout Days (Saturday)",
-      "calories": 2080,
-      "protein": 168,
-      "carbs": 226,
-      "fats": 61
-    },
-    "planC": {
-      "name": "Monday (Badminton Day)",
-      "calories": 1950,
-      "protein": 164,
-      "carbs": 201,
-      "fats": 56
-    },
-    "shredWeekday": {
-      "name": "SHRED — Tue/Wed/Thu/Fri/Sun (3 PM gym)",
-      "calories": 1787,
-      "protein": 168,
-      "carbs": 178,
-      "fats": 52
-    },
     "shredMonday": {
-      "name": "SHRED — Monday (HIIT 12:30 PM + Badminton 7:30 PM)",
+      "name": "SHRED — Monday (Les Mills HIIT + Badminton) — ALL MEALS",
       "calories": 1897,
       "protein": 182,
       "carbs": 183,
       "fats": 56
     },
-    "shredSaturday": {
-      "name": "SHRED — Saturday (Morning Workout, rice included)",
+    "shredPushPull": {
+      "name": "SHRED — Tue & Thu (Push A / Pull A) — SKIP SNACK",
+      "calories": 1607,
+      "protein": 155,
+      "carbs": 157,
+      "fats": 48
+    },
+    "shredLegs": {
+      "name": "SHRED — Wed & Sat (Legs A / Legs B) — KEEP SNACK",
       "calories": 1787,
+      "protein": 168,
+      "carbs": 178,
+      "fats": 52
+    },
+    "shredFriday": {
+      "name": "SHRED — Friday (Les Mills + Push B double session) — KEEP SNACK",
+      "calories": 1787,
+      "protein": 168,
+      "carbs": 178,
+      "fats": 52
+    },
+    "shredSunday": {
+      "name": "SHRED — Sunday (Rest Day) — NO banana/whey/snack, add yogurt",
+      "calories": 1507,
+      "protein": 140,
+      "carbs": 150,
+      "fats": 39
+    },
+    "oldPlanA": {
+      "name": "[OLD] Morning Workout Days (Tue, Wed, Thu, Fri, Sun)",
+      "calories": 1965,
       "protein": 149,
-      "carbs": 184,
-      "fats": 55
+      "carbs": 203,
+      "fats": 66
+    },
+    "oldPlanB": {
+      "name": "[OLD] Afternoon Workout Days (Saturday)",
+      "calories": 2080,
+      "protein": 168,
+      "carbs": 226,
+      "fats": 61
+    },
+    "oldPlanC": {
+      "name": "[OLD] Monday (Badminton Day)",
+      "calories": 1950,
+      "protein": 164,
+      "carbs": 201,
+      "fats": 56
     }
   },
   "foodRoutines": [
     {
       "id": 1741800001,
-      "name": "PLAN A: Pre-Workout (Morning) - Banana",
+      "name": "[OLD] PLAN A: Pre-Workout (Morning) - Banana",
       "meals": [
         {
           "id": 1741800002,
@@ -83,7 +97,7 @@
     },
     {
       "id": 1741800010,
-      "name": "PLAN A: Meal 1 - Post-Workout Breakfast (BIGGEST)",
+      "name": "[OLD] PLAN A: Meal 1 - Post-Workout Breakfast (BIGGEST)",
       "meals": [
         {
           "id": 1741800011,
@@ -137,7 +151,7 @@
     },
     {
       "id": 1741800020,
-      "name": "PLAN A: Meal 2 - Lunch (Paneer)",
+      "name": "[OLD] PLAN A: Meal 2 - Lunch (Paneer)",
       "meals": [
         {
           "id": 1741800021,
@@ -201,7 +215,7 @@
     },
     {
       "id": 1741800121,
-      "name": "PLAN A: Meal 2 - Lunch (Soya Chunks)",
+      "name": "[OLD] PLAN A: Meal 2 - Lunch (Soya Chunks)",
       "meals": [
         {
           "id": 1741800122,
@@ -265,7 +279,7 @@
     },
     {
       "id": 1741800030,
-      "name": "PLAN A: Meal 3 - Afternoon Snack",
+      "name": "[OLD] PLAN A: Meal 3 - Afternoon Snack",
       "meals": [
         {
           "id": 1741800031,
@@ -309,7 +323,7 @@
     },
     {
       "id": 1741800040,
-      "name": "PLAN A: Meal 4 - Light Dinner (Paneer)",
+      "name": "[OLD] PLAN A: Meal 4 - Light Dinner (Paneer)",
       "meals": [
         {
           "id": 1741800041,
@@ -373,7 +387,7 @@
     },
     {
       "id": 1741800141,
-      "name": "PLAN A: Meal 4 - Light Dinner (Egg Omelette)",
+      "name": "[OLD] PLAN A: Meal 4 - Light Dinner (Egg Omelette)",
       "meals": [
         {
           "id": 1741800142,
@@ -437,7 +451,7 @@
     },
     {
       "id": 1741800050,
-      "name": "PLAN B: Meal 1 - Normal Breakfast",
+      "name": "[OLD] PLAN B: Meal 1 - Normal Breakfast",
       "meals": [
         {
           "id": 1741800051,
@@ -491,7 +505,7 @@
     },
     {
       "id": 1741800060,
-      "name": "PLAN B: Meal 2 - Mid-Morning Snack",
+      "name": "[OLD] PLAN B: Meal 2 - Mid-Morning Snack",
       "meals": [
         {
           "id": 1741800061,
@@ -535,7 +549,7 @@
     },
     {
       "id": 1741800070,
-      "name": "PLAN B: Meal 3 - Lunch (Paneer - BIGGEST MEAL)",
+      "name": "[OLD] PLAN B: Meal 3 - Lunch (Paneer - BIGGEST MEAL)",
       "meals": [
         {
           "id": 1741800071,
@@ -599,7 +613,7 @@
     },
     {
       "id": 1741800171,
-      "name": "PLAN B: Meal 3 - Lunch (Soya Chunks - BIGGEST MEAL)",
+      "name": "[OLD] PLAN B: Meal 3 - Lunch (Soya Chunks - BIGGEST MEAL)",
       "meals": [
         {
           "id": 1741800172,
@@ -663,7 +677,7 @@
     },
     {
       "id": 1741800080,
-      "name": "PLAN B: Meal 4 - Pre-Workout Snack",
+      "name": "[OLD] PLAN B: Meal 4 - Pre-Workout Snack",
       "meals": [
         {
           "id": 1741800081,
@@ -707,7 +721,7 @@
     },
     {
       "id": 1741800090,
-      "name": "PLAN B: Meal 5 - Post-Workout Dinner",
+      "name": "[OLD] PLAN B: Meal 5 - Post-Workout Dinner",
       "meals": [
         {
           "id": 1741800091,
@@ -761,7 +775,7 @@
     },
     {
       "id": 1741800100,
-      "name": "PLAN C: Meal 4 - Early Dinner (Before Badminton)",
+      "name": "[OLD] PLAN C: Meal 4 - Early Dinner (Before Badminton)",
       "meals": [
         {
           "id": 1741800101,
@@ -815,7 +829,7 @@
     },
     {
       "id": 1741800110,
-      "name": "PLAN C: Meal 5 - Post-Badminton (LIGHT)",
+      "name": "[OLD] PLAN C: Meal 5 - Post-Badminton (LIGHT)",
       "meals": [
         {
           "id": 1741800111,
@@ -957,7 +971,7 @@
     },
     {
       "id": 1746300020,
-      "name": "SHRED: Lunch - Soya + Rice + Veg (Mon, Tue-Fri, Sun)",
+      "name": "SHRED: Lunch - Soya + Rice + Veg (All Training Days)",
       "meals": [
         {
           "id": 1746300021,
@@ -1001,7 +1015,7 @@
     },
     {
       "id": 1746300030,
-      "name": "SHRED: Dinner - Soya + Veg (Tue-Fri, Sun + Mon early dinner)",
+      "name": "SHRED: Dinner - Soya + Veg (All Days)",
       "meals": [
         {
           "id": 1746300031,
@@ -1035,7 +1049,7 @@
     },
     {
       "id": 1746300040,
-      "name": "SHRED: Saturday Lunch - Soya + Rice + Veg (Morning Workout Day)",
+      "name": "SHRED: Sat Legs B Lunch - Soya + Rice + Veg (Morning Workout)",
       "meals": [
         {
           "id": 1746300041,
@@ -1079,7 +1093,7 @@
     },
     {
       "id": 1746300050,
-      "name": "SHRED: Pre-Workout Banana (Tue-Fri, Sun + Mon pre-HIIT)",
+      "name": "SHRED: Pre-Workout Banana (30 min before gym — flexible 12 or 3 PM)",
       "meals": [
         {
           "id": 1746300051,
@@ -1103,7 +1117,7 @@
     },
     {
       "id": 1746300060,
-      "name": "SHRED: Post-Workout PVL Iso Whey (Tue-Fri, Sun + Mon post-HIIT)",
+      "name": "SHRED: Post-Workout Whey (immediately after gym — all training days)",
       "meals": [
         {
           "id": 1746300061,
@@ -1352,6 +1366,40 @@
       },
       "instructions": "SHRED lunch swap — 515 cal vs 469 cal (rice version). +46 cal, slightly fewer carbs. Best when you want something lighter on carbs.",
       "createdAt": "2026-04-30T00:00:00.000Z"
+    },
+    {
+      "id": 1780100001,
+      "name": "SHRED: Sunday Rest Day Snack - Greek Yogurt (replaces banana + whey)",
+      "meals": [
+        {
+          "id": 1780100002,
+          "name": "Greek Yogurt plain unsweetened (120g)",
+          "quantity": 1,
+          "calories": 72,
+          "protein": 12,
+          "carbs": 4,
+          "fats": 2,
+          "mealType": "snack"
+        },
+        {
+          "id": 1780100003,
+          "name": "Almonds (10 pieces, ~12g)",
+          "quantity": 1,
+          "calories": 70,
+          "protein": 3,
+          "carbs": 2,
+          "fats": 6,
+          "mealType": "snack"
+        }
+      ],
+      "totalMacros": {
+        "calories": 142,
+        "protein": 15,
+        "carbs": 6,
+        "fats": 8
+      },
+      "instructions": "SUNDAY REST DAY ONLY. No gym = no banana, no whey. Use this snack instead (afternoon, around 2-3 PM). Sunday total: ~1,507 cal. Use with: Breakfast + Lunch (full rice) + This snack + Dinner.",
+      "createdAt": "2026-07-29T00:00:00.000Z"
     }
   ],
   "weeklySchedule": {
@@ -1489,39 +1537,49 @@
     "🥛 SNACK (10 AM): 'SHRED: Mid-Morning Snack' — 120g Greek yogurt + 10 almonds. Prep night before for office Fridays.",
     "🍚 LUNCH (Tue-Fri, Sun 12:30 PM | Mon 2 PM): 'SHRED: Lunch - Soya + Rice + Veg' — 110g soya + 120g rice + 200g veg",
     "🍽 DINNER (Tue-Fri, Sun 7 PM | Mon 5:30 PM): 'SHRED: Dinner - Soya + Veg' — 120g soya + 200g veg. No rice.",
-    "🟡 SAT LUNCH (1:30 PM, workout day): 'SHRED: Saturday Lunch - Soya + Rice + Veg' — rice included since you trained AM. Eat BEFORE grocery shopping.",
-    "🍌 PRE-WORKOUT: 'SHRED: Pre-Workout Banana' — 6:10 AM (Sat/Sun) | 2:30 PM (Tue-Fri) | 11:45 AM (Mon before HIIT)",
-    "🥤 POST-WORKOUT: 'SHRED: Post-Workout PVL Iso Whey' — 8:00 AM (Sat/Sun) | 4:30 PM (Tue-Fri) | 1:30 PM (Mon after HIIT)",
-    "🌙 MON NIGHT: 'SHRED: Post-Badminton Greek Yogurt' — 10 PM after badminton. Yogurt not whey (better sleep).",
-    "📊 Weekday (Tue-Fri, Sat, Sun): ~1,787 cal | Monday: ~1,897 cal | Weekly avg: ~1,800 cal",
-    "📊 Deficit ~600-650 cal/day → ~0.6 kg fat/week → ~5 kg fat in 8 weeks",
-    "📊 Current: 69.5 kg / 20.6% BF → Target by Jun 27: ~65 kg / ~14-16% BF",
-    "⚠ JUNK TRIGGERS: Friday office (prep snack night before) | Sat/Sun shopping (eat lunch FIRST, always)",
-    "====== ORIGINAL PLAN (keep using if not on shred) ======",
-    "✅ PLAN A (Morning Workout): Tue, Wed, Thu, Fri, Sun - 1,965 kcal | 149g P",
-    "✅ PLAN A (Morning Workout): Tue, Wed, Thu, Fri, Sat, Sun - 1,787 kcal | 149g P (SHRED version)",
-    "✅ PLAN C (Monday Badminton): Special timing - 1,950 kcal | 164g P",
-    "✅ Only 1 banana per day (and only when needed pre-workout)",
-    "✅ Only 1 whey shake per day (ONE per day maximum!)",
-    "✅ Biggest meal = Post-workout (Plan A) or Lunch (Plan B)",
-    "✅ Light dinner always for better sleep",
-    "✅ Can swap paneer for soya chunks: 150g paneer = 80g dry soya (105g cooked)",
-    "✅ Can swap chicken for paneer (same amounts)",
-    "✅ Track everything in app immediately after eating",
-    "✅ Hit 160g+ protein EVERY DAY (non-negotiable)",
-    "✅ Weekly average: 1,990 kcal | 153g P - Perfect 400-500 kcal deficit",
-    "✅ Expected result: 6-8kg pure fat loss in 12 weeks = 10-12% body fat = VISIBLE SIX-PACK"
+    "====== PRE-BABY SHRED (Jul 28 - Oct 1, 2026) — PPL SPLIT ======",
+    "📊 Goal: 70 kg → 65 kg in 9 weeks | Baseline: 70 kg / 21% BF (Jul 29)",
+    "📊 Weekly milestones: Aug 4→70 | Aug 11→69.3 | Aug 18→68.6 | Sep 1→67.2 | Oct 1→65 kg",
+    "📊 Weigh every TUESDAY morning fasted — same conditions each week",
+    "",
+    "🗓 DAILY MEAL GUIDE:",
+    "MON (Les Mills + Badminton) ~1,897 cal — ALL MEALS + snack:",
+    "  Breakfast | Mid-Morning Snack | Lunch | Pre-HIIT Banana | Post-HIIT Whey | Early Dinner | Post-Badminton Greek Yogurt",
+    "",
+    "TUE (Push A) ~1,607 cal — SKIP SNACK:",
+    "  Breakfast | Lunch | Pre-Workout Banana (11:30 AM or 2:30 PM) | Post-Workout Whey | Dinner",
+    "",
+    "WED (Legs A — Heavy) ~1,787 cal — KEEP SNACK:",
+    "  Breakfast | Mid-Morning Snack | Lunch | Pre-Workout Banana | Post-Workout Whey | Dinner",
+    "",
+    "THU (Pull A) ~1,607 cal — SKIP SNACK:",
+    "  Breakfast | Lunch | Pre-Workout Banana (11:30 AM or 2:30 PM) | Post-Workout Whey | Dinner",
+    "",
+    "FRI (Les Mills 6:30 AM + Push B afternoon) ~1,787 cal — KEEP SNACK:",
+    "  Breakfast | Mid-Morning Snack | Lunch | Pre-Workout Banana (Push B) | Post-Workout Whey | Dinner",
+    "",
+    "SAT (Legs B — 6:30 AM) ~1,787 cal — KEEP SNACK:",
+    "  Breakfast | Mid-Morning Snack | SHRED Sat Legs B Lunch | Post-Workout Whey | Dinner",
+    "",
+    "SUN (Rest Day) ~1,507 cal — NO banana/whey/snack:",
+    "  Breakfast | Lunch | Sunday Rest Day Snack (Greek Yogurt + Almonds, ~2-3 PM) | Dinner",
+    "",
+    "✅ Only 1 banana/day (pre-workout only — skip on Sunday)",
+    "✅ Only 1 whey shake/day (post-workout only — skip on Sunday)",
+    "✅ Hit 155g+ protein EVERY DAY (non-negotiable)",
+    "✅ No rice at dinner (any day)",
+    "✅ Magnesium Glycinate 300-400mg before bed every night",
+    "✅ Fish oil + Multivitamin with breakfast",
+    "✅ L-Carnitine 2g with pre-workout banana (training days only)",
+    "⚠ SLIP TRIGGERS: Weekend shopping (eat lunch FIRST) | Untracked nuts/dates (DON'T BUY them)"
   ],
   "howToUse": [
     "1. Go to Food tab → Import Food Routines",
     "2. Select this file (my-transformation-diet.json)",
-    "3. All meal routines will be imported",
-    "4. Each day, load the appropriate meals:",
-    "   - Monday: Use PLAN C meals",
-    "   - Tue-Fri, Sun: Use PLAN A meals",
-    "   - Saturday: Use PLAN B meals",
-    "5. Log each meal after eating",
-    "6. Check daily totals match your plan",
-    "7. Adjust portions slightly if needed (but keep protein 160g+)"
+    "3. All meal routines will be imported — use only SHRED: routines (ignore [OLD] ones)",
+    "4. Each day, log the appropriate meals (see shredNotes above for daily guide)",
+    "5. Log each meal immediately after eating",
+    "6. Check daily totals match your day's calorie target",
+    "7. Weigh in every Tuesday morning fasted — track in Progress tab"
   ]
 }
