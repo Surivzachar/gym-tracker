@@ -5202,7 +5202,7 @@ class GymTrackerApp {
 
     async displayCacheVersion() {
         const cacheDisplay = document.getElementById('cacheVersionDisplay');
-        const LATEST_VERSION = '92'; // Update this when incrementing version
+        const LATEST_VERSION = '93'; // Update this when incrementing version
 
         try {
             const cacheNames = await caches.keys();
